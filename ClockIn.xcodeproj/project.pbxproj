@@ -16,6 +16,7 @@
 		D6C458B129D229230069D89B /* ClockInUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458B029D229230069D89B /* ClockInUITestsLaunchTests.swift */; };
 		D6C458C129D2DD4F0069D89B /* TimerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458C029D2DD4E0069D89B /* TimerModel.swift */; };
 		D6C458C329D2DE2D0069D89B /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458C229D2DE2D0069D89B /* Home.swift */; };
+		D6C458C529D35EAA0069D89B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458C429D35EAA0069D89B /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		D6C458B029D229230069D89B /* ClockInUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockInUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		D6C458C029D2DD4E0069D89B /* TimerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerModel.swift; sourceTree = "<group>"; };
 		D6C458C229D2DE2D0069D89B /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
+		D6C458C429D35EAA0069D89B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +139,7 @@
 			children = (
 				D6C4589529D229210069D89B /* ContentView.swift */,
 				D6C458C229D2DE2D0069D89B /* Home.swift */,
+				D6C458C429D35EAA0069D89B /* SettingsView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6C458C529D35EAA0069D89B /* SettingsView.swift in Sources */,
 				D6C458C129D2DD4F0069D89B /* TimerModel.swift in Sources */,
 				D6C4589629D229210069D89B /* ContentView.swift in Sources */,
 				D6C458C329D2DE2D0069D89B /* Home.swift in Sources */,
