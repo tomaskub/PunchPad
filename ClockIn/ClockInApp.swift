@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct ClockInApp: App {
+    
+    @StateObject var timerModel: TimerModel = .init()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(timerModel)
         }
     }
 }
