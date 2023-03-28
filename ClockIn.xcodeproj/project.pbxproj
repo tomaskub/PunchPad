@@ -14,6 +14,7 @@
 		D6C458A529D229230069D89B /* ClockInTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458A429D229230069D89B /* ClockInTests.swift */; };
 		D6C458AF29D229230069D89B /* ClockInUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458AE29D229230069D89B /* ClockInUITests.swift */; };
 		D6C458B129D229230069D89B /* ClockInUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458B029D229230069D89B /* ClockInUITestsLaunchTests.swift */; };
+		D6C458C129D2DD4F0069D89B /* TimerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458C029D2DD4E0069D89B /* TimerModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		D6C458AA29D229230069D89B /* ClockInUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClockInUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6C458AE29D229230069D89B /* ClockInUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockInUITests.swift; sourceTree = "<group>"; };
 		D6C458B029D229230069D89B /* ClockInUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockInUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		D6C458C029D2DD4E0069D89B /* TimerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,7 +97,8 @@
 			isa = PBXGroup;
 			children = (
 				D6C4589329D229210069D89B /* ClockInApp.swift */,
-				D6C4589529D229210069D89B /* ContentView.swift */,
+				D6C458BF29D2DD3C0069D89B /* ViewModel */,
+				D6C458BE29D2D3E50069D89B /* View */,
 				D6C4589729D229230069D89B /* Assets.xcassets */,
 				D6C4589929D229230069D89B /* Preview Content */,
 			);
@@ -125,6 +128,22 @@
 				D6C458B029D229230069D89B /* ClockInUITestsLaunchTests.swift */,
 			);
 			path = ClockInUITests;
+			sourceTree = "<group>";
+		};
+		D6C458BE29D2D3E50069D89B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D6C4589529D229210069D89B /* ContentView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		D6C458BF29D2DD3C0069D89B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				D6C458C029D2DD4E0069D89B /* TimerModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,6 +276,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6C458C129D2DD4F0069D89B /* TimerModel.swift in Sources */,
 				D6C4589629D229210069D89B /* ContentView.swift in Sources */,
 				D6C4589429D229210069D89B /* ClockInApp.swift in Sources */,
 			);
