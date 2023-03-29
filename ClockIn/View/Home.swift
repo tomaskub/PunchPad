@@ -8,86 +8,67 @@
 import SwiftUI
 
 struct Home: View {
+    
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var timer: TimerModel
+    
+    @State var isShowingTimePicker: Bool = false
     
     var body: some View {
         NavigationView {
             ZStack {
                 
                 //background layer
-                LinearGradient(colors: [ colorScheme == .light ? .white : .black, .blue], startPoint: .topLeading, endPoint: .bottomTrailing)
+                LinearGradient(colors: [ colorScheme == .light ? .white : .black, .blue.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
                     .ignoresSafeArea()
                 
                 //Foreground layer
-                GeometryReader { proxy in
-                    VStack {
-                        Spacer()
-                        ZStack {
-                            Circle()
-                                .fill(.white.opacity(0.3))
-                                .padding()
-                            
-                            hourRing
-                            
-                            Text("\(timer.timerStringValue)")
-                        }
+                
+                
+                
+                Button(action:
+                        timer.isStarted ? timer.pauseTimer : timer.startTimer) {
+                    ZStack {
+                        
+                        Circle()
+                            .fill(.blue.opacity(0.5))
+                            .padding()
+                        Text("\(timer.timerStringValue)")
+                            .foregroundColor(.white)
+                            .font(.largeTitle)
+                            .padding()
+                            .background(.gray.opacity(0.5))
+                            .cornerRadius(10)
+                            .onLongPressGesture(perform: {
+                                withAnimation(.easeInOut) {
+                                    isShowingTimePicker.toggle()
+                                }
+                            })
+                    }
+                }
                         .padding(60)
                         .onReceive(Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()) { _ in
                             if timer.isStarted {
                                 timer.updateTimer()
                             }
                         }
+                
+                RingView(progress: $timer.progress, ringColor: .primary, pointColor: colorScheme == .light ? .white : .black)
+                    .padding(60)
+                
+                if isShowingTimePicker {
+                    VStack {
                         Spacer()
-                        Button(action:
-                                timer.isStarted ? timer.stopTimer : timer.startTimer) {
-                            Image(systemName: timer.isStarted ? "pause.fill" : "play.fill")
-                                .font(.largeTitle)
-                                .foregroundColor(.white)
-                        }
-                        Spacer()
-                        HStack {
-                            
-                            Picker("hours", selection: $timer.hours) {
-                                ForEach(0..<25) { i in
-                                    Text("\(i)").tag(i)
-                                        .foregroundColor(.black)
-                                }
-                            }
-                            .pickerStyle(.wheel)
-                            Picker("minutes", selection: $timer.minutes) {
-                                ForEach(0..<60) { i in
-                                    Text("\(i)").tag(i)
-                                        .foregroundColor(.black)
-                                }
-                            }
-                            .pickerStyle(.wheel)
-                            Picker("seconds", selection: $timer.seconds) {
-                                ForEach(0..<60) { i in
-                                    Text("\(i)").tag(i)
-                                        .foregroundColor(.black)
-                                }
-                            }
-                            .pickerStyle(.wheel)
-                        }
-                        .frame(height: 150)
-                        .frame(maxWidth: .infinity)
-                        .background(.white)
-                        .cornerRadius(10)
+                        timePickers
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                 }
-                .padding()
-                
-                
-                
             }
             .navigationTitle("ClockIn")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                NavigationLink {
-                    Text("History screen")
-                } label: {
+                    NavigationLink {
+                        Text("History screen")
+                    } label: {
                         Text("History")
                     }
                 }
@@ -99,9 +80,49 @@ struct Home: View {
                     }
                 }
             }
-            
-            
         }
+    }
+    
+    var timePickers: some View {
+        HStack {
+            VStack {
+                Text("Hours")
+                Picker("hours", selection: $timer.hours) {
+                    ForEach(0..<25) { i in
+                        Text("\(i)").tag(i)
+                            .foregroundColor(.black)
+                    }
+                }
+                .pickerStyle(.wheel)
+            }
+            VStack {
+                Text("Minutes")
+            
+            Picker("minutes", selection: $timer.minutes) {
+                ForEach(0..<60) { i in
+                    Text("\(i)").tag(i)
+                        .foregroundColor(.black)
+                }
+            }
+            .pickerStyle(.wheel)
+            }
+            VStack {
+                Text("Seconds")
+                
+                Picker("seconds", selection: $timer.seconds) {
+                    ForEach(0..<60) { i in
+                        Text("\(i)").tag(i)
+                            .foregroundColor(.black)
+                    }
+                }
+                .pickerStyle(.wheel)
+            }
+        }
+        .padding(.top)
+        .frame(height: 150)
+        .frame(maxWidth: .infinity)
+        .background(.white)
+        .cornerRadius(10)
     }
     
     var secondRing: some View {
@@ -115,6 +136,7 @@ struct Home: View {
 //                }
 //            }
     }
+    
     var minuteRing: some View {
         Circle()
             .trim(from: 0, to: timer.minuteProgress)
@@ -127,13 +149,18 @@ struct Home: View {
 //                }
 //            }
     }
+    
     var hourRing: some View {
         Circle()
             .trim(from: 0, to: timer.progress)
             .stroke(Color.black.opacity(0.7), lineWidth: 10)
             .rotationEffect(.init(degrees: -90))
-            .padding(-40)
             
+            .overlay(alignment: .bottom) {
+                Circle()
+                    .frame(width: 30)
+            }
+            .padding(70)
     }
     
 }
