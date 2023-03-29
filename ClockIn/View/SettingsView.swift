@@ -14,15 +14,40 @@ struct SettingsView: View {
     var body: some View {
         ZStack{
             //BACKGROUND
-            LinearGradient(colors: [ colorScheme == .light ? .white : .black, .blue], startPoint: .topLeading, endPoint: .bottomTrailing)
+            LinearGradient(colors: [ colorScheme == .light ? .white : .black, .blue.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
                 .ignoresSafeArea()
             
             
             //CONTENT
             List {
-                Text("Setting 1")
-                Text("Setting 2")
+                
+                Section("Timer Settings") {
+                    
+                    Text("Set timer length")
+                    
+                    Toggle(isOn: .constant(true)) {
+                        Text("Send notification on finish")
+                    }
+                }
+                Section("Overtime") {
+                    Text("Keep loging overtime")
+                }
+                
+                Section("Appearance") {
+                    VStack{
+                        Text("Color scheme")
+                        Picker("appearance", selection: .constant(1)) {
+                            Text("System")
+                            Text("Dark")
+                            Text("Light")
+                        }
+                        .pickerStyle(.segmented)
+                    }
+                }
+                
             }
+            .foregroundColor(.primary)
+//            .listStyle(.grouped)
             .scrollContentBackground(.hidden)
         }
     }
@@ -31,5 +56,6 @@ struct SettingsView: View {
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsView()
+        SettingsView().environment(\.colorScheme, .dark)
     }
 }
