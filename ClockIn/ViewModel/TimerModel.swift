@@ -11,65 +11,85 @@ class TimerModel: NSObject, ObservableObject {
     
     //MARK: TIMER PROPERTIES - PUBLISHED
     
-    @Published var progress: CGFloat = 0.5
-    
+    //Progress properties
+    @Published var progress: CGFloat = 0.0
     @Published var secondProgress: CGFloat = 0.0
     @Published var minuteProgress: CGFloat = 0.0
     
-    @Published var timerStringValue: String = "00:00"
-    @Published var isStarted: Bool = false
-    @Published var addNewTimer: Bool = false
+    //Value for display
+    @Published var timerStringValue: String = "08:30"
     
-    @Published var hours: Int = 1
-    @Published var minutes: Int = 10
+    //Timer state properties
+    @Published var isStarted: Bool = false
+    @Published var isRunning: Bool = false
+    @Published var progressAfterFinish: Bool = true
+    
+    //starting values stored for the user
+    @Published var hours: Int = 0
+    @Published var minutes: Int = 1
     @Published var seconds: Int = 0
     
-    //MARK: TIMER PROPERTIES - PRIVATE
-    private var totalSeconds: Int = 0
     
+    //MARK: COUNTDOWN TIMER PROPERTIES - PRIVATE
+    
+    private var totalSeconds: Int = 0
     private var currentHours: Int {
         return totalSeconds/3600
     }
-    
     private var currentMinutes: Int {
         return (totalSeconds % 3600) / 60
     }
-    
     private var currentSeconds: Int {
         return (totalSeconds % 60)
     }
+    //MARK: OVERTIME TIME PROPERTIES - PRIVATE
+    private var overtimeTotalSeconds: Int  = 0
+    private var overtimeHours: Int {
+        return overtimeTotalSeconds/3600
+    }
+    private var overtimeMinutes: Int {
+        return (overtimeTotalSeconds % 3600) / 60
+    }
+    private var overtimeSeconds: Int {
+        return (overtimeTotalSeconds % 60)
+    }
+}
     
-    
+
     //MARK: TIMER START & STOP FUNCTIONS
+extension TimerModel {
+    
     func startTimer()  {
+        totalSeconds = 0
+        progress = 0
         isStarted = true
-        //This will have to be calculated somewhere else 
+        isRunning = true
+        //This will have to be calculated somewhere else
         totalSeconds = (hours * 3600) + (minutes * 60) + seconds
     }
     
     func stopTimer() {
-        hours = 0
-        minutes = 0
-        seconds = 0
-        totalSeconds = 0
-        progress = 0
         isStarted = false
+        isRunning = false
     }
     
     func resumeTimer() {
-        isStarted = true
+        isRunning = true
     }
     
     func pauseTimer() {
-        isStarted = false 
+        isRunning = false
     }
-    
+}
    
     //MARK: TIMER UPDATE FUNCTIONS
+extension TimerModel {
+    
     func updateTimer() {
-        if isStarted {
-            if totalSeconds >= 0 {
+        if isStarted && isRunning {
             
+            if totalSeconds > 0 {
+                
                 totalSeconds -= 1
                 
                 updateSecondProgress()
@@ -78,13 +98,15 @@ class TimerModel: NSObject, ObservableObject {
                 withAnimation(.easeInOut) {
                     progress = 1 - CGFloat(totalSeconds) / CGFloat((hours * 3600) + (minutes * 60) + seconds)
                 }
-            
-            } else if totalSeconds < 0 {
+                
+            } else if totalSeconds == 0 && !progressAfterFinish {
                 stopTimer()
-//                startTimer()
+            } else if totalSeconds == 0 && progressAfterFinish {
+                overtimeTotalSeconds += 1
             }
+            
+            updateTimerStringValue()
         }
-        updateTimerStringValue()
     }
     
     func updateSecondProgress() {
@@ -100,14 +122,30 @@ class TimerModel: NSObject, ObservableObject {
     }
     
     func updateTimerStringValue() {
-        let hoursComponent: String = currentHours < 10 ? "0\(currentHours)" : "\(currentHours)"
-        let minutesComponent: String = currentMinutes < 10 ? "0\(currentMinutes)" : "\(currentMinutes)"
-        let secondsComponent: String = currentSeconds < 10 ? "0\(currentSeconds)" : "\(currentSeconds)"
-        
-        if currentHours > 0 {
-            timerStringValue = "\(hoursComponent) : \(minutesComponent)"
+        if totalSeconds > 0 {
+            
+            let hoursComponent: String = currentHours < 10 ? "0\(currentHours)" : "\(currentHours)"
+            let minutesComponent: String = currentMinutes < 10 ? "0\(currentMinutes)" : "\(currentMinutes)"
+            let secondsComponent: String = currentSeconds < 10 ? "0\(currentSeconds)" : "\(currentSeconds)"
+            
+            if currentHours > 0 {
+                timerStringValue = "\(hoursComponent) : \(minutesComponent)"
+            } else {
+                timerStringValue = "\(minutesComponent) : \(secondsComponent)"
+            }
+        } else if overtimeTotalSeconds == 0 && totalSeconds == 0 {
+            timerStringValue = "00:00"
         } else {
-            timerStringValue = "\(minutesComponent) : \(secondsComponent)"
+            
+            let hoursComponent: String = overtimeHours < 10 ? "0\(overtimeHours)" : "\(overtimeHours)"
+            let minutesComponent: String = overtimeMinutes < 10 ? "0\(overtimeMinutes)" : "\(overtimeMinutes)"
+            let secondsComponent: String = overtimeSeconds < 10 ? "0\(overtimeSeconds)" : "\(overtimeSeconds)"
+            
+            if overtimeHours > 0 {
+                timerStringValue = "\(hoursComponent) : \(minutesComponent)"
+            } else {
+                timerStringValue = "\(minutesComponent) : \(secondsComponent)"
+            }
         }
     }
 }

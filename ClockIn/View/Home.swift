@@ -23,11 +23,8 @@ struct Home: View {
                     .ignoresSafeArea()
                 
                 //Foreground layer
-                
-                
-                
                 Button(action:
-                        timer.isStarted ? timer.pauseTimer : timer.startTimer) {
+                        timer.isStarted ? timer.stopTimer : timer.startTimer) {
                     ZStack {
                         
                         Circle()
@@ -130,11 +127,7 @@ struct Home: View {
             .trim(from: (timer.secondProgress) >= 0.05 ? timer.secondProgress - 0.05 : 0, to: timer.secondProgress)
             .stroke(Color.purple.opacity(0.7), lineWidth: 10)
             .rotationEffect(.init(degrees: -90))
-//            .onReceive(Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()) { _ in
-//                if timer.isStarted {
-//                    timer.updateTimer()
-//                }
-//            }
+
     }
     
     var minuteRing: some View {
@@ -143,26 +136,7 @@ struct Home: View {
             .stroke(Color.pink.opacity(0.7), lineWidth: 10)
             .rotationEffect(.init(degrees: -90))
             .padding(-20)
-//            .onReceive(Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()) { _ in
-//                if timer.isStarted {
-//                    timer.updateTimer()
-//                }
-//            }
     }
-    
-    var hourRing: some View {
-        Circle()
-            .trim(from: 0, to: timer.progress)
-            .stroke(Color.black.opacity(0.7), lineWidth: 10)
-            .rotationEffect(.init(degrees: -90))
-            
-            .overlay(alignment: .bottom) {
-                Circle()
-                    .frame(width: 30)
-            }
-            .padding(70)
-    }
-    
 }
 
 struct Home_Previews: PreviewProvider {
