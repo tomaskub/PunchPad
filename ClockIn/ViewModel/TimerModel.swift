@@ -8,7 +8,8 @@
 import SwiftUI
 
 class TimerModel: NSObject, ObservableObject {
-    //MARK: TIMER PROPERTIES
+    
+    //MARK: TIMER PROPERTIES - PUBLISHED
     
     @Published var progress: CGFloat = 0.5
     
@@ -23,6 +24,7 @@ class TimerModel: NSObject, ObservableObject {
     @Published var minutes: Int = 10
     @Published var seconds: Int = 0
     
+    //MARK: TIMER PROPERTIES - PRIVATE
     private var totalSeconds: Int = 0
     
     private var currentHours: Int {
@@ -37,11 +39,12 @@ class TimerModel: NSObject, ObservableObject {
         return (totalSeconds % 60)
     }
     
+    
+    //MARK: TIMER START & STOP FUNCTIONS
     func startTimer()  {
         isStarted = true
-        progress = 0
+        //This will have to be calculated somewhere else 
         totalSeconds = (hours * 3600) + (minutes * 60) + seconds
-        
     }
     
     func stopTimer() {
@@ -53,6 +56,16 @@ class TimerModel: NSObject, ObservableObject {
         isStarted = false
     }
     
+    func resumeTimer() {
+        isStarted = true
+    }
+    
+    func pauseTimer() {
+        isStarted = false 
+    }
+    
+   
+    //MARK: TIMER UPDATE FUNCTIONS
     func updateTimer() {
         if isStarted {
             if totalSeconds >= 0 {
@@ -79,11 +92,13 @@ class TimerModel: NSObject, ObservableObject {
             secondProgress = 1 - (CGFloat(currentSeconds) / CGFloat(60))
         }
     }
+    
     func updateMinuteProgres() {
         withAnimation(.easeInOut) {
             minuteProgress = 1 - (CGFloat(currentMinutes) / CGFloat(60))
         }
     }
+    
     func updateTimerStringValue() {
         let hoursComponent: String = currentHours < 10 ? "0\(currentHours)" : "\(currentHours)"
         let minutesComponent: String = currentMinutes < 10 ? "0\(currentMinutes)" : "\(currentMinutes)"
