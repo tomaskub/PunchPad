@@ -11,11 +11,24 @@ import SwiftUI
 struct ClockInApp: App {
     
     @StateObject var timerModel: TimerModel = .init()
+    @AppStorage("colorScheme") var preferredColorScheme: String = "system"
+    
+    var colorScheme: ColorScheme? {
+        switch preferredColorScheme {
+        case "dark":
+            return ColorScheme.dark
+        case "light":
+            return ColorScheme.light
+        default:
+            return nil
+        }
+    }
     
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(timerModel)
+                .preferredColorScheme(colorScheme)
         }
     }
 }

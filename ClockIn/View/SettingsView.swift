@@ -12,6 +12,7 @@ struct SettingsView: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var timer: TimerModel
     @AppStorage("isLoggingOverTime") var isLoggingOverTime: Bool = true
+    @AppStorage("colorScheme") var preferredColorScheme: String = "system"
     
     @State var isShowingTimerEditing: Bool = true
     
@@ -54,10 +55,10 @@ struct SettingsView: View {
                 Section("Appearance") {
                     VStack{
                         Text("Color scheme")
-                        Picker("appearance", selection: .constant(1)) {
-                            Text("System")
-                            Text("Dark")
-                            Text("Light")
+                        Picker("appearance", selection: $preferredColorScheme) {
+                            Text("System").tag("system")
+                            Text("Dark").tag("dark")
+                            Text("Light").tag("light")
                         }
                         .pickerStyle(.segmented)
                     }
