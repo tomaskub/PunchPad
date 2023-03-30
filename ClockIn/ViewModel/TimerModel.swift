@@ -15,7 +15,7 @@ class TimerModel: NSObject, ObservableObject {
     @Published var progress: CGFloat = 0.0
     @Published var secondProgress: CGFloat = 0.0
     @Published var minuteProgress: CGFloat = 0.0
-    
+    @Published var overtimeProgress: CGFloat = 0.0
     //Value for display
     @Published var timerStringValue: String = "08:30"
     
@@ -52,6 +52,18 @@ class TimerModel: NSObject, ObservableObject {
     }
     private var overtimeSeconds: Int {
         return (overtimeTotalSeconds % 60)
+    }
+    override init() {
+        super.init()
+        let hoursComponent: String = hours < 10 ? "0\(hours)" : "\(hours)"
+        let minutesComponent: String = minutes < 10 ? "0\(minutes)" : "\(minutes)"
+        let secondsComponent: String = seconds < 10 ? "0\(seconds)" : "\(seconds)"
+        
+        if currentHours > 0 {
+            timerStringValue = "\(hoursComponent) : \(minutesComponent)"
+        } else {
+            timerStringValue = "\(minutesComponent) : \(secondsComponent)"
+        }
     }
 }
     
@@ -103,11 +115,13 @@ extension TimerModel {
                 stopTimer()
             } else if totalSeconds == 0 && progressAfterFinish {
                 overtimeTotalSeconds += 1
+                overtimeProgress = CGFloat(overtimeTotalSeconds % 60) / 60
             }
             
             updateTimerStringValue()
         }
     }
+    
     
     func updateSecondProgress() {
         withAnimation(.linear) {
@@ -148,5 +162,6 @@ extension TimerModel {
             }
         }
     }
+    
 }
 
