@@ -14,6 +14,7 @@ struct RingView: View {
     var ringColor: Color
     var pointColor: Color?
     var ringWidth: CGFloat = 10
+    var startigPoint: CGFloat = 0
     
     var body: some View {
         GeometryReader { proxy in
@@ -21,7 +22,7 @@ struct RingView: View {
                 
                 //Ring circle
                 Circle()
-                    .trim(from: 0, to: progress)
+                    .trim(from: startigPoint, to: progress)
                     .stroke(ringColor, lineWidth: ringWidth)
                     .rotationEffect(.degrees(-90))
                     .frame(width: proxy.size.width, height: proxy.size.height)
@@ -30,6 +31,7 @@ struct RingView: View {
                     .fill(ringColor)
                     .frame(width: ringWidth)
                     .offset(y: -proxy.size.width/2)
+                    .rotationEffect(.degrees(startigPoint*360))
                 //Leading point circle
                 Circle()
                     .fill(ringColor)
@@ -51,7 +53,7 @@ struct RingView: View {
 struct RingView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            RingView(progress: .constant(0.5), ringColor: .blue)//, pointColor: .black)
+            RingView(progress: .constant(0.5), ringColor: .black)//, pointColor: .black)
 //            RingView(ringColor: .blue, pointColor: .black)
         }
     }
