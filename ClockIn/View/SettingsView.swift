@@ -10,6 +10,10 @@ import SwiftUI
 struct SettingsView: View {
     
     @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var timer: TimerModel
+    @AppStorage("isLoggingOverTime") var isLoggingOverTime: Bool = true
+    
+    @State var isShowingTimerEditing: Bool = true
     
     var body: some View {
         ZStack{
@@ -23,14 +27,28 @@ struct SettingsView: View {
                 
                 Section("Timer Settings") {
                     
-                    Text("Set timer length")
+                    HStack {
+                        Text("Set timer length")
+                        Spacer()
+                        Image(systemName: isShowingTimerEditing ? "chevron.up" : "chevron.down")
+                    }
+                    .onTapGesture {
+                        isShowingTimerEditing.toggle()
+                    }
+                    
+                    if isShowingTimerEditing {
+                        timePickers
+                    }
                     
                     Toggle(isOn: .constant(true)) {
                         Text("Send notification on finish")
                     }
                 }
                 Section("Overtime") {
-                    Text("Keep loging overtime")
+                    Toggle(isOn: $isLoggingOverTime) {
+                        Text("Keep loging overtime")
+                    }
+                    
                 }
                 
                 Section("Appearance") {
@@ -51,11 +69,50 @@ struct SettingsView: View {
             .scrollContentBackground(.hidden)
         }
     }
+    var timePickers: some View {
+        HStack {
+            VStack {
+                Text("Hours")
+                Picker("hours", selection: $timer.hours) {
+                    ForEach(0..<25) { i in
+                        Text("\(i)").tag(i)
+                            .foregroundColor(.black)
+                    }
+                }
+                .pickerStyle(.wheel)
+            }
+            VStack {
+                Text("Minutes")
+                
+                Picker("minutes", selection: $timer.minutes) {
+                    ForEach(0..<60) { i in
+                        Text("\(i)").tag(i)
+                            .foregroundColor(.black)
+                    }
+                }
+                .pickerStyle(.wheel)
+            }
+            VStack {
+                Text("Seconds")
+                
+                Picker("seconds", selection: $timer.seconds) {
+                    ForEach(0..<60) { i in
+                        Text("\(i)").tag(i)
+                            .foregroundColor(.black)
+                    }
+                }
+                .pickerStyle(.wheel)
+            }
+        }
+    }
 }
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsView()
+            .environmentObject(TimerModel())
         SettingsView().environment(\.colorScheme, .dark)
+            .environmentObject(TimerModel())
     }
+        
 }
