@@ -20,6 +20,8 @@
 		D6C458C729D36C050069D89B /* RingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458C629D36C050069D89B /* RingView.swift */; };
 		D6E2C15929D6C20E00229286 /* WorkHistory.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15729D6C20E00229286 /* WorkHistory.xcdatamodeld */; };
 		D6E2C15B29D6C31800229286 /* CoreDataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15A29D6C31800229286 /* CoreDataViewModel.swift */; };
+		D6E2C15E29D6C76C00229286 /* Work+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15C29D6C76C00229286 /* Work+CoreDataClass.swift */; };
+		D6E2C15F29D6C76C00229286 /* Work+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15D29D6C76C00229286 /* Work+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +58,8 @@
 		D6C458C629D36C050069D89B /* RingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingView.swift; sourceTree = "<group>"; };
 		D6E2C15829D6C20E00229286 /* WorkHistory.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WorkHistory.xcdatamodel; sourceTree = "<group>"; };
 		D6E2C15A29D6C31800229286 /* CoreDataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataViewModel.swift; sourceTree = "<group>"; };
+		D6E2C15C29D6C76C00229286 /* Work+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Work+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D6E2C15D29D6C76C00229286 /* Work+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Work+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +169,8 @@
 		D6E2C15629D6BF9F00229286 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D6E2C15C29D6C76C00229286 /* Work+CoreDataClass.swift */,
+				D6E2C15D29D6C76C00229286 /* Work+CoreDataProperties.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -299,7 +305,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6E2C15F29D6C76C00229286 /* Work+CoreDataProperties.swift in Sources */,
 				D6C458C729D36C050069D89B /* RingView.swift in Sources */,
+				D6E2C15E29D6C76C00229286 /* Work+CoreDataClass.swift in Sources */,
 				D6E2C15B29D6C31800229286 /* CoreDataViewModel.swift in Sources */,
 				D6C458C529D35EAA0069D89B /* SettingsView.swift in Sources */,
 				D6C458C129D2DD4F0069D89B /* TimerModel.swift in Sources */,

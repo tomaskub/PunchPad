@@ -9,7 +9,10 @@ import Foundation
 import CoreData
 
 class CoreDataViewModel: ObservableObject {
+    
     let container: NSPersistentContainer
+    
+    @Published var savedEntries: [Work] = []
     
     init() {
         self.container = NSPersistentContainer(name: "WorkHistory")
@@ -20,5 +23,34 @@ class CoreDataViewModel: ObservableObject {
                 print("Set up core data successfuly")
             }
         }
+        fetchWorkHistory()
     }
+    
+    func fetchWorkHistory() {
+        let request: NSFetchRequest<Work> = Work.fetchRequest()
+        do {
+            savedEntries = try container.viewContext.fetch(request)
+        } catch let error {
+            print("Error fetching: \(error.localizedDescription)")
+        }
+    }
+    
+    func addWork(startDate: Date, endDate: Date) {
+        
+        let newWork = Work(context: container.viewContext)
+        
+        newWork.startDate = startDate
+        newWork.finishDate = endDate
+        saveData()
+    }
+    
+    func saveData() {
+        do {
+            try container.viewContext.save()
+            fetchWorkHistory()
+        } catch let error {
+            print("Error fetching: \(error.localizedDescription)")
+        }
+    }
+    
 }
