@@ -77,7 +77,6 @@ struct SettingsView: View {
                 Picker("hours", selection: $timer.hours) {
                     ForEach(0..<25) { i in
                         Text("\(i)").tag(i)
-                            .foregroundColor(.black)
                     }
                 }
                 .pickerStyle(.wheel)
@@ -88,7 +87,6 @@ struct SettingsView: View {
                 Picker("minutes", selection: $timer.minutes) {
                     ForEach(0..<60) { i in
                         Text("\(i)").tag(i)
-                            .foregroundColor(.black)
                     }
                 }
                 .pickerStyle(.wheel)
@@ -99,7 +97,6 @@ struct SettingsView: View {
                 Picker("seconds", selection: $timer.seconds) {
                     ForEach(0..<60) { i in
                         Text("\(i)").tag(i)
-                            .foregroundColor(.black)
                     }
                 }
                 .pickerStyle(.wheel)

@@ -72,12 +72,18 @@ class TimerModel: NSObject, ObservableObject {
 extension TimerModel {
     
     func startTimer()  {
+        
         totalSeconds = 0
+        overtimeTotalSeconds = 0
+        
         progress = 0
+        overtimeProgress = 0
+        
         isStarted = true
         isRunning = true
-        //This will have to be calculated somewhere else
+        
         totalSeconds = (hours * 3600) + (minutes * 60) + seconds
+        
     }
     
     func stopTimer() {
