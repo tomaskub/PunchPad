@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D66750EA29D713C900757F17 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66750E929D713C900757F17 /* HistoryView.swift */; };
 		D6C4589429D229210069D89B /* ClockInApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4589329D229210069D89B /* ClockInApp.swift */; };
 		D6C4589629D229210069D89B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4589529D229210069D89B /* ContentView.swift */; };
 		D6C4589829D229230069D89B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6C4589729D229230069D89B /* Assets.xcassets */; };
@@ -42,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D66750E929D713C900757F17 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		D6C4589029D229210069D89B /* ClockIn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClockIn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6C4589329D229210069D89B /* ClockInApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockInApp.swift; sourceTree = "<group>"; };
 		D6C4589529D229210069D89B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 			children = (
 				D6C4589529D229210069D89B /* ContentView.swift */,
 				D6C458C229D2DE2D0069D89B /* Home.swift */,
+				D66750E929D713C900757F17 /* HistoryView.swift */,
 				D6C458C629D36C050069D89B /* RingView.swift */,
 				D6C458C429D35EAA0069D89B /* SettingsView.swift */,
 			);
@@ -310,6 +313,7 @@
 				D6E2C15E29D6C76C00229286 /* Work+CoreDataClass.swift in Sources */,
 				D6E2C15B29D6C31800229286 /* CoreDataViewModel.swift in Sources */,
 				D6C458C529D35EAA0069D89B /* SettingsView.swift in Sources */,
+				D66750EA29D713C900757F17 /* HistoryView.swift in Sources */,
 				D6C458C129D2DD4F0069D89B /* TimerModel.swift in Sources */,
 				D6C4589629D229210069D89B /* ContentView.swift in Sources */,
 				D6C458C329D2DE2D0069D89B /* Home.swift in Sources */,

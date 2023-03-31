@@ -14,7 +14,7 @@ struct SettingsView: View {
     @AppStorage("isLoggingOverTime") var isLoggingOverTime: Bool = true
     @AppStorage("colorScheme") var preferredColorScheme: String = "system"
     
-    @State var isShowingTimerEditing: Bool = true
+    @State var isShowingTimerEditing: Bool = false 
     
     var body: some View {
         ZStack{

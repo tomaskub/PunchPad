@@ -75,7 +75,7 @@ struct Home: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     NavigationLink {
-                        Text("History screen")
+                        HistoryView().navigationTitle("Work history")
                     } label: {
                         Text("History")
                         
