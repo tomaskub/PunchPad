@@ -26,7 +26,7 @@ struct Home: View {
                 //Foreground layer
                 Button(action:
                         timer.isStarted ? timer.stopTimer : timer.startTimer) {
-                    ZStack {
+                    ZStack(alignment: .center) {
                         Circle()
                             .fill(.blue.opacity(0.5))
                             .padding()
@@ -63,11 +63,13 @@ struct Home: View {
                 }
                 
                 RingView(progress: $timer.progress, ringColor: .primary, pointColor: colorScheme == .light ? .white : .black)
-                    .padding(60)
+                    .frame(width: UIScreen.main.bounds.size.width-120, height: UIScreen.main.bounds.size.width-120)
+                    
                 
                 if timer.overtimeProgress > 0 {
                     RingView(progress: $timer.overtimeProgress, ringColor: .green, pointColor: .white, ringWidth: 5, startigPoint: 0.023)
-                        .padding(60)
+                        .frame(width: UIScreen.main.bounds.size.width-120, height: UIScreen.main.bounds.size.width-120)
+                        
                 }
                 
             }
