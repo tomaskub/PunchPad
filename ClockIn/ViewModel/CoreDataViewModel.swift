@@ -23,7 +23,7 @@ class CoreDataViewModel: ObservableObject {
                 print("Set up core data successfuly")
             }
         }
-        fetchWorkHistory()
+        fetchWorkHistory() 
     }
     
     func fetchWorkHistory() {
@@ -35,12 +35,13 @@ class CoreDataViewModel: ObservableObject {
         }
     }
     
-    func addWork(startDate: Date, endDate: Date) {
+    func addWork(startDate: Date, endDate: Date, overtime: Float) {
         
         let newWork = Work(context: container.viewContext)
         
         newWork.startDate = startDate
         newWork.finishDate = endDate
+        newWork.overtime = overtime
         saveData()
     }
     
@@ -50,6 +51,17 @@ class CoreDataViewModel: ObservableObject {
             fetchWorkHistory()
         } catch let error {
             print("Error fetching: \(error.localizedDescription)")
+        }
+    }
+    
+    func addFakeData() {
+        
+        for i in 1...5 {
+            let date = Calendar.current.startOfDay(for: Calendar.current.date(byAdding: .day, value: -i, to: Date())!)
+            addWork(
+                startDate: Calendar.current.date(byAdding: .hour, value: 8, to: date)!,
+                endDate: Calendar.current.date(byAdding: .hour, value: 16+i, to: date)!,
+                overtime: Float(i))
         }
     }
     

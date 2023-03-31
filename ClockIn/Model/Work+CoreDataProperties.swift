@@ -16,9 +16,9 @@ extension Work {
         return NSFetchRequest<Work>(entityName: "Work")
     }
 
-    @NSManaged public var finishDate: Date?
-    @NSManaged public var startDate: Date?
-
+    @NSManaged public var finishDate: Date
+    @NSManaged public var startDate: Date
+    @NSManaged public var overtime: Float
 }
 
 extension Work : Identifiable {
