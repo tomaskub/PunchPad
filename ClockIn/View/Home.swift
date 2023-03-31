@@ -16,8 +16,8 @@ struct Home: View {
     
     var body: some View {
         NavigationView {
+            
             ZStack {
-                
                 
                 //background layer
                 LinearGradient(colors: [ colorScheme == .light ? .white : .black, .blue.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
@@ -27,7 +27,6 @@ struct Home: View {
                 Button(action:
                         timer.isStarted ? timer.stopTimer : timer.startTimer) {
                     ZStack {
-                        
                         Circle()
                             .fill(.blue.opacity(0.5))
                             .padding()
@@ -51,6 +50,18 @@ struct Home: View {
                             }
                         }
                 
+                if timer.isStarted {
+                    Button {
+                        timer.isRunning.toggle()
+                    } label: {
+                        Image(systemName: timer.isRunning ? "pause.fill" : "play.fill")
+                            .resizable()
+                    }
+                    .accentColor(.primary)
+                    .frame(width: 50, height: 50)
+                    .offset(y: 250)
+                }
+                
                 RingView(progress: $timer.progress, ringColor: .primary, pointColor: colorScheme == .light ? .white : .black)
                     .padding(60)
                 
@@ -59,12 +70,6 @@ struct Home: View {
                         .padding(60)
                 }
                 
-                if isShowingTimePicker {
-                    VStack {
-                        Spacer()
-                        timePickers
-                    }
-                }
             }
             .navigationTitle("ClockIn")
             .toolbar {
@@ -87,54 +92,11 @@ struct Home: View {
         }
     }
     
-    var timePickers: some View {
-        HStack {
-            VStack {
-                Text("Hours")
-                Picker("hours", selection: $timer.hours) {
-                    ForEach(0..<25) { i in
-                        Text("\(i)").tag(i)
-                            .foregroundColor(.black)
-                    }
-                }
-                .pickerStyle(.wheel)
-            }
-            VStack {
-                Text("Minutes")
-            
-            Picker("minutes", selection: $timer.minutes) {
-                ForEach(0..<60) { i in
-                    Text("\(i)").tag(i)
-                        .foregroundColor(.black)
-                }
-            }
-            .pickerStyle(.wheel)
-            }
-            VStack {
-                Text("Seconds")
-                
-                Picker("seconds", selection: $timer.seconds) {
-                    ForEach(0..<60) { i in
-                        Text("\(i)").tag(i)
-                            .foregroundColor(.black)
-                    }
-                }
-                .pickerStyle(.wheel)
-            }
-        }
-        .padding(.top)
-        .frame(height: 150)
-        .frame(maxWidth: .infinity)
-        .background(.white)
-        .cornerRadius(10)
-    }
-    
     var secondRing: some View {
         Circle()
             .trim(from: (timer.secondProgress) >= 0.05 ? timer.secondProgress - 0.05 : 0, to: timer.secondProgress)
             .stroke(Color.purple.opacity(0.7), lineWidth: 10)
             .rotationEffect(.init(degrees: -90))
-
     }
     
     var minuteRing: some View {
