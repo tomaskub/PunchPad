@@ -15,9 +15,15 @@ struct RingView: View {
     var pointColor: Color?
     var ringWidth: CGFloat = 10
     var startigPoint: CGFloat = 0
+    var displayPointer: Bool = true
+    var pointerDiameter: CGFloat = 30
     
     var body: some View {
         GeometryReader { proxy in
+            
+            //Calculate the leading dimension
+            let size = min(proxy.size.width, proxy.size.height)
+            
             ZStack(alignment: .center) {
                 
                 //Ring circle
@@ -25,24 +31,32 @@ struct RingView: View {
                     .trim(from: startigPoint, to: progress)
                     .stroke(ringColor, lineWidth: ringWidth)
                     .rotationEffect(.degrees(-90))
-                    .frame(width: proxy.size.width, height: proxy.size.height)
+                    .frame(width: size, height: size)
                 //Ring begining circle
                 Circle()
                     .fill(ringColor)
                     .frame(width: ringWidth)
-                    .offset(y: -proxy.size.width/2)
+                    .offset(y: -size/2)
                     .rotationEffect(.degrees(startigPoint*360))
                 //Leading point circle
-                Circle()
-                    .fill(ringColor)
-                    .frame(width: 30)
-                    .overlay(content: {
-                        Circle()
-                            .fill(pointColor ?? ringColor)
-                            .padding(5)
-                    })
-                    .offset(y: -proxy.size.width/2)
-                    .rotationEffect(.degrees( progress * 360))
+                if displayPointer {
+                    Circle()
+                        .fill(ringColor)
+                        .frame(width: pointerDiameter, height: pointerDiameter)
+                        .overlay(content: {
+                            Circle()
+                                .fill(pointColor ?? ringColor)
+                                .padding(5)
+                        })
+                        .offset(y: -size/2)
+                        .rotationEffect(.degrees( progress * 360))
+                } else {
+                    Circle()
+                        .fill(ringColor)
+                        .frame(width: ringWidth)
+                        .offset(y: -size/2)
+                        .rotationEffect(.degrees(progress*360))
+                }
             }
         }
         .padding()
@@ -54,6 +68,7 @@ struct RingView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
             RingView(progress: .constant(0.5), ringColor: .black)//, pointColor: .black)
+                .padding(.horizontal, 50)
 //            RingView(ringColor: .blue, pointColor: .black)
         }
     }
