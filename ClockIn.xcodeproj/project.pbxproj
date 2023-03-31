@@ -18,6 +18,8 @@
 		D6C458C329D2DE2D0069D89B /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458C229D2DE2D0069D89B /* Home.swift */; };
 		D6C458C529D35EAA0069D89B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458C429D35EAA0069D89B /* SettingsView.swift */; };
 		D6C458C729D36C050069D89B /* RingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458C629D36C050069D89B /* RingView.swift */; };
+		D6E2C15929D6C20E00229286 /* WorkHistory.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15729D6C20E00229286 /* WorkHistory.xcdatamodeld */; };
+		D6E2C15B29D6C31800229286 /* CoreDataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15A29D6C31800229286 /* CoreDataViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +54,8 @@
 		D6C458C229D2DE2D0069D89B /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		D6C458C429D35EAA0069D89B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D6C458C629D36C050069D89B /* RingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingView.swift; sourceTree = "<group>"; };
+		D6E2C15829D6C20E00229286 /* WorkHistory.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WorkHistory.xcdatamodel; sourceTree = "<group>"; };
+		D6E2C15A29D6C31800229286 /* CoreDataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,9 +107,11 @@
 			isa = PBXGroup;
 			children = (
 				D6C4589329D229210069D89B /* ClockInApp.swift */,
+				D6E2C15629D6BF9F00229286 /* Model */,
 				D6C458BF29D2DD3C0069D89B /* ViewModel */,
 				D6C458BE29D2D3E50069D89B /* View */,
 				D6C4589729D229230069D89B /* Assets.xcassets */,
+				D6E2C15729D6C20E00229286 /* WorkHistory.xcdatamodeld */,
 				D6C4589929D229230069D89B /* Preview Content */,
 			);
 			path = ClockIn;
@@ -151,8 +157,16 @@
 			isa = PBXGroup;
 			children = (
 				D6C458C029D2DD4E0069D89B /* TimerModel.swift */,
+				D6E2C15A29D6C31800229286 /* CoreDataViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		D6E2C15629D6BF9F00229286 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -286,11 +300,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				D6C458C729D36C050069D89B /* RingView.swift in Sources */,
+				D6E2C15B29D6C31800229286 /* CoreDataViewModel.swift in Sources */,
 				D6C458C529D35EAA0069D89B /* SettingsView.swift in Sources */,
 				D6C458C129D2DD4F0069D89B /* TimerModel.swift in Sources */,
 				D6C4589629D229210069D89B /* ContentView.swift in Sources */,
 				D6C458C329D2DE2D0069D89B /* Home.swift in Sources */,
 				D6C4589429D229210069D89B /* ClockInApp.swift in Sources */,
+				D6E2C15929D6C20E00229286 /* WorkHistory.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -615,6 +631,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		D6E2C15729D6C20E00229286 /* WorkHistory.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				D6E2C15829D6C20E00229286 /* WorkHistory.xcdatamodel */,
+			);
+			currentVersion = D6E2C15829D6C20E00229286 /* WorkHistory.xcdatamodel */;
+			path = WorkHistory.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = D6C4588829D229200069D89B /* Project object */;
 }
