@@ -17,7 +17,7 @@ struct HistoryRow: View {
     var date: Date
     var startDate: Date
     var finishDate: Date
-    var overTime: Float
+    var overTime: Double
     
     @State var isShowingDetails: Bool = false 
     @State var detailType: DetailDisplayType

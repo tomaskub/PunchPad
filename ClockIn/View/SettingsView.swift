@@ -10,11 +10,18 @@ import SwiftUI
 struct SettingsView: View {
     
     @Environment(\.colorScheme) var colorScheme
+    
     @EnvironmentObject var timer: TimerModel
+    @EnvironmentObject var coreDataVM: CoreDataViewModel
+    
     @AppStorage("isLoggingOverTime") var isLoggingOverTime: Bool = true
     @AppStorage("colorScheme") var preferredColorScheme: String = "system"
+    @AppStorage("overtimeMaximum") var maximumOvertimeAllowed: Double = 5.0
     
     @State var isShowingTimerEditing: Bool = false 
+    @State var isShowingOvertimeMaximumEditing: Bool = false
+    
+    
     
     var body: some View {
         ZStack{
@@ -34,7 +41,10 @@ struct SettingsView: View {
                         Image(systemName: isShowingTimerEditing ? "chevron.up" : "chevron.down")
                     }
                     .onTapGesture {
-                        isShowingTimerEditing.toggle()
+                        withAnimation(.spring()) {
+                            isShowingTimerEditing.toggle()
+                        }
+                        
                     }
                     
                     if isShowingTimerEditing {
@@ -46,10 +56,47 @@ struct SettingsView: View {
                     }
                 }
                 Section("Overtime") {
+                    
                     Toggle(isOn: $isLoggingOverTime) {
                         Text("Keep loging overtime")
                     }
                     
+                    HStack {
+                        Text("Maximum overtime allowed")
+                        Spacer()
+                        Image(systemName: isShowingOvertimeMaximumEditing ? "chevron.up" : "chevron.down")
+                    }
+                    .onTapGesture {
+                        withAnimation(.spring()) {
+                            isShowingOvertimeMaximumEditing.toggle()
+                        }
+                        
+                    }
+                    
+                    if isShowingOvertimeMaximumEditing {
+                        timePickers
+                    }
+                }
+                
+                Section("User data") {
+                    HStack {
+                        Text("Clear all saved data")
+                            Spacer()
+                        Image(systemName: "trash")
+                            .foregroundColor(.red)
+                    }
+                    .onTapGesture {
+                        coreDataVM.deleteData()
+                    }
+                    HStack {
+                        Text("Reset preferences")
+                        Spacer()
+                        Image(systemName: "arrow.counterclockwise")
+                            .foregroundColor(.red)
+                    }
+                    .onTapGesture {
+                        resetUserSettings()
+                    }
                 }
                 
                 Section("Appearance") {
@@ -62,13 +109,16 @@ struct SettingsView: View {
                         }
                         .pickerStyle(.segmented)
                     }
+                    
                 }
                 
             }
             .foregroundColor(.primary)
-//            .listStyle(.grouped)
             .scrollContentBackground(.hidden)
         }
+    }
+    func resetUserSettings() {
+        
     }
     var timePickers: some View {
         HStack {
@@ -85,16 +135,6 @@ struct SettingsView: View {
                 Text("Minutes")
                 
                 Picker("minutes", selection: $timer.minutes) {
-                    ForEach(0..<60) { i in
-                        Text("\(i)").tag(i)
-                    }
-                }
-                .pickerStyle(.wheel)
-            }
-            VStack {
-                Text("Seconds")
-                
-                Picker("seconds", selection: $timer.seconds) {
                     ForEach(0..<60) { i in
                         Text("\(i)").tag(i)
                     }

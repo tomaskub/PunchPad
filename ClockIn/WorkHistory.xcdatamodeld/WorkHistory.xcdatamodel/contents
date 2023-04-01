@@ -2,7 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21513" systemVersion="22A400" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Work" representedClassName="Work" syncable="YES">
         <attribute name="finishDate" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="overtime" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="overTime" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="startDate" attributeType="Date" usesScalarValueType="NO"/>
     </entity>
 </model>

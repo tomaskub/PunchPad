@@ -21,7 +21,7 @@ struct HistoryView: View {
             
             List {
                 ForEach(coreDataVM.savedEntries, id: \.self) { entry in
-                    HistoryRow(date: entry.startDate, startDate: entry.startDate, finishDate: entry.finishDate, overTime: entry.overtime, detailType: .circleDisplay)
+                    HistoryRow(date: entry.startDate, startDate: entry.startDate, finishDate: entry.finishDate, overTime: entry.overTime, detailType: .circleDisplay)
                 }
             }
             .scrollContentBackground(.hidden)

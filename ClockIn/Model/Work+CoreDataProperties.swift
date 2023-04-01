@@ -18,7 +18,8 @@ extension Work {
 
     @NSManaged public var finishDate: Date
     @NSManaged public var startDate: Date
-    @NSManaged public var overtime: Float
+    @NSManaged public var workTime: Double
+    @NSManaged public var overTime: Double
 }
 
 extension Work : Identifiable {

@@ -35,13 +35,13 @@ class CoreDataViewModel: ObservableObject {
         }
     }
     
-    func addWork(startDate: Date, endDate: Date, overtime: Float) {
+    func addWork(startDate: Date, endDate: Date, overtime: Double) {
         
         let newWork = Work(context: container.viewContext)
         
         newWork.startDate = startDate
         newWork.finishDate = endDate
-        newWork.overtime = overtime
+        newWork.overTime = overtime
         saveData()
     }
     
@@ -53,6 +53,13 @@ class CoreDataViewModel: ObservableObject {
             print("Error fetching: \(error.localizedDescription)")
         }
     }
+    func deleteData() {
+        fetchWorkHistory()
+        for entry in savedEntries {
+            container.viewContext.delete(entry)
+        }
+        saveData() 
+    }
     
     func addFakeData() {
         
@@ -61,7 +68,7 @@ class CoreDataViewModel: ObservableObject {
             addWork(
                 startDate: Calendar.current.date(byAdding: .hour, value: 8, to: date)!,
                 endDate: Calendar.current.date(byAdding: .hour, value: 16+i, to: date)!,
-                overtime: Float(i))
+                overtime: Double(i))
         }
     }
     
