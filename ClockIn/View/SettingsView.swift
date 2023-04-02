@@ -12,11 +12,13 @@ struct SettingsView: View {
     @Environment(\.colorScheme) var colorScheme
     
     @EnvironmentObject var timer: TimerModel
-    @EnvironmentObject var coreDataVM: CoreDataViewModel
+    @EnvironmentObject var coreDataVM: HistoryViewModel
     
     @AppStorage("isLoggingOverTime") var isLoggingOverTime: Bool = true
     @AppStorage("colorScheme") var preferredColorScheme: String = "system"
     @AppStorage("overtimeMaximum") var maximumOvertimeAllowed: Double = 5.0
+    
+    
     
     @State var isShowingTimerEditing: Bool = false 
     @State var isShowingOvertimeMaximumEditing: Bool = false
@@ -86,7 +88,7 @@ struct SettingsView: View {
                             .foregroundColor(.red)
                     }
                     .onTapGesture {
-                        coreDataVM.deleteData()
+//                        coreDataVM.deleteData()
                     }
                     HStack {
                         Text("Reset preferences")

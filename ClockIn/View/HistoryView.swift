@@ -10,9 +10,12 @@ import SwiftUI
 struct HistoryView: View {
     
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var coreDataVM: CoreDataViewModel
+    @StateObject var viewModel = HistoryViewModel()
+    //unused for now
+    /*
+    @EnvironmentObject var historyViewModel: HistoryViewModel
     @AppStorage("detail_display_mode") var detailDisplayMode: String = HistoryRow.DetailDisplayType.circleDisplay.rawValue
-    
+     */
     var body: some View {
         ZStack {
             //background layer
@@ -20,7 +23,7 @@ struct HistoryView: View {
                 .ignoresSafeArea()
             
             List {
-                ForEach(coreDataVM.savedEntries, id: \.self) { entry in
+                ForEach(viewModel.entries) { entry in
                     HistoryRow(date: entry.startDate, startDate: entry.startDate, finishDate: entry.finishDate, overTime: entry.overTime, detailType: .circleDisplay)
                 }
             }
@@ -33,7 +36,6 @@ struct HistoryView: View {
 struct HistoryView_Previews: PreviewProvider {
     
     static var previews: some View {
-        HistoryView()
-            .environmentObject(CoreDataViewModel())
+        HistoryView(viewModel: HistoryViewModel(dataManager: DataManager.preview))
     }
 }
