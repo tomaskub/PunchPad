@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D64574B029D9E6A000207168 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64574AF29D9E6A000207168 /* DataManager.swift */; };
+		D64574B329D9F16900207168 /* EntryMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64574B129D9F16900207168 /* EntryMO+CoreDataClass.swift */; };
+		D64574B429D9F16900207168 /* EntryMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64574B229D9F16900207168 /* EntryMO+CoreDataProperties.swift */; };
+		D65FD53D29D8B259006CC34F /* PersistanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65FD53C29D8B259006CC34F /* PersistanceController.swift */; };
 		D66750EA29D713C900757F17 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66750E929D713C900757F17 /* HistoryView.swift */; };
 		D66750EC29D71C8300757F17 /* HistoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66750EB29D71C8300757F17 /* HistoryRow.swift */; };
 		D6C4589429D229210069D89B /* ClockInApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4589329D229210069D89B /* ClockInApp.swift */; };
@@ -21,9 +25,7 @@
 		D6C458C529D35EAA0069D89B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458C429D35EAA0069D89B /* SettingsView.swift */; };
 		D6C458C729D36C050069D89B /* RingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458C629D36C050069D89B /* RingView.swift */; };
 		D6E2C15929D6C20E00229286 /* WorkHistory.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15729D6C20E00229286 /* WorkHistory.xcdatamodeld */; };
-		D6E2C15B29D6C31800229286 /* CoreDataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15A29D6C31800229286 /* CoreDataViewModel.swift */; };
-		D6E2C15E29D6C76C00229286 /* Work+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15C29D6C76C00229286 /* Work+CoreDataClass.swift */; };
-		D6E2C15F29D6C76C00229286 /* Work+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15D29D6C76C00229286 /* Work+CoreDataProperties.swift */; };
+		D6E2C15B29D6C31800229286 /* WorkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15A29D6C31800229286 /* WorkViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +46,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D64574AF29D9E6A000207168 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		D64574B129D9F16900207168 /* EntryMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EntryMO+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D64574B229D9F16900207168 /* EntryMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EntryMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D65FD53C29D8B259006CC34F /* PersistanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistanceController.swift; sourceTree = "<group>"; };
 		D66750E929D713C900757F17 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		D66750EB29D71C8300757F17 /* HistoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRow.swift; sourceTree = "<group>"; };
 		D6C4589029D229210069D89B /* ClockIn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClockIn.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,9 +67,7 @@
 		D6C458C429D35EAA0069D89B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D6C458C629D36C050069D89B /* RingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingView.swift; sourceTree = "<group>"; };
 		D6E2C15829D6C20E00229286 /* WorkHistory.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WorkHistory.xcdatamodel; sourceTree = "<group>"; };
-		D6E2C15A29D6C31800229286 /* CoreDataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataViewModel.swift; sourceTree = "<group>"; };
-		D6E2C15C29D6C76C00229286 /* Work+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Work+CoreDataClass.swift"; sourceTree = "<group>"; };
-		D6E2C15D29D6C76C00229286 /* Work+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Work+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D6E2C15A29D6C31800229286 /* WorkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,7 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				D6C458C029D2DD4E0069D89B /* TimerModel.swift */,
-				D6E2C15A29D6C31800229286 /* CoreDataViewModel.swift */,
+				D6E2C15A29D6C31800229286 /* WorkViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -175,8 +179,10 @@
 		D6E2C15629D6BF9F00229286 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				D6E2C15C29D6C76C00229286 /* Work+CoreDataClass.swift */,
-				D6E2C15D29D6C76C00229286 /* Work+CoreDataProperties.swift */,
+				D64574B129D9F16900207168 /* EntryMO+CoreDataClass.swift */,
+				D64574B229D9F16900207168 /* EntryMO+CoreDataProperties.swift */,
+				D65FD53C29D8B259006CC34F /* PersistanceController.swift */,
+				D64574AF29D9E6A000207168 /* DataManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -311,11 +317,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D6E2C15F29D6C76C00229286 /* Work+CoreDataProperties.swift in Sources */,
 				D6C458C729D36C050069D89B /* RingView.swift in Sources */,
-				D6E2C15E29D6C76C00229286 /* Work+CoreDataClass.swift in Sources */,
-				D6E2C15B29D6C31800229286 /* CoreDataViewModel.swift in Sources */,
+				D64574B029D9E6A000207168 /* DataManager.swift in Sources */,
+				D6E2C15B29D6C31800229286 /* WorkViewModel.swift in Sources */,
+				D64574B329D9F16900207168 /* EntryMO+CoreDataClass.swift in Sources */,
+				D64574B429D9F16900207168 /* EntryMO+CoreDataProperties.swift in Sources */,
 				D6C458C529D35EAA0069D89B /* SettingsView.swift in Sources */,
+				D65FD53D29D8B259006CC34F /* PersistanceController.swift in Sources */,
 				D66750EA29D713C900757F17 /* HistoryView.swift in Sources */,
 				D6C458C129D2DD4F0069D89B /* TimerModel.swift in Sources */,
 				D6C4589629D229210069D89B /* ContentView.swift in Sources */,

@@ -8,62 +8,68 @@
 import Foundation
 import CoreData
 
-class CoreDataViewModel: ObservableObject {
+
+class WorkViewModel: ObservableObject {
     
-    let container: NSPersistentContainer
+    //    let container: NSPersistentContainer
+    private let context = PersistanceController.shared.viewContext
     
     @Published var savedEntries: [Work] = []
     
     init() {
-        self.container = NSPersistentContainer(name: "WorkHistory")
-        container.loadPersistentStores { (description, error) in
-            if let error = error {
-                print("Error loading core data: \(error.localizedDescription)")
-            } else {
-                print("Set up core data successfuly")
-            }
-        }
-        fetchWorkHistory() 
+        //Removed and implemented in PersistanceController
+        /*
+         self.container = NSPersistentContainer(name: "WorkHistory")
+         container.loadPersistentStores { (description, error) in
+         if let error = error {
+         print("Error loading core data: \(error.localizedDescription)")
+         } else {
+         print("Set up core data successfuly")
+         }
+         }
+         */
+        fetchWorkHistory()
     }
     
     func fetchWorkHistory() {
         let request: NSFetchRequest<Work> = Work.fetchRequest()
         do {
-            savedEntries = try container.viewContext.fetch(request)
+            savedEntries = try context.fetch(request)
         } catch let error {
             print("Error fetching: \(error.localizedDescription)")
         }
     }
     
     func addWork(startDate: Date, endDate: Date, overtime: Double) {
-        
-        let newWork = Work(context: container.viewContext)
+        let newWork = Work(context: context)
         
         newWork.startDate = startDate
         newWork.finishDate = endDate
         newWork.overTime = overtime
+        newWork.workTime = 8
+        
         saveData()
+        
+    }
+    //This does not work now since shared instance is removed
+    func saveData() {
+//        PersistanceController.shared.saveContext()
+        fetchWorkHistory()
     }
     
-    func saveData() {
-        do {
-            try container.viewContext.save()
-            fetchWorkHistory()
-        } catch let error {
-            print("Error fetching: \(error.localizedDescription)")
-        }
-    }
     func deleteData() {
         fetchWorkHistory()
         for entry in savedEntries {
-            container.viewContext.delete(entry)
+            context.delete(entry)
         }
-        saveData() 
+        saveData()
     }
     
+    //this should be obsoleted
     func addFakeData() {
         
         for i in 1...5 {
+            
             let date = Calendar.current.startOfDay(for: Calendar.current.date(byAdding: .day, value: -i, to: Date())!)
             addWork(
                 startDate: Calendar.current.date(byAdding: .hour, value: 8, to: date)!,
@@ -71,5 +77,4 @@ class CoreDataViewModel: ObservableObject {
                 overtime: Double(i))
         }
     }
-    
 }
