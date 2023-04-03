@@ -10,20 +10,7 @@ import SwiftUI
 struct SettingsView: View {
     
     @Environment(\.colorScheme) var colorScheme
-    
-    @EnvironmentObject var timer: TimerModel
-    @EnvironmentObject var coreDataVM: HistoryViewModel
-    
-    @AppStorage("isLoggingOverTime") var isLoggingOverTime: Bool = true
-    @AppStorage("colorScheme") var preferredColorScheme: String = "system"
-    @AppStorage("overtimeMaximum") var maximumOvertimeAllowed: Double = 5.0
-    
-    
-    
-    @State var isShowingTimerEditing: Bool = false 
-    @State var isShowingOvertimeMaximumEditing: Bool = false
-    
-    
+    @StateObject var viewModel = SettingsViewModel()
     
     var body: some View {
         ZStack{
@@ -40,42 +27,42 @@ struct SettingsView: View {
                     HStack {
                         Text("Set timer length")
                         Spacer()
-                        Image(systemName: isShowingTimerEditing ? "chevron.up" : "chevron.down")
+                        Image(systemName: viewModel.isShowingWorkTimeEditor ? "chevron.up" : "chevron.down")
                     }
                     .onTapGesture {
                         withAnimation(.spring()) {
-                            isShowingTimerEditing.toggle()
+                            viewModel.isShowingWorkTimeEditor.toggle()
                         }
                         
                     }
                     
-                    if isShowingTimerEditing {
+                    if viewModel.isShowingWorkTimeEditor {
                         timePickers
                     }
                     
-                    Toggle(isOn: .constant(true)) {
+                    Toggle(isOn: $viewModel.isSendingNotifications) {
                         Text("Send notification on finish")
                     }
                 }
                 Section("Overtime") {
                     
-                    Toggle(isOn: $isLoggingOverTime) {
+                    Toggle(isOn: $viewModel.isLoggingOverTime) {
                         Text("Keep loging overtime")
                     }
                     
                     HStack {
                         Text("Maximum overtime allowed")
                         Spacer()
-                        Image(systemName: isShowingOvertimeMaximumEditing ? "chevron.up" : "chevron.down")
+                        Image(systemName: viewModel.isShowingOverTimeEditor ? "chevron.up" : "chevron.down")
                     }
                     .onTapGesture {
                         withAnimation(.spring()) {
-                            isShowingOvertimeMaximumEditing.toggle()
+                            viewModel.isShowingOverTimeEditor.toggle()
                         }
                         
                     }
                     
-                    if isShowingOvertimeMaximumEditing {
+                    if viewModel.isShowingOverTimeEditor {
                         timePickers
                     }
                 }
@@ -88,7 +75,7 @@ struct SettingsView: View {
                             .foregroundColor(.red)
                     }
                     .onTapGesture {
-//                        coreDataVM.deleteData()
+                        viewModel.deleteAllData()
                     }
                     HStack {
                         Text("Reset preferences")
@@ -104,7 +91,7 @@ struct SettingsView: View {
                 Section("Appearance") {
                     VStack{
                         Text("Color scheme")
-                        Picker("appearance", selection: $preferredColorScheme) {
+                        Picker("appearance", selection: $viewModel.preferredColorScheme) {
                             Text("System").tag("system")
                             Text("Dark").tag("dark")
                             Text("Light").tag("light")
@@ -126,7 +113,7 @@ struct SettingsView: View {
         HStack {
             VStack {
                 Text("Hours")
-                Picker("hours", selection: $timer.hours) {
+                Picker("hours", selection: $viewModel.timerHours) {
                     ForEach(0..<25) { i in
                         Text("\(i)").tag(i)
                     }
@@ -136,7 +123,7 @@ struct SettingsView: View {
             VStack {
                 Text("Minutes")
                 
-                Picker("minutes", selection: $timer.minutes) {
+                Picker("minutes", selection: $viewModel.timerMinutes) {
                     ForEach(0..<60) { i in
                         Text("\(i)").tag(i)
                     }
@@ -150,7 +137,7 @@ struct SettingsView: View {
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsView()
-            .environmentObject(TimerModel())
+            
         SettingsView().environment(\.colorScheme, .dark)
             .environmentObject(TimerModel())
     }
