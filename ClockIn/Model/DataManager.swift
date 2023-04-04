@@ -103,7 +103,7 @@ extension DataManager {
                 entryMO(from: entry)
             }
         case .failure(let error):
-            print("Could not fetch Entry to save: \(error) - \(error.localizedDescription)")
+            print("Could not fetch Entry to save - \(error): \(error.localizedDescription)")
         }
         
         saveContext()
@@ -123,6 +123,20 @@ extension DataManager {
         }
         saveContext()
     }
+    
+    func deleteAll() {
+        let request: NSFetchRequest<EntryMO> = EntryMO.fetchRequest()
+        do {
+            let result = try managedObjectContext.fetch(request)
+            for entryMO in result {
+                managedObjectContext.delete(entryMO)
+            }
+            saveContext()
+        } catch let error {
+            print("Delete all function failed to delete all objects - \(error):\(error.localizedDescription)")
+        }
+    }
+    
     private func entryMO(from entry: Entry) {
         let entryMO = EntryMO(context: managedObjectContext)
         entryMO.id = entry.id

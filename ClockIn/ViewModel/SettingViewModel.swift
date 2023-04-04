@@ -9,9 +9,15 @@ import Foundation
 import SwiftUI
 
 class SettingsViewModel: ObservableObject {
+    
+    
+    
+    
     //View states
     @Published var isShowingWorkTimeEditor: Bool = false
     @Published var isShowingOverTimeEditor: Bool = false
+    
+    private var dataManager: DataManager
     
     @Published var timerHours: Int = 8 {
         didSet {
@@ -53,8 +59,9 @@ class SettingsViewModel: ObservableObject {
         }
     }
     
-    init() {
-//        on init retrieve values
+    init(dataManger: DataManager = DataManager.shared ) {
+        self.dataManager = dataManger
+        //        on init retrieve values
         self.isLoggingOverTime = UserDefaults.standard.bool(forKey: "isLoggingOverTime")
         self.preferredColorScheme = UserDefaults.standard.string(forKey: "colorScheme") ?? "system"
         self.maximumOvertimeAllowed = UserDefaults.standard.double(forKey: "overtimeMaximum")
@@ -63,11 +70,8 @@ class SettingsViewModel: ObservableObject {
         self.timerMinutes = Int(workTimeInSeconds.truncatingRemainder(dividingBy: 360) / 60)
     }
     
-    func toggleIsShowing() {
-        
-    }
     func deleteAllData() {
-        
+        dataManager.deleteAll()
     }
     
     func resetUserDefaults() {
