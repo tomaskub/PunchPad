@@ -63,7 +63,7 @@ struct SettingsView: View {
                     }
                     
                     if viewModel.isShowingOverTimeEditor {
-                        timePickers
+                        overTimePickers
                     }
                 }
                 
@@ -124,6 +124,29 @@ struct SettingsView: View {
                 Text("Minutes")
                 
                 Picker("minutes", selection: $viewModel.timerMinutes) {
+                    ForEach(0..<60) { i in
+                        Text("\(i)").tag(i)
+                    }
+                }
+                .pickerStyle(.wheel)
+            }
+        }
+    }
+    var overTimePickers: some View {
+        HStack {
+            VStack {
+                Text("Hours")
+                Picker("hours", selection: $viewModel.overtimeHours) {
+                    ForEach(0..<25) { i in
+                        Text("\(i)").tag(i)
+                    }
+                }
+                .pickerStyle(.wheel)
+            }
+            VStack {
+                Text("Minutes")
+                
+                Picker("minutes", selection: $viewModel.overtimeMinutes) {
                     ForEach(0..<60) { i in
                         Text("\(i)").tag(i)
                     }

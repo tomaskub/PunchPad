@@ -28,6 +28,7 @@ class DataManager: NSObject, ObservableObject {
         case .normal:
             let persistanceController = PersistanceController()
             self.managedObjectContext = persistanceController.viewContext
+        
         case .preview:
             let persistanceController = PersistanceController(inMemory: true)
             self.managedObjectContext = persistanceController.viewContext
@@ -43,6 +44,7 @@ class DataManager: NSObject, ObservableObject {
             }
             //save added data
             try? self.managedObjectContext.save()
+        
         case .testing:
             let persistanceController = PersistanceController(inMemory: true)
             self.managedObjectContext = persistanceController.viewContext
