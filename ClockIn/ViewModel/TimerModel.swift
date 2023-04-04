@@ -9,57 +9,70 @@ import SwiftUI
 
 class TimerModel: NSObject, ObservableObject {
     
-    //MARK: TIMER PROPERTIES - PUBLISHED
+    // Timer countdown total values pulled from user defaults
+    @AppStorage(K.UserDefaultsKeys.workTimeInSeconds) var timerTotalSeconds: Int = 28800
+    @AppStorage(K.UserDefaultsKeys.maximumOverTimeAllowedInSeconds) var overtimeTotalSeconds: Int = 18000
     
-    //Progress properties
+    //MARK: TIMER PROPERTIES - PUBLISHED
+    //Published progress properties for UI
     @Published var progress: CGFloat = 0.0
-    @Published var secondProgress: CGFloat = 0.0
-    @Published var minuteProgress: CGFloat = 0.0
     @Published var overtimeProgress: CGFloat = 0.0
     //Value for display
-    @Published var timerStringValue: String = "08:30"
+    @Published var timerStringValue: String = "00:00"
+    
+    @Published var secondProgress: CGFloat = 0.0
+    @Published var minuteProgress: CGFloat = 0.0
+    
+    
     
     //Timer state properties
     @Published var isStarted: Bool = false
     @Published var isRunning: Bool = false
     @Published var progressAfterFinish: Bool = true
     
-    //starting values stored for the user
+    
+    //starting values stored for the user - remove these
+    /*
     @Published var hours: Int = 0
     @Published var minutes: Int = 1
     @Published var seconds: Int = 0
-    
+    */
     
     //MARK: COUNTDOWN TIMER PROPERTIES - PRIVATE
     
-    private var totalSeconds: Int = 0
+    private var countSeconds: Int = 0
     private var currentHours: Int {
-        return totalSeconds/3600
+        return countSeconds/3600
     }
     private var currentMinutes: Int {
-        return (totalSeconds % 3600) / 60
+        return (countSeconds % 3600) / 60
     }
     private var currentSeconds: Int {
-        return (totalSeconds % 60)
+        return (countSeconds % 60)
     }
     //MARK: OVERTIME TIME PROPERTIES - PRIVATE
-    private var overtimeTotalSeconds: Int  = 0
+    private var countOvertimeSeconds: Int  = 0
     private var overtimeHours: Int {
-        return overtimeTotalSeconds/3600
+        return countOvertimeSeconds/3600
     }
     private var overtimeMinutes: Int {
-        return (overtimeTotalSeconds % 3600) / 60
+        return (countOvertimeSeconds % 3600) / 60
     }
     private var overtimeSeconds: Int {
-        return (overtimeTotalSeconds % 60)
+        return (countOvertimeSeconds % 60)
     }
     override init() {
         super.init()
+        // initialize properties:
+        countSeconds = timerTotalSeconds
+        let hours = timerTotalSeconds / 3600
+        let minutes = (timerTotalSeconds % 3600) / 60
+        let seconds = timerTotalSeconds % 60
         let hoursComponent: String = hours < 10 ? "0\(hours)" : "\(hours)"
         let minutesComponent: String = minutes < 10 ? "0\(minutes)" : "\(minutes)"
         let secondsComponent: String = seconds < 10 ? "0\(seconds)" : "\(seconds)"
         
-        if currentHours > 0 {
+        if hours > 0 {
             timerStringValue = "\(hoursComponent) : \(minutesComponent)"
         } else {
             timerStringValue = "\(minutesComponent) : \(secondsComponent)"
@@ -73,17 +86,14 @@ extension TimerModel {
     
     func startTimer()  {
         
-        totalSeconds = 0
-        overtimeTotalSeconds = 0
+        countSeconds = timerTotalSeconds
+        countOvertimeSeconds = 0
         
         progress = 0
         overtimeProgress = 0
         
         isStarted = true
         isRunning = true
-        
-        totalSeconds = (hours * 3600) + (minutes * 60) + seconds
-        
     }
     
     func stopTimer() {
@@ -106,22 +116,25 @@ extension TimerModel {
     func updateTimer() {
         if isStarted && isRunning {
             
-            if totalSeconds > 0 {
+            if countSeconds > 0 {
                 
-                totalSeconds -= 1
+                countSeconds -= 1
                 
                 updateSecondProgress()
                 updateMinuteProgres()
                 
                 withAnimation(.easeInOut) {
-                    progress = 1 - CGFloat(totalSeconds) / CGFloat((hours * 3600) + (minutes * 60) + seconds)
+                    progress = 1 - CGFloat(countSeconds) / CGFloat(timerTotalSeconds)
                 }
                 
-            } else if totalSeconds == 0 && !progressAfterFinish {
+            } else if countSeconds == 0 && !progressAfterFinish {
                 stopTimer()
-            } else if totalSeconds == 0 && progressAfterFinish {
-                overtimeTotalSeconds += 1
-                overtimeProgress = CGFloat(overtimeTotalSeconds % 60) / 60
+            } else if countSeconds == 0 && progressAfterFinish {
+                countOvertimeSeconds += 1
+                print("\(countOvertimeSeconds)")
+                print("\(overtimeTotalSeconds)")
+                overtimeProgress = CGFloat(countOvertimeSeconds) / CGFloat(overtimeTotalSeconds)
+                print("\(overtimeProgress)")
             }
             
             updateTimerStringValue()
@@ -142,7 +155,7 @@ extension TimerModel {
     }
     
     func updateTimerStringValue() {
-        if totalSeconds > 0 {
+        if countSeconds > 0 {
             
             let hoursComponent: String = currentHours < 10 ? "0\(currentHours)" : "\(currentHours)"
             let minutesComponent: String = currentMinutes < 10 ? "0\(currentMinutes)" : "\(currentMinutes)"
@@ -153,7 +166,7 @@ extension TimerModel {
             } else {
                 timerStringValue = "\(minutesComponent) : \(secondsComponent)"
             }
-        } else if overtimeTotalSeconds == 0 && totalSeconds == 0 {
+        } else if countOvertimeSeconds == 0 && countSeconds == 0 {
             timerStringValue = "00:00"
         } else {
             

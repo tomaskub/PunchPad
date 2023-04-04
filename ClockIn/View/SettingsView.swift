@@ -84,7 +84,7 @@ struct SettingsView: View {
                             .foregroundColor(.red)
                     }
                     .onTapGesture {
-                        resetUserSettings()
+                        viewModel.resetUserDefaults()
                     }
                 }
                 
@@ -106,9 +106,7 @@ struct SettingsView: View {
             .scrollContentBackground(.hidden)
         }
     }
-    func resetUserSettings() {
-        
-    }
+    
     var timePickers: some View {
         HStack {
             VStack {

@@ -35,22 +35,22 @@ class SettingsViewModel: ObservableObject {
     
     @Published var timerHours: Int = 8 {
         didSet {
-            workTimeInSeconds = timerHours * 360 + timerMinutes * 60
+            workTimeInSeconds = timerHours * 3600 + timerMinutes * 60
         }
     }
-    @Published var timerMinutes: Int = 30 {
+    @Published var timerMinutes: Int = 0 {
         didSet {
-            workTimeInSeconds = timerHours * 360 + timerMinutes * 60
+            workTimeInSeconds = timerHours * 3600 + timerMinutes * 60
         }
     }
     @Published var overtimeHours: Int = 0 {
         didSet {
-            maximumOvertimeAllowedInSeconds = overtimeHours * 360 + overtimeMinutes * 60
+            maximumOvertimeAllowedInSeconds = overtimeHours * 3600 + overtimeMinutes * 60
         }
     }
     @Published var overtimeMinutes: Int = 0 {
         didSet {
-            maximumOvertimeAllowedInSeconds = overtimeHours * 360 + overtimeMinutes * 60
+            maximumOvertimeAllowedInSeconds = overtimeHours * 3600 + overtimeMinutes * 60
         }
     }
         
@@ -67,7 +67,7 @@ class SettingsViewModel: ObservableObject {
             UserDefaults.standard.set(preferredColorScheme, forKey: K.UserDefaultsKeys.savedColorScheme)
         }
     }
-    @Published var maximumOvertimeAllowedInSeconds: Int = 1800 {
+    @Published var maximumOvertimeAllowedInSeconds: Int = 18000 {
         didSet {
             UserDefaults.standard.set(maximumOvertimeAllowedInSeconds, forKey: K.UserDefaultsKeys.maximumOverTimeAllowedInSeconds)
         }
@@ -91,8 +91,8 @@ class SettingsViewModel: ObservableObject {
         self.maximumOvertimeAllowedInSeconds = UserDefaults.standard.integer(forKey: K.UserDefaultsKeys.maximumOverTimeAllowedInSeconds)
         self.isSendingNotifications = UserDefaults.standard.bool(forKey: K.UserDefaultsKeys.isSendingNotifications)
         self.workTimeInSeconds = UserDefaults.standard.integer(forKey: K.UserDefaultsKeys.workTimeInSeconds)
-        self.timerHours = workTimeInSeconds / 360
-        self.timerMinutes = (workTimeInSeconds % 360) / 60
+        self.timerHours = workTimeInSeconds / 3600
+        self.timerMinutes = (workTimeInSeconds % 3600) / 60
     }
     
     func deleteAllData() {
@@ -103,12 +103,12 @@ class SettingsViewModel: ObservableObject {
         isSendingNotifications =  true
         isLoggingOverTime = false
         preferredColorScheme = K.ColorScheme.system.rawValue
-        maximumOvertimeAllowedInSeconds = 1800
+        maximumOvertimeAllowedInSeconds = 18000
         workTimeInSeconds = 28800
         timerHours = 8
         timerMinutes = 0
         overtimeHours = 0
         overtimeMinutes = 0
-        
+        print("Reseted user defaults to given values")
     }
 }
