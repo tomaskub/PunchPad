@@ -22,6 +22,7 @@ class DataManager: NSObject, ObservableObject {
     @Published var entryArray = [Entry]()
     
     fileprivate var managedObjectContext: NSManagedObjectContext
+    private let entryFetchResultsController: NSFetchedResultsController<EntryMO>
     
     private init(type: DataManagerType) {
         switch type {
@@ -49,8 +50,22 @@ class DataManager: NSObject, ObservableObject {
             let persistanceController = PersistanceController(inMemory: true)
             self.managedObjectContext = persistanceController.viewContext
         }
+        let fetchRequest: NSFetchRequest<EntryMO> = EntryMO.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "startDate", ascending: false)]
+        entryFetchResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                                 managedObjectContext: managedObjectContext,
+                                                                 sectionNameKeyPath: nil,
+                                                                 cacheName: nil)
         super.init() // this is super from NSObject?? - need to check
-        fetchWorkHistory()
+        entryFetchResultsController.delegate = self
+        try? entryFetchResultsController.performFetch()
+        if let newEntries = entryFetchResultsController.fetchedObjects {
+            self.entryArray = newEntries.map({
+                Entry(entryMO: $0)
+            })
+        }
+//        obsoleted with use of NSFetchResultController
+//        fetchWorkHistory()
     }
     
     ///Checks for changes in the managed object context and saves if uncommited changes are present
@@ -74,6 +89,13 @@ class DataManager: NSObject, ObservableObject {
         } catch {
             return .failure(error)
         }
+    }
+}
+extension DataManager: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        guard let fetchedObjects = controller.fetchedObjects else { return }
+        let newEntries = fetchedObjects.compactMap({$0 as? EntryMO})
+        self.entryArray = newEntries.map { Entry(entryMO: $0) }
     }
 }
 
@@ -109,7 +131,7 @@ extension DataManager {
         }
         
         saveContext()
-        fetchWorkHistory()
+        
     }
     //Add documentation and handle failure better?
     func delete(entry: Entry) {
@@ -150,7 +172,7 @@ extension DataManager {
         entryMO.workTime = entry.workTime
         entryMO.overTime = entry.overTime
     }
-    
+    //may be obsoleted due to NSFRC
     func fetchWorkHistory() {
         let request: NSFetchRequest<EntryMO> = EntryMO.fetchRequest()
         do {
