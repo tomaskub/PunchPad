@@ -13,6 +13,11 @@ class TimerModel: NSObject, ObservableObject {
     @AppStorage(K.UserDefaultsKeys.workTimeInSeconds) var timerTotalSeconds: Int = 28800
     @AppStorage(K.UserDefaultsKeys.maximumOverTimeAllowedInSeconds) var overtimeTotalSeconds: Int = 18000
     
+    //MARK: DATA MANAGING PROPERTIES
+    private var dataManager: DataManager
+    private var startDate: Date?
+    private var finishDate: Date?
+    
     //MARK: TIMER PROPERTIES - PUBLISHED
     //Published progress properties for UI
     @Published var progress: CGFloat = 0.0
@@ -23,20 +28,10 @@ class TimerModel: NSObject, ObservableObject {
     @Published var secondProgress: CGFloat = 0.0
     @Published var minuteProgress: CGFloat = 0.0
     
-    
-    
     //Timer state properties
     @Published var isStarted: Bool = false
     @Published var isRunning: Bool = false
     @Published var progressAfterFinish: Bool = true
-    
-    
-    //starting values stored for the user - remove these
-    /*
-    @Published var hours: Int = 0
-    @Published var minutes: Int = 1
-    @Published var seconds: Int = 0
-    */
     
     //MARK: COUNTDOWN TIMER PROPERTIES - PRIVATE
     
@@ -61,7 +56,9 @@ class TimerModel: NSObject, ObservableObject {
     private var overtimeSeconds: Int {
         return (countOvertimeSeconds % 60)
     }
-    override init() {
+    
+    init(dataManager: DataManager = DataManager.shared) {
+        self.dataManager = dataManager
         super.init()
         // initialize properties:
         countSeconds = timerTotalSeconds
@@ -86,6 +83,8 @@ extension TimerModel {
     
     func startTimer()  {
         
+        startDate = Date()
+        
         countSeconds = timerTotalSeconds
         countOvertimeSeconds = 0
         
@@ -99,6 +98,8 @@ extension TimerModel {
     func stopTimer() {
         isStarted = false
         isRunning = false
+        finishDate = Date()
+        saveEntry()
     }
     
     func resumeTimer() {
@@ -184,3 +185,17 @@ extension TimerModel {
     
 }
 
+    //MARK: DATA OPERATIONS
+extension TimerModel {
+    
+    func saveEntry() {
+        guard let startDate = startDate, let finishDate = finishDate else { return }
+        
+        let workTimeInSeconds = timerTotalSeconds - countSeconds
+        let overTimeInSeconds = countOvertimeSeconds
+        
+        let entryToSave = Entry(startDate: startDate, finishDate: finishDate, workTimeInSec: workTimeInSeconds, overTimeInSec: overTimeInSeconds)
+        
+        dataManager.updateAndSave(entry: entryToSave)
+    }
+}
