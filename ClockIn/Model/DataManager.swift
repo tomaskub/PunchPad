@@ -40,8 +40,8 @@ class DataManager: NSObject, ObservableObject {
                 entry.id = UUID()
                 entry.startDate = Calendar.current.date(byAdding: .hour, value: 8, to: date)!
                 entry.finishDate = Calendar.current.date(byAdding: .hour, value: 16+i, to: date)!
-                entry.overTime = Double(i)
-                entry.workTime = 8
+                entry.overTime = Int64(i * 1800)
+                entry.workTime = 8 * 3600
             }
             //save added data
             try? self.managedObjectContext.save()
@@ -106,8 +106,8 @@ extension Entry {
         self.id = entryMO.id
         self.startDate = entryMO.startDate
         self.finishDate = entryMO.finishDate
-        self.workTime = entryMO.workTime
-        self.overTime = entryMO.overTime
+        self.workTimeInSeconds = Int(entryMO.workTime)
+        self.overTimeInSeconds = Int(entryMO.overTime)
     }
 }
 
@@ -169,8 +169,8 @@ extension DataManager {
     private func update(entryMO: EntryMO, from entry: Entry) {
         entryMO.startDate = entry.startDate
         entryMO.finishDate = entry.finishDate
-        entryMO.workTime = entry.workTime
-        entryMO.overTime = entry.overTime
+        entryMO.workTime = Int64(entry.workTimeInSeconds)
+        entryMO.overTime = Int64(entry.overTimeInSeconds)
     }
     //may be obsoleted due to NSFRC
     func fetchWorkHistory() {

@@ -17,9 +17,9 @@ extension EntryMO {
     }
 
     @NSManaged public var finishDate: Date
-    @NSManaged public var overTime: Double
+    @NSManaged public var overTime: Int64
     @NSManaged public var startDate: Date
-    @NSManaged public var workTime: Double
+    @NSManaged public var workTime: Int64
     @NSManaged public var id: UUID
 
 }

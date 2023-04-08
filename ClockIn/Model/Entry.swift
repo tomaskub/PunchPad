@@ -13,14 +13,14 @@ struct Entry: Identifiable, Hashable {
     var id: UUID
     var startDate: Date
     var finishDate: Date
-    var workTime: Double
-    var overTime: Double
+    var workTimeInSeconds: Int
+    var overTimeInSeconds: Int
     
-    init(startDate: Date, finishDate: Date, workTime: Double, overTime: Double) {
+    init(startDate: Date, finishDate: Date, workTimeInSec: Int, overTimeInSec: Int) {
         self.id = UUID()
         self.startDate = startDate
         self.finishDate = finishDate
-        self.workTime = workTime
-        self.overTime = overTime
+        self.workTimeInSeconds = workTimeInSec
+        self.overTimeInSeconds = overTimeInSec
     }
 }
