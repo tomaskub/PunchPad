@@ -160,7 +160,30 @@ extension DataManager {
             print("Delete all function failed to delete all objects - \(error):\(error.localizedDescription)")
         }
     }
-    
+    func fetch(forDate date: Date) -> Entry? {
+        let startDate = Calendar.current.startOfDay(for: date)
+        guard let finishDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate) else {
+            print("Could not build a date for the end of the day")
+            return nil }
+        let startPredicate = NSPredicate(format: "finishDate > %@", startDate as CVarArg)
+        let finishPredicate = NSPredicate(format: "finishDate < %@", finishDate as CVarArg)
+        let compPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [startPredicate, finishPredicate])
+        
+        let result = fetchFirst(EntryMO.self, predicate: compPredicate)
+        
+        switch result {
+        case .success(let resultObject):
+            if let entryMO = resultObject {
+                return Entry(entryMO: entryMO)
+            } else {
+                return nil
+            }
+        case .failure(let error):
+            print("Could not fech any entries for given date - \(error): \(error.localizedDescription)")
+            return nil
+        }
+        
+    }
     private func entryMO(from entry: Entry) {
         let entryMO = EntryMO(context: managedObjectContext)
         entryMO.id = entry.id

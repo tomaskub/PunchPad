@@ -187,7 +187,10 @@ extension TimerModel {
 
     //MARK: DATA OPERATIONS
 extension TimerModel {
-    
+    func checkForEntry() -> Bool {
+        guard let entry = dataManager.fetch(forDate: Date()) else { return false }
+        return true
+    }
     func saveEntry() {
         guard let startDate = startDate, let finishDate = finishDate else { return }
         
