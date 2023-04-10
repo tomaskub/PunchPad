@@ -108,6 +108,7 @@ extension TimerModel {
     
     func pauseTimer() {
         isRunning = false
+        checkForPermissionAndDispatch()
     }
 }
    
@@ -200,5 +201,30 @@ extension TimerModel {
         let entryToSave = Entry(startDate: startDate, finishDate: finishDate, workTimeInSec: workTimeInSeconds, overTimeInSec: overTimeInSeconds)
         
         dataManager.updateAndSave(entry: entryToSave)
+    }
+}
+
+//MARK: NOTIFICATIONS
+extension TimerModel {
+    func checkForPermissionAndDispatch() {
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            switch settings.authorizationStatus {
+            case .authorized:
+                self.dispatch()
+            default:
+                return
+            }
+        }
+    }
+    func dispatch() {
+        
+        var content = UNMutableNotificationContent()
+        content.title = K.Notification.title
+        content.body = K.Notification.body
+        content.sound = .default
+        
+        let request = UNNotificationRequest(identifier: K.Notification.identifier, content: content, trigger: nil)
+        UNUserNotificationCenter.current().add(request)
+        
     }
 }

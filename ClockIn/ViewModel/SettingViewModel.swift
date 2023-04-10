@@ -9,19 +9,25 @@ import Foundation
 import SwiftUI
 
 struct K {
+    
     struct UserDefaultsKeys {
         static let isLoggingOvertime = "isLoggingOverTime"
         static let savedColorScheme = "colorScheme"
         static let maximumOverTimeAllowedInSeconds = "overtimeMaximum"
         static let workTimeInSeconds = "workTimeInSeconds"
         static let isSendingNotifications = "isSendingNotifications"
-        
-        
     }
+    
     enum ColorScheme: String {
         case system = "system"
         case dark = "dark"
         case light = "light"
+    }
+    
+    struct Notification {
+        static let title: String = "Notification title"
+        static let body: String = "Notification body"
+        static let identifier: String = "ClockIn-work-timer-ended"
     }
 }
 
@@ -74,6 +80,9 @@ class SettingsViewModel: ObservableObject {
     }
     @Published var isSendingNotifications: Bool = true {
         didSet {
+            if isSendingNotifications == true {
+                requestAuthorizationForNotifications()
+            }
             UserDefaults.standard.set(isSendingNotifications, forKey: K.UserDefaultsKeys.isSendingNotifications)
         }
     }
@@ -111,4 +120,19 @@ class SettingsViewModel: ObservableObject {
         overtimeMinutes = 0
         print("Reseted user defaults to given values")
     }
+    
+    func requestAuthorizationForNotifications() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge], completionHandler: { success, error in
+            if success {
+                print("Autorization success")
+            } else if let error = error {
+                print(error.localizedDescription)
+            }
+        })
+    }
+    /*
+    func removeReminder() {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [K.Reminder.notificationRequestID])
+    }
+     */
 }
