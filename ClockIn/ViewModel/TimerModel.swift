@@ -34,7 +34,7 @@ class TimerModel: NSObject, ObservableObject {
     @Published var progressAfterFinish: Bool = true
     
     //MARK: COUNTDOWN TIMER PROPERTIES - PRIVATE
-    
+    private var timer = Timer()
     private var countSeconds: Int = 0
     private var currentHours: Int {
         return countSeconds/3600
@@ -80,7 +80,7 @@ class TimerModel: NSObject, ObservableObject {
 
     //MARK: TIMER START & STOP FUNCTIONS
 extension TimerModel {
-    
+
     func startTimer()  {
         
         startDate = Date()
@@ -90,12 +90,18 @@ extension TimerModel {
         
         progress = 0
         overtimeProgress = 0
+        // this still does not work in the background
+        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { [weak self] _ in
+            guard let self else { return }
+            self.updateTimer()
+        })
         
         isStarted = true
         isRunning = true
     }
     
     func stopTimer() {
+        timer.invalidate()
         isStarted = false
         isRunning = false
         finishDate = Date()
@@ -108,7 +114,6 @@ extension TimerModel {
     
     func pauseTimer() {
         isRunning = false
-        checkForPermissionAndDispatch()
     }
 }
    
@@ -131,12 +136,10 @@ extension TimerModel {
                 
             } else if countSeconds == 0 && !progressAfterFinish {
                 stopTimer()
+                checkForPermissionAndDispatch()
             } else if countSeconds == 0 && progressAfterFinish {
                 countOvertimeSeconds += 1
-                print("\(countOvertimeSeconds)")
-                print("\(overtimeTotalSeconds)")
                 overtimeProgress = CGFloat(countOvertimeSeconds) / CGFloat(overtimeTotalSeconds)
-                print("\(overtimeProgress)")
             }
             
             updateTimerStringValue()

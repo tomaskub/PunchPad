@@ -12,8 +12,6 @@ struct Home: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var timer: TimerModel
     
-    @State var isShowingTimePicker: Bool = false
-    
     var body: some View {
         NavigationView {
             
@@ -36,19 +34,9 @@ struct Home: View {
                             .padding()
                             .background(.gray.opacity(0.5))
                             .cornerRadius(10)
-                            .onLongPressGesture(perform: {
-                                withAnimation(.easeInOut) {
-                                    isShowingTimePicker.toggle()
-                                }
-                            })
                     }
                 }
                         .padding(60)
-                        .onReceive(Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()) { _ in
-                            if timer.isStarted {
-                                timer.updateTimer()
-                            }
-                        }
                 
                 if timer.isStarted {
                     Button {
