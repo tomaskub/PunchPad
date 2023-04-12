@@ -34,7 +34,8 @@ class TimerModel: NSObject, ObservableObject {
     @Published var progressAfterFinish: Bool = true
     
     //MARK: COUNTDOWN TIMER PROPERTIES - PRIVATE
-    private var timer = Timer()
+    private var timerProvider: Timer.Type = Timer.self
+    private var timer: Timer?
     private var countSeconds: Int = 0
     private var currentHours: Int {
         return countSeconds/3600
@@ -56,25 +57,42 @@ class TimerModel: NSObject, ObservableObject {
     private var overtimeSeconds: Int {
         return (countOvertimeSeconds % 60)
     }
+    //MARK: BACKGROUND TIMER HANDLING PROPERTIES - PRIVATE
+    private var appDidEnterBackgroundDate: Date?
     
-    init(dataManager: DataManager = DataManager.shared) {
+    init(dataManager: DataManager = DataManager.shared, timerProvider: Timer.Type = Timer.self) {
         self.dataManager = dataManager
+        self.timerProvider = timerProvider
         super.init()
         // initialize properties:
         countSeconds = timerTotalSeconds
-        let hours = timerTotalSeconds / 3600
-        let minutes = (timerTotalSeconds % 3600) / 60
-        let seconds = timerTotalSeconds % 60
-        let hoursComponent: String = hours < 10 ? "0\(hours)" : "\(hours)"
-        let minutesComponent: String = minutes < 10 ? "0\(minutes)" : "\(minutes)"
-        let secondsComponent: String = seconds < 10 ? "0\(seconds)" : "\(seconds)"
-        
-        if hours > 0 {
-            timerStringValue = "\(hoursComponent) : \(minutesComponent)"
-        } else {
-            timerStringValue = "\(minutesComponent) : \(secondsComponent)"
+        updateTimerStringValue()
+        //Add observers 
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+    }
+    //MARK: HANDLING BACKGROUND TIMER UPDATE FUNC
+    @objc private func appDidEnterBackground() {
+        if isRunning {
+            appDidEnterBackgroundDate = Date()
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: Double(5/*countSeconds*/), repeats: false)
+            checkForPermissionAndDispatch(withTrigger: trigger)
         }
     }
+    
+    @objc private func appWillEnterForeground() {
+        guard let appDidEnterBackgroundDate else { return }
+        let timeInBackground = Calendar.current.dateComponents([.second], from: appDidEnterBackgroundDate, to: Date())
+        if let secondsInBackground = timeInBackground.second {
+            updateTimer(subtract: secondsInBackground)
+            updateTimerStringValue()
+        } else {
+            print("Failed to retrive seconds spend in background! Timer value is not valid!")
+        }
+        //remove pending notifications
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [K.Notification.identifier])
+    }
+    
 }
     
 
@@ -91,7 +109,7 @@ extension TimerModel {
         progress = 0
         overtimeProgress = 0
         // this still does not work in the background
-        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { [weak self] _ in
+        timer = timerProvider.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { [weak self] _ in
             guard let self else { return }
             self.updateTimer()
         })
@@ -101,7 +119,9 @@ extension TimerModel {
     }
     
     func stopTimer() {
-        timer.invalidate()
+        if let timer = timer {
+            timer.invalidate()
+        }
         isStarted = false
         isRunning = false
         finishDate = Date()
@@ -119,21 +139,52 @@ extension TimerModel {
    
     //MARK: TIMER UPDATE FUNCTIONS
 extension TimerModel {
-    
-    func updateTimer() {
+    //need to rework to wokr with background passed time
+    func updateTimer(subtract subtrahend: Int = 1) {
         if isStarted && isRunning {
             
-            if countSeconds > 0 {
-                
-                countSeconds -= 1
-                
-                updateSecondProgress()
-                updateMinuteProgres()
-                
+            //Situations to consider:
+            /*
+             the update value left the timer in current state
+             the update value caused the timer to move into overtime
+             the update value cause the timer to move into overtime and not overtime is avaliable
+             */
+            
+            //This is the situation when the timer is still in current state after the update, including 0
+            if countSeconds >= subtrahend {
+                countSeconds -= subtrahend
                 withAnimation(.easeInOut) {
                     progress = 1 - CGFloat(countSeconds) / CGFloat(timerTotalSeconds)
                 }
-                
+                updateTimerStringValue()
+                return
+            }
+            //this is the situation when timer value moves it into overtime
+            if countSeconds < subtrahend {
+                if progressAfterFinish {
+                    //this is when we start overtime
+                    countSeconds = 0
+                    countOvertimeSeconds += subtrahend - countSeconds
+                    //update the progress rings
+                    withAnimation(.easeInOut) {
+                        progress = 1 - CGFloat(countSeconds) / CGFloat(timerTotalSeconds)
+                        overtimeProgress = CGFloat(countOvertimeSeconds) / CGFloat(overtimeTotalSeconds)
+                    }
+                } else {
+//                    this is when we do not start overtime
+                    countSeconds = 0
+                    withAnimation(.easeInOut) {
+                        progress = 1 - CGFloat(countSeconds) / CGFloat(timerTotalSeconds)
+                    }
+                    stopTimer()
+                }
+            }
+            /*
+            if countSeconds > 0 {
+                countSeconds -= subtrahend
+                withAnimation(.easeInOut) {
+                    progress = 1 - CGFloat(countSeconds) / CGFloat(timerTotalSeconds)
+                }
             } else if countSeconds == 0 && !progressAfterFinish {
                 stopTimer()
                 checkForPermissionAndDispatch()
@@ -141,8 +192,8 @@ extension TimerModel {
                 countOvertimeSeconds += 1
                 overtimeProgress = CGFloat(countOvertimeSeconds) / CGFloat(overtimeTotalSeconds)
             }
+            */
             
-            updateTimerStringValue()
         }
     }
     
@@ -209,24 +260,27 @@ extension TimerModel {
 
 //MARK: NOTIFICATIONS
 extension TimerModel {
-    func checkForPermissionAndDispatch() {
+    
+    func checkForPermissionAndDispatch(withTrigger trigger: UNNotificationTrigger? = nil) {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
             switch settings.authorizationStatus {
             case .authorized:
-                self.dispatch()
+                self.dispatch(withTrigger: trigger)
             default:
                 return
             }
         }
     }
-    func dispatch() {
+    ///dispatch a local notification with standard title and body
+    ///  -trigger: a UNNotificationTrigger, set to nil for dispatching now
+    func dispatch(withTrigger trigger: UNNotificationTrigger? = nil) {
         
-        var content = UNMutableNotificationContent()
+        let content = UNMutableNotificationContent()
         content.title = K.Notification.title
         content.body = K.Notification.body
         content.sound = .default
         
-        let request = UNNotificationRequest(identifier: K.Notification.identifier, content: content, trigger: nil)
+        let request = UNNotificationRequest(identifier: K.Notification.identifier, content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request)
         
     }
