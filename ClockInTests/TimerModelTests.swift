@@ -38,12 +38,12 @@ final class TimerModelTests: XCTestCase {
         sut.progressAfterFinish = false
         sut.startTimer()
         
-        for _ in 0...sut.timerTotalSeconds - 1 {
+        for _ in 0...sut.timerTotalSeconds {
             
                 MockTimer.currentTimer.fire()
             
         }
-//        XCTAssertFalse(MockTimer.currentTimer.isValid, "Timer should be invalid")
+        XCTAssertFalse(MockTimer.currentTimer.isValid, "Timer should be invalid")
         XCTAssertEqual(sut.progress, 1, "Progress should be equal to 1")
     }
     
@@ -57,7 +57,8 @@ final class TimerModelTests: XCTestCase {
             
         }
         let valuePredicted: CGFloat = CGFloat(10) / CGFloat (sut.overtimeTotalSeconds)
-//        XCTAssertTrue(MockTimer.currentTimer.isValid, "Timer should be valid")
+        print(MockTimer.currentTimer.isValid)
+        XCTAssertTrue(MockTimer.currentTimer.isValid, "Timer should be valid")
         XCTAssertEqual(sut.progress, 1, "Progress should be equal to 1")
         XCTAssertEqual(sut.overtimeProgress, valuePredicted, "overtimeProgress should be equal to predicted value")
         

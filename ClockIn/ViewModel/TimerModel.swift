@@ -67,7 +67,7 @@ class TimerModel: NSObject, ObservableObject {
         // initialize properties:
         countSeconds = timerTotalSeconds
         updateTimerStringValue()
-        //Add observers 
+        //Add observers
         NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
@@ -139,16 +139,13 @@ extension TimerModel {
    
     //MARK: TIMER UPDATE FUNCTIONS
 extension TimerModel {
-    //need to rework to wokr with background passed time
+    
+    /**
+     Updates the timer countdown value
+     - Parameter subtrahend: The value to be substracted from the countdown (default is 1)
+     */
     func updateTimer(subtract subtrahend: Int = 1) {
         if isStarted && isRunning {
-            
-            //Situations to consider:
-            /*
-             the update value left the timer in current state
-             the update value caused the timer to move into overtime
-             the update value cause the timer to move into overtime and not overtime is avaliable
-             */
             
             //This is the situation when the timer is still in current state after the update, including 0
             if countSeconds >= subtrahend {
@@ -162,7 +159,6 @@ extension TimerModel {
             //this is the situation when timer value moves it into overtime
             if countSeconds < subtrahend {
                 if progressAfterFinish {
-                    //this is when we start overtime
                     countSeconds = 0
                     countOvertimeSeconds += subtrahend - countSeconds
                     //update the progress rings
@@ -171,7 +167,6 @@ extension TimerModel {
                         overtimeProgress = CGFloat(countOvertimeSeconds) / CGFloat(overtimeTotalSeconds)
                     }
                 } else {
-//                    this is when we do not start overtime
                     countSeconds = 0
                     withAnimation(.easeInOut) {
                         progress = 1 - CGFloat(countSeconds) / CGFloat(timerTotalSeconds)
@@ -179,21 +174,6 @@ extension TimerModel {
                     stopTimer()
                 }
             }
-            /*
-            if countSeconds > 0 {
-                countSeconds -= subtrahend
-                withAnimation(.easeInOut) {
-                    progress = 1 - CGFloat(countSeconds) / CGFloat(timerTotalSeconds)
-                }
-            } else if countSeconds == 0 && !progressAfterFinish {
-                stopTimer()
-                checkForPermissionAndDispatch()
-            } else if countSeconds == 0 && progressAfterFinish {
-                countOvertimeSeconds += 1
-                overtimeProgress = CGFloat(countOvertimeSeconds) / CGFloat(overtimeTotalSeconds)
-            }
-            */
-            
         }
     }
     
@@ -209,7 +189,7 @@ extension TimerModel {
             minuteProgress = 1 - (CGFloat(currentMinutes) / CGFloat(60))
         }
     }
-    
+    /// Updates the timer string value with current time components if the countSeconds > 0 and with current overtime components if countSeconds = 0.
     func updateTimerStringValue() {
         if countSeconds > 0 {
             
@@ -272,7 +252,7 @@ extension TimerModel {
         }
     }
     ///dispatch a local notification with standard title and body
-    ///  -trigger: a UNNotificationTrigger, set to nil for dispatching now
+    ///- Parameter trigger: a UNNotificationTrigger, set to nil for dispatching now
     func dispatch(withTrigger trigger: UNNotificationTrigger? = nil) {
         
         let content = UNMutableNotificationContent()
