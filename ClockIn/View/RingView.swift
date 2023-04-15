@@ -27,17 +27,20 @@ struct RingView: View {
             ZStack(alignment: .center) {
                 
                 //Ring circle
-                Circle()
-                    .trim(from: startigPoint, to: progress)
-                    .stroke(ringColor, lineWidth: ringWidth)
-                    .rotationEffect(.degrees(-90))
-                    .frame(width: size, height: size)
-                //Ring begining circle
-                Circle()
-                    .fill(ringColor)
-                    .frame(width: ringWidth)
-                    .offset(y: -size/2)
-                    .rotationEffect(.degrees(startigPoint*360))
+                    Circle()
+                        .trim(from: startigPoint, to: progress)
+                        .stroke(ringColor, lineWidth: ringWidth)
+                        .rotationEffect(.degrees(-90))
+                        .opacity(startigPoint <= progress ? 1 : 0)
+                        .frame(width: size, height: size)
+                    //Ring begining circle
+                    Circle()
+                        .fill(ringColor)
+                        .frame(width: ringWidth)
+                        .offset(y: -size/2)
+                        .opacity(startigPoint <= progress ? 1: 0)
+                        .rotationEffect(.degrees(startigPoint*360))
+                
                 //Leading point circle
                 if displayPointer {
                     Circle()
@@ -67,9 +70,8 @@ struct RingView: View {
 struct RingView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            RingView(progress: .constant(0.5), ringColor: .black)//, pointColor: .black)
+            RingView(progress: .constant(0.5), ringColor: .black)
                 .padding(.horizontal, 50)
-//            RingView(ringColor: .blue, pointColor: .black)
         }
     }
 }

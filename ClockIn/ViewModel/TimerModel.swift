@@ -166,11 +166,13 @@ extension TimerModel {
                         progress = 1 - CGFloat(countSeconds) / CGFloat(timerTotalSeconds)
                         overtimeProgress = CGFloat(countOvertimeSeconds) / CGFloat(overtimeTotalSeconds)
                     }
+                    updateTimerStringValue()
                 } else {
                     countSeconds = 0
                     withAnimation(.easeInOut) {
                         progress = 1 - CGFloat(countSeconds) / CGFloat(timerTotalSeconds)
                     }
+                    updateTimerStringValue()
                     stopTimer()
                 }
             }
