@@ -20,6 +20,7 @@
 		D68384F929DB25DD00228491 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68384F829DB25DD00228491 /* SettingViewModel.swift */; };
 		D6842EC029EC178000731E84 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6842EBF29EC178000731E84 /* StatisticsView.swift */; };
 		D6842EC229EC179200731E84 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6842EC129EC179200731E84 /* StatisticsViewModel.swift */; };
+		D6842EC429EC62DE00731E84 /* PayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6842EC329EC62DD00731E84 /* PayManager.swift */; };
 		D6C4589429D229210069D89B /* ClockInApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4589329D229210069D89B /* ClockInApp.swift */; };
 		D6C4589629D229210069D89B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4589529D229210069D89B /* ContentView.swift */; };
 		D6C4589829D229230069D89B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6C4589729D229230069D89B /* Assets.xcassets */; };
@@ -66,6 +67,7 @@
 		D68384F829DB25DD00228491 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		D6842EBF29EC178000731E84 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		D6842EC129EC179200731E84 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
+		D6842EC329EC62DD00731E84 /* PayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayManager.swift; sourceTree = "<group>"; };
 		D6C4589029D229210069D89B /* ClockIn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClockIn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6C4589329D229210069D89B /* ClockInApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockInApp.swift; sourceTree = "<group>"; };
 		D6C4589529D229210069D89B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 				D65FD53C29D8B259006CC34F /* PersistanceController.swift */,
 				D64574AF29D9E6A000207168 /* DataManager.swift */,
 				D64574B529D9F37400207168 /* Entry.swift */,
+				D6842EC329EC62DD00731E84 /* PayManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -338,6 +341,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6842EC429EC62DE00731E84 /* PayManager.swift in Sources */,
 				D64574B629D9F37400207168 /* Entry.swift in Sources */,
 				D6C458C729D36C050069D89B /* RingView.swift in Sources */,
 				D64574B029D9E6A000207168 /* DataManager.swift in Sources */,
