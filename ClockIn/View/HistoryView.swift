@@ -6,17 +6,20 @@
 //
 
 import SwiftUI
+import Charts
 
 struct HistoryView: View {
     
     @Environment(\.colorScheme) var colorScheme
     @StateObject var viewModel = HistoryViewModel()
     
-    //unused for now
+    
+    //unused for now - have to implement
     /*
-    @EnvironmentObject var historyViewModel: HistoryViewModel
-    @AppStorage("detail_display_mode") var detailDisplayMode: String = HistoryRow.DetailDisplayType.circleDisplay.rawValue
+     @AppStorage("detail_display_mode") var detailDisplayMode: String = HistoryRow.DetailDisplayType.circleDisplay.rawValue
      */
+    
+    
     
     var body: some View {
         ZStack {
@@ -24,6 +27,7 @@ struct HistoryView: View {
             LinearGradient(colors: [ colorScheme == .light ? .white : .black, .blue.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
                 .ignoresSafeArea()
             
+            //Content layer
             List {
                 ForEach(viewModel.entries) { entry in
                     HistoryRow(startDate: entry.startDate,
@@ -32,18 +36,30 @@ struct HistoryView: View {
                                overTime: viewModel.convertOvertimeToFraction(entry: entry),
                                timeWorked: viewModel.timeWorkedLabel(for: entry),
                                detailType: .circleDisplay)
-                    
                 }
+                 
             }
             .scrollContentBackground(.hidden)
-         
+            
         }
+        //Toolbars
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Text("Edit")
+            }
+        }
+        .navigationTitle("History")
+        
     }
+    
 }
+
 
 struct HistoryView_Previews: PreviewProvider {
     
     static var previews: some View {
-        HistoryView(viewModel: HistoryViewModel(dataManager: DataManager.preview, overrideUD: true))
+        NavigationView {
+            HistoryView(viewModel: HistoryViewModel(dataManager: DataManager.preview, overrideUD: true))
+        }
     }
 }

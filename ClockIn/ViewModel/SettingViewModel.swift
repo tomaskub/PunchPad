@@ -130,9 +130,4 @@ class SettingsViewModel: ObservableObject {
             }
         })
     }
-    /*
-    func removeReminder() {
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [K.Reminder.notificationRequestID])
-    }
-     */
 }
