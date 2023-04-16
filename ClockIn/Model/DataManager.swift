@@ -128,9 +128,17 @@ class DataManager: NSObject, ObservableObject {
 }
 extension DataManager: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        guard let fetchedObjects = controller.fetchedObjects else { return }
-        let newEntries = fetchedObjects.compactMap({$0 as? EntryMO})
-        self.entryArray = newEntries.map { Entry(entryMO: $0) }
+        if controller == entryFetchResultsController { 
+            //controller.fetchRequest.predicate == nil {
+            guard let fetchedObjects = controller.fetchedObjects else { return }
+            let newEntries = fetchedObjects.compactMap({$0 as? EntryMO})
+            self.entryArray = newEntries.map { Entry(entryMO: $0) }
+        } else {
+            guard let fetchedObjects = controller.fetchedObjects else { return }
+            let newEntries = fetchedObjects.compactMap({$0 as? EntryMO})
+            self.entryThisMonth = newEntries.map { Entry(entryMO: $0) }
+        }
+        
     }
 }
 
