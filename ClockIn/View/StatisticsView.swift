@@ -56,7 +56,11 @@ struct StatisticsView: View {
                 }
                 Section("Salary calculation"){
                     if viewModel.netPayAvaliable {
-                        Text("Net pay up to date")
+                        HStack{
+                            Text("Net pay up to date:")
+                            Spacer()
+                            Text(String(format: "%.2f PLN", viewModel.netPayToDate))
+                        }
                         Text("Net pay prediction:")
                     }
                     Text("Pay per hour")

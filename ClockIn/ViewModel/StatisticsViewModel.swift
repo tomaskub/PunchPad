@@ -8,17 +8,44 @@
 import Foundation
 
 class StatisticsViewModel: ObservableObject {
-        
+    
+    //MARK: MODEL OBJECTS
     @Published private var dataManager: DataManager
+    @Published private var payManager: PayManager
+    
+    //MARK: RETRIVED PROPERTIES
     private var maximumOvertimeInSeconds: Int
     private var workTimeInSeconds: Int
     
-    @Published var netPayAvaliable: Bool = false
     
-    init(dataManager: DataManager = DataManager.shared, overrideUserDefaults: Bool = false) {
+    //MARK: PUBLISHED VARIABLES
+    var numberOfWorkingDays: Int {
+        payManager.numberOfWorkingDays
+    }
+    var netPayToDate: Double {
+        payManager.netPayToDate
+    }
+    var netPayPredicted: Double {
+        payManager.netPayPredicted
+    }
+    var grossPayToDate: Double {
+        payManager.grossPayToDate
+    }
+    var grossPayPredicted: Double {
+        payManager.grossPayPredicted
+    }
+    var netPayAvaliable: Bool {
+        payManager.netPayAvaliable
+    }
+    var grossPayPerHour: Double {
+        payManager.grossPayPerHour
+    }
+    
+    
+    init(dataManager: DataManager = DataManager.shared, payManager: PayManager = PayManager(),overrideUserDefaults: Bool = false) {
         
         self.dataManager = dataManager
-        
+        self.payManager = payManager
         if !overrideUserDefaults {
             self.maximumOvertimeInSeconds = UserDefaults.standard.integer(forKey: K.UserDefaultsKeys.maximumOverTimeAllowedInSeconds)
             self.workTimeInSeconds = UserDefaults.standard.integer(forKey: K.UserDefaultsKeys.workTimeInSeconds)
@@ -54,20 +81,6 @@ class StatisticsViewModel: ObservableObject {
             return replacer ?? placeholder
         }
         return result
-    }
-    
-    func calculateNetPay(gross: Double) -> Double {
-        
-        let skladkaEmerytalna = 0.0976 * gross
-        let skladkaRentowa = 0.015 * gross
-        let skladkaChorobowa = 0.0245 * gross
-        let skladkaWypoczynkowa = 0.0132 * gross
-        let sumOfSkladka = skladkaEmerytalna + skladkaRentowa + skladkaChorobowa + skladkaWypoczynkowa
-        let skladkaZdrowotna = (gross - sumOfSkladka) * 0.09
-        let podatekDochodowy = 0.12 * (gross - sumOfSkladka - 300) - 300
-        let netPay = gross - podatekDochodowy - skladkaZdrowotna - sumOfSkladka
-        
-        return netPay
     }
 }
 
