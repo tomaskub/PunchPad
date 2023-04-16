@@ -14,18 +14,25 @@ case normal, preview, testing
 
 class DataManager: NSObject, ObservableObject {
     
+    //MARK: STATIC INSTANCES
     static let shared = DataManager(type: .normal)
     static let preview = DataManager(type: .preview)
     static let testing = DataManager(type: .testing)
     
-    
+    //MARK: PUBLISHED PROPERTIES
     @Published var entryArray = [Entry]()
+    @Published var entryThisMonth = [Entry]()
     
+    //MARK: PRIVATE PROPERTIES
     fileprivate var managedObjectContext: NSManagedObjectContext
     private let entryFetchResultsController: NSFetchedResultsController<EntryMO>
+    private let entryThisMonthFetchResultsController: NSFetchedResultsController<EntryMO>
     
+    //MARK: INIT
     private init(type: DataManagerType) {
+        
         switch type {
+        
         case .normal:
             let persistanceController = PersistanceController()
             self.managedObjectContext = persistanceController.viewContext
@@ -50,24 +57,52 @@ class DataManager: NSObject, ObservableObject {
             let persistanceController = PersistanceController(inMemory: true)
             self.managedObjectContext = persistanceController.viewContext
         }
+        
+        //Build FRCs
         let fetchRequest: NSFetchRequest<EntryMO> = EntryMO.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "startDate", ascending: false)]
         entryFetchResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                                  managedObjectContext: managedObjectContext,
                                                                  sectionNameKeyPath: nil,
                                                                  cacheName: nil)
+        
+        let fetchRequestThisMonth: NSFetchRequest<EntryMO> = EntryMO.fetchRequest()
+        fetchRequestThisMonth.sortDescriptors = [NSSortDescriptor(key: "startDate", ascending: false)]
+        
+        let dateComponents = Calendar.current.dateComponents([.month,.year], from: Date())
+        let startDate = Calendar.current.date(from: dateComponents)!
+        let finishDate = Calendar.current.date(byAdding: .month, value: 1, to: startDate)!
+            
+        let startPredicate = NSPredicate(format: "finishDate > %@", startDate as CVarArg)
+        let finishPredicate = NSPredicate(format: "finishDate < %@", finishDate as CVarArg)
+        let compPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [startPredicate, finishPredicate])
+        fetchRequestThisMonth.predicate = compPredicate
+        
+        entryThisMonthFetchResultsController = NSFetchedResultsController(fetchRequest: fetchRequestThisMonth,
+                                                                          managedObjectContext: managedObjectContext,
+                                                                          sectionNameKeyPath: nil,
+                                                                          cacheName: nil)
+        
+        
         super.init() // this is super from NSObject?? - need to check
+        
         entryFetchResultsController.delegate = self
+        entryThisMonthFetchResultsController.delegate = self
+        
         try? entryFetchResultsController.performFetch()
         if let newEntries = entryFetchResultsController.fetchedObjects {
             self.entryArray = newEntries.map({
                 Entry(entryMO: $0)
             })
         }
-//        obsoleted with use of NSFetchResultController
-//        fetchWorkHistory()
+        
+        try? entryThisMonthFetchResultsController.performFetch()
+        if let newEntries = entryThisMonthFetchResultsController.fetchedObjects {
+            self.entryThisMonth = newEntries.map({ Entry(entryMO: $0)})
+        }
     }
     
+    //MARK: HELPER METHODS
     ///Checks for changes in the managed object context and saves if uncommited changes are present
     func saveContext() {
         if managedObjectContext.hasChanges {
@@ -99,7 +134,7 @@ extension DataManager: NSFetchedResultsControllerDelegate {
     }
 }
 
-//MARK: WORK METHODS
+//MARK: ENTRY METHODS
 extension Entry {
     
     fileprivate init(entryMO: EntryMO) {
