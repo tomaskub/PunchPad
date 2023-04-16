@@ -21,6 +21,7 @@
 		D6842EC029EC178000731E84 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6842EBF29EC178000731E84 /* StatisticsView.swift */; };
 		D6842EC229EC179200731E84 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6842EC129EC179200731E84 /* StatisticsViewModel.swift */; };
 		D6842EC429EC62DE00731E84 /* PayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6842EC329EC62DD00731E84 /* PayManager.swift */; };
+		D6842EC629EC6FDF00731E84 /* PayManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6842EC529EC6FDE00731E84 /* PayManagerTests.swift */; };
 		D6C4589429D229210069D89B /* ClockInApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4589329D229210069D89B /* ClockInApp.swift */; };
 		D6C4589629D229210069D89B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4589529D229210069D89B /* ContentView.swift */; };
 		D6C4589829D229230069D89B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6C4589729D229230069D89B /* Assets.xcassets */; };
@@ -68,6 +69,7 @@
 		D6842EBF29EC178000731E84 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		D6842EC129EC179200731E84 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
 		D6842EC329EC62DD00731E84 /* PayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayManager.swift; sourceTree = "<group>"; };
+		D6842EC529EC6FDE00731E84 /* PayManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayManagerTests.swift; sourceTree = "<group>"; };
 		D6C4589029D229210069D89B /* ClockIn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClockIn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6C4589329D229210069D89B /* ClockInApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockInApp.swift; sourceTree = "<group>"; };
 		D6C4589529D229210069D89B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 				D6C458A429D229230069D89B /* ClockInTests.swift */,
 				D61945EB29E7306B0046DE1F /* TimerModelTests.swift */,
 				D61945EF29E735D80046DE1F /* MockTimer.swift */,
+				D6842EC529EC6FDE00731E84 /* PayManagerTests.swift */,
 			);
 			path = ClockInTests;
 			sourceTree = "<group>";
@@ -367,6 +370,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6842EC629EC6FDF00731E84 /* PayManagerTests.swift in Sources */,
 				D61945EC29E7306B0046DE1F /* TimerModelTests.swift in Sources */,
 				D61945F029E735D80046DE1F /* MockTimer.swift in Sources */,
 				D6C458A529D229230069D89B /* ClockInTests.swift in Sources */,
