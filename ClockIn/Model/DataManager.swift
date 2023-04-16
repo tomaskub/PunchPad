@@ -225,19 +225,38 @@ extension DataManager {
             print("Could not fech any entries for given date - \(error): \(error.localizedDescription)")
             return nil
         }
-        
     }
+    func fetch(from startDate: Date, to finishDate: Date) -> [Entry]? {
+        
+        let request: NSFetchRequest<EntryMO> = EntryMO.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(key: "startDate", ascending: false)]
+            
+        let startPredicate = NSPredicate(format: "finishDate > %@", startDate as CVarArg)
+        let finishPredicate = NSPredicate(format: "finishDate < %@", finishDate as CVarArg)
+        let compPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [startPredicate, finishPredicate])
+        
+        request.predicate = compPredicate
+        do {
+            let result = try managedObjectContext.fetch(request)
+            return result.map({Entry(entryMO: $0)})
+        } catch {
+            return nil
+        }
+    }
+    
     private func entryMO(from entry: Entry) {
         let entryMO = EntryMO(context: managedObjectContext)
         entryMO.id = entry.id
         update(entryMO: entryMO, from: entry)
     }
+    
     private func update(entryMO: EntryMO, from entry: Entry) {
         entryMO.startDate = entry.startDate
         entryMO.finishDate = entry.finishDate
         entryMO.workTime = Int64(entry.workTimeInSeconds)
         entryMO.overTime = Int64(entry.overTimeInSeconds)
     }
+    
     //may be obsoleted due to NSFRC
     func fetchWorkHistory() {
         let request: NSFetchRequest<EntryMO> = EntryMO.fetchRequest()
