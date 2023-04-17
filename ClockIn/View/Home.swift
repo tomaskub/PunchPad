@@ -65,9 +65,9 @@ struct Home: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     NavigationLink {
-                        HistoryView().navigationTitle("Work history")
+                        StatisticsView()
                     } label: {
-                        Text("History")
+                        Text("Statistics")
                         
                     }
                 }

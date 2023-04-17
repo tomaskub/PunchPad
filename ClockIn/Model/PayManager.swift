@@ -54,7 +54,7 @@ class PayManager: ObservableObject {
         let skladkaWypoczynkowa = 0.0132 * gross
         let sumOfSkladka = skladkaEmerytalna + skladkaRentowa + skladkaChorobowa + skladkaWypoczynkowa
         let skladkaZdrowotna = (gross - sumOfSkladka) * 0.09
-        let podatekDochodowy = 0.12 * (gross - sumOfSkladka - 300) - 300
+        let podatekDochodowy = 0.12 * (gross - sumOfSkladka - 300) //- 300
         let netPay = gross - podatekDochodowy - skladkaZdrowotna - sumOfSkladka
         
         return netPay

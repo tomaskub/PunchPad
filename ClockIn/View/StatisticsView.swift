@@ -11,7 +11,7 @@ import Charts
 struct StatisticsView: View {
     
     @Environment(\.colorScheme) var colorScheme
-    @StateObject var viewModel: StatisticsViewModel
+    @StateObject var viewModel: StatisticsViewModel = StatisticsViewModel()
     
     
     var body: some View {
@@ -53,22 +53,21 @@ struct StatisticsView: View {
                     chartTypePicker
                 
                 
-                }
+                } //END OF SECTION
+                
                 Section("Salary calculation"){
-                    if viewModel.netPayAvaliable {
+                    
+                    ForEach(viewModel.salaryListData, id: \.0) { data in
                         HStack{
-                            Text("Net pay up to date:")
+                            Text(data.0)
                             Spacer()
-                            Text(String(format: "%.2f PLN", viewModel.netPayToDate))
+                            Text(data.1)
                         }
-                        Text("Net pay prediction:")
+                        
                     }
-                    Text("Pay per hour")
-                    Text("Gross salary up to date")
-                    Text("Number of working days")
-                    //
-                }
-            }
+                } // END OF SECTION
+            } //END OF LIST
+            
             .scrollContentBackground(.hidden)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -82,7 +81,8 @@ struct StatisticsView: View {
             }
             .navigationTitle("Statistics")
         }
-    }
+    } //END OF VIEW
+    
     var chart: some View {
         Chart(viewModel.entriesForChart) {
             RuleMark(y: .value("WorkGoal", 8))
@@ -120,7 +120,11 @@ struct StatisticsView: View {
 struct StatisticsView_Previews: PreviewProvider {
     static var previews: some View {
 //        NavigationView {
-            StatisticsView(viewModel: StatisticsViewModel(dataManager: .preview))
+        StatisticsView(viewModel:
+                        StatisticsViewModel(
+                            dataManager: .preview,
+                            payManager: PayManager(dataManager: .preview)
+                        ))
 //        }
     }
 }

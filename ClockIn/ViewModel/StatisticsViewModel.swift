@@ -41,6 +41,15 @@ class StatisticsViewModel: ObservableObject {
         payManager.grossPayPerHour
     }
     
+    var salaryListData: [(String, String)] {
+        [ ("Net pay up to date:", String(format: "%.2f", netPayToDate)),
+          ("Net pay predicted:", String(format: "%.2f", netPayPredicted)),
+          ("Gross pay per hour:", String(format: "%.2f", grossPayPerHour)),
+          ("Gross pay up to date:", String(format: "%.2f", grossPayToDate)),
+          ("Gross pay predicted:", String(format: "%.2f", grossPayPredicted)),
+          ("Number of working days:", String(format: "%.0f", numberOfWorkingDays))
+        ]
+    }
     
     init(dataManager: DataManager = DataManager.shared, payManager: PayManager = PayManager(),overrideUserDefaults: Bool = false) {
         
