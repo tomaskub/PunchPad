@@ -7,13 +7,15 @@
 
 import Foundation
 import CoreData
-
+import Combine
 
 class HistoryViewModel: ObservableObject {
     
     @Published private var dataManager: DataManager
     private var maximumOvertimeInSeconds: Int
     private var workTimeInSeconds: Int
+    
+    var subscriptions: AnyCancellable? = nil
     
     init(dataManager: DataManager = DataManager.shared, overrideUD: Bool = false) {
         self.dataManager = dataManager
@@ -24,6 +26,9 @@ class HistoryViewModel: ObservableObject {
             self.maximumOvertimeInSeconds = 5 * 3600
             self.workTimeInSeconds = 8 * 3600
         }
+        subscriptions = dataManager.objectWillChange.sink(receiveValue: { [weak self] _ in
+            self?.objectWillChange.send()
+        })
     }
     
     var entries: [Entry] {
