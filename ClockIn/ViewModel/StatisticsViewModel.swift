@@ -47,7 +47,7 @@ class StatisticsViewModel: ObservableObject {
           ("Gross pay per hour:", String(format: "%.2f", grossPayPerHour)),
           ("Gross pay up to date:", String(format: "%.2f", grossPayToDate)),
           ("Gross pay predicted:", String(format: "%.2f", grossPayPredicted)),
-          ("Number of working days:", String(format: "%.0f", numberOfWorkingDays))
+          ("Number of working days:", String(format: "%u", numberOfWorkingDays))
         ]
     }
     
@@ -62,7 +62,6 @@ class StatisticsViewModel: ObservableObject {
             self.maximumOvertimeInSeconds = 5 * 3600
             self.workTimeInSeconds = 8 * 3600
         }
-        
     }
     
     ///Entries for use with a chart - contains empy entries for days without the entry in this monts
