@@ -72,7 +72,7 @@ struct StatisticsView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink {
-                        Text("Detail history view")
+                        HistoryView()
                     } label: {
                         Text("Detailed history")
                     }
