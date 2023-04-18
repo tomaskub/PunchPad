@@ -23,4 +23,9 @@ struct Entry: Identifiable, Hashable {
         self.workTimeInSeconds = workTimeInSec
         self.overTimeInSeconds = overTimeInSec
     }
+    
+    ///Initialize with current date for start and finish, work time and overtime is set to 0
+    init() {
+        self.init(startDate: Date(), finishDate: Date(), workTimeInSec: 0, overTimeInSec: 0)
+    }
 }
