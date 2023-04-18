@@ -86,7 +86,10 @@ struct HistoryRow: View {
         }
         .padding(.vertical)
         .onTapGesture {
-            isShowingDetails.toggle()
+            withAnimation(.spring()) {
+                isShowingDetails.toggle()
+            }
+            
         }
     }
 }

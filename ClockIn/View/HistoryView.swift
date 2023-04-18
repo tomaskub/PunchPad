@@ -12,7 +12,7 @@ struct HistoryView: View {
     
     @Environment(\.colorScheme) var colorScheme
     @StateObject var viewModel = HistoryViewModel()
-    
+    @State var selectedEntry: Entry? = nil
     
     //unused for now - have to implement
     /*
@@ -36,16 +36,42 @@ struct HistoryView: View {
                                overTime: viewModel.convertOvertimeToFraction(entry: entry),
                                timeWorked: viewModel.timeWorkedLabel(for: entry),
                                detailType: .circleDisplay)
+                    .swipeActions {
+                        Button {
+                            //run delete action
+                            viewModel.deleteEntry(entry: entry)
+                        } label: {
+                            Image(systemName: "xmark")
+                                .foregroundColor(.red)
+                        }
+                        .tint(.red)
+                        Button {
+                            //run editing sheet
+                            selectedEntry = entry
+                        } label: {
+                            Image(systemName: "pencil")
+                        }
+//                        .tint(.blue)
+                    }
                 }
-                 
+                .sheet(item: $selectedEntry) { entry in
+                    
+                        EditSheetView(viewModel: EditSheetViewModel(entry: entry))
+                    
+                }
             }
             .scrollContentBackground(.hidden)
             
         }
+        
         //Toolbars
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Text("Edit")
+                Button {
+                    selectedEntry = Entry()
+                } label: {
+                    Image(systemName: "plus.circle")
+                }
             }
         }
         .navigationTitle("History")

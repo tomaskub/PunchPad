@@ -64,5 +64,13 @@ class HistoryViewModel: ObservableObject {
         return CGFloat(entry.workTimeInSeconds) / CGFloat(workTimeInSeconds)
     }
     
+    func deleteEntry(entry: Entry) {
+        
+        dataManager.delete(entry: entry)
+    }
+    
+    func updateAndSave(entry: Entry) {
+        dataManager.updateAndSave(entry: entry)
+    }
 }
  

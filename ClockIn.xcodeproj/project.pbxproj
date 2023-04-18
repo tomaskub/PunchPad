@@ -33,6 +33,8 @@
 		D6C458C329D2DE2D0069D89B /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458C229D2DE2D0069D89B /* Home.swift */; };
 		D6C458C529D35EAA0069D89B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458C429D35EAA0069D89B /* SettingsView.swift */; };
 		D6C458C729D36C050069D89B /* RingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458C629D36C050069D89B /* RingView.swift */; };
+		D6D02FAE29EF0B13006CD0B2 /* EditSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D02FAD29EF0B13006CD0B2 /* EditSheetView.swift */; };
+		D6D02FB029EF0B7F006CD0B2 /* EditShetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D02FAF29EF0B7F006CD0B2 /* EditShetViewModel.swift */; };
 		D6E2C15929D6C20E00229286 /* WorkHistory.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15729D6C20E00229286 /* WorkHistory.xcdatamodeld */; };
 		D6E2C15B29D6C31800229286 /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15A29D6C31800229286 /* HistoryViewModel.swift */; };
 /* End PBXBuildFile section */
@@ -84,6 +86,8 @@
 		D6C458C229D2DE2D0069D89B /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		D6C458C429D35EAA0069D89B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D6C458C629D36C050069D89B /* RingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingView.swift; sourceTree = "<group>"; };
+		D6D02FAD29EF0B13006CD0B2 /* EditSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSheetView.swift; sourceTree = "<group>"; };
+		D6D02FAF29EF0B7F006CD0B2 /* EditShetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditShetViewModel.swift; sourceTree = "<group>"; };
 		D6E2C15829D6C20E00229286 /* WorkHistory.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WorkHistory.xcdatamodel; sourceTree = "<group>"; };
 		D6E2C15A29D6C31800229286 /* HistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -186,6 +190,7 @@
 				D6C458C629D36C050069D89B /* RingView.swift */,
 				D6C458C429D35EAA0069D89B /* SettingsView.swift */,
 				D6842EBF29EC178000731E84 /* StatisticsView.swift */,
+				D6D02FAD29EF0B13006CD0B2 /* EditSheetView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -197,6 +202,7 @@
 				D6E2C15A29D6C31800229286 /* HistoryViewModel.swift */,
 				D68384F829DB25DD00228491 /* SettingViewModel.swift */,
 				D6842EC129EC179200731E84 /* StatisticsViewModel.swift */,
+				D6D02FAF29EF0B7F006CD0B2 /* EditShetViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -348,6 +354,7 @@
 				D64574B629D9F37400207168 /* Entry.swift in Sources */,
 				D6C458C729D36C050069D89B /* RingView.swift in Sources */,
 				D64574B029D9E6A000207168 /* DataManager.swift in Sources */,
+				D6D02FB029EF0B7F006CD0B2 /* EditShetViewModel.swift in Sources */,
 				D6E2C15B29D6C31800229286 /* HistoryViewModel.swift in Sources */,
 				D64574B329D9F16900207168 /* EntryMO+CoreDataClass.swift in Sources */,
 				D64574B429D9F16900207168 /* EntryMO+CoreDataProperties.swift in Sources */,
@@ -360,6 +367,7 @@
 				D6C458C329D2DE2D0069D89B /* Home.swift in Sources */,
 				D6842EC029EC178000731E84 /* StatisticsView.swift in Sources */,
 				D66750EC29D71C8300757F17 /* HistoryRow.swift in Sources */,
+				D6D02FAE29EF0B13006CD0B2 /* EditSheetView.swift in Sources */,
 				D6C4589429D229210069D89B /* ClockInApp.swift in Sources */,
 				D6E2C15929D6C20E00229286 /* WorkHistory.xcdatamodeld in Sources */,
 				D6842EC229EC179200731E84 /* StatisticsViewModel.swift in Sources */,
