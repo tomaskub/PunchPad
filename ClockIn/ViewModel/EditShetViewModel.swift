@@ -16,6 +16,7 @@ class EditSheetViewModel: ObservableObject {
     @Published var startDate: Date {
         didSet {
             calculateTime()
+            
         }
     }
     @Published var finishDate: Date {
@@ -24,12 +25,23 @@ class EditSheetViewModel: ObservableObject {
         }
     }
     
-    @Published var workTimeInSeconds: Int
-    @Published var overTimeInSeconds: Int
+    @Published var workTimeInSeconds: Int {
+        didSet {
+            workTimeString = generateHoursString(value: workTimeInSeconds)
+        }
+    }
     
     
+    @Published var overTimeInSeconds: Int {
+        didSet {
+            overTimerString = generateHoursString(value: overTimeInSeconds)
+        }
+    }
     
-    init(dataManager: DataManager = DataManager.shared, entry: Entry) {
+    @Published var workTimeString: String
+    @Published var overTimerString: String
+    
+    init(dataManager: DataManager = DataManager.shared, entry: Entry, overrideUserDefaults: Bool = false) {
         self.dataManager = dataManager
         self.entry = entry
         
@@ -38,19 +50,45 @@ class EditSheetViewModel: ObservableObject {
         self.workTimeInSeconds = entry.workTimeInSeconds
         self.overTimeInSeconds = entry.overTimeInSeconds
         
-        self.workTimeAllowed = UserDefaults.standard.integer(forKey: K.UserDefaultsKeys.workTimeInSeconds)
+        self.workTimeString = String()
+        self.overTimerString = String()
+        
+        if overrideUserDefaults {
+            self.workTimeAllowed = UserDefaults.standard.integer(forKey: K.UserDefaultsKeys.workTimeInSeconds)
+        } else {
+            self.workTimeAllowed = 8 * 3600
+        }
+        
+        self.workTimeString = generateHoursString(value: workTimeInSeconds)
+        self.overTimerString = generateHoursString(value: overTimeInSeconds)
+        
+        
     }
     
     func calculateTime() {
         let timeInterval = Calendar.current.dateComponents([.second], from: startDate, to: finishDate)
         if let seconds = timeInterval.second {
-            if seconds <= workTimeAllowed {
+            if seconds < workTimeAllowed {
                 workTimeInSeconds = seconds
             } else {
                 workTimeInSeconds = workTimeAllowed
                 overTimeInSeconds = seconds - workTimeAllowed
             }
         }
+    }
+    
+    func generateHoursString(value: Int) -> String {
+        let resultValue: Double = Double(value) / 3600
+        return String(format: "%.2f", resultValue)
+    }
+    
+    func saveEntry() {
+        entry.startDate = startDate
+        entry.finishDate = finishDate
+        entry.workTimeInSeconds = workTimeInSeconds
+        entry.overTimeInSeconds = overTimeInSeconds
+        dataManager.updateAndSave(entry: entry)
+        print("Daved entry: \(entry)")
     }
     
 }
