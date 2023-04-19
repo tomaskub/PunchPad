@@ -88,7 +88,7 @@ class EditSheetViewModel: ObservableObject {
         entry.workTimeInSeconds = workTimeInSeconds
         entry.overTimeInSeconds = overTimeInSeconds
         dataManager.updateAndSave(entry: entry)
-        print("Daved entry: \(entry)")
+        
     }
     
 }

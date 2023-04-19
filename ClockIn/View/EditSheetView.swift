@@ -52,6 +52,7 @@ struct EditSheetView: View {
                 HStack {
                     Button {
                         viewModel.saveEntry()
+                        dismiss()
                     } label: {
                         Text("SAVE")
                             .font(.headline)
