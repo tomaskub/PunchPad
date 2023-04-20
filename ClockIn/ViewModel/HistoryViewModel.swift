@@ -13,7 +13,7 @@ class HistoryViewModel: ObservableObject {
     
     @Published private var dataManager: DataManager
     private var maximumOvertimeInSeconds: Int
-    private var workTimeInSeconds: Int
+    private var scheduledWorkTimeInSeconds: Int
     
     var subscriptions: AnyCancellable? = nil
     
@@ -21,10 +21,10 @@ class HistoryViewModel: ObservableObject {
         self.dataManager = dataManager
         if !overrideUD {
             self.maximumOvertimeInSeconds = UserDefaults.standard.integer(forKey: K.UserDefaultsKeys.maximumOverTimeAllowedInSeconds)
-            self.workTimeInSeconds = UserDefaults.standard.integer(forKey: K.UserDefaultsKeys.workTimeInSeconds)
+            self.scheduledWorkTimeInSeconds = UserDefaults.standard.integer(forKey: K.UserDefaultsKeys.workTimeInSeconds)
         } else {
             self.maximumOvertimeInSeconds = 5 * 3600
-            self.workTimeInSeconds = 8 * 3600
+            self.scheduledWorkTimeInSeconds = 8 * 3600
         }
         subscriptions = dataManager.objectWillChange.sink(receiveValue: { [weak self] _ in
             self?.objectWillChange.send()
@@ -60,8 +60,8 @@ class HistoryViewModel: ObservableObject {
     ///Value returned is between 0 and 1
     ///If the maximum overtime value retrived is equal to 0, the return will be 1
     func convertWorkTimeToFraction(entry: Entry) -> CGFloat {
-        guard workTimeInSeconds != 0 else { return 1 }
-        return CGFloat(entry.workTimeInSeconds) / CGFloat(workTimeInSeconds)
+        guard scheduledWorkTimeInSeconds != 0 else { return 1 }
+        return CGFloat(entry.workTimeInSeconds) / CGFloat(scheduledWorkTimeInSeconds)
     }
     
     func deleteEntry(entry: Entry) {

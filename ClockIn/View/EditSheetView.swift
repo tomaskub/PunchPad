@@ -14,14 +14,27 @@ struct EditSheetView: View {
     @StateObject var viewModel: EditSheetViewModel
     var body: some View {
         ZStack {
+            
             LinearGradient(colors: [ colorScheme == .light ? .white : .black, .blue.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
             .ignoresSafeArea()
             
             VStack{
                 
+                ZStack {
+                    RingView(progress: $viewModel.workTimeFraction, ringColor: .blue)
+                    RingView(progress: $viewModel.overTimeFraction, ringColor: .green)
+                        .padding(30)
+                }
+                .frame(width: 250, height: 250)
+                .padding(.bottom)
+                
+                
+                
                 DatePicker("Start date", selection: $viewModel.startDate)
                 
                 DatePicker("Finish date:", selection: $viewModel.finishDate)
+                
+                Divider()
                 
                 HStack {
                     Text("Time worked:")
@@ -49,6 +62,9 @@ struct EditSheetView: View {
                     
                 }
                 .padding(.top)
+                
+                Divider()
+                
                 HStack {
                     Button {
                         viewModel.saveEntry()
@@ -82,10 +98,6 @@ struct EditSheetView: View {
                 
             }
             .padding(.horizontal)
-            /*
-             
-             
-             */
         }
     }
 }

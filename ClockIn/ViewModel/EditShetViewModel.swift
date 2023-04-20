@@ -12,6 +12,7 @@ class EditSheetViewModel: ObservableObject {
     private var dataManager: DataManager
     private var entry: Entry
     private var workTimeAllowed: Int
+    private var overTimeAllowed: Int
     
     @Published var startDate: Date {
         didSet {
@@ -25,21 +26,25 @@ class EditSheetViewModel: ObservableObject {
         }
     }
     
-    @Published var workTimeInSeconds: Int {
+    var workTimeInSeconds: Int {
         didSet {
             workTimeString = generateHoursString(value: workTimeInSeconds)
+            workTimeFraction = CGFloat(workTimeInSeconds) / CGFloat(workTimeAllowed)
         }
     }
     
     
-    @Published var overTimeInSeconds: Int {
+    var overTimeInSeconds: Int {
         didSet {
             overTimerString = generateHoursString(value: overTimeInSeconds)
+            overTimeFraction = CGFloat(overTimeInSeconds) / CGFloat(overTimeAllowed)
         }
     }
     
     @Published var workTimeString: String
     @Published var overTimerString: String
+    @Published var workTimeFraction: CGFloat
+    @Published var overTimeFraction: CGFloat
     
     init(dataManager: DataManager = DataManager.shared, entry: Entry, overrideUserDefaults: Bool = false) {
         self.dataManager = dataManager
@@ -55,9 +60,14 @@ class EditSheetViewModel: ObservableObject {
         
         if overrideUserDefaults {
             self.workTimeAllowed = UserDefaults.standard.integer(forKey: K.UserDefaultsKeys.workTimeInSeconds)
+            self.overTimeAllowed = UserDefaults.standard.integer(forKey: K.UserDefaultsKeys.maximumOverTimeAllowedInSeconds)
         } else {
             self.workTimeAllowed = 8 * 3600
+            self.overTimeAllowed = 5 * 3600
         }
+        
+        self.workTimeFraction = CGFloat(workTimeInSeconds) / CGFloat(workTimeAllowed)
+        self.overTimeFraction = CGFloat(overTimeInSeconds) / CGFloat(overTimeAllowed)
         
         self.workTimeString = generateHoursString(value: workTimeInSeconds)
         self.overTimerString = generateHoursString(value: overTimeInSeconds)
@@ -70,6 +80,7 @@ class EditSheetViewModel: ObservableObject {
         if let seconds = timeInterval.second {
             if seconds < workTimeAllowed {
                 workTimeInSeconds = seconds
+                overTimeInSeconds = 0
             } else {
                 workTimeInSeconds = workTimeAllowed
                 overTimeInSeconds = seconds - workTimeAllowed
