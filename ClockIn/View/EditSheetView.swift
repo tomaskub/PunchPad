@@ -20,10 +20,14 @@ struct EditSheetView: View {
             
             VStack{
                 
+            
                 ZStack {
+                    
                     RingView(progress: $viewModel.workTimeFraction, ringColor: .blue)
+                    
                     RingView(progress: $viewModel.overTimeFraction, ringColor: .green)
                         .padding(30)
+                    
                 }
                 .frame(width: 250, height: 250)
                 .padding(.bottom)
@@ -104,9 +108,7 @@ struct EditSheetView: View {
 struct EditSheetView_Previews: PreviewProvider {
     static var previews: some View {
         EditSheetView(viewModel:
-                        EditSheetViewModel(
-                            dataManager: DataManager.preview, entry: Entry(), overrideUserDefaults: true
-                        )
+                        EditSheetViewModel.preview
         )
     }
 }

@@ -24,8 +24,18 @@ struct StatisticsView: View {
             List {
                 Section {
                 HStack{
-                    Text("Chart-title")
-                        .font(.title2)
+                    switch viewModel.chartType {
+                    case .time:
+                        Text("Time worked")
+                            .font(.title2)
+                    case .startTime:
+                        Text("Time started")
+                            .font(.title2)
+                    case .finishTime:
+                        Text("Time finished")
+                            .font(.title2)
+                    }
+                                            
                     Spacer()
                     Picker("Time:", selection: .constant(1)) {
                         Text("This month")
@@ -34,7 +44,16 @@ struct StatisticsView: View {
                     .labelsHidden()
                     .pickerStyle(.menu)
                 }
-                chart
+                    switch viewModel.chartType {
+                    case .time:
+                        chartWorkTime
+                    case .startTime:
+                        chartStartTime
+                    case .finishTime:
+                        chartFinishTime
+                    }
+                
+                    
                     VStack(alignment: .leading) {
                         Text("Legend:")
                         HStack {
@@ -83,7 +102,7 @@ struct StatisticsView: View {
         }
     } //END OF VIEW
     
-    var chart: some View {
+    var chartWorkTime: some View {
         Chart(viewModel.entriesForChart) {
             RuleMark(y: .value("WorkGoal", 8))
                 .lineStyle(.init(dash: [10]))
@@ -99,20 +118,54 @@ struct StatisticsView: View {
             .foregroundStyle(.green)
             .cornerRadius(10)
         }
-//                    .chartXAxis(content: {
-//                        AxisMarks(values: viewModel.entriesForChart.map({ $0.startDate})) { date in
-//                            AxisValueLabel(format: .dateTime.day(.twoDigits))
-//                        }
-//                    })
-        //.chartYScale(domain: 0...15)
+        //Additional chart properties x-axis and y-scale
+        /*
+                    .chartXAxis(content: {
+                        AxisMarks(values: viewModel.entriesForChart.map({ $0.startDate})) { date in
+                            AxisValueLabel(format: .dateTime.day(.twoDigits))
+                        }
+                    })
+        .chartYScale(domain: 0...15)
+         */
     }
+    
+    var chartStartTime: some View {
+        Chart(viewModel.entriesForChart) {
+
+                PointMark(
+                    x: .value("Date", $0.startDate),
+                    y: .value("Date", Calendar.current.dateComponents([.hour, .minute], from:  $0.startDate).hour!)
+                )
+                .foregroundStyle($0.workTimeInSeconds == 0 ? .clear : .blue)
+
+        }
+        .chartYScale(domain: 0...24)
+    }
+    
+    var chartFinishTime: some View {
+        Chart(viewModel.entriesForChart) {
+
+                PointMark(
+                    x: .value("Date", $0.startDate),
+                    y: .value("Date", Calendar.current.dateComponents([.hour, .minute], from:  $0.finishDate).hour!)
+                )
+                .foregroundStyle($0.workTimeInSeconds == 0 ? .clear : .red)
+
+        }
+        .chartYScale(domain: 0...24)
+    }
+    
+    
     var chartTypePicker: some View {
-        Picker("Chart type", selection: .constant(1)) {
-                Text("Time")
-                Text("Start time")
-                Text("Finish time")
-            }
-            .pickerStyle(.segmented)
+        
+        Picker("Chart type", selection: $viewModel.chartType) {
+        
+            Text("Time").tag(ChartDataType.time)
+            Text("Start time").tag(ChartDataType.startTime)
+            Text("Finish time").tag(ChartDataType.finishTime)
+            
+        }
+        .pickerStyle(.segmented)
     }
     
 }

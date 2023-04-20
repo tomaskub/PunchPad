@@ -6,13 +6,18 @@
 //
 
 import Foundation
+import Combine
+
+enum ChartDataType {
+    case time, startTime, finishTime
+}
 
 class StatisticsViewModel: ObservableObject {
     
     //MARK: MODEL OBJECTS
     @Published private var dataManager: DataManager
     @Published private var payManager: PayManager
-    
+    private var subscriptions: AnyCancellable? = nil
     //MARK: RETRIVED PROPERTIES
     private var maximumOvertimeInSeconds: Int
     private var workTimeInSeconds: Int
@@ -51,6 +56,8 @@ class StatisticsViewModel: ObservableObject {
         ]
     }
     
+    @Published var chartType: ChartDataType = .time
+    
     init(dataManager: DataManager = DataManager.shared, payManager: PayManager = PayManager(),overrideUserDefaults: Bool = false) {
         
         self.dataManager = dataManager
@@ -62,6 +69,10 @@ class StatisticsViewModel: ObservableObject {
             self.maximumOvertimeInSeconds = 5 * 3600
             self.workTimeInSeconds = 8 * 3600
         }
+        
+        subscriptions = dataManager.objectWillChange.sink(receiveValue: { [weak self] _ in
+            self?.objectWillChange.send()
+        })
     }
     
     ///Entries for use with a chart - contains empy entries for days without the entry in this monts

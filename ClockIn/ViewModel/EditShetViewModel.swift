@@ -9,6 +9,15 @@ import Foundation
 
 class EditSheetViewModel: ObservableObject {
     
+    static let preview: EditSheetViewModel = .init(dataManager: DataManager.preview,
+                                                   entry: Entry(
+                                                    startDate: Calendar.current.date(byAdding: .hour, value: -9, to: Date())!,
+                                                    finishDate: Date(),
+                                                    workTimeInSec: 8 * 3600,
+                                                    overTimeInSec: 1 * 3600),
+                                                   overrideUserDefaults: true)
+    
+    
     private var dataManager: DataManager
     private var entry: Entry
     private var workTimeAllowed: Int
@@ -78,7 +87,7 @@ class EditSheetViewModel: ObservableObject {
     func calculateTime() {
         let timeInterval = Calendar.current.dateComponents([.second], from: startDate, to: finishDate)
         if let seconds = timeInterval.second {
-            if seconds < workTimeAllowed {
+            if seconds <= workTimeAllowed {
                 workTimeInSeconds = seconds
                 overTimeInSeconds = 0
             } else {
