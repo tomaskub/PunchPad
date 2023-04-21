@@ -10,10 +10,11 @@ import Charts
 
 struct StatisticsView: View {
     
+    //MARK: PROPERTIES
     @Environment(\.colorScheme) var colorScheme
     @StateObject var viewModel: StatisticsViewModel = StatisticsViewModel()
     
-    
+    //MARK: VIEW BODY
     var body: some View {
         
         ZStack {
@@ -23,56 +24,35 @@ struct StatisticsView: View {
             //Content layer
             List {
                 Section {
-                HStack{
+                    
                     switch viewModel.chartType {
                     case .time:
+                        
                         Text("Time worked")
                             .font(.title2)
+                        chartWorkTime
+                        chartWorkTimeLegend
+                        
                     case .startTime:
+                        
                         Text("Time started")
                             .font(.title2)
+                        chartStartTime
+                        chartStartTimeLegend
+                        
                     case .finishTime:
+                        
                         Text("Time finished")
                             .font(.title2)
-                    }
-                                            
-                    Spacer()
-                    Picker("Time:", selection: .constant(1)) {
-                        Text("This month")
-                        Text("Last 30 days")
-                    }
-                    .labelsHidden()
-                    .pickerStyle(.menu)
-                }
-                    switch viewModel.chartType {
-                    case .time:
-                        chartWorkTime
-                    case .startTime:
-                        chartStartTime
-                    case .finishTime:
                         chartFinishTime
+                        chartFinishTimeLegend
+                        
                     }
-                
                     
-                    VStack(alignment: .leading) {
-                        Text("Legend:")
-                        HStack {
-                            Rectangle()
-                                .fill(.blue)
-                                .frame(width: 20, height: 20)
-                            Text("Working time")
-                            Rectangle()
-                                .fill(.green)
-                                .frame(width: 20, height: 20)
-                            Text("Overtime")
-                                
-                        }
-                        .font(.caption)
-                    }
                     chartTypePicker
                 
                 
-                } //END OF SECTION
+                }//END OF SECTION
                 
                 Section("Salary calculation"){
                     
@@ -102,6 +82,7 @@ struct StatisticsView: View {
         }
     } //END OF VIEW
     
+    //MARK: UI ELEMENTS
     var chartWorkTime: some View {
         Chart(viewModel.entriesForChart) {
             RuleMark(y: .value("WorkGoal", 8))
@@ -119,14 +100,23 @@ struct StatisticsView: View {
             .cornerRadius(10)
         }
         //Additional chart properties x-axis and y-scale
-        /*
-                    .chartXAxis(content: {
-                        AxisMarks(values: viewModel.entriesForChart.map({ $0.startDate})) { date in
-                            AxisValueLabel(format: .dateTime.day(.twoDigits))
-                        }
-                    })
         .chartYScale(domain: 0...15)
-         */
+         
+    }
+    
+    var chartWorkTimeLegend: some View {
+        HStack {
+            Text("Legend:")
+            Rectangle()
+                .fill(.blue)
+                .frame(width: 14, height: 14)
+            Text("Working time")
+            Rectangle()
+                .fill(.green)
+                .frame(width: 14, height: 14)
+            Text("Overtime")
+    }
+        .font(.caption)
     }
     
     var chartStartTime: some View {
@@ -142,6 +132,17 @@ struct StatisticsView: View {
         .chartYScale(domain: 0...24)
     }
     
+    var chartStartTimeLegend: some View {
+        HStack {
+            Text("Legend:")
+            Circle()
+                .fill(.blue)
+                .frame(width: 14, height: 14)
+            Text("Clock in")
+    }
+        .font(.caption)
+    }
+    
     var chartFinishTime: some View {
         Chart(viewModel.entriesForChart) {
 
@@ -155,14 +156,24 @@ struct StatisticsView: View {
         .chartYScale(domain: 0...24)
     }
     
+    var chartFinishTimeLegend: some View {
+        HStack {
+            Text("Legend:")
+            Circle()
+                .fill(.red)
+                .frame(width: 14, height: 14)
+            Text("Clock out")
+    }
+        .font(.caption)
+    }
     
     var chartTypePicker: some View {
         
         Picker("Chart type", selection: $viewModel.chartType) {
         
-            Text("Time").tag(ChartDataType.time)
-            Text("Start time").tag(ChartDataType.startTime)
-            Text("Finish time").tag(ChartDataType.finishTime)
+            Text("Time").tag(ChartType.time)
+            Text("Start time").tag(ChartType.startTime)
+            Text("Finish time").tag(ChartType.finishTime)
             
         }
         .pickerStyle(.segmented)
@@ -170,14 +181,15 @@ struct StatisticsView: View {
     
 }
 
+//MARK: PREVIEW
 struct StatisticsView_Previews: PreviewProvider {
     static var previews: some View {
-//        NavigationView {
+        NavigationView {
         StatisticsView(viewModel:
                         StatisticsViewModel(
                             dataManager: .preview,
                             payManager: PayManager(dataManager: .preview)
                         ))
-//        }
+        }
     }
 }

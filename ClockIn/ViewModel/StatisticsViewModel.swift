@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-enum ChartDataType {
+enum ChartType {
     case time, startTime, finishTime
 }
 
@@ -56,7 +56,7 @@ class StatisticsViewModel: ObservableObject {
         ]
     }
     
-    @Published var chartType: ChartDataType = .time
+    @Published var chartType: ChartType = .time
     
     init(dataManager: DataManager = DataManager.shared, payManager: PayManager = PayManager(),overrideUserDefaults: Bool = false) {
         
