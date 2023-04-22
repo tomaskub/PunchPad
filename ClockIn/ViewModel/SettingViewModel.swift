@@ -8,29 +8,6 @@
 import Foundation
 import SwiftUI
 
-struct K {
-    
-    struct UserDefaultsKeys {
-        static let isLoggingOvertime = "isLoggingOverTime"
-        static let savedColorScheme = "colorScheme"
-        static let maximumOverTimeAllowedInSeconds = "overtimeMaximum"
-        static let workTimeInSeconds = "workTimeInSeconds"
-        static let isSendingNotifications = "isSendingNotifications"
-    }
-    
-    enum ColorScheme: String {
-        case system = "system"
-        case dark = "dark"
-        case light = "light"
-    }
-    
-    struct Notification {
-        static let title: String = "Notification title"
-        static let body: String = "Notification body"
-        static let identifier: String = "ClockIn-work-timer-ended"
-    }
-}
-
 class SettingsViewModel: ObservableObject {
     
     private var dataManager: DataManager
@@ -102,6 +79,10 @@ class SettingsViewModel: ObservableObject {
         self.workTimeInSeconds = UserDefaults.standard.integer(forKey: K.UserDefaultsKeys.workTimeInSeconds)
         self.timerHours = workTimeInSeconds / 3600
         self.timerMinutes = (workTimeInSeconds % 3600) / 60
+        self.overtimeHours = 5
+        self.overtimeMinutes = 0
+        self.overtimeHours = maximumOvertimeAllowedInSeconds / 3600
+        self.overtimeMinutes = (maximumOvertimeAllowedInSeconds % 3600) / 60
     }
     
     func deleteAllData() {
