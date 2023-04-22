@@ -10,7 +10,7 @@ import SwiftUI
 struct OnboardingView: View {
     
     @Environment(\.colorScheme) var colorScheme
-    
+    @Environment(\.dismiss) var dismiss
     //Onboarding stages:
     /*
      0 - welcome and logo
@@ -90,6 +90,7 @@ extension OnboardingView {
                     .stroke(lineWidth: 10)
                 Rectangle()
                     .frame(width: 10, height: 200)
+//                    .offset(x:50)
             }
             .padding(.horizontal)
             
@@ -231,12 +232,15 @@ extension OnboardingView {
 
     private var stage4Screen: some View {
         VStack(spacing: 40) {
+            
             Text("Clock In has been succsessfully set up")
                 .font(.largeTitle)
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
+            
             Text("To enter a short tutorial on how to use the app and its functions click the tour button. Alternatively, if you are a person that assembles the IKEA furniture without looking at the instructions click the finish button")
                 .multilineTextAlignment(.center)
+            
             Text("Finish!")
                 .font(.headline)
                 .foregroundColor(.accentColor)
@@ -252,6 +256,9 @@ extension OnboardingView {
                         Image(systemName: "figure.walk")
                     }
                     .padding()
+                }
+                .onTapGesture {
+                    dismiss()
                 }
         }
         .padding(30)
@@ -275,10 +282,24 @@ extension OnboardingView {
             .frame(height: 55)
             .frame(maxWidth: .infinity)
             .background(Color.primary.colorInvert())
+            .overlay(content: {
+                if onboardingStage == 4 {
+                    HStack {
+                        Spacer()
+                        Image(systemName: "figure.outdoor.cycle")
+                    }
+                    .padding(.trailing)
+                }
+            })
             .cornerRadius(10)
             .onTapGesture {
                 withAnimation(.spring()) {
-                    onboardingStage += 1
+                    if onboardingStage == 4 {
+                        print("Now tour the france")
+                        dismiss()
+                    } else {
+                        onboardingStage += 1
+                    }
                 }
             }
     }
