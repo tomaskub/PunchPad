@@ -44,6 +44,7 @@ struct SettingsView: View {
                         Text("Send notification on finish")
                     }
                 }
+                
                 Section("Overtime") {
                     
                     Toggle(isOn: $viewModel.isLoggingOverTime) {
