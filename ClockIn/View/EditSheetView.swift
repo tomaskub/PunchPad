@@ -23,9 +23,9 @@ struct EditSheetView: View {
             
                 ZStack {
                     
-                    RingView(progress: $viewModel.workTimeFraction, ringColor: .blue)
+                    RingView(progress: $viewModel.workTimeFraction, ringColor: .blue, displayPointer: false)
                     
-                    RingView(progress: $viewModel.overTimeFraction, ringColor: .green)
+                    RingView(progress: $viewModel.overTimeFraction, ringColor: .green, displayPointer: false)
                         .padding(30)
                     
                 }
