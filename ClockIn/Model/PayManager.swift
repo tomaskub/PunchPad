@@ -6,11 +6,11 @@
 //
 
 import Foundation
-
+import Combine
 class PayManager: ObservableObject {
     
     @Published private var dataManager: DataManager
-    private let grossPayPerMonth: Double = 1090
+    private let grossPayPerMonth: Double = 10900
     
     //MARK: PUBLISHED PROPERTIES
     @Published var numberOfWorkingDays: Int = 20
@@ -21,26 +21,42 @@ class PayManager: ObservableObject {
     @Published var netPayAvaliable: Bool = true
     @Published var grossPayPerHour: Double = 68.13
     
+    var entriesThisMonth = [Entry]()
+    
+    private var subscriptions = Set<AnyCancellable>()
     
     init(dataManager: DataManager = DataManager.shared) {
         
+        
         self.dataManager = dataManager
         
-        self.numberOfWorkingDays = getNumberOfWorkingDays()
-        self.grossPayPerHour = calculateGrossPayPerHour()
+        dataManager.$entryThisMonth.sink { [weak self] array in
+            guard let self else { return }
+            self.entriesThisMonth = array
+            self.updatePublishedValues()
+        }.store(in: &subscriptions)
         
-        self.grossPayToDate = calculateGrossPay()
-        self.netPayToDate = calculateNetPay(gross: grossPayToDate)
+        dataManager.objectWillChange.sink { [weak self] _ in
+            self?.objectWillChange.send()
+        }.store(in: &subscriptions)
         
-        self.grossPayPredicted = calculatePredictedGrossPay()
-        self.netPayPredicted = calculateNetPay(gross: grossPayPredicted)
         
         
     }
     
-    var entriesThisMonth: [Entry] {
-        dataManager.entryThisMonth
+    /// Update all values published based on avaliable entriesThisMonth
+    func updatePublishedValues() {
+        // Get number of working days and calculate gross pay per hour
+        self.numberOfWorkingDays = getNumberOfWorkingDays()
+        self.grossPayPerHour = calculateGrossPayPerHour()
+        // Calculate gross and net pay to date
+        self.grossPayToDate = calculateGrossPay()
+        self.netPayToDate = calculateNetPay(gross: grossPayToDate)
+        // Calculate predicted gross and net pay for this month
+        self.grossPayPredicted = calculatePredictedGrossPay()
+        self.netPayPredicted = calculateNetPay(gross: grossPayPredicted)
     }
+    
     
     ///Calculate net pay based on gross pay given, using standard polish taxation for work contract
     /// - Parameters:
@@ -54,7 +70,10 @@ class PayManager: ObservableObject {
         let skladkaWypoczynkowa = 0.0132 * gross
         let sumOfSkladka = skladkaEmerytalna + skladkaRentowa + skladkaChorobowa + skladkaWypoczynkowa
         let skladkaZdrowotna = (gross - sumOfSkladka) * 0.09
-        let podatekDochodowy = 0.12 * (gross - sumOfSkladka - 300) //- 300
+        var podatekDochodowy = 0.12 * (gross - sumOfSkladka - 300)//- 300
+        if podatekDochodowy < 0 {
+            podatekDochodowy = 0
+        }
         let netPay = gross - podatekDochodowy - skladkaZdrowotna - sumOfSkladka
         
         return netPay

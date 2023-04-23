@@ -54,13 +54,13 @@ struct HistoryView: View {
 //                        .tint(.blue)
                     }
                 }
-                .sheet(item: $selectedEntry) { entry in
-                    
-                        EditSheetView(viewModel: EditSheetViewModel(entry: entry))
-                    
-                }
             }
             .scrollContentBackground(.hidden)
+            .sheet(item: $selectedEntry) { entry in
+                
+                    EditSheetView(viewModel: EditSheetViewModel(entry: entry))
+                
+            }
             
         }
         
