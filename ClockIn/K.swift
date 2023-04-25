@@ -15,6 +15,8 @@ struct K {
         static let maximumOverTimeAllowedInSeconds = "overtimeMaximum"
         static let workTimeInSeconds = "workTimeInSeconds"
         static let isSendingNotifications = "isSendingNotifications"
+        static let grossPayPerMonth = "grossPayPerMonth"
+        static let isCalculatingNetPay = "isCalculatingNetPay"
     }
     
     enum ColorScheme: String {

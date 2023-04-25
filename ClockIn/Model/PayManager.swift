@@ -10,7 +10,8 @@ import Combine
 class PayManager: ObservableObject {
     
     @Published private var dataManager: DataManager
-    private let grossPayPerMonth: Double = 10900
+    
+    private var grossPayPerMonth: Double
     
     //MARK: PUBLISHED PROPERTIES
     @Published var numberOfWorkingDays: Int = 20
@@ -18,16 +19,18 @@ class PayManager: ObservableObject {
     @Published var netPayPredicted: Double = 1.0
     @Published var grossPayToDate: Double = 1
     @Published var grossPayPredicted: Double = 1
-    @Published var netPayAvaliable: Bool = true
-    @Published var grossPayPerHour: Double = 68.13
+    
+    @Published var netPayAvaliable: Bool
+    
+    @Published var grossPayPerHour: Double = 0
     
     var entriesThisMonth = [Entry]()
     
     private var subscriptions = Set<AnyCancellable>()
     
     init(dataManager: DataManager = DataManager.shared) {
-        
-        
+        self.netPayAvaliable = UserDefaults.standard.bool(forKey: K.UserDefaultsKeys.isCalculatingNetPay)
+        self.grossPayPerMonth = Double(UserDefaults.standard.integer(forKey: K.UserDefaultsKeys.grossPayPerMonth))
         self.dataManager = dataManager
         
         dataManager.$entryThisMonth.sink { [weak self] array in

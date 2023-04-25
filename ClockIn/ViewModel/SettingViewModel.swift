@@ -36,7 +36,6 @@ class SettingsViewModel: ObservableObject {
             maximumOvertimeAllowedInSeconds = overtimeHours * 3600 + overtimeMinutes * 60
         }
     }
-        
     
     //UserDefaults
     @Published var isLoggingOverTime: Bool = false {
@@ -63,6 +62,25 @@ class SettingsViewModel: ObservableObject {
             UserDefaults.standard.set(isSendingNotifications, forKey: K.UserDefaultsKeys.isSendingNotifications)
         }
     }
+    @Published var grossPayPerMonth: Int {
+        didSet {
+            UserDefaults.standard.set(grossPayPerMonth, forKey: K.UserDefaultsKeys.grossPayPerMonth)
+        }
+    }
+    @Published var calculateNetPaycheck: Bool = false {
+        didSet {
+            UserDefaults.standard.set(calculateNetPaycheck, forKey: K.UserDefaultsKeys.isCalculatingNetPay)
+        }
+    }
+    @Published var grossPayPerMonthText: String = "" {
+        didSet {
+            //Perform text validation here by filtering non-numbers
+            let filtered = grossPayPerMonthText.filter({"0123456789".contains($0)})
+            if let newGross = Int(filtered) {
+                grossPayPerMonth = newGross
+            }
+        }
+    }
     private var workTimeInSeconds: Int = 28800 {
         didSet {
             UserDefaults.standard.set(workTimeInSeconds, forKey: K.UserDefaultsKeys.workTimeInSeconds)
@@ -77,6 +95,10 @@ class SettingsViewModel: ObservableObject {
         self.maximumOvertimeAllowedInSeconds = UserDefaults.standard.integer(forKey: K.UserDefaultsKeys.maximumOverTimeAllowedInSeconds)
         self.isSendingNotifications = UserDefaults.standard.bool(forKey: K.UserDefaultsKeys.isSendingNotifications)
         self.workTimeInSeconds = UserDefaults.standard.integer(forKey: K.UserDefaultsKeys.workTimeInSeconds)
+        self.grossPayPerMonth = UserDefaults.standard.integer(forKey: K.UserDefaultsKeys.grossPayPerMonth)
+        self.calculateNetPaycheck = UserDefaults.standard.bool(forKey: K.UserDefaultsKeys.isCalculatingNetPay)
+        
+        self.grossPayPerMonthText = String(self.grossPayPerMonth)
         self.timerHours = workTimeInSeconds / 3600
         self.timerMinutes = (workTimeInSeconds % 3600) / 60
         self.overtimeHours = 5

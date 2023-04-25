@@ -67,7 +67,16 @@ struct SettingsView: View {
                         overTimePickers
                     }
                 }
-                
+                Section("Paycheck calculation") {
+                    HStack {
+                        Text("Gross paycheck")
+                        TextField("Gross", text: $viewModel.grossPayPerMonthText)
+                            .textFieldStyle(.roundedBorder)
+                            .keyboardType(.numberPad)
+                        Text("PLN")
+                    }
+                    Toggle("Calculate net pay", isOn: $viewModel.calculateNetPaycheck)
+                }
                 Section("User data") {
                     HStack {
                         Text("Clear all saved data")
