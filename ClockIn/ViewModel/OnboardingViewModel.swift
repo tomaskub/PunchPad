@@ -16,7 +16,8 @@ class OnboardingViewModel: ObservableObject {
      1 - Set the work time
      2 - Ask if doing overtime and set maximum overtime
      3 - Ask to send notifications on finish
-     4 - Inform setup complete, allows to Finish onboarding
+     4 - Ask user for salary and if to calculate net salary (after taxes)
+     5 - Inform setup complete, allows to Finish onboarding
      */
     
     @Published var onboardingStage: Int = 0
@@ -26,6 +27,7 @@ class OnboardingViewModel: ObservableObject {
             UserDefaults.standard.set(isLoggingOvertime, forKey: K.UserDefaultsKeys.isLoggingOvertime)
         }
     }
+    
     @Published var isSendingNotifications: Bool {
         didSet {
             UserDefaults.standard.set(isSendingNotifications, forKey: K.UserDefaultsKeys.isSendingNotifications)
@@ -33,6 +35,27 @@ class OnboardingViewModel: ObservableObject {
                 //ask for access to notifications
                 requestAuthorizationForNotifications()
             }
+        }
+    }
+    
+    @Published var netPayAvaliable: Bool {
+        didSet {
+            UserDefaults.standard.set(netPayAvaliable, forKey: K.UserDefaultsKeys.isCalculatingNetPay)
+        }
+    }
+    
+    @Published var grossPayPerMonthText: String = "" {
+        didSet {
+            let filtered = grossPayPerMonthText.filter({ "0123456789".contains($0) })
+            if let newGross = Int(filtered) {
+                grossPayPerMonth = newGross
+            }
+        }
+    }
+    
+    var grossPayPerMonth: Int {
+        didSet {
+            UserDefaults.standard.set(grossPayPerMonth, forKey: K.UserDefaultsKeys.grossPayPerMonth)
         }
     }
     
@@ -77,6 +100,8 @@ class OnboardingViewModel: ObservableObject {
         self.maxOvertimeAllowedinSeconds = userDef.integer(forKey: K.UserDefaultsKeys.maximumOverTimeAllowedInSeconds)
         self.isLoggingOvertime = userDef.bool(forKey: K.UserDefaultsKeys.isLoggingOvertime)
         self.isSendingNotifications = userDef.bool(forKey: K.UserDefaultsKeys.isSendingNotifications)
+        self.netPayAvaliable = userDef.bool(forKey: K.UserDefaultsKeys.isCalculatingNetPay)
+        self.grossPayPerMonth = userDef.integer(forKey: K.UserDefaultsKeys.grossPayPerMonth)
     }
     
     func calculateTimeInSeconds(hours: Int, minutes: Int) -> Int {

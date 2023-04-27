@@ -37,6 +37,8 @@ struct OnboardingView: View {
                         stage3Screen
                     case 4:
                         stage4Screen
+                    case 5:
+                        stage5Screen
                     default:
                         Rectangle()
                             .foregroundColor(.accentColor)
@@ -220,6 +222,40 @@ extension OnboardingView {
     private var stage4Screen: some View {
         VStack(spacing: 40) {
             
+            Text("Salary")
+                .font(.largeTitle)
+                .fontWeight(.semibold)
+                .overlay(content: {
+                    Capsule()
+                        .foregroundColor(.primary)
+                        .frame(height: 3)
+                        .offset(y: 20)
+                })
+            Text("To let ClockIn calculate the salary you need to enter your gross montly income")
+                .multilineTextAlignment(.center)
+            HStack {
+                Text("Gross paycheck")
+                TextField("", text: $viewModel.grossPayPerMonthText)
+                    .textFieldStyle(.roundedBorder)
+                    .keyboardType(.numberPad)
+                Text("PLN")
+            }
+            .padding()
+            .background()
+            .cornerRadius(20)
+            
+            Text("Do you want to allow ClockIn to calculate your net salary based on Polish tax law?")
+                .multilineTextAlignment(.center)
+            Toggle("Calculate net salary", isOn: $viewModel.netPayAvaliable)
+                .padding()
+                .background()
+                .cornerRadius(20)
+        }
+        .padding(30)
+    }
+    private var stage5Screen: some View {
+        VStack(spacing: 40) {
+            
             Text("Clock In has been succsessfully set up")
                 .font(.largeTitle)
                 .fontWeight(.semibold)
@@ -269,7 +305,7 @@ extension OnboardingView {
     
     private var bottomButton: some View {
         Text(viewModel.onboardingStage == 0 ? "Let's start!" :
-                viewModel.onboardingStage == 4 ? "Finish set up!" : "Next")
+                viewModel.onboardingStage == 5 ? "Finish set up!" : "Next")
             .font(.headline)
             .foregroundColor(.blue)
             .frame(height: 55)
@@ -290,7 +326,7 @@ extension OnboardingView {
             .cornerRadius(10)
             .onTapGesture {
                 withAnimation(.spring()) {
-                    if viewModel.onboardingStage == 4 {
+                    if viewModel.onboardingStage == 5 {
                         dismiss()
                     } else {
                         viewModel.onboardingStage += 1
@@ -302,6 +338,6 @@ extension OnboardingView {
 }
 struct OnboardingView_Previews: PreviewProvider {
     static var previews: some View {
-            OnboardingView()
+        OnboardingView()
     }
 }
