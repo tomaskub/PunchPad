@@ -55,15 +55,23 @@ struct StatisticsView: View {
                 }//END OF SECTION
                 
                 Section("Salary calculation"){
-                    
-                    ForEach(viewModel.salaryListData, id: \.0) { data in
+                    if viewModel.netPayAvaliable {
+                        ForEach(viewModel.salaryListDataNetPay, id: \.0) { data in
+                            HStack{
+                                Text(data.0)
+                                Spacer()
+                                Text(data.1)
+                            }
+                        }
+                    }
+                    ForEach(viewModel.salaryListDataGrossPay, id: \.0) { data in
                         HStack{
                             Text(data.0)
                             Spacer()
                             Text(data.1)
                         }
-                        
                     }
+                    
                 } // END OF SECTION
             } //END OF LIST
             

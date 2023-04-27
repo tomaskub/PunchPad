@@ -29,6 +29,7 @@ class PayManager: ObservableObject {
     private var subscriptions = Set<AnyCancellable>()
     
     init(dataManager: DataManager = DataManager.shared) {
+        
         self.netPayAvaliable = UserDefaults.standard.bool(forKey: K.UserDefaultsKeys.isCalculatingNetPay)
         self.grossPayPerMonth = Double(UserDefaults.standard.integer(forKey: K.UserDefaultsKeys.grossPayPerMonth))
         self.dataManager = dataManager
