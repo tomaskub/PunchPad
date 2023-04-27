@@ -109,7 +109,7 @@ extension TimerModel {
         progress = 0
         overtimeProgress = 0
         // this still does not work in the background
-        timer = timerProvider.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { [weak self] _ in
+        timer = timerProvider.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] _ in
             guard let self else { return }
             self.updateTimer()
         })
