@@ -29,6 +29,7 @@ struct Home: View {
                             .fill(.blue.opacity(0.5))
                             .padding()
                         Text("\(timer.timerStringValue)")
+                            .accessibilityIdentifier(ScreenIdentifier.HomeView.timerLabel.rawValue)
                             .foregroundColor(.white)
                             .font(.largeTitle)
                             .padding()
@@ -36,6 +37,7 @@ struct Home: View {
                             .cornerRadius(10)
                     }
                 }
+                        .accessibilityIdentifier(ScreenIdentifier.HomeView.startStopButton.rawValue)
                         .padding(60)
                 
                 if timer.isStarted {
@@ -45,6 +47,7 @@ struct Home: View {
                         Image(systemName: timer.isRunning ? "pause.fill" : "play.fill")
                             .resizable()
                     }
+                    .accessibilityIdentifier(ScreenIdentifier.HomeView.resumePauseButton.rawValue)
                     .accentColor(.primary)
                     .frame(width: 50, height: 50)
                     .offset(y: 250)
@@ -68,8 +71,8 @@ struct Home: View {
                         StatisticsView()
                     } label: {
                         Text("Statistics")
-                        
                     }
+                    .accessibilityIdentifier(ScreenIdentifier.HomeView.statisticsNavigationButton.rawValue)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink {
@@ -77,6 +80,7 @@ struct Home: View {
                     } label: {
                         Text("Settings")
                     }
+                    .accessibilityIdentifier(ScreenIdentifier.HomeView.settingNavigationButton.rawValue)
                 }
             }
         }
