@@ -25,6 +25,10 @@ enum ScreenIdentifier {
             case finishTimeChart
         }
         
+        enum Picker: String {
+            case chartType
+        }
+        
         enum ChartTypePicker: String {
             case workTime
             case startTime
@@ -40,6 +44,11 @@ enum ScreenIdentifier {
         enum SalaryCalculationLabel: String {
             case grossPay
             case netPay
+        }
+        
+        enum SectionHeaders: String {
+            case chart
+            case salaryCalculation
         }
         
         enum NavigationBarButtons: String {
