@@ -8,114 +8,134 @@
 import SwiftUI
 
 struct SettingsView: View {
-    
+    private typealias Identifier = ScreenIdentifier.SettingsView
     @Environment(\.colorScheme) var colorScheme
     @StateObject var viewModel = SettingsViewModel()
     
     var body: some View {
         ZStack{
             //BACKGROUND
-            LinearGradient(colors: [ colorScheme == .light ? .white : .black, .blue.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
-                .ignoresSafeArea()
-            
-            
+            GradientFactory.build(colorScheme: colorScheme)
             //CONTENT
             List {
-                
-                Section("Timer Settings") {
+                Section {
                     
                     HStack {
                         Text("Set timer length")
                         Spacer()
                         Image(systemName: viewModel.isShowingWorkTimeEditor ? "chevron.up" : "chevron.down")
-                    }
+                    } // END OF HSTACK
+                    .accessibilityIdentifier(Identifier.ExpandableCells.setTimerLength.rawValue)
+                    .contentShape(Rectangle())
                     .onTapGesture {
                         withAnimation(.spring()) {
                             viewModel.isShowingWorkTimeEditor.toggle()
                         }
-                        
-                    }
+                    } // END OF TAP GESTURE
                     
                     if viewModel.isShowingWorkTimeEditor {
                         timePickers
-                    }
+                            .accessibilityIdentifier(Identifier.Pickers.timePicker.rawValue)
+                    } // END OF IF
                     
                     Toggle(isOn: $viewModel.isSendingNotifications) {
                         Text("Send notification on finish")
-                    }
-                }
-                
-                Section("Overtime") {
+                    } // END OF TOGGLE
+                    .accessibilityIdentifier(Identifier.ToggableCells.sendNotificationsOnFinish.rawValue)
+                } header: {
+                    Text("Timer Settings")
+                        .accessibilityIdentifier(Identifier.SectionHeaders.timerSettings.rawValue)
+                } // END OF SECTION
+                Section {
                     
                     Toggle(isOn: $viewModel.isLoggingOverTime) {
                         Text("Keep loging overtime")
                     }
+                    .accessibilityIdentifier(Identifier.ToggableCells.keepLoggingOvertime.rawValue)
                     
                     HStack {
                         Text("Maximum overtime allowed")
                         Spacer()
                         Image(systemName: viewModel.isShowingOverTimeEditor ? "chevron.up" : "chevron.down")
-                    }
+                    } // END OF HSTACK
+                    .accessibilityIdentifier(Identifier.ExpandableCells.setOvertimeLength.rawValue)
+                    .contentShape(Rectangle())
                     .onTapGesture {
                         withAnimation(.spring()) {
                             viewModel.isShowingOverTimeEditor.toggle()
                         }
-                        
-                    }
+                    } // END OF TAP GESTURE
                     
                     if viewModel.isShowingOverTimeEditor {
                         overTimePickers
+                            .accessibilityIdentifier(Identifier.Pickers.overtimePicker.rawValue)
                     }
-                }
-                Section("Paycheck calculation") {
+                } header: {
+                    Text("Overtime")
+                        .accessibilityIdentifier(Identifier.SectionHeaders.overtimeSettings.rawValue)
+                } // END OF SECTION
+                Section {
                     HStack {
                         Text("Gross paycheck")
                         TextField("Gross", text: $viewModel.grossPayPerMonthText)
+                            .accessibilityIdentifier(Identifier.TextFields.calculateNetPay.rawValue)
                             .textFieldStyle(.roundedBorder)
                             .keyboardType(.numberPad)
                         Text("PLN")
                     }
                     Toggle("Calculate net pay", isOn: $viewModel.calculateNetPaycheck)
-                }
-                Section("User data") {
+                        .accessibilityIdentifier(Identifier.ToggableCells.calculateNetPay.rawValue)
+                } header: {
+                    Text("Paycheck calculation")
+                        .accessibilityIdentifier(Identifier.SectionHeaders.paycheckCalculation.rawValue)
+                } // END OF SECTION
+                Section {
                     HStack {
                         Text("Clear all saved data")
                             Spacer()
                         Image(systemName: "trash")
                             .foregroundColor(.red)
-                    }
+                    } // END OF HSTACK
+                    .contentShape(Rectangle())
+                    .accessibilityIdentifier(Identifier.ButtonCells.clearAllSavedData.rawValue)
                     .onTapGesture {
                         viewModel.deleteAllData()
-                    }
+                    } // END OF TAP GESTURE
                     HStack {
                         Text("Reset preferences")
                         Spacer()
                         Image(systemName: "arrow.counterclockwise")
                             .foregroundColor(.red)
-                    }
+                    } // END OF HSTACK
+                    .contentShape(Rectangle())
+                    .accessibilityIdentifier(Identifier.ButtonCells.resetPreferences.rawValue)
                     .onTapGesture {
                         viewModel.resetUserDefaults()
-                    }
-                }
-                
-                Section("Appearance") {
+                    } // END OF TAP GESTURE
+                } header: {
+                    Text("User data")
+                        .accessibilityIdentifier(Identifier.SectionHeaders.userData.rawValue)
+                } // END OF SECTION
+                Section {
                     VStack{
                         Text("Color scheme")
                         Picker("appearance", selection: $viewModel.preferredColorScheme) {
                             Text("System").tag("system")
                             Text("Dark").tag("dark")
                             Text("Light").tag("light")
-                        }
+                        } // END OF PICKER
+                        .accessibilityIdentifier(Identifier.Pickers.appearancePicker.rawValue)
                         .pickerStyle(.segmented)
-                    }
-                    
-                }
-                
-            }
+                    } // END OF VSTACK
+                } header: {
+                    Text("Appearance")
+                        .accessibilityIdentifier(Identifier.SectionHeaders.appearance.rawValue)
+                } // END OF SECTION
+            } // END OF LIST
             .foregroundColor(.primary)
             .scrollContentBackground(.hidden)
-        }
-    }
+        } // END OF ZSTACK
+    } // END OF BODY
     
     var timePickers: some View {
         HStack {
@@ -167,7 +187,9 @@ struct SettingsView: View {
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView()
+        NavigationStack {
+            SettingsView().navigationTitle("Settings")
+        }
     }
         
 }

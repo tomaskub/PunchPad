@@ -79,5 +79,9 @@ enum ScreenIdentifier {
             case clearAllSavedData
             case resetPreferences
         }
+        
+        enum TextFields: String {
+            case calculateNetPay
+        }
     }
 }
