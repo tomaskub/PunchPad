@@ -40,6 +40,7 @@
 		D6D02FAE29EF0B13006CD0B2 /* EditSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D02FAD29EF0B13006CD0B2 /* EditSheetView.swift */; };
 		D6D02FB029EF0B7F006CD0B2 /* EditShetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D02FAF29EF0B7F006CD0B2 /* EditShetViewModel.swift */; };
 		D6D906AE2AA0BEDE004E09C9 /* ScreenIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */; };
+		D6D906B12AA12BDB004E09C9 /* GradientFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D906B02AA12BDB004E09C9 /* GradientFactory.swift */; };
 		D6E2C15929D6C20E00229286 /* WorkHistory.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15729D6C20E00229286 /* WorkHistory.xcdatamodeld */; };
 		D6E2C15B29D6C31800229286 /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15A29D6C31800229286 /* HistoryViewModel.swift */; };
 /* End PBXBuildFile section */
@@ -98,6 +99,7 @@
 		D6D02FAD29EF0B13006CD0B2 /* EditSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSheetView.swift; sourceTree = "<group>"; };
 		D6D02FAF29EF0B7F006CD0B2 /* EditShetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditShetViewModel.swift; sourceTree = "<group>"; };
 		D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenIdentifier.swift; sourceTree = "<group>"; };
+		D6D906B02AA12BDB004E09C9 /* GradientFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientFactory.swift; sourceTree = "<group>"; };
 		D6E2C15829D6C20E00229286 /* WorkHistory.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WorkHistory.xcdatamodel; sourceTree = "<group>"; };
 		D6E2C15A29D6C31800229286 /* HistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -150,6 +152,7 @@
 		D6C4589229D229210069D89B /* ClockIn */ = {
 			isa = PBXGroup;
 			children = (
+				D6D906AF2AA12BBD004E09C9 /* Factory */,
 				D6C4589329D229210069D89B /* ClockInApp.swift */,
 				D65A976C29F323A900462D8C /* K.swift */,
 				D6E2C15629D6BF9F00229286 /* Model */,
@@ -219,6 +222,14 @@
 				D6AB736F29F562E600D5DE82 /* OnboardingViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		D6D906AF2AA12BBD004E09C9 /* Factory */ = {
+			isa = PBXGroup;
+			children = (
+				D6D906B02AA12BDB004E09C9 /* GradientFactory.swift */,
+			);
+			path = Factory;
 			sourceTree = "<group>";
 		};
 		D6E2C15629D6BF9F00229286 /* Model */ = {
@@ -369,6 +380,7 @@
 				D64574B629D9F37400207168 /* Entry.swift in Sources */,
 				D6C458C729D36C050069D89B /* RingView.swift in Sources */,
 				D64574B029D9E6A000207168 /* DataManager.swift in Sources */,
+				D6D906B12AA12BDB004E09C9 /* GradientFactory.swift in Sources */,
 				D6D02FB029EF0B7F006CD0B2 /* EditShetViewModel.swift in Sources */,
 				D6E2C15B29D6C31800229286 /* HistoryViewModel.swift in Sources */,
 				D64574B329D9F16900207168 /* EntryMO+CoreDataClass.swift in Sources */,
