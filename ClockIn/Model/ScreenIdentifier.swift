@@ -93,4 +93,29 @@ enum ScreenIdentifier {
             case calculateNetPay
         }
     }
+    
+    enum OnboardingView {
+        
+        enum Pickers: String {
+            case workingHours
+            case workingMinutes
+            case overtimeHours
+            case overtimeMinutes
+        }
+        
+        enum TextFields: String {
+            case grossPaycheck
+        }
+        
+        enum Toggles: String {
+            case overtime
+            case notifications
+            case calculateNetSalary
+        }
+        
+        enum Buttons: String {
+            case advanceStage
+            case regressStage
+        }
+    }
 }

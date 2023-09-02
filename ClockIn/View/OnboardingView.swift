@@ -9,6 +9,7 @@ import SwiftUI
 
 struct OnboardingView: View {
     
+    private typealias Identifier = ScreenIdentifier.OnboardingView
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) var dismiss
     
@@ -22,8 +23,7 @@ struct OnboardingView: View {
         
             ZStack{
                 //BACKGROUND
-                LinearGradient(colors: [ colorScheme == .light ? .white : .black, .blue.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
-                    .ignoresSafeArea()
+                GradientFactory.build(colorScheme: colorScheme)
                 //CONTENT
                 ZStack {
                     switch viewModel.onboardingStage {
@@ -124,6 +124,7 @@ extension OnboardingView {
                             Text("\(i)").tag(i)
                         }
                     }
+                    .accessibilityIdentifier(Identifier.Pickers.workingHours.rawValue)
                     .pickerStyle(.wheel)
                 }
                 VStack {
@@ -133,6 +134,7 @@ extension OnboardingView {
                             Text("\(i)").tag(i)
                         }
                     }
+                    .accessibilityIdentifier(Identifier.Pickers.workingMinutes.rawValue)
                     .pickerStyle(.wheel)
                 }
             }
@@ -160,6 +162,7 @@ extension OnboardingView {
                     .multilineTextAlignment(.center)
             }
             Toggle("Keep logging overtime", isOn: $viewModel.isLoggingOvertime)
+                .accessibilityIdentifier(Identifier.Toggles.overtime.rawValue)
                 .padding()
                 .background()
                 .cornerRadius(20)
@@ -174,6 +177,7 @@ extension OnboardingView {
                                 Text("\(i)").tag(i)
                             }
                         }
+                        .accessibilityIdentifier(Identifier.Pickers.overtimeHours.rawValue)
                         .pickerStyle(.wheel)
                     }
                     VStack {
@@ -183,6 +187,7 @@ extension OnboardingView {
                                 Text("\(i)").tag(i)
                             }
                         }
+                        .accessibilityIdentifier(Identifier.Pickers.overtimeMinutes.rawValue)
                         .pickerStyle(.wheel)
                     }
                 }
@@ -210,8 +215,8 @@ extension OnboardingView {
                 .multilineTextAlignment(.center)
             
             Toggle("Send notifications on finish", isOn: $viewModel.isSendingNotifications)
+                .accessibilityIdentifier(Identifier.Toggles.notifications.rawValue)
                 .padding()
-                
                 .background()
                 .cornerRadius(20)
             
@@ -236,6 +241,7 @@ extension OnboardingView {
             HStack {
                 Text("Gross paycheck")
                 TextField("", text: $viewModel.grossPayPerMonthText)
+                    .accessibilityIdentifier(Identifier.TextFields.grossPaycheck.rawValue)
                     .textFieldStyle(.roundedBorder)
                     .keyboardType(.numberPad)
                 Text("PLN")
@@ -247,12 +253,14 @@ extension OnboardingView {
             Text("Do you want to allow ClockIn to calculate your net salary based on Polish tax law?")
                 .multilineTextAlignment(.center)
             Toggle("Calculate net salary", isOn: $viewModel.netPayAvaliable)
+                .accessibilityIdentifier(Identifier.Toggles.calculateNetSalary.rawValue)
                 .padding()
                 .background()
                 .cornerRadius(20)
         }
         .padding(30)
     }
+    
     private var stage5Screen: some View {
         VStack(spacing: 40) {
             
@@ -295,6 +303,7 @@ extension OnboardingView {
     
     private var topButton: some View {
         Text("Back")
+            .accessibilityIdentifier(Identifier.Buttons.regressStage.rawValue)
             .foregroundColor(.accentColor)
             .onTapGesture {
                 withAnimation(.spring()) {
@@ -306,36 +315,37 @@ extension OnboardingView {
     private var bottomButton: some View {
         Text(viewModel.onboardingStage == 0 ? "Let's start!" :
                 viewModel.onboardingStage == 5 ? "Finish set up!" : "Next")
-            .font(.headline)
-            .foregroundColor(.blue)
-            .frame(height: 55)
-            .frame(maxWidth: .infinity)
-            .background(Color.primary.colorInvert())
+        .accessibilityIdentifier(Identifier.Buttons.advanceStage.rawValue)
+        .font(.headline)
+        .foregroundColor(.blue)
+        .frame(height: 55)
+        .frame(maxWidth: .infinity)
+        .background(Color.primary.colorInvert())
         //This section is still in works until in-app tutorial is developed
         /*
-            .overlay(content: {
-                if onboardingStage == 4 {
-                    HStack {
-                        Spacer()
-                        Image(systemName: "figure.outdoor.cycle")
-                    }
-                    .padding(.trailing)
-                }
-            })
+         .overlay(content: {
+         if onboardingStage == 4 {
+         HStack {
+         Spacer()
+         Image(systemName: "figure.outdoor.cycle")
+         }
+         .padding(.trailing)
+         }
+         })
          */
-            .cornerRadius(10)
-            .onTapGesture {
-                withAnimation(.spring()) {
-                    if viewModel.onboardingStage == 5 {
-                        dismiss()
-                    } else {
-                        viewModel.onboardingStage += 1
-                    }
+        .cornerRadius(10)
+        .onTapGesture {
+            withAnimation(.spring()) {
+                if viewModel.onboardingStage == 5 {
+                    dismiss()
+                } else {
+                    viewModel.onboardingStage += 1
                 }
             }
+        }
     }
-    
 }
+
 struct OnboardingView_Previews: PreviewProvider {
     static var previews: some View {
         OnboardingView()
