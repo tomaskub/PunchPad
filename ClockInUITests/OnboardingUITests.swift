@@ -1,16 +1,18 @@
 //
-//  ClockInUITests.swift
+//  OnboardingUITests.swift
 //  ClockInUITests
 //
-//  Created by Tomasz Kubiak on 3/27/23.
+//  Created by Tomasz Kubiak on 02/09/2023.
 //
 
 import XCTest
-@testable import ClockIn
 
-final class ClockInUITests: XCTestCase {
-    
+final class OnboardingUITests: XCTestCase {
     private var app: XCUIApplication!
+    
+    private var onbardingScreen: OnboardingViewScreen {
+        OnboardingViewScreen(app: app)
+    }
     
     override func setUp() {
         super.setUp()
