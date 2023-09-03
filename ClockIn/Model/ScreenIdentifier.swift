@@ -118,4 +118,44 @@ enum ScreenIdentifier {
             case regressStage
         }
     }
+    
+    enum HistoryView: String {
+        case addEntryButton
+        case deleteEntryButton
+        case editEntryButton
+        case entryRow
+    }
+    
+    enum HistoryRowView {
+        
+        enum Label: String {
+            case dateLabel
+            case timeWorkedLabel
+            case startTimeValueLabel
+            case finishTimeValueLabel
+        }
+        
+        enum DetailView: String {
+            case circleDetail
+            case barDetail
+        }
+    }
+    
+    enum EditSheetView {
+        
+        enum Label: String {
+            case timeWorkedValue
+            case overtimeValue
+        }
+        
+        enum DatePicker: String {
+            case startDate
+            case finishDate
+        }
+        
+        enum Button: String {
+            case save
+            case cancel
+        }
+    }
 }
