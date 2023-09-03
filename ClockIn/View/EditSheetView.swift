@@ -8,67 +8,55 @@
 import SwiftUI
 
 struct EditSheetView: View {
+    
+    private typealias Identifier = ScreenIdentifier.EditSheetView
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) var dismiss
-//    @State var entry: Entry
     @StateObject var viewModel: EditSheetViewModel
+    
     var body: some View {
         ZStack {
-            
-            LinearGradient(colors: [ colorScheme == .light ? .white : .black, .blue.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
-            .ignoresSafeArea()
-            
+            GradientFactory.build(colorScheme: colorScheme)
             VStack{
-                
-            
                 ZStack {
-                    
                     RingView(progress: $viewModel.workTimeFraction, ringColor: .blue, displayPointer: false)
-                    
                     RingView(progress: $viewModel.overTimeFraction, ringColor: .green, displayPointer: false)
                         .padding(30)
-                    
-                }
+                }  // END OF ZSTACK
                 .frame(width: 250, height: 250)
                 .padding(.bottom)
-                
-                
-                
                 DatePicker("Start date", selection: $viewModel.startDate)
-                
+                    .accessibilityIdentifier(Identifier.DatePicker.startDate.rawValue)
                 DatePicker("Finish date:", selection: $viewModel.finishDate)
-                
+                    .accessibilityIdentifier(Identifier.DatePicker.startDate.rawValue)
                 Divider()
-                
                 HStack {
                     Text("Time worked:")
                     Spacer()
                     Text(viewModel.workTimeString)
+                        .accessibilityIdentifier(Identifier.Label.timeWorkedValue.rawValue)
                         .padding(EdgeInsets(top: 4, leading: 28, bottom: 4, trailing: 28))
                         .background {
                             Rectangle()
                                 .cornerRadius(8)
-                            .opacity(0.05)}
-                    
-                }
+                            .opacity(0.05)
+                        } // END OF BACKGROUND
+                } // END OF HSTACK
                 .padding(.top)
-                
                 HStack {
                     Text("Overtime:")
                     Spacer()
                     Text(viewModel.overTimerString)
+                        .accessibilityIdentifier(Identifier.Label.overtimeValue.rawValue)
                         .padding(EdgeInsets(top: 4, leading: 28, bottom: 4, trailing: 28))
                         .background {
                             Rectangle()
                                 .cornerRadius(8)
-                            .opacity(0.05)}
-                    
-                    
-                }
+                            .opacity(0.05)
+                        } // END OF BACKGROUND
+                } // END OF HSTACK
                 .padding(.top)
-                
                 Divider()
-                
                 HStack {
                     Button {
                         viewModel.saveEntry()
@@ -81,10 +69,9 @@ struct EditSheetView: View {
                             .background {
                                 RoundedRectangle(cornerRadius: 10)
                                     .fill(.blue)
-                                
-                            }
-                    }
-                    
+                            } // END OF BACKGROUND
+                    } // END OF BUTTON
+                    .accessibilityIdentifier(Identifier.Button.save.rawValue)
                     Button {
                         dismiss()
                     } label: {
@@ -95,20 +82,21 @@ struct EditSheetView: View {
                             .background {
                                 RoundedRectangle(cornerRadius: 10)
                                     .fill(.gray)
-                            }
-                    }
-                }
+                            } // END OF BACKGROUND
+                    } // END OF BUTTON
+                    .accessibilityIdentifier(Identifier.Button.cancel.rawValue)
+                } // END OF HSTACK
                 .padding(.top)
-                
-            }
+            } // END OF VSTACK
             .padding(.horizontal)
-        }
-    }
-}
+        } // END OF ZSTACK
+    } // END OF BODY
+} // END OF STRUCT
+
 struct EditSheetView_Previews: PreviewProvider {
     static var previews: some View {
-        EditSheetView(viewModel:
-                        EditSheetViewModel.preview
+        EditSheetView(
+            viewModel: EditSheetViewModel.preview
         )
-    }
-}
+    } // END OF PREVIEWS
+} // END OF STRUCT
