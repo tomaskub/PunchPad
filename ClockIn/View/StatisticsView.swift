@@ -186,15 +186,15 @@ struct StatisticsView: View {
         Picker("Chart type", selection: $viewModel.chartType) {
             Text("Time")
                 .tag(ChartType.time)
-                .accessibilityIdentifier(Identifier.ChartTypePicker.workTime.rawValue)
+                .accessibilityIdentifier(Identifier.ChartTypeButton.workTime.rawValue)
             Text("Start time")
                 .tag(ChartType.startTime)
-                .accessibilityIdentifier(Identifier.ChartTypePicker.startTime.rawValue)
+                .accessibilityIdentifier(Identifier.ChartTypeButton.startTime.rawValue)
             Text("Finish time")
                 .tag(ChartType.finishTime)
-                .accessibilityIdentifier(Identifier.ChartTypePicker.finishTime.rawValue)
+                .accessibilityIdentifier(Identifier.ChartTypeButton.finishTime.rawValue)
         }
-        .accessibilityIdentifier(Identifier.Picker.chartType.rawValue)
+        .accessibilityIdentifier(Identifier.SegmentedControl.chartType.rawValue)
         .pickerStyle(.segmented)
     } // END OF VAR
 }

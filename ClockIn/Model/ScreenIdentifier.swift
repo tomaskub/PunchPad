@@ -25,11 +25,11 @@ enum ScreenIdentifier {
             case finishTimeChart
         }
         
-        enum Picker: String {
+        enum SegmentedControl: String {
             case chartType
         }
         
-        enum ChartTypePicker: String {
+        enum ChartTypeButton: String {
             case workTime
             case startTime
             case finishTime
