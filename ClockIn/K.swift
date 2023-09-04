@@ -17,6 +17,7 @@ struct K {
         static let isSendingNotifications = "isSendingNotifications"
         static let grossPayPerMonth = "grossPayPerMonth"
         static let isCalculatingNetPay = "isCalculatingNetPay"
+        static let isRunFirstTime = "isRunFirstTime"
     }
     
     enum ColorScheme: String {

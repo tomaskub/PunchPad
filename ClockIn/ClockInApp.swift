@@ -10,6 +10,12 @@ import SwiftUI
 @main
 struct ClockInApp: App {
     
+    init() {
+        if CommandLine.arguments.contains("-withOnboarding") {
+            UserDefaults.standard.set(true, forKey: K.UserDefaultsKeys.isRunFirstTime)
+        }
+    }
+    
     @StateObject var timerModel: TimerModel = .init()
     @AppStorage("colorScheme") var preferredColorScheme: String = "system"
     

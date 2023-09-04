@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var timerModel: TimerModel
-    @AppStorage("isRunFirstTime") var isRunFirstTime: Bool = true
+    @AppStorage(K.UserDefaultsKeys.isRunFirstTime) var isRunFirstTime: Bool = true
     var body: some View {
         Home()
             .environmentObject(timerModel)
