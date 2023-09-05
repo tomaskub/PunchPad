@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D60594DC2AA7A2C400B8B264 /* SettingsViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60594DB2AA7A2C400B8B264 /* SettingsViewScreen.swift */; };
 		D60D21F22AA30F310055BE34 /* HomeViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60D21F12AA30F310055BE34 /* HomeViewScreen.swift */; };
 		D60D21F32AA330BC0055BE34 /* ScreenIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */; };
 		D60D21F52AA357BA0055BE34 /* OnboardingViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60D21F42AA357BA0055BE34 /* OnboardingViewScreen.swift */; };
@@ -68,6 +69,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D60594DB2AA7A2C400B8B264 /* SettingsViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewScreen.swift; sourceTree = "<group>"; };
 		D60D21F12AA30F310055BE34 /* HomeViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewScreen.swift; sourceTree = "<group>"; };
 		D60D21F42AA357BA0055BE34 /* OnboardingViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewScreen.swift; sourceTree = "<group>"; };
 		D61945EB29E7306B0046DE1F /* TimerModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerModelTests.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				D6C458B029D229230069D89B /* ClockInUITestsLaunchTests.swift */,
 				D60D21F12AA30F310055BE34 /* HomeViewScreen.swift */,
 				D60D21F42AA357BA0055BE34 /* OnboardingViewScreen.swift */,
+				D60594DB2AA7A2C400B8B264 /* SettingsViewScreen.swift */,
 				D6ED26BC2AA3B739001E2390 /* StatisticsViewScreen.swift */,
 				D6ED26BE2AA3BA05001E2390 /* OnboardingUITests.swift */,
 			);
@@ -442,6 +445,7 @@
 				D60D21F52AA357BA0055BE34 /* OnboardingViewScreen.swift in Sources */,
 				D6C458AF29D229230069D89B /* ClockInUITests.swift in Sources */,
 				D6ED26BD2AA3B739001E2390 /* StatisticsViewScreen.swift in Sources */,
+				D60594DC2AA7A2C400B8B264 /* SettingsViewScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
