@@ -31,4 +31,15 @@ struct K {
         static let body: String = "Congratulations! You are finished with your normal hours! Stop the timer in the app to clock out or stay for that sweet overtime pay!"
         static let identifier: String = "ClockIn-work-timer-ended"
     }
+    
+    static func resetUserDefaults() {
+        UserDefaults.standard.removeObject(forKey: K.UserDefaultsKeys.isLoggingOvertime)
+        UserDefaults.standard.removeObject(forKey: K.UserDefaultsKeys.savedColorScheme)
+        UserDefaults.standard.removeObject(forKey: K.UserDefaultsKeys.maximumOverTimeAllowedInSeconds)
+        UserDefaults.standard.removeObject(forKey: K.UserDefaultsKeys.workTimeInSeconds)
+        UserDefaults.standard.removeObject(forKey: K.UserDefaultsKeys.isSendingNotifications)
+        UserDefaults.standard.removeObject(forKey: K.UserDefaultsKeys.grossPayPerMonth)
+        UserDefaults.standard.removeObject(forKey: K.UserDefaultsKeys.isCalculatingNetPay)
+        UserDefaults.standard.removeObject(forKey: K.UserDefaultsKeys.isRunFirstTime)
+    }
 }

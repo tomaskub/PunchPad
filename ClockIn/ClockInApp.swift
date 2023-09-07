@@ -12,6 +12,7 @@ struct ClockInApp: App {
     
     init() {
         if CommandLine.arguments.contains("-withOnboarding") {
+            K.resetUserDefaults()
             UserDefaults.standard.set(true, forKey: K.UserDefaultsKeys.isRunFirstTime)
         }
     }
