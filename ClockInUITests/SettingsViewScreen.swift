@@ -15,12 +15,12 @@ class SettingsViewScreen {
         self.app = app
     }
     
-    var setTimeLengthExapndButton: XCUIElement {
-        app.cells[Identifier.ExpandableCells.setTimerLength.rawValue]
+    var setTimeLengthExpandText: XCUIElement {
+        app.staticTexts[Identifier.ExpandableCells.setTimerLength.rawValue]
     }
     
-    var setOvertimeLengthExpanButton: XCUIElement {
-        app.cells[Identifier.ExpandableCells.setOvertimeLength.rawValue]
+    var setOvertimeLengthExpandButton: XCUIElement {
+        app.staticTexts[Identifier.ExpandableCells.setOvertimeLength.rawValue]
     }
     
     var sendNotificationsToggle: XCUIElement {
@@ -48,11 +48,11 @@ class SettingsViewScreen {
     }
     
     var clearAllSavedDataButton: XCUIElement {
-        app.cells[Identifier.ButtonCells.clearAllSavedData.rawValue]
+        app.staticTexts[Identifier.ButtonCells.clearAllSavedData.rawValue]
     }
     
     var resetPreferencesButton: XCUIElement {
-        app.cells[Identifier.ButtonCells.resetPreferences.rawValue]
+        app.staticTexts[Identifier.ButtonCells.resetPreferences.rawValue]
     }
     
     var workTimeHoursPicker: XCUIElement {
