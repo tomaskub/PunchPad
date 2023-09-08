@@ -11,6 +11,7 @@
 		D60D21F22AA30F310055BE34 /* HomeViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60D21F12AA30F310055BE34 /* HomeViewScreen.swift */; };
 		D60D21F32AA330BC0055BE34 /* ScreenIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */; };
 		D60D21F52AA357BA0055BE34 /* OnboardingViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60D21F42AA357BA0055BE34 /* OnboardingViewScreen.swift */; };
+		D61007492AAB867C00503C28 /* HistoryViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61007482AAB867C00503C28 /* HistoryViewScreen.swift */; };
 		D61945EC29E7306B0046DE1F /* TimerModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61945EB29E7306B0046DE1F /* TimerModelTests.swift */; };
 		D61945F029E735D80046DE1F /* MockTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61945EF29E735D80046DE1F /* MockTimer.swift */; };
 		D64574B029D9E6A000207168 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64574AF29D9E6A000207168 /* DataManager.swift */; };
@@ -72,6 +73,7 @@
 		D60594DB2AA7A2C400B8B264 /* SettingsViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewScreen.swift; sourceTree = "<group>"; };
 		D60D21F12AA30F310055BE34 /* HomeViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewScreen.swift; sourceTree = "<group>"; };
 		D60D21F42AA357BA0055BE34 /* OnboardingViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewScreen.swift; sourceTree = "<group>"; };
+		D61007482AAB867C00503C28 /* HistoryViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HistoryViewScreen.swift; path = ClockInUITests/HistoryViewScreen.swift; sourceTree = SOURCE_ROOT; };
 		D61945EB29E7306B0046DE1F /* TimerModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerModelTests.swift; sourceTree = "<group>"; };
 		D61945EF29E735D80046DE1F /* MockTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTimer.swift; sourceTree = "<group>"; };
 		D64574AF29D9E6A000207168 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
@@ -200,6 +202,7 @@
 		D6C458AD29D229230069D89B /* ClockInUITests */ = {
 			isa = PBXGroup;
 			children = (
+				D61007482AAB867C00503C28 /* HistoryViewScreen.swift */,
 				D6C458AE29D229230069D89B /* ClockInUITests.swift */,
 				D6C458B029D229230069D89B /* ClockInUITestsLaunchTests.swift */,
 				D60D21F12AA30F310055BE34 /* HomeViewScreen.swift */,
@@ -439,6 +442,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D6ED26BF2AA3BA05001E2390 /* OnboardingUITests.swift in Sources */,
+				D61007492AAB867C00503C28 /* HistoryViewScreen.swift in Sources */,
 				D60D21F32AA330BC0055BE34 /* ScreenIdentifier.swift in Sources */,
 				D60D21F22AA30F310055BE34 /* HomeViewScreen.swift in Sources */,
 				D6C458B129D229230069D89B /* ClockInUITestsLaunchTests.swift in Sources */,
