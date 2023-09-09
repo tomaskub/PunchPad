@@ -28,7 +28,7 @@ struct EditSheetView: View {
                 DatePicker("Start date", selection: $viewModel.startDate)
                     .accessibilityIdentifier(Identifier.DatePicker.startDate.rawValue)
                 DatePicker("Finish date:", selection: $viewModel.finishDate)
-                    .accessibilityIdentifier(Identifier.DatePicker.startDate.rawValue)
+                    .accessibilityIdentifier(Identifier.DatePicker.finishDate.rawValue)
                 Divider()
                 HStack {
                     Text("Time worked:")
