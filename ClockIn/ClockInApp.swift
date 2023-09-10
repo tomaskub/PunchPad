@@ -11,7 +11,7 @@ import SwiftUI
 struct ClockInApp: App {
     
     init() {
-        if CommandLine.arguments.contains("-withOnboarding") {
+        if CommandLine.arguments.contains(LaunchArgument.withOnboarding.rawValue) {
             K.resetUserDefaults()
             UserDefaults.standard.set(true, forKey: K.UserDefaultsKeys.isRunFirstTime)
         }

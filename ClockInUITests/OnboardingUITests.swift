@@ -26,7 +26,7 @@ final class OnboardingUITests: XCTestCase {
         super.setUp()
         app = .init()
         app.launchArguments = [
-            "-withOnboarding"
+            LaunchArgument.withOnboarding.rawValue
         ]
         app.launch()
     }
