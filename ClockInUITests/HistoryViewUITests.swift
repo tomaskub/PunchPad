@@ -9,6 +9,8 @@ import XCTest
 
 final class HistoryViewUITests: XCTestCase {
     
+    //TODO: SETTING THE IN MEMORY STORE THORUGH LAUNCH ARGUMENTS HAS NOT BEEN IMPLEMENTED
+    // for not the test for entry adding and deleting have to be run manually since there is no initial data and no cleanup
     private let standardTimeout: Double = 2.5
     private var app: XCUIApplication!
     
@@ -85,6 +87,23 @@ final class HistoryViewUITests: XCTestCase {
         XCTAssertEqual(cellResult, .completed)
     }
     
+    func test_deletingEntry() {
+        // Given
+        navigateToHistoryView()
+        let expectedCellCount = app.collectionViews.cells.count - 1
+        let expectedCellCountExpectation = expectation(for: NSPredicate(format: "count == \(expectedCellCount)"), evaluatedWith: app.collectionViews.cells)
+        let swipeButtonsExpectation = [
+            expectation(for: existsPredicate, evaluatedWith: historyScreen.editEntryButton),
+            expectation(for: existsPredicate, evaluatedWith: historyScreen.deleteEntryButton)
+        ]
+        // When
+        app.collectionViews.cells.firstMatch.swipeLeft()
+        let cellSwipeButtonsResult = XCTWaiter.wait(for: swipeButtonsExpectation, timeout: standardTimeout)
+        XCTAssertEqual(cellSwipeButtonsResult, .completed, "After swipe edit and delete buttons should exist")
+        historyScreen.deleteEntryButton.tap()
+        let result = XCTWaiter.wait(for: [expectedCellCountExpectation], timeout: standardTimeout)
+        XCTAssertEqual(result, .completed)
+    }    
     
     private func navigateToHistoryView() {
         HomeViewScreen(app: app).statisticsNavigationButton.tap()

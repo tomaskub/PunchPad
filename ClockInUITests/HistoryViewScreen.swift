@@ -25,10 +25,10 @@ final class HistoryViewScreen {
     }
     
     var deleteEntryButton: XCUIElement {
-        app.cells.buttons[Identifier.deleteEntryButton.rawValue]
+        app.buttons[Identifier.deleteEntryButton.rawValue]
     }
     
     var editEntryButton: XCUIElement {
-        app.cells.buttons[Identifier.editEntryButton.rawValue]
+        app.buttons[Identifier.editEntryButton.rawValue]
     }
 }
