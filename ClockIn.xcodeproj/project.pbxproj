@@ -77,7 +77,7 @@
 		D60594DB2AA7A2C400B8B264 /* SettingsViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewScreen.swift; sourceTree = "<group>"; };
 		D60D21F12AA30F310055BE34 /* HomeViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewScreen.swift; sourceTree = "<group>"; };
 		D60D21F42AA357BA0055BE34 /* OnboardingViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewScreen.swift; sourceTree = "<group>"; };
-		D61007482AAB867C00503C28 /* HistoryViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HistoryViewScreen.swift; path = ClockInUITests/HistoryViewScreen.swift; sourceTree = SOURCE_ROOT; };
+		D61007482AAB867C00503C28 /* HistoryViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HistoryViewScreen.swift; path = ClockInUITests/ScreenHelpers/HistoryViewScreen.swift; sourceTree = SOURCE_ROOT; };
 		D610074A2AAB8BC800503C28 /* HistoryViewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewUITests.swift; sourceTree = "<group>"; };
 		D610074C2AAC77F300503C28 /* EditSheetScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSheetScreen.swift; sourceTree = "<group>"; };
 		D61945EB29E7306B0046DE1F /* TimerModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerModelTests.swift; sourceTree = "<group>"; };
@@ -149,6 +149,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D67332E82AAE3C1A005FFE7F /* ScreenHelpers */ = {
+			isa = PBXGroup;
+			children = (
+				D61007482AAB867C00503C28 /* HistoryViewScreen.swift */,
+				D610074C2AAC77F300503C28 /* EditSheetScreen.swift */,
+				D60D21F12AA30F310055BE34 /* HomeViewScreen.swift */,
+				D60D21F42AA357BA0055BE34 /* OnboardingViewScreen.swift */,
+				D60594DB2AA7A2C400B8B264 /* SettingsViewScreen.swift */,
+				D6ED26BC2AA3B739001E2390 /* StatisticsViewScreen.swift */,
+			);
+			path = ScreenHelpers;
+			sourceTree = "<group>";
+		};
 		D6C4588729D229200069D89B = {
 			isa = PBXGroup;
 			children = (
@@ -210,16 +223,11 @@
 		D6C458AD29D229230069D89B /* ClockInUITests */ = {
 			isa = PBXGroup;
 			children = (
-				D61007482AAB867C00503C28 /* HistoryViewScreen.swift */,
-				D610074C2AAC77F300503C28 /* EditSheetScreen.swift */,
+				D67332E82AAE3C1A005FFE7F /* ScreenHelpers */,
 				D610074A2AAB8BC800503C28 /* HistoryViewUITests.swift */,
+				D6ED26BE2AA3BA05001E2390 /* OnboardingUITests.swift */,
 				D6C458AE29D229230069D89B /* ClockInUITests.swift */,
 				D6C458B029D229230069D89B /* ClockInUITestsLaunchTests.swift */,
-				D60D21F12AA30F310055BE34 /* HomeViewScreen.swift */,
-				D60D21F42AA357BA0055BE34 /* OnboardingViewScreen.swift */,
-				D60594DB2AA7A2C400B8B264 /* SettingsViewScreen.swift */,
-				D6ED26BC2AA3B739001E2390 /* StatisticsViewScreen.swift */,
-				D6ED26BE2AA3BA05001E2390 /* OnboardingUITests.swift */,
 			);
 			path = ClockInUITests;
 			sourceTree = "<group>";
