@@ -73,9 +73,17 @@ enum ScreenIdentifier {
         }
         
         enum Pickers: String {
-            case timePicker
-            case overtimePicker
+            case timeHoursPicker
+            case timeMinutesPicker
+            case overtimeHoursPicker
+            case overtimeMinutesPicker
             case appearancePicker
+        }
+        
+        enum SegmentedControlButtons: String {
+            case system
+            case dark
+            case light
         }
         
         enum ToggableCells: String {
@@ -90,7 +98,7 @@ enum ScreenIdentifier {
         }
         
         enum TextFields: String {
-            case calculateNetPay
+            case grossPay
         }
     }
     

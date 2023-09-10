@@ -35,7 +35,6 @@ struct SettingsView: View {
                     
                     if viewModel.isShowingWorkTimeEditor {
                         timePickers
-                            .accessibilityIdentifier(Identifier.Pickers.timePicker.rawValue)
                     } // END OF IF
                     
                     Toggle(isOn: $viewModel.isSendingNotifications) {
@@ -68,7 +67,6 @@ struct SettingsView: View {
                     
                     if viewModel.isShowingOverTimeEditor {
                         overTimePickers
-                            .accessibilityIdentifier(Identifier.Pickers.overtimePicker.rawValue)
                     }
                 } header: {
                     Text("Overtime")
@@ -78,7 +76,7 @@ struct SettingsView: View {
                     HStack {
                         Text("Gross paycheck")
                         TextField("Gross", text: $viewModel.grossPayPerMonthText)
-                            .accessibilityIdentifier(Identifier.TextFields.calculateNetPay.rawValue)
+                            .accessibilityIdentifier(Identifier.TextFields.grossPay.rawValue)
                             .textFieldStyle(.roundedBorder)
                             .keyboardType(.numberPad)
                         Text("PLN")
@@ -120,9 +118,15 @@ struct SettingsView: View {
                     VStack{
                         Text("Color scheme")
                         Picker("appearance", selection: $viewModel.preferredColorScheme) {
-                            Text("System").tag("system")
-                            Text("Dark").tag("dark")
-                            Text("Light").tag("light")
+                            Text("System")
+                                .tag("system")
+                                .accessibilityIdentifier(Identifier.SegmentedControlButtons.system.rawValue)
+                            Text("Dark")
+                                .tag("dark")
+                                .accessibilityIdentifier(Identifier.SegmentedControlButtons.dark.rawValue)
+                            Text("Light")
+                                .tag("light")
+                                .accessibilityIdentifier(Identifier.SegmentedControlButtons.light.rawValue)
                         } // END OF PICKER
                         .accessibilityIdentifier(Identifier.Pickers.appearancePicker.rawValue)
                         .pickerStyle(.segmented)
@@ -146,16 +150,17 @@ struct SettingsView: View {
                         Text("\(i)").tag(i)
                     }
                 }
+                .accessibilityIdentifier(Identifier.Pickers.timeHoursPicker.rawValue)
                 .pickerStyle(.wheel)
             }
             VStack {
                 Text("Minutes")
-                
                 Picker("minutes", selection: $viewModel.timerMinutes) {
                     ForEach(0..<60) { i in
                         Text("\(i)").tag(i)
                     }
                 }
+                .accessibilityIdentifier(Identifier.Pickers.timeMinutesPicker.rawValue)
                 .pickerStyle(.wheel)
             }
         }
@@ -169,16 +174,17 @@ struct SettingsView: View {
                         Text("\(i)").tag(i)
                     }
                 }
+                .accessibilityIdentifier(Identifier.Pickers.overtimeHoursPicker.rawValue)
                 .pickerStyle(.wheel)
             }
             VStack {
                 Text("Minutes")
-                
                 Picker("minutes", selection: $viewModel.overtimeMinutes) {
                     ForEach(0..<60) { i in
                         Text("\(i)").tag(i)
                     }
                 }
+                .accessibilityIdentifier(Identifier.Pickers.overtimeMinutesPicker.rawValue)
                 .pickerStyle(.wheel)
             }
         }

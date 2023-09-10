@@ -36,22 +36,22 @@ class OnboardingViewScreen {
     }
     
     var overtimeToggleButton: XCUIElement {
-        app.toggles[Identifier.Toggles.overtime.rawValue]
+        app.switches[Identifier.Toggles.overtime.rawValue]
     }
     
     var notificationToggleButton: XCUIElement {
-        app.toggles[Identifier.Toggles.notifications.rawValue]
+        app.switches[Identifier.Toggles.notifications.rawValue]
     }
     
     var calculateNetSalaryToggleButton: XCUIElement {
-        app.toggles[Identifier.Toggles.calculateNetSalary.rawValue]
+        app.switches[Identifier.Toggles.calculateNetSalary.rawValue]
     }
     
     var advanceStageButton: XCUIElement {
         app.staticTexts[Identifier.Buttons.advanceStage.rawValue]
     }
     
-    var regressStage: XCUIElement {
+    var regressStageButton: XCUIElement {
         app.staticTexts[Identifier.Buttons.regressStage.rawValue]
     }
 }
