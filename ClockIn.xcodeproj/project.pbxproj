@@ -28,6 +28,7 @@
 		D66750EC29D71C8300757F17 /* HistoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66750EB29D71C8300757F17 /* HistoryRow.swift */; };
 		D67332E62AADB8B1005FFE7F /* LaunchArgument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67332E52AADB8B1005FFE7F /* LaunchArgument.swift */; };
 		D67332E72AADB8B1005FFE7F /* LaunchArgument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67332E52AADB8B1005FFE7F /* LaunchArgument.swift */; };
+		D67332EA2AAE3D3D005FFE7F /* StatisticsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67332E92AAE3D3D005FFE7F /* StatisticsUITests.swift */; };
 		D6799EFC29E1BC0F0080E32A /* HistoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6799EFB29E1BC0F0080E32A /* HistoryViewModelTests.swift */; };
 		D68384F929DB25DD00228491 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68384F829DB25DD00228491 /* SettingViewModel.swift */; };
 		D6842EC029EC178000731E84 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6842EBF29EC178000731E84 /* StatisticsView.swift */; };
@@ -93,6 +94,7 @@
 		D66750E929D713C900757F17 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		D66750EB29D71C8300757F17 /* HistoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRow.swift; sourceTree = "<group>"; };
 		D67332E52AADB8B1005FFE7F /* LaunchArgument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchArgument.swift; sourceTree = "<group>"; };
+		D67332E92AAE3D3D005FFE7F /* StatisticsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsUITests.swift; sourceTree = "<group>"; };
 		D6799EFB29E1BC0F0080E32A /* HistoryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModelTests.swift; sourceTree = "<group>"; };
 		D68384F829DB25DD00228491 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		D6842EBF29EC178000731E84 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 			children = (
 				D67332E82AAE3C1A005FFE7F /* ScreenHelpers */,
 				D610074A2AAB8BC800503C28 /* HistoryViewUITests.swift */,
+				D67332E92AAE3D3D005FFE7F /* StatisticsUITests.swift */,
 				D6ED26BE2AA3BA05001E2390 /* OnboardingUITests.swift */,
 				D6C458AE29D229230069D89B /* ClockInUITests.swift */,
 				D6C458B029D229230069D89B /* ClockInUITestsLaunchTests.swift */,
@@ -464,6 +467,7 @@
 				D61007492AAB867C00503C28 /* HistoryViewScreen.swift in Sources */,
 				D60D21F32AA330BC0055BE34 /* ScreenIdentifier.swift in Sources */,
 				D60D21F22AA30F310055BE34 /* HomeViewScreen.swift in Sources */,
+				D67332EA2AAE3D3D005FFE7F /* StatisticsUITests.swift in Sources */,
 				D6C458B129D229230069D89B /* ClockInUITestsLaunchTests.swift in Sources */,
 				D60D21F52AA357BA0055BE34 /* OnboardingViewScreen.swift in Sources */,
 				D6C458AF29D229230069D89B /* ClockInUITests.swift in Sources */,
