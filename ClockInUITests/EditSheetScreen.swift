@@ -39,4 +39,8 @@ class EditSheetScreen {
     var cancelButton: XCUIElement {
         app.buttons[Identifier.Button.cancel.rawValue]
     }
+    
+    var popoverDismissButton: XCUIElement {
+        app.buttons["PopoverDismissRegion"]
+    }
 }
