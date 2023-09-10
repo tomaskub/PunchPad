@@ -10,7 +10,7 @@ import XCTest
 final class HistoryViewUITests: XCTestCase {
     
     //TODO: SETTING THE IN MEMORY STORE THORUGH LAUNCH ARGUMENTS HAS NOT BEEN IMPLEMENTED
-    // for not the test for entry adding and deleting have to be run manually since there is no initial data and no cleanup
+    // for not the test for entry adding and deleting have to be run manually since there is no initial data and no cleanup, additionally onboarding tests have to be run before or the app has to be manually run beforehand to ensure onboarding stage is done
     private let standardTimeout: Double = 2.5
     private var app: XCUIApplication!
     
@@ -91,7 +91,7 @@ final class HistoryViewUITests: XCTestCase {
         // Given
         navigateToHistoryView()
         let expectedCellCount = app.collectionViews.cells.count - 1
-        let expectedCellCountExpectation = expectation(for: NSPredicate(format: "count == \(expectedCellCount)"), evaluatedWith: app.collectionViews.cells)
+        let cellCountExpectation = expectation(for: NSPredicate(format: "count == \(expectedCellCount)"), evaluatedWith: app.collectionViews.cells)
         let swipeButtonsExpectation = [
             expectation(for: existsPredicate, evaluatedWith: historyScreen.editEntryButton),
             expectation(for: existsPredicate, evaluatedWith: historyScreen.deleteEntryButton)
@@ -99,11 +99,36 @@ final class HistoryViewUITests: XCTestCase {
         // When
         app.collectionViews.cells.firstMatch.swipeLeft()
         let cellSwipeButtonsResult = XCTWaiter.wait(for: swipeButtonsExpectation, timeout: standardTimeout)
+        // Then
         XCTAssertEqual(cellSwipeButtonsResult, .completed, "After swipe edit and delete buttons should exist")
+        // When
         historyScreen.deleteEntryButton.tap()
-        let result = XCTWaiter.wait(for: [expectedCellCountExpectation], timeout: standardTimeout)
-        XCTAssertEqual(result, .completed)
-    }    
+        // Then
+        let result = XCTWaiter.wait(for: [cellCountExpectation], timeout: standardTimeout)
+        XCTAssertEqual(result, .completed, "The amount of cells should be 1 less than starting amount")
+    }
+    
+    func test_EditingExistingEntry() {
+        // Given
+        let resultExpetations = [
+            expectation(for: existsPredicate, evaluatedWith: app.staticTexts["6:00 AM"]),
+            expectation(for: existsPredicate, evaluatedWith: app.staticTexts["4:00 PM"]),
+            expectation(for: existsPredicate, evaluatedWith: app.staticTexts["10 hours 00 minutes"])
+        ]
+        navigateToHistoryView()
+        // When
+        app.collectionViews.cells.firstMatch.swipeLeft()
+        historyScreen.editEntryButton.tap()
+        editScreen.finishDatePicker.buttons.element(boundBy: 2).tap()
+        app.pickerWheels.element(boundBy: 0).adjust(toPickerWheelValue: "4")
+        app.pickerWheels.element(boundBy: 1).adjust(toPickerWheelValue: "00")
+        editScreen.popoverDismissButton.tap()
+        editScreen.saveButton.tap()
+        app.collectionViews.cells.firstMatch.tap()
+        // Then
+        let result = XCTWaiter.wait(for: resultExpetations, timeout: standardTimeout)
+        XCTAssertEqual(result, .completed, "The expected static texts should exit")
+    }
     
     private func navigateToHistoryView() {
         HomeViewScreen(app: app).statisticsNavigationButton.tap()
