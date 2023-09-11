@@ -14,6 +14,11 @@ struct HistoryView: View {
     @Environment(\.colorScheme) var colorScheme
     @StateObject var viewModel = HistoryViewModel()
     @State var selectedEntry: Entry? = nil
+    
+    init(viewModel: HistoryViewModel = HistoryViewModel()) {
+        self._viewModel = StateObject.init(wrappedValue: viewModel)        
+    }
+    
     //unused for now - have to implement
     /*
      @AppStorage("detail_display_mode") var detailDisplayMode: String = HistoryRow.DetailDisplayType.circleDisplay.rawValue

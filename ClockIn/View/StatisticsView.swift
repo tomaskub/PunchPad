@@ -58,7 +58,7 @@ struct StatisticsView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink {
-                        HistoryView()
+                        HistoryView(viewModel: HistoryViewModel(dataManager: DataManager.shared, overrideUD: false))
                     } label: {
                         Text("Detailed history")
                     } // END OF NAV LINK
