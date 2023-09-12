@@ -12,10 +12,11 @@ struct HistoryView: View {
     
     private typealias Identifier = ScreenIdentifier.HistoryView
     @Environment(\.colorScheme) var colorScheme
-    @StateObject var viewModel = HistoryViewModel()
+    @EnvironmentObject private var container: Container
+    @StateObject private var viewModel: HistoryViewModel
     @State var selectedEntry: Entry? = nil
     
-    init(viewModel: HistoryViewModel = HistoryViewModel()) {
+    init(viewModel: HistoryViewModel) {
         self._viewModel = StateObject.init(wrappedValue: viewModel)        
     }
     
@@ -57,7 +58,7 @@ struct HistoryView: View {
             } // END OF LIST
             .scrollContentBackground(.hidden)
             .sheet(item: $selectedEntry) { entry in
-                    EditSheetView(viewModel: EditSheetViewModel(entry: entry))
+                EditSheetView(viewModel: EditSheetViewModel(dataManager: container.dataManager, entry: entry))
             } // END OF SHEET
         } // END OF ZSTACK
         .toolbar {
@@ -76,10 +77,21 @@ struct HistoryView: View {
 
 
 struct HistoryView_Previews: PreviewProvider {
-    
-    static var previews: some View {
-        NavigationView {
-            HistoryView(viewModel: HistoryViewModel(dataManager: DataManager.preview, overrideUD: true))
+    private struct ContainerView: View {
+        @StateObject private var container: Container = .init()
+        var body: some View {
+            NavigationView {
+                HistoryView(viewModel:
+                                HistoryViewModel(
+                                    dataManager: container.dataManager,
+                                    overrideUD: true
+                                )
+                )
+            }
+            .environmentObject(container)
         }
+    }
+    static var previews: some View {
+        ContainerView()
     }
 }

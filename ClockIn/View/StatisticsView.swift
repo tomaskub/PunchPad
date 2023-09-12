@@ -12,6 +12,7 @@ struct StatisticsView: View {
     private typealias Identifier = ScreenIdentifier.StatisticsView
     //MARK: PROPERTIES
     @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var container: Container
     @StateObject private var viewModel: StatisticsViewModel
     init(viewModel: StatisticsViewModel = StatisticsViewModel(dataManager: .shared, payManager: PayManager(dataManager: .shared), overrideUserDefaults: false)) {
         self._viewModel = StateObject(wrappedValue: viewModel)
@@ -60,7 +61,10 @@ struct StatisticsView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink {
-                        HistoryView(viewModel: HistoryViewModel(dataManager: DataManager.shared, overrideUD: false))
+                        HistoryView(viewModel:
+                                        HistoryViewModel(
+                                            dataManager: container.dataManager)
+                        )
                     } label: {
                         Text("Detailed history")
                     } // END OF NAV LINK
@@ -203,6 +207,19 @@ struct StatisticsView: View {
 
 //MARK: PREVIEW
 struct StatisticsView_Previews: PreviewProvider {
+    private struct ContainerView: View {
+        @StateObject private var container = Container()
+        var body: some View {
+            NavigationView {
+                StatisticsView(viewModel:
+                                StatisticsViewModel(
+                                    dataManager: container.dataManager,
+                                    payManager: container.payManager,
+                                    overrideUserDefaults: false)
+                               )
+            }
+        }
+    }
     static var previews: some View {
         NavigationView {
         StatisticsView(viewModel:

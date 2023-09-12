@@ -11,6 +11,7 @@ struct Home: View {
     private typealias Identifier = ScreenIdentifier.HomeView
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var timer: TimerModel
+    @EnvironmentObject private var container: Container
     
     var body: some View {
             ZStack {
@@ -57,10 +58,11 @@ struct Home: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     NavigationLink {
-                        StatisticsView(viewModel: StatisticsViewModel(
-                            dataManager: .shared,
-                            payManager: PayManager(),
-                            overrideUserDefaults: false))
+                        StatisticsView(viewModel:
+                                        StatisticsViewModel(
+                                            dataManager: container.dataManager,
+                                            payManager: container.payManager,
+                                            overrideUserDefaults: false))
                     } label: {
                         Text("Statistics")
                     } // END OF NAV LINK
@@ -68,7 +70,7 @@ struct Home: View {
                 } // END OF TOOLBAR ITEM
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink {
-                        SettingsView(viewModel: SettingsViewModel(dataManger: DataManager.shared))
+                        SettingsView(viewModel: SettingsViewModel(dataManger: container.dataManager))
                     } label: {
                         Text("Settings")
                     } // END OF NAV LINK
@@ -83,6 +85,7 @@ struct Home_Previews: PreviewProvider {
         NavigationView {
             Home()
         }
+        .environmentObject(Container())
         .environmentObject(TimerModel())
     }
 }
