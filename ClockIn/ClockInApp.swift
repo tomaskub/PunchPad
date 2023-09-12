@@ -10,13 +10,7 @@ import SwiftUI
 @main
 struct ClockInApp: App {
     
-    init() {
-        if CommandLine.arguments.contains(LaunchArgument.withOnboarding.rawValue) {
-            K.resetUserDefaults()
-            UserDefaults.standard.set(true, forKey: K.UserDefaultsKeys.isRunFirstTime)
-        }
-    }
-    
+    @StateObject private var container = Container()
     @StateObject var timerModel: TimerModel = .init()
     @AppStorage("colorScheme") var preferredColorScheme: String = "system"
     
@@ -34,6 +28,7 @@ struct ClockInApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(container)
                 .environmentObject(timerModel)
                 .preferredColorScheme(colorScheme)
         }
