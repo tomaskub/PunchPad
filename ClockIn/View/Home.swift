@@ -57,7 +57,10 @@ struct Home: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     NavigationLink {
-                        StatisticsView()
+                        StatisticsView(viewModel: StatisticsViewModel(
+                            dataManager: .shared,
+                            payManager: PayManager(),
+                            overrideUserDefaults: false))
                     } label: {
                         Text("Statistics")
                     } // END OF NAV LINK

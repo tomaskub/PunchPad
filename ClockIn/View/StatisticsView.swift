@@ -12,8 +12,10 @@ struct StatisticsView: View {
     private typealias Identifier = ScreenIdentifier.StatisticsView
     //MARK: PROPERTIES
     @Environment(\.colorScheme) var colorScheme
-    @StateObject var viewModel: StatisticsViewModel = StatisticsViewModel()
-    
+    @StateObject private var viewModel: StatisticsViewModel
+    init(viewModel: StatisticsViewModel = StatisticsViewModel(dataManager: .shared, payManager: PayManager(dataManager: .shared), overrideUserDefaults: false)) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
     //MARK: VIEW BODY
     var body: some View {
         ZStack {
