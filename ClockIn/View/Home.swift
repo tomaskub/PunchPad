@@ -66,7 +66,8 @@ struct Home: View {
                 } // END OF TOOLBAR ITEM
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink {
-                        SettingsView().navigationTitle("Settings")
+                        SettingsView(viewModel: SettingsViewModel(dataManger: DataManager.shared))
+                            .navigationTitle("Settings")
                     } label: {
                         Text("Settings")
                     } // END OF NAV LINK

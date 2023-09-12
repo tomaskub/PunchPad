@@ -12,6 +12,10 @@ struct SettingsView: View {
     @Environment(\.colorScheme) var colorScheme
     @StateObject var viewModel = SettingsViewModel()
     
+    init(viewModel: SettingsViewModel = SettingsViewModel()) {
+        self._viewModel = StateObject.init(wrappedValue: viewModel)
+    }
+    
     var body: some View {
         ZStack{
             //BACKGROUND
