@@ -13,7 +13,6 @@ struct Home: View {
     @EnvironmentObject var timer: TimerModel
     
     var body: some View {
-        NavigationView {
             ZStack {
                 //BACKGROUND LAYER
                 GradientFactory.build(colorScheme: colorScheme)
@@ -67,35 +66,20 @@ struct Home: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink {
                         SettingsView(viewModel: SettingsViewModel(dataManger: DataManager.shared))
-                            .navigationTitle("Settings")
                     } label: {
                         Text("Settings")
                     } // END OF NAV LINK
                     .accessibilityIdentifier(Identifier.settingNavigationButton.rawValue)
                 } // END OF TOOLBAR ITEM
             } // END OF TOOLBAR
-        } // END OF NAV VIEW
     } // END OF BODY
-    
-    var secondRing: some View {
-        Circle()
-            .trim(from: (timer.secondProgress) >= 0.05 ? timer.secondProgress - 0.05 : 0, to: timer.secondProgress)
-            .stroke(Color.purple.opacity(0.7), lineWidth: 10)
-            .rotationEffect(.init(degrees: -90))
-    } // END OF VAR
-    
-    var minuteRing: some View {
-        Circle()
-            .trim(from: 0, to: timer.minuteProgress)
-            .stroke(Color.pink.opacity(0.7), lineWidth: 10)
-            .rotationEffect(.init(degrees: -90))
-            .padding(-20)
-    } // END OF VAR
 } // END OF VIEW
 
 struct Home_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
-            .environmentObject(TimerModel())
+        NavigationView {
+            Home()
+        }
+        .environmentObject(TimerModel())
     }
 }

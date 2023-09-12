@@ -13,7 +13,9 @@ struct ContentView: View {
     @AppStorage(K.UserDefaultsKeys.isRunFirstTime) var isRunFirstTime: Bool = true
     
     var body: some View {
-        Home()
+        NavigationView {
+            Home()
+        }
             .fullScreenCover(isPresented: $isRunFirstTime, onDismiss: {
                 isRunFirstTime = false
             }) {
