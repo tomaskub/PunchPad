@@ -10,10 +10,10 @@ import SwiftUI
 struct Home: View {
     private typealias Identifier = ScreenIdentifier.HomeView
     @Environment(\.colorScheme) var colorScheme
-    @StateObject private var viewModel: TimerModel
+    @StateObject private var viewModel: HomeViewModel
     @EnvironmentObject private var container: Container
     
-    init(viewModel: TimerModel) {
+    init(viewModel: HomeViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
@@ -89,7 +89,7 @@ struct Home_Previews: PreviewProvider {
         @StateObject private var container: Container = .init()
         var body: some View {
             NavigationView {
-                Home(viewModel: TimerModel(dataManager: container.dataManager, timerProvider: container.timerProvider))
+                Home(viewModel: HomeViewModel(dataManager: container.dataManager, timerProvider: container.timerProvider))
             }
             .environmentObject(Container())
         }
