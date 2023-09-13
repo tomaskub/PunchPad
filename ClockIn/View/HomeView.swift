@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Home: View {
+struct HomeView: View {
     private typealias Identifier = ScreenIdentifier.HomeView
     @Environment(\.colorScheme) var colorScheme
     @StateObject private var viewModel: HomeViewModel
@@ -89,7 +89,7 @@ struct Home_Previews: PreviewProvider {
         @StateObject private var container: Container = .init()
         var body: some View {
             NavigationView {
-                Home(viewModel: HomeViewModel(dataManager: container.dataManager, timerProvider: container.timerProvider))
+                HomeView(viewModel: HomeViewModel(dataManager: container.dataManager, timerProvider: container.timerProvider))
             }
             .environmentObject(Container())
         }

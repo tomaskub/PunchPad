@@ -14,7 +14,7 @@ struct ContentView: View {
     
     var body: some View {
         NavigationView {
-            Home(viewModel: HomeViewModel(dataManager: container.dataManager,
+            HomeView(viewModel: HomeViewModel(dataManager: container.dataManager,
                                        timerProvider: container.timerProvider)
             )
         }
