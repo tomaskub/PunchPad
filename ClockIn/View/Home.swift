@@ -11,9 +11,9 @@ struct Home: View {
     private typealias Identifier = ScreenIdentifier.HomeView
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var timer: TimerModel
+    @EnvironmentObject private var container: Container
     
     var body: some View {
-        NavigationView {
             ZStack {
                 //BACKGROUND LAYER
                 GradientFactory.build(colorScheme: colorScheme)
@@ -58,7 +58,11 @@ struct Home: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     NavigationLink {
-                        StatisticsView()
+                        StatisticsView(viewModel:
+                                        StatisticsViewModel(
+                                            dataManager: container.dataManager,
+                                            payManager: container.payManager,
+                                            overrideUserDefaults: false))
                     } label: {
                         Text("Statistics")
                     } // END OF NAV LINK
@@ -66,35 +70,22 @@ struct Home: View {
                 } // END OF TOOLBAR ITEM
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink {
-                        SettingsView().navigationTitle("Settings")
+                        SettingsView(viewModel: SettingsViewModel(dataManger: container.dataManager))
                     } label: {
                         Text("Settings")
                     } // END OF NAV LINK
                     .accessibilityIdentifier(Identifier.settingNavigationButton.rawValue)
                 } // END OF TOOLBAR ITEM
             } // END OF TOOLBAR
-        } // END OF NAV VIEW
     } // END OF BODY
-    
-    var secondRing: some View {
-        Circle()
-            .trim(from: (timer.secondProgress) >= 0.05 ? timer.secondProgress - 0.05 : 0, to: timer.secondProgress)
-            .stroke(Color.purple.opacity(0.7), lineWidth: 10)
-            .rotationEffect(.init(degrees: -90))
-    } // END OF VAR
-    
-    var minuteRing: some View {
-        Circle()
-            .trim(from: 0, to: timer.minuteProgress)
-            .stroke(Color.pink.opacity(0.7), lineWidth: 10)
-            .rotationEffect(.init(degrees: -90))
-            .padding(-20)
-    } // END OF VAR
 } // END OF VIEW
 
 struct Home_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
-            .environmentObject(TimerModel())
+        NavigationView {
+            Home()
+        }
+        .environmentObject(Container())
+        .environmentObject(TimerModel())
     }
 }

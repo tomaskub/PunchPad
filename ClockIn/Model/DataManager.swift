@@ -56,6 +56,16 @@ class DataManager: NSObject, ObservableObject {
         case .testing:
             let persistanceController = PersistanceController(inMemory: true)
             self.managedObjectContext = persistanceController.viewContext
+                var dateComponents = Calendar.current.dateComponents([.month,.year], from: Date())
+                dateComponents.day = 1
+                let date = Calendar.current.date(from: dateComponents)!
+                let entry = EntryMO(context: managedObjectContext)
+                entry.id = UUID()
+                entry.startDate = Calendar.current.date(byAdding: .hour, value: 6, to: date)!
+                entry.finishDate = Calendar.current.date(byAdding: DateComponents(hour: 14, minute: 30), to: date)!
+                entry.overTime = Int64(1 * 1800)
+                entry.workTime = 8 * 3600
+            
         }
         
         //Build FRCs
@@ -84,7 +94,9 @@ class DataManager: NSObject, ObservableObject {
                                                                           cacheName: nil)
         
         
-        super.init() // this is super from NSObject?? - need to check
+        super.init()
+        
+        // add entries here?
         
         entryFetchResultsController.delegate = self
         entryThisMonthFetchResultsController.delegate = self

@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
+    
     @EnvironmentObject var timerModel: TimerModel
     @AppStorage(K.UserDefaultsKeys.isRunFirstTime) var isRunFirstTime: Bool = true
+    
     var body: some View {
-        Home()
-            .environmentObject(timerModel)
+        NavigationView {
+            Home()
+        }
             .fullScreenCover(isPresented: $isRunFirstTime, onDismiss: {
                 isRunFirstTime = false
             }) {
@@ -23,6 +26,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView().environmentObject(TimerModel())
+        ContentView()
+            .environmentObject(TimerModel())
     }
 }

@@ -11,6 +11,7 @@
 		D60D21F22AA30F310055BE34 /* HomeViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60D21F12AA30F310055BE34 /* HomeViewScreen.swift */; };
 		D60D21F32AA330BC0055BE34 /* ScreenIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */; };
 		D60D21F52AA357BA0055BE34 /* OnboardingViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60D21F42AA357BA0055BE34 /* OnboardingViewScreen.swift */; };
+		D60EB9B62AB0D7000053136A /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60EB9B52AB0D7000053136A /* Container.swift */; };
 		D61007492AAB867C00503C28 /* HistoryViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61007482AAB867C00503C28 /* HistoryViewScreen.swift */; };
 		D610074B2AAB8BC800503C28 /* HistoryViewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D610074A2AAB8BC800503C28 /* HistoryViewUITests.swift */; };
 		D610074D2AAC77F300503C28 /* EditSheetScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D610074C2AAC77F300503C28 /* EditSheetScreen.swift */; };
@@ -78,6 +79,7 @@
 		D60594DB2AA7A2C400B8B264 /* SettingsViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewScreen.swift; sourceTree = "<group>"; };
 		D60D21F12AA30F310055BE34 /* HomeViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewScreen.swift; sourceTree = "<group>"; };
 		D60D21F42AA357BA0055BE34 /* OnboardingViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewScreen.swift; sourceTree = "<group>"; };
+		D60EB9B52AB0D7000053136A /* Container.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Container.swift; sourceTree = "<group>"; };
 		D61007482AAB867C00503C28 /* HistoryViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HistoryViewScreen.swift; path = ClockInUITests/ScreenHelpers/HistoryViewScreen.swift; sourceTree = SOURCE_ROOT; };
 		D610074A2AAB8BC800503C28 /* HistoryViewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewUITests.swift; sourceTree = "<group>"; };
 		D610074C2AAC77F300503C28 /* EditSheetScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSheetScreen.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 				D64574B529D9F37400207168 /* Entry.swift */,
 				D6842EC329EC62DD00731E84 /* PayManager.swift */,
 				D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */,
+				D60EB9B52AB0D7000053136A /* Container.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -441,6 +444,7 @@
 				D6AB737029F562E600D5DE82 /* OnboardingViewModel.swift in Sources */,
 				D6C4589429D229210069D89B /* ClockInApp.swift in Sources */,
 				D6E2C15929D6C20E00229286 /* WorkHistory.xcdatamodeld in Sources */,
+				D60EB9B62AB0D7000053136A /* Container.swift in Sources */,
 				D65A976F29F3BBDD00462D8C /* OnboardingView.swift in Sources */,
 				D6842EC229EC179200731E84 /* StatisticsViewModel.swift in Sources */,
 			);

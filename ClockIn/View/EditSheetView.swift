@@ -94,9 +94,25 @@ struct EditSheetView: View {
 } // END OF STRUCT
 
 struct EditSheetView_Previews: PreviewProvider {
+    private struct ContainerView: View {
+        @StateObject private var container: Container = .init()
+        private let entry: Entry = {
+            let startOfDay = Calendar.current.startOfDay(for: Date())
+            let startDate = Calendar.current.date(byAdding: .hour, value: 6, to: startOfDay)!
+            let finishDate = Calendar.current.date(byAdding: .hour, value: 9, to: startDate)!
+            return Entry(startDate: startDate,
+                         finishDate: finishDate,
+                         workTimeInSec: 8*3600,
+                         overTimeInSec: 1*3600)
+        }()
+        var body: some View {
+            EditSheetView(viewModel:
+                            EditSheetViewModel(dataManager: container.dataManager,
+                                               entry: entry)
+            )
+        }
+    }
     static var previews: some View {
-        EditSheetView(
-            viewModel: EditSheetViewModel.preview
-        )
+        ContainerView()
     } // END OF PREVIEWS
 } // END OF STRUCT

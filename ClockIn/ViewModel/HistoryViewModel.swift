@@ -19,6 +19,8 @@ class HistoryViewModel: ObservableObject {
     
     init(dataManager: DataManager = DataManager.shared, overrideUD: Bool = false) {
         self.dataManager = dataManager
+        
+        // this should be removed
         if !overrideUD {
             self.maximumOvertimeInSeconds = UserDefaults.standard.integer(forKey: K.UserDefaultsKeys.maximumOverTimeAllowedInSeconds)
             self.scheduledWorkTimeInSeconds = UserDefaults.standard.integer(forKey: K.UserDefaultsKeys.workTimeInSeconds)

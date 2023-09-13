@@ -10,7 +10,11 @@ import SwiftUI
 struct SettingsView: View {
     private typealias Identifier = ScreenIdentifier.SettingsView
     @Environment(\.colorScheme) var colorScheme
-    @StateObject var viewModel = SettingsViewModel()
+    @StateObject private var viewModel: SettingsViewModel
+    
+    init(viewModel: SettingsViewModel = SettingsViewModel()) {
+        self._viewModel = StateObject.init(wrappedValue: viewModel)
+    }
     
     var body: some View {
         ZStack{
@@ -139,6 +143,7 @@ struct SettingsView: View {
             .foregroundColor(.primary)
             .scrollContentBackground(.hidden)
         } // END OF ZSTACK
+        .navigationTitle("Settings")
     } // END OF BODY
     
     var timePickers: some View {
@@ -193,8 +198,8 @@ struct SettingsView: View {
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationStack {
-            SettingsView().navigationTitle("Settings")
+        NavigationView {
+            SettingsView()
         }
     }
         

@@ -9,8 +9,6 @@ import XCTest
 
 final class HistoryViewUITests: XCTestCase {
     
-    //TODO: SETTING THE IN MEMORY STORE THORUGH LAUNCH ARGUMENTS HAS NOT BEEN IMPLEMENTED
-    // for not the test for entry adding and deleting have to be run manually since there is no initial data and no cleanup, additionally onboarding tests have to be run before or the app has to be manually run beforehand to ensure onboarding stage is done
     private let standardTimeout: Double = 2.5
     private var app: XCUIApplication!
     

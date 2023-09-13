@@ -9,15 +9,6 @@ import Foundation
 
 class EditSheetViewModel: ObservableObject {
     
-    static let preview: EditSheetViewModel = .init(dataManager: DataManager.preview,
-                                                   entry: Entry(
-                                                    startDate: Calendar.current.date(byAdding: .hour, value: -9, to: Date())!,
-                                                    finishDate: Date(),
-                                                    workTimeInSec: 8 * 3600,
-                                                    overTimeInSec: 1 * 3600),
-                                                   overrideUserDefaults: true)
-    
-    
     private var dataManager: DataManager
     private var entry: Entry
     private var workTimeAllowed: Int
@@ -55,7 +46,7 @@ class EditSheetViewModel: ObservableObject {
     @Published var workTimeFraction: CGFloat
     @Published var overTimeFraction: CGFloat
     
-    init(dataManager: DataManager = DataManager.shared, entry: Entry, overrideUserDefaults: Bool = false) {
+    init(dataManager: DataManager, entry: Entry, overrideUserDefaults: Bool = false) {
         self.dataManager = dataManager
         self.entry = entry
         
