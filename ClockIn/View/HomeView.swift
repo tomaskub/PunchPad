@@ -7,11 +7,15 @@
 
 import SwiftUI
 
-struct Home: View {
+struct HomeView: View {
     private typealias Identifier = ScreenIdentifier.HomeView
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var timer: TimerModel
+    @StateObject private var viewModel: HomeViewModel
     @EnvironmentObject private var container: Container
+    
+    init(viewModel: HomeViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
     
     var body: some View {
             ZStack {
@@ -19,12 +23,12 @@ struct Home: View {
                 GradientFactory.build(colorScheme: colorScheme)
                 // CONTENT
                 Button(action:
-                        timer.isStarted ? timer.stopTimer : timer.startTimer) {
+                        viewModel.isStarted ? viewModel.stopTimer : viewModel.startTimer) {
                     ZStack(alignment: .center) {
                         Circle()
                             .fill(.blue.opacity(0.5))
                             .padding()
-                        Text("\(timer.timerStringValue)")
+                        Text("\(viewModel.timerStringValue)")
                             .accessibilityIdentifier(Identifier.timerLabel.rawValue)
                             .foregroundColor(.white)
                             .font(.largeTitle)
@@ -35,11 +39,11 @@ struct Home: View {
                 } // END OF BUTTON
                         .accessibilityIdentifier(Identifier.startStopButton.rawValue)
                         .padding(60)
-                if timer.isStarted {
+                if viewModel.isStarted {
                     Button {
-                        timer.isRunning.toggle()
+                        viewModel.isRunning.toggle()
                     } label: {
-                        Image(systemName: timer.isRunning ? "pause.fill" : "play.fill")
+                        Image(systemName: viewModel.isRunning ? "pause.fill" : "play.fill")
                             .resizable()
                     } // END OF BUTTON
                     .accessibilityIdentifier(Identifier.resumePauseButton.rawValue)
@@ -47,10 +51,10 @@ struct Home: View {
                     .frame(width: 50, height: 50)
                     .offset(y: 250)
                 } // END OF IF
-                RingView(progress: $timer.progress, ringColor: .primary, pointColor: colorScheme == .light ? .white : .black)
+                RingView(progress: $viewModel.progress, ringColor: .primary, pointColor: colorScheme == .light ? .white : .black)
                     .frame(width: UIScreen.main.bounds.size.width-120, height: UIScreen.main.bounds.size.width-120)
-                if timer.overtimeProgress > 0 {
-                    RingView(progress: $timer.overtimeProgress, ringColor: .green, pointColor: .white, ringWidth: 5, startigPoint: 0.023)
+                if viewModel.overtimeProgress > 0 {
+                    RingView(progress: $viewModel.overtimeProgress, ringColor: .green, pointColor: .white, ringWidth: 5, startigPoint: 0.023)
                         .frame(width: UIScreen.main.bounds.size.width-120, height: UIScreen.main.bounds.size.width-120)
                 } // END OF IF
             } // END OF ZSTACK
@@ -81,11 +85,16 @@ struct Home: View {
 } // END OF VIEW
 
 struct Home_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            Home()
+    private struct ContainerView: View {
+        @StateObject private var container: Container = .init()
+        var body: some View {
+            NavigationView {
+                HomeView(viewModel: HomeViewModel(dataManager: container.dataManager, timerProvider: container.timerProvider))
+            }
+            .environmentObject(Container())
         }
-        .environmentObject(Container())
-        .environmentObject(TimerModel())
+    }
+    static var previews: some View {
+        ContainerView()
     }
 }

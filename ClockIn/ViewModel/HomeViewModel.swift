@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class TimerModel: NSObject, ObservableObject {
+class HomeViewModel: NSObject, ObservableObject {
     
     // Timer countdown total values pulled from user defaults
     @AppStorage(K.UserDefaultsKeys.workTimeInSeconds) var timerTotalSeconds: Int = 28800
@@ -97,7 +97,7 @@ class TimerModel: NSObject, ObservableObject {
     
 
     //MARK: TIMER START & STOP FUNCTIONS
-extension TimerModel {
+extension HomeViewModel {
 
     func startTimer()  {
         
@@ -138,7 +138,7 @@ extension TimerModel {
 }
    
     //MARK: TIMER UPDATE FUNCTIONS
-extension TimerModel {
+extension HomeViewModel {
     
     /**
      Updates the timer countdown value
@@ -223,7 +223,7 @@ extension TimerModel {
 }
 
     //MARK: DATA OPERATIONS
-extension TimerModel {
+extension HomeViewModel {
     func checkForEntry() -> Bool {
         guard let _ = dataManager.fetch(forDate: Date()) else { return false }
         return true
@@ -241,7 +241,7 @@ extension TimerModel {
 }
 
 //MARK: NOTIFICATIONS
-extension TimerModel {
+extension HomeViewModel {
     
     func checkForPermissionAndDispatch(withTrigger trigger: UNNotificationTrigger? = nil) {
         UNUserNotificationCenter.current().getNotificationSettings { settings in

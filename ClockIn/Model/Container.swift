@@ -11,7 +11,8 @@ class Container: ObservableObject {
     
     private(set) var dataManager: DataManager
     private(set) var payManager: PayManager
-
+    private(set) var timerProvider: Timer.Type
+    
     enum ContainerType {
         case production, test, preview
     }
@@ -37,7 +38,7 @@ class Container: ObservableObject {
             containerType = .test
         }
         
-        
+        self.timerProvider = Timer.self
         
         switch containerType {
         case .production:

@@ -10,11 +10,11 @@ import XCTest
 
 final class TimerModelTests: XCTestCase {
     
-    var sut: TimerModel!
+    var sut: HomeViewModel!
     
     override func setUp() {
         super.setUp()
-        sut = .init(TimerModel(dataManager: DataManager.testing, timerProvider: MockTimer.self))
+        sut = .init(HomeViewModel(dataManager: DataManager.testing, timerProvider: MockTimer.self))
     }
 
     override func tearDown() {

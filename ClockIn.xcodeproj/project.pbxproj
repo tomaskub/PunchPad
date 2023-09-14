@@ -44,8 +44,8 @@
 		D6C458A529D229230069D89B /* ClockInTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458A429D229230069D89B /* ClockInTests.swift */; };
 		D6C458AF29D229230069D89B /* ClockInUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458AE29D229230069D89B /* ClockInUITests.swift */; };
 		D6C458B129D229230069D89B /* ClockInUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458B029D229230069D89B /* ClockInUITestsLaunchTests.swift */; };
-		D6C458C129D2DD4F0069D89B /* TimerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458C029D2DD4E0069D89B /* TimerModel.swift */; };
-		D6C458C329D2DE2D0069D89B /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458C229D2DE2D0069D89B /* Home.swift */; };
+		D6C458C129D2DD4F0069D89B /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458C029D2DD4E0069D89B /* HomeViewModel.swift */; };
+		D6C458C329D2DE2D0069D89B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458C229D2DE2D0069D89B /* HomeView.swift */; };
 		D6C458C529D35EAA0069D89B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458C429D35EAA0069D89B /* SettingsView.swift */; };
 		D6C458C729D36C050069D89B /* RingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458C629D36C050069D89B /* RingView.swift */; };
 		D6D02FAE29EF0B13006CD0B2 /* EditSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D02FAD29EF0B13006CD0B2 /* EditSheetView.swift */; };
@@ -114,8 +114,8 @@
 		D6C458AA29D229230069D89B /* ClockInUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClockInUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6C458AE29D229230069D89B /* ClockInUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockInUITests.swift; sourceTree = "<group>"; };
 		D6C458B029D229230069D89B /* ClockInUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockInUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		D6C458C029D2DD4E0069D89B /* TimerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerModel.swift; sourceTree = "<group>"; };
-		D6C458C229D2DE2D0069D89B /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
+		D6C458C029D2DD4E0069D89B /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		D6C458C229D2DE2D0069D89B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		D6C458C429D35EAA0069D89B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D6C458C629D36C050069D89B /* RingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingView.swift; sourceTree = "<group>"; };
 		D6D02FAD29EF0B13006CD0B2 /* EditSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSheetView.swift; sourceTree = "<group>"; };
@@ -241,7 +241,7 @@
 			isa = PBXGroup;
 			children = (
 				D6C4589529D229210069D89B /* ContentView.swift */,
-				D6C458C229D2DE2D0069D89B /* Home.swift */,
+				D6C458C229D2DE2D0069D89B /* HomeView.swift */,
 				D66750E929D713C900757F17 /* HistoryView.swift */,
 				D66750EB29D71C8300757F17 /* HistoryRow.swift */,
 				D6C458C629D36C050069D89B /* RingView.swift */,
@@ -256,7 +256,7 @@
 		D6C458BF29D2DD3C0069D89B /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				D6C458C029D2DD4E0069D89B /* TimerModel.swift */,
+				D6C458C029D2DD4E0069D89B /* HomeViewModel.swift */,
 				D6E2C15A29D6C31800229286 /* HistoryViewModel.swift */,
 				D68384F829DB25DD00228491 /* SettingViewModel.swift */,
 				D6842EC129EC179200731E84 /* StatisticsViewModel.swift */,
@@ -432,11 +432,11 @@
 				D6C458C529D35EAA0069D89B /* SettingsView.swift in Sources */,
 				D65FD53D29D8B259006CC34F /* PersistanceController.swift in Sources */,
 				D66750EA29D713C900757F17 /* HistoryView.swift in Sources */,
-				D6C458C129D2DD4F0069D89B /* TimerModel.swift in Sources */,
+				D6C458C129D2DD4F0069D89B /* HomeViewModel.swift in Sources */,
 				D6C4589629D229210069D89B /* ContentView.swift in Sources */,
 				D67332E62AADB8B1005FFE7F /* LaunchArgument.swift in Sources */,
 				D68384F929DB25DD00228491 /* SettingViewModel.swift in Sources */,
-				D6C458C329D2DE2D0069D89B /* Home.swift in Sources */,
+				D6C458C329D2DE2D0069D89B /* HomeView.swift in Sources */,
 				D6842EC029EC178000731E84 /* StatisticsView.swift in Sources */,
 				D66750EC29D71C8300757F17 /* HistoryRow.swift in Sources */,
 				D65A976D29F323A900462D8C /* K.swift in Sources */,
