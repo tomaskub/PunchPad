@@ -5,7 +5,7 @@
 //  Created by Tomasz Kubiak on 14/09/2023.
 //
 
-import Foundation
+import SwiftUI
 
 final class SettingsStore: ObservableObject {
     // setting keys - not sure if enum here is what i need for keys
@@ -22,61 +22,67 @@ final class SettingsStore: ObservableObject {
     
     private let defaults = UserDefaults.standard
     
-    var isRunFirstTime: Bool {
+    @Published var isRunFirstTime: Bool {
         didSet {
             updateSetting(setting: .isRunFirstTime, value: isRunFirstTime)
         }
     }
-    var isLoggingOvertime: Bool {
+    @Published var isLoggingOvertime: Bool {
         didSet {
             updateSetting(setting: .isLoggingOvertime, value: isLoggingOvertime)
         }
     }
-    var isCalculatingNetPay: Bool {
+    @Published var isCalculatingNetPay: Bool {
         didSet {
             updateSetting(setting: .isCalculatingNetPay, value: isCalculatingNetPay)
         }
     }
     
-    var isSendingNotification: Bool {
+    @Published var isSendingNotification: Bool {
         didSet {
             updateSetting(setting: .isSendingNotifications, value: isSendingNotification)
         }
     }
     
-    var maximumOvertimeAllowedInSeconds: Int {
+    @Published var maximumOvertimeAllowedInSeconds: Int {
         didSet {
             updateSetting(setting: .maximumOvertimeAllowedInSeconds, value: maximumOvertimeAllowedInSeconds)
         }
     }
     
-    var workTimeInSeconds: Int {
+    @Published var workTimeInSeconds: Int {
         didSet {
             updateSetting(setting: .workTimeInSeconds, value: workTimeInSeconds)
         }
     }
     
-    var grossPayPerMonth: Int {
+    @Published var grossPayPerMonth: Int {
         didSet {
             updateSetting(setting: .grossPayPerMonth, value: grossPayPerMonth)
         }
     }
     
-    var savedColorScheme: K.ColorScheme {
+    @Published var savedColorScheme: ColorScheme? {
         didSet {
-            updateSetting(setting: .savedColorScheme, value: savedColorScheme.rawValue)
+            if let rawValue = savedColorScheme?.rawValue {
+                updateSetting(setting: .savedColorScheme, value: rawValue)
+            }
         }
     }
     
     init() {
-        self.isRunFirstTime = defaults.bool(forKey: SettingKey.isRunFirstTime.rawValue)
+        if let value = defaults.value(forKey: SettingKey.isRunFirstTime.rawValue) as? Bool {
+            self.isRunFirstTime = value
+        } else {
+            self.isRunFirstTime = true
+        }
         self.isLoggingOvertime = defaults.bool(forKey: SettingKey.isLoggingOvertime.rawValue)
         self.isCalculatingNetPay = defaults.bool(forKey: SettingKey.isCalculatingNetPay.rawValue)
         self.isSendingNotification = defaults.bool(forKey: SettingKey.isSendingNotifications.rawValue)
         self.maximumOvertimeAllowedInSeconds = defaults.integer(forKey: SettingKey.maximumOvertimeAllowedInSeconds.rawValue)
         self.workTimeInSeconds = defaults.integer(forKey: SettingKey.workTimeInSeconds.rawValue)
         self.grossPayPerMonth = defaults.integer(forKey: SettingKey.grossPayPerMonth.rawValue)
-        self.savedColorScheme = K.ColorScheme(rawValue: defaults.string(forKey: SettingKey.savedColorScheme.rawValue) ?? "system") ?? .system
+        self.savedColorScheme = ColorScheme.fromStringValue(defaults.string(forKey: SettingKey.savedColorScheme.rawValue))
     }
     
     static func clearUserDefaults() {

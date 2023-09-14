@@ -6,18 +6,23 @@
 //
 
 import Foundation
+import Combine
 
 class Container: ObservableObject {
-    
+    private var subscriptions = Set<AnyCancellable>()
     private(set) var dataManager: DataManager
     private(set) var payManager: PayManager
     private(set) var timerProvider: Timer.Type
+    var settingsStore: SettingsStore
     
     enum ContainerType {
         case production, test, preview
     }
     
     init() {
+        self.timerProvider = Timer.self
+        self.settingsStore = SettingsStore()
+        
         var containerType: ContainerType = .production
         
         if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
@@ -38,8 +43,6 @@ class Container: ObservableObject {
             containerType = .test
         }
         
-        self.timerProvider = Timer.self
-        
         switch containerType {
         case .production:
             self.dataManager = .shared
@@ -51,6 +54,8 @@ class Container: ObservableObject {
             self.dataManager = .preview
             self.payManager = PayManager(dataManager: .preview)
         }
-        
+        settingsStore.objectWillChange.sink { _ in
+            self.objectWillChange.send()
+        }.store(in: &subscriptions)
     }
 }
