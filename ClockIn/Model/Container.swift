@@ -30,8 +30,8 @@ class Container: ObservableObject {
         }
         
         if CommandLine.arguments.contains(LaunchArgument.withOnboarding.rawValue) {
-            K.resetUserDefaults()
-            UserDefaults.standard.set(true, forKey: K.UserDefaultsKeys.isRunFirstTime)
+            SettingsStore.clearUserDefaults()
+            settingsStore.isRunFirstTime = true
             containerType = .test
         }
         
