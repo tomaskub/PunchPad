@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @AppStorage(K.UserDefaultsKeys.isRunFirstTime) var isRunFirstTime: Bool = true
     @EnvironmentObject var container: Container
     
     var body: some View {
@@ -18,8 +17,8 @@ struct ContentView: View {
                                        timerProvider: container.timerProvider)
             )
         }
-            .fullScreenCover(isPresented: $isRunFirstTime, onDismiss: {
-                isRunFirstTime = false
+        .fullScreenCover(isPresented: $container.settingsStore.isRunFirstTime, onDismiss: {
+            container.settingsStore.isRunFirstTime = false
             }) {
                 OnboardingView()
             }
