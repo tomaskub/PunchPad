@@ -14,59 +14,70 @@ struct OnboardingView: View {
     @Environment(\.dismiss) var dismiss
     
     @StateObject var viewModel = OnboardingViewModel()
-   
+    
+    //Onboarding stages:
+    /*
+     0 - Logo and welcome message
+     1 - Set the work time
+     2 - Ask if doing overtime and set maximum overtime
+     3 - Ask to send notifications on finish
+     4 - Ask user for salary and if to calculate net salary (after taxes)
+     5 - Inform setup complete, allows to Finish onboarding
+     */
+    @State var onboardingStage: Int = 0
+    
     let tansition: AnyTransition = .asymmetric(
         insertion: .move(edge: .trailing),
         removal: .move(edge: .leading))
     
     var body: some View {
         
-            ZStack{
-                //BACKGROUND
-                GradientFactory.build(colorScheme: colorScheme)
-                //CONTENT
-                ZStack {
-                    switch viewModel.onboardingStage {
-                    case 0:
-                        stage0Screen
-                    case 1:
-                        stage1Screen
-                    case 2:
-                        stage2Screen
-                    case 3:
-                        stage3Screen
-                    case 4:
-                        stage4Screen
-                    case 5:
-                        stage5Screen
-                    default:
-                        Rectangle()
-                            .foregroundColor(.accentColor)
-                            .cornerRadius(10)
-                            .frame(width: 200, height: 200)
-                            .overlay {
-                                Text("END OF ON \n BOARDING")
-                                    .font(.largeTitle)
-                                    .fontWeight(.heavy)
-                                    .foregroundColor(.white)
-                                    .multilineTextAlignment(.center)
-                            }
-                        
-                    }
-                }
-                
-                VStack {
-                    if viewModel.onboardingStage != 0 {
-                        HStack {
-                            topButton
-                            Spacer()
+        ZStack{
+            //BACKGROUND
+            GradientFactory.build(colorScheme: colorScheme)
+            //CONTENT
+            ZStack {
+                switch onboardingStage {
+                case 0:
+                    stage0Screen
+                case 1:
+                    stage1Screen
+                case 2:
+                    stage2Screen
+                case 3:
+                    stage3Screen
+                case 4:
+                    stage4Screen
+                case 5:
+                    stage5Screen
+                default:
+                    Rectangle()
+                        .foregroundColor(.accentColor)
+                        .cornerRadius(10)
+                        .frame(width: 200, height: 200)
+                        .overlay {
+                            Text("END OF ON \n BOARDING")
+                                .font(.largeTitle)
+                                .fontWeight(.heavy)
+                                .foregroundColor(.white)
+                                .multilineTextAlignment(.center)
                         }
-                    }
-                    Spacer()
-                    bottomButton
+                    
                 }
-                .padding(30)
             }
+            
+            VStack {
+                if onboardingStage != 0 {
+                    HStack {
+                        topButton
+                        Spacer()
+                    }
+                }
+                Spacer()
+                bottomButton
+            }
+            .padding(30)
+        }
     }
 }
 extension OnboardingView {
@@ -223,7 +234,7 @@ extension OnboardingView {
         }
         .padding(30)
     }
-
+    
     private var stage4Screen: some View {
         VStack(spacing: 40) {
             
@@ -274,28 +285,28 @@ extension OnboardingView {
             
             //This section is still in works until in-app tutorial is developed
             /*
-            Text("To enter a short tutorial on how to use the app and its functions click the tour button. Alternatively, if you are a person that assembles the IKEA furniture without looking at the instructions click the finish button")
-                .multilineTextAlignment(.center)
-            
-            
-            Text("Finish!")
-                .font(.headline)
-                .foregroundColor(.accentColor)
-                .frame(height: 55)
-                .frame(maxWidth: .infinity)
-                .background(Color.primary.colorInvert())
-                .cornerRadius(10)
-                .overlay {
-                    HStack {
-                        Spacer()
-                        Image(systemName: "bicycle")
-                        Image(systemName: "figure.walk")
-                    }
-                    .padding()
-                }
-                .onTapGesture {
-                    dismiss()
-                }
+             Text("To enter a short tutorial on how to use the app and its functions click the tour button. Alternatively, if you are a person that assembles the IKEA furniture without looking at the instructions click the finish button")
+             .multilineTextAlignment(.center)
+             
+             
+             Text("Finish!")
+             .font(.headline)
+             .foregroundColor(.accentColor)
+             .frame(height: 55)
+             .frame(maxWidth: .infinity)
+             .background(Color.primary.colorInvert())
+             .cornerRadius(10)
+             .overlay {
+             HStack {
+             Spacer()
+             Image(systemName: "bicycle")
+             Image(systemName: "figure.walk")
+             }
+             .padding()
+             }
+             .onTapGesture {
+             dismiss()
+             }
              */
         }
         .padding(30)
@@ -307,14 +318,14 @@ extension OnboardingView {
             .foregroundColor(.accentColor)
             .onTapGesture {
                 withAnimation(.spring()) {
-                    viewModel.onboardingStage -= 1
+                    onboardingStage -= 1
                 }
             }
     }
     
     private var bottomButton: some View {
-        Text(viewModel.onboardingStage == 0 ? "Let's start!" :
-                viewModel.onboardingStage == 5 ? "Finish set up!" : "Next")
+        Text(onboardingStage == 0 ? "Let's start!" :
+                onboardingStage == 5 ? "Finish set up!" : "Next")
         .accessibilityIdentifier(Identifier.Buttons.advanceStage.rawValue)
         .font(.headline)
         .foregroundColor(.blue)
@@ -336,10 +347,10 @@ extension OnboardingView {
         .cornerRadius(10)
         .onTapGesture {
             withAnimation(.spring()) {
-                if viewModel.onboardingStage == 5 {
+                if onboardingStage == 5 {
                     dismiss()
                 } else {
-                    viewModel.onboardingStage += 1
+                    onboardingStage += 1
                 }
             }
         }

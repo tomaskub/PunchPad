@@ -10,21 +10,10 @@ import SwiftUI
 
 class OnboardingViewModel: ObservableObject {
     
-    //Onboarding stages:
-    /*
-     0 - Logo and welcome message
-     1 - Set the work time
-     2 - Ask if doing overtime and set maximum overtime
-     3 - Ask to send notifications on finish
-     4 - Ask user for salary and if to calculate net salary (after taxes)
-     5 - Inform setup complete, allows to Finish onboarding
-     */
-    
-    @Published var onboardingStage: Int = 0
-    
+    @Published private var settingsStore: SettingsStore
     @Published var isLoggingOvertime: Bool {
         didSet {
-            UserDefaults.standard.set(isLoggingOvertime, forKey: K.UserDefaultsKeys.isLoggingOvertime)
+            UserDefaults.standard.set(isLoggingOvertime, forKey: SettingsStore.SettingKey.isLoggingOvertime.rawValue)//K.UserDefaultsKeys.isLoggingOvertime)
         }
     }
     
@@ -93,12 +82,12 @@ class OnboardingViewModel: ObservableObject {
         }
     }
     
-    
-    init() {
+    init(settingsStore: SettingsStore) {
+        self.settingsStore = settingsStore
         let userDef = UserDefaults.standard
         self.workTimeInSeconds = userDef.integer(forKey: K.UserDefaultsKeys.workTimeInSeconds)
         self.maxOvertimeAllowedinSeconds = userDef.integer(forKey: K.UserDefaultsKeys.maximumOverTimeAllowedInSeconds)
-        self.isLoggingOvertime = userDef.bool(forKey: K.UserDefaultsKeys.isLoggingOvertime)
+        self.isLoggingOvertime = userDef.bool(forKey: SettingsStore.SettingKey.isLoggingOvertime.rawValue)//K.UserDefaultsKeys.isLoggingOvertime)
         self.isSendingNotifications = userDef.bool(forKey: K.UserDefaultsKeys.isSendingNotifications)
         self.netPayAvaliable = userDef.bool(forKey: K.UserDefaultsKeys.isCalculatingNetPay)
         self.grossPayPerMonth = userDef.integer(forKey: K.UserDefaultsKeys.grossPayPerMonth)
