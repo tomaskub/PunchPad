@@ -13,7 +13,7 @@ class Container: ObservableObject {
     private(set) var dataManager: DataManager
     private(set) var payManager: PayManager
     private(set) var timerProvider: Timer.Type
-    var settingsStore: SettingsStore
+    private(set) var settingsStore: SettingsStore
     
     enum ContainerType {
         case production, test, preview
@@ -54,8 +54,5 @@ class Container: ObservableObject {
             self.dataManager = .preview
             self.payManager = PayManager(dataManager: .preview)
         }
-        settingsStore.objectWillChange.sink { _ in
-            self.objectWillChange.send()
-        }.store(in: &subscriptions)
     }
 }
