@@ -11,6 +11,8 @@ struct SettingsView: View {
     private typealias Identifier = ScreenIdentifier.SettingsView
     @Environment(\.colorScheme) var colorScheme
     @StateObject private var viewModel: SettingsViewModel
+    @State private var isShowingWorkTimeEditor: Bool = false
+    @State private var isShowingOvertimeEditor: Bool = false
     
     init(viewModel: SettingsViewModel) {
         self._viewModel = StateObject.init(wrappedValue: viewModel)
@@ -27,17 +29,17 @@ struct SettingsView: View {
                     HStack {
                         Text("Set timer length")
                         Spacer()
-                        Image(systemName: viewModel.isShowingWorkTimeEditor ? "chevron.up" : "chevron.down")
+                        Image(systemName: isShowingWorkTimeEditor ? "chevron.up" : "chevron.down")
                     } // END OF HSTACK
                     .accessibilityIdentifier(Identifier.ExpandableCells.setTimerLength.rawValue)
                     .contentShape(Rectangle())
                     .onTapGesture {
                         withAnimation(.spring()) {
-                            viewModel.isShowingWorkTimeEditor.toggle()
+                            isShowingWorkTimeEditor.toggle()
                         }
                     } // END OF TAP GESTURE
                     
-                    if viewModel.isShowingWorkTimeEditor {
+                    if isShowingWorkTimeEditor {
                         timePickers
                     } // END OF IF
                     
@@ -59,17 +61,17 @@ struct SettingsView: View {
                     HStack {
                         Text("Maximum overtime allowed")
                         Spacer()
-                        Image(systemName: viewModel.isShowingOverTimeEditor ? "chevron.up" : "chevron.down")
+                        Image(systemName: isShowingOvertimeEditor ? "chevron.up" : "chevron.down")
                     } // END OF HSTACK
                     .accessibilityIdentifier(Identifier.ExpandableCells.setOvertimeLength.rawValue)
                     .contentShape(Rectangle())
                     .onTapGesture {
                         withAnimation(.spring()) {
-                            viewModel.isShowingOverTimeEditor.toggle()
+                            isShowingOvertimeEditor.toggle()
                         }
                     } // END OF TAP GESTURE
                     
-                    if viewModel.isShowingOverTimeEditor {
+                    if isShowingOvertimeEditor {
                         overTimePickers
                     }
                 } header: {

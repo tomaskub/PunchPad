@@ -12,10 +12,7 @@ class SettingsViewModel: ObservableObject {
     
     private var dataManager: DataManager
     @Published private var settingsStore: SettingsStore
-    //View states
-    @Published var isShowingWorkTimeEditor: Bool = false
-    @Published var isShowingOverTimeEditor: Bool = false
-    
+    // UI values
     @Published var timerHours: Int = 8 {
         didSet {
             workTimeInSeconds = timerHours * 3600 + timerMinutes * 60
