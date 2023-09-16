@@ -21,8 +21,6 @@ class Container: ObservableObject {
     
     init() {
         self.timerProvider = Timer.self
-        self.settingsStore = SettingsStore()
-        
         var containerType: ContainerType = .production
         
         if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
@@ -31,8 +29,11 @@ class Container: ObservableObject {
         
         if CommandLine.arguments.contains(LaunchArgument.withOnboarding.rawValue) {
             SettingsStore.clearUserDefaults()
+            self.settingsStore = SettingsStore()
             settingsStore.isRunFirstTime = true
             containerType = .test
+        } else {
+            self.settingsStore = SettingsStore()
         }
         
         if CommandLine.arguments.contains(LaunchArgument.inMemoryPresistenStore.rawValue) {
