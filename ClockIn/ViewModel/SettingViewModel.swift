@@ -11,7 +11,7 @@ import SwiftUI
 class SettingsViewModel: ObservableObject {
     
     private var dataManager: DataManager
-    
+    @Published private var settingsStore: SettingsStore
     //View states
     @Published var isShowingWorkTimeEditor: Bool = false
     @Published var isShowingOverTimeEditor: Bool = false
@@ -87,8 +87,9 @@ class SettingsViewModel: ObservableObject {
         }
     }
     
-    init(dataManger: DataManager = DataManager.shared ) {
+    init(dataManger: DataManager, settingsStore: SettingsStore) {
         self.dataManager = dataManger
+        self.settingsStore = settingsStore
         //        on init retrieve values
         self.isLoggingOverTime = UserDefaults.standard.bool(forKey: K.UserDefaultsKeys.isLoggingOvertime)
         self.preferredColorScheme = UserDefaults.standard.string(forKey: K.UserDefaultsKeys.savedColorScheme) ?? "system"
@@ -101,6 +102,7 @@ class SettingsViewModel: ObservableObject {
         self.grossPayPerMonthText = String(self.grossPayPerMonth)
         self.timerHours = workTimeInSeconds / 3600
         self.timerMinutes = (workTimeInSeconds % 3600) / 60
+        print(timerMinutes)
         self.overtimeHours = 5
         self.overtimeMinutes = 0
         self.overtimeHours = maximumOvertimeAllowedInSeconds / 3600

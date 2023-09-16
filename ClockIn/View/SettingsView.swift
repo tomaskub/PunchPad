@@ -12,7 +12,7 @@ struct SettingsView: View {
     @Environment(\.colorScheme) var colorScheme
     @StateObject private var viewModel: SettingsViewModel
     
-    init(viewModel: SettingsViewModel = SettingsViewModel(dataManger: .shared)) {
+    init(viewModel: SettingsViewModel) {
         self._viewModel = StateObject.init(wrappedValue: viewModel)
     }
     
@@ -197,10 +197,16 @@ struct SettingsView: View {
 }
 
 struct SettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            SettingsView()
+    private struct ContainerView: View {
+        @StateObject private var container = Container()
+        var body: some View {
+            NavigationView {
+                SettingsView(viewModel: SettingsViewModel(dataManger: container.dataManager, settingsStore: container.settingsStore))
+            }
         }
+    }
+    static var previews: some View {
+        ContainerView()
     }
         
 }
