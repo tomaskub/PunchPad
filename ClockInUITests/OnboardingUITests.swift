@@ -62,6 +62,9 @@ final class OnboardingUITests: XCTestCase {
             expectation(for: existsPredicate, evaluatedWith: onboardingScreen.calculateNetSalaryToggleButton),
             expectation(for: existsPredicate, evaluatedWith: onboardingScreen.regressStageButton)
         ]
+        let dismissedExpectations = [
+            expectation(for: notExistPredicate, evaluatedWith: onboardingScreen.advanceStageButton)
+        ]
         // Then
         let initialStageResult = XCTWaiter.wait(for: zeroStageExpectations, timeout: standardTimeout)
         XCTAssertEqual(initialStageResult, .completed, "Advance stage button should exist")
@@ -85,6 +88,12 @@ final class OnboardingUITests: XCTestCase {
         // Then
         let fourthStageResult = XCTWaiter.wait(for: fourthStageExpectations, timeout: standardTimeout)
         XCTAssertEqual(fourthStageResult, .completed, "Fourth stage elements should exist")
+        // When
+        onboardingScreen.advanceStageButton.tap(withNumberOfTaps: 2, numberOfTouches: 1)
+        // Then
+        let dismissedResult = XCTWaiter.wait(for: dismissedExpectations, timeout: standardTimeout)
+        XCTAssertEqual(dismissedResult, .completed, "The view should not exist")
+        
     }
     
     func test_OnboardingUserFlow() {
@@ -123,6 +132,7 @@ final class OnboardingUITests: XCTestCase {
         XCTAssertEqual(settingsScreen.grossPaycheckTextField.value as! String, "10000")
         XCTAssertEqual(settingsScreen.calculateNetPayToggle.value as? String, "1")
         XCTAssertEqual(settingsScreen.sendNotificationsToggle.value as? String, "1")
+        // something is wrong with this one?
         XCTAssertEqual(settingsScreen.keepLogginOvertimeToggle.value as? String, "1")
         // When
         settingsScreen.setTimeLengthExpandText.tap()
