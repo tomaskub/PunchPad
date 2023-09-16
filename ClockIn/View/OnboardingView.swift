@@ -13,8 +13,11 @@ struct OnboardingView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) var dismiss
     
-    @StateObject var viewModel = OnboardingViewModel()
+    @StateObject var viewModel: OnboardingViewModel
     
+    init(viewModel: OnboardingViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
     //Onboarding stages:
     /*
      0 - Logo and welcome message
@@ -168,16 +171,17 @@ extension OnboardingView {
                         .offset(y: 20)
                         .foregroundColor(.primary)
                 }
-            if !viewModel.isLoggingOvertime {
+            if !viewModel.settingsStore.isLoggingOvertime {
                 Text("Let ClockIn know wheter you want to measure overtime")
                     .multilineTextAlignment(.center)
             }
-            Toggle("Keep logging overtime", isOn: $viewModel.isLoggingOvertime)
+            // should start as false is nto starting as false?
+            Toggle("Keep logging overtime", isOn: $viewModel.settingsStore.isLoggingOvertime)
                 .accessibilityIdentifier(Identifier.Toggles.overtime.rawValue)
                 .padding()
                 .background()
                 .cornerRadius(20)
-            if viewModel.isLoggingOvertime {
+            if viewModel.settingsStore.isLoggingOvertime {
                 Text("Let the app know what is the maximum overtime you can work for.")
                     .multilineTextAlignment(.center)
                 HStack {
@@ -225,7 +229,7 @@ extension OnboardingView {
             Text("Do you want to allow ClockIn to send you notifications when the work time is finished?")
                 .multilineTextAlignment(.center)
             
-            Toggle("Send notifications on finish", isOn: $viewModel.isSendingNotifications)
+            Toggle("Send notifications on finish", isOn: $viewModel.settingsStore.isSendingNotification)
                 .accessibilityIdentifier(Identifier.Toggles.notifications.rawValue)
                 .padding()
                 .background()
@@ -263,7 +267,7 @@ extension OnboardingView {
             
             Text("Do you want to allow ClockIn to calculate your net salary based on Polish tax law?")
                 .multilineTextAlignment(.center)
-            Toggle("Calculate net salary", isOn: $viewModel.netPayAvaliable)
+            Toggle("Calculate net salary", isOn: $viewModel.settingsStore.isCalculatingNetPay)
                 .accessibilityIdentifier(Identifier.Toggles.calculateNetSalary.rawValue)
                 .padding()
                 .background()
@@ -359,6 +363,6 @@ extension OnboardingView {
 
 struct OnboardingView_Previews: PreviewProvider {
     static var previews: some View {
-        OnboardingView()
+        OnboardingView(viewModel: OnboardingViewModel(settingsStore: SettingsStore()))
     }
 }

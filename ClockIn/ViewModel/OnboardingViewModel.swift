@@ -6,91 +6,57 @@
 //
 
 import Foundation
-import SwiftUI
+import Combine
+import UserNotifications
 
 class OnboardingViewModel: ObservableObject {
     
-    @Published private var settingsStore: SettingsStore
-    @Published var isLoggingOvertime: Bool {
-        didSet {
-            UserDefaults.standard.set(isLoggingOvertime, forKey: SettingsStore.SettingKey.isLoggingOvertime.rawValue)//K.UserDefaultsKeys.isLoggingOvertime)
-        }
-    }
-    
-    @Published var isSendingNotifications: Bool {
-        didSet {
-            UserDefaults.standard.set(isSendingNotifications, forKey: K.UserDefaultsKeys.isSendingNotifications)
-            if isSendingNotifications {
-                //ask for access to notifications
-                requestAuthorizationForNotifications()
-            }
-        }
-    }
-    
-    @Published var netPayAvaliable: Bool {
-        didSet {
-            UserDefaults.standard.set(netPayAvaliable, forKey: K.UserDefaultsKeys.isCalculatingNetPay)
-        }
-    }
+    @Published var settingsStore: SettingsStore
+    private var subscriptions = Set<AnyCancellable>()
     
     @Published var grossPayPerMonthText: String = "" {
         didSet {
             let filtered = grossPayPerMonthText.filter({ "0123456789".contains($0) })
             if let newGross = Int(filtered) {
-                grossPayPerMonth = newGross
+                settingsStore.grossPayPerMonth = newGross
             }
-        }
-    }
-    
-    var grossPayPerMonth: Int {
-        didSet {
-            UserDefaults.standard.set(grossPayPerMonth, forKey: K.UserDefaultsKeys.grossPayPerMonth)
         }
     }
     
     @Published var hoursWorking: Int = 8 {
         didSet {
-            workTimeInSeconds = calculateTimeInSeconds(hours: hoursWorking, minutes: minutesWorking)
+            settingsStore.workTimeInSeconds = calculateTimeInSeconds(hours: hoursWorking, minutes: minutesWorking)
         }
     }
     @Published var minutesWorking: Int = 0 {
-            didSet {
-                workTimeInSeconds = calculateTimeInSeconds(hours: hoursWorking, minutes: minutesWorking)
-            }
+        didSet {
+            settingsStore.workTimeInSeconds = calculateTimeInSeconds(hours: hoursWorking, minutes: minutesWorking)
+        }
     }
     
     @Published var hoursOvertime: Int = 5 {
         didSet {
-            maxOvertimeAllowedinSeconds = calculateTimeInSeconds(hours: hoursOvertime, minutes: minutesOvertime)
+            settingsStore.maximumOvertimeAllowedInSeconds = calculateTimeInSeconds(hours: hoursOvertime, minutes: minutesOvertime)
         }
     }
     @Published var minutesOvertime: Int = 0 {
         didSet {
-            maxOvertimeAllowedinSeconds = calculateTimeInSeconds(hours: hoursOvertime, minutes: minutesOvertime)
-        }
-    }
-    
-    
-    private var workTimeInSeconds: Int {
-        didSet {
-            UserDefaults.standard.set(workTimeInSeconds, forKey: K.UserDefaultsKeys.workTimeInSeconds)
-        }
-    }
-    private var maxOvertimeAllowedinSeconds: Int {
-        didSet {
-            UserDefaults.standard.set(maxOvertimeAllowedinSeconds, forKey: K.UserDefaultsKeys.maximumOverTimeAllowedInSeconds)
+            settingsStore.maximumOvertimeAllowedInSeconds = calculateTimeInSeconds(hours: hoursOvertime, minutes: minutesOvertime)
         }
     }
     
     init(settingsStore: SettingsStore) {
         self.settingsStore = settingsStore
-        let userDef = UserDefaults.standard
-        self.workTimeInSeconds = userDef.integer(forKey: K.UserDefaultsKeys.workTimeInSeconds)
-        self.maxOvertimeAllowedinSeconds = userDef.integer(forKey: K.UserDefaultsKeys.maximumOverTimeAllowedInSeconds)
-        self.isLoggingOvertime = userDef.bool(forKey: SettingsStore.SettingKey.isLoggingOvertime.rawValue)//K.UserDefaultsKeys.isLoggingOvertime)
-        self.isSendingNotifications = userDef.bool(forKey: K.UserDefaultsKeys.isSendingNotifications)
-        self.netPayAvaliable = userDef.bool(forKey: K.UserDefaultsKeys.isCalculatingNetPay)
-        self.grossPayPerMonth = userDef.integer(forKey: K.UserDefaultsKeys.grossPayPerMonth)
+        self.hoursWorking = settingsStore.workTimeInSeconds / 3600
+        self.minutesWorking = (settingsStore.workTimeInSeconds % 3600) / 60
+        self.hoursOvertime = settingsStore.maximumOvertimeAllowedInSeconds / 3600
+        self.minutesOvertime = (settingsStore.maximumOvertimeAllowedInSeconds % 3600) / 60
+        
+        
+        $hoursWorking.sink { [weak self] newValue in
+            guard let self else { return }
+            self.settingsStore.workTimeInSeconds = self.calculateTimeInSeconds(hours: newValue, minutes: self.minutesWorking)
+        }.store(in: &subscriptions)
     }
     
     func calculateTimeInSeconds(hours: Int, minutes: Int) -> Int {
@@ -104,8 +70,7 @@ class OnboardingViewModel: ObservableObject {
             } else if let error = error {
                 print(error.localizedDescription)
                 guard let self else { return }
-                self.isSendingNotifications = false
-                UserDefaults.standard.set(self.isSendingNotifications, forKey: K.UserDefaultsKeys.isSendingNotifications)
+                self.settingsStore.isSendingNotification = false
             }
         })
     }

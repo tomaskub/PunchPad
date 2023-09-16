@@ -21,7 +21,7 @@ struct ContentView: View {
         .fullScreenCover(isPresented: $isRunFirstTime, onDismiss: {
             isRunFirstTime = false
             }) {
-                OnboardingView()
+                OnboardingView(viewModel: OnboardingViewModel(settingsStore: container.settingsStore))
             }
     }
 }
