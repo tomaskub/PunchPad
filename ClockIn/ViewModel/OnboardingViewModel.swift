@@ -11,39 +11,13 @@ import UserNotifications
 
 class OnboardingViewModel: ObservableObject {
     
-    @Published var settingsStore: SettingsStore
     private var subscriptions = Set<AnyCancellable>()
-    
-    @Published var grossPayPerMonthText: String = "" {
-        didSet {
-            let filtered = grossPayPerMonthText.filter({ "0123456789".contains($0) })
-            if let newGross = Int(filtered) {
-                settingsStore.grossPayPerMonth = newGross
-            }
-        }
-    }
-    
-    @Published var hoursWorking: Int = 8 {
-        didSet {
-            settingsStore.workTimeInSeconds = calculateTimeInSeconds(hours: hoursWorking, minutes: minutesWorking)
-        }
-    }
-    @Published var minutesWorking: Int = 0 {
-        didSet {
-            settingsStore.workTimeInSeconds = calculateTimeInSeconds(hours: hoursWorking, minutes: minutesWorking)
-        }
-    }
-    
-    @Published var hoursOvertime: Int = 5 {
-        didSet {
-            settingsStore.maximumOvertimeAllowedInSeconds = calculateTimeInSeconds(hours: hoursOvertime, minutes: minutesOvertime)
-        }
-    }
-    @Published var minutesOvertime: Int = 0 {
-        didSet {
-            settingsStore.maximumOvertimeAllowedInSeconds = calculateTimeInSeconds(hours: hoursOvertime, minutes: minutesOvertime)
-        }
-    }
+    @Published var settingsStore: SettingsStore
+    @Published var grossPayPerMonthText: String = String()
+    @Published var hoursWorking: Int
+    @Published var minutesWorking: Int
+    @Published var hoursOvertime: Int
+    @Published var minutesOvertime: Int
     
     init(settingsStore: SettingsStore) {
         self.settingsStore = settingsStore
@@ -51,15 +25,46 @@ class OnboardingViewModel: ObservableObject {
         self.minutesWorking = (settingsStore.workTimeInSeconds % 3600) / 60
         self.hoursOvertime = settingsStore.maximumOvertimeAllowedInSeconds / 3600
         self.minutesOvertime = (settingsStore.maximumOvertimeAllowedInSeconds % 3600) / 60
-        
-        
+        setPublishers()
+    }
+    
+    private func setPublishers() {
         $hoursWorking.sink { [weak self] newValue in
             guard let self else { return }
             self.settingsStore.workTimeInSeconds = self.calculateTimeInSeconds(hours: newValue, minutes: self.minutesWorking)
         }.store(in: &subscriptions)
+        
+        $minutesWorking.sink { [weak self] newValue in
+            guard let self else { return }
+            self.settingsStore.workTimeInSeconds = self.calculateTimeInSeconds(hours: self.hoursWorking, minutes: newValue)
+        }.store(in: &subscriptions)
+        
+        $hoursOvertime.sink { [weak self] newValue in
+            guard let self else { return }
+            self.settingsStore.maximumOvertimeAllowedInSeconds = self.calculateTimeInSeconds(hours: newValue, minutes: self.minutesOvertime)
+        }.store(in: &subscriptions)
+        
+        $minutesOvertime.sink { [weak self] newValue in
+            guard let self else { return }
+            self.settingsStore.maximumOvertimeAllowedInSeconds = self.calculateTimeInSeconds(hours: self.hoursOvertime, minutes: newValue)
+        }.store(in: &subscriptions)
+        
+        $grossPayPerMonthText.sink { [weak self] newValue in
+            guard let self else { return }
+            let filtered = newValue.filter({ "0123456789".contains($0) })
+            if let newGross = Int(filtered) {
+                self.settingsStore.grossPayPerMonth = newGross
+            }
+        }.store(in: &subscriptions)
+        
+        settingsStore.$isSendingNotification.sink { [weak self] value in
+            guard let self else { return }
+            if value {
+                self.requestAuthorizationForNotifications()
+            }
+        }.store(in: &subscriptions)
     }
-    
-    func calculateTimeInSeconds(hours: Int, minutes: Int) -> Int {
+    private func calculateTimeInSeconds(hours: Int, minutes: Int) -> Int {
         return hours * 3600 + minutes * 60
     }
     
