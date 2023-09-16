@@ -12,7 +12,7 @@ struct SettingsView: View {
     @Environment(\.colorScheme) var colorScheme
     @StateObject private var viewModel: SettingsViewModel
     
-    init(viewModel: SettingsViewModel = SettingsViewModel()) {
+    init(viewModel: SettingsViewModel = SettingsViewModel(dataManger: .shared)) {
         self._viewModel = StateObject.init(wrappedValue: viewModel)
     }
     
