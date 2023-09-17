@@ -29,27 +29,37 @@ class OnboardingViewModel: ObservableObject {
     }
     
     private func setPublishers() {
-        $hoursWorking.sink { [weak self] newValue in
+        $hoursWorking
+            .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
+            .sink { [weak self] newValue in
             guard let self else { return }
             self.settingsStore.workTimeInSeconds = self.calculateTimeInSeconds(hours: newValue, minutes: self.minutesWorking)
         }.store(in: &subscriptions)
         
-        $minutesWorking.sink { [weak self] newValue in
+        $minutesWorking
+            .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
+            .sink { [weak self] newValue in
             guard let self else { return }
             self.settingsStore.workTimeInSeconds = self.calculateTimeInSeconds(hours: self.hoursWorking, minutes: newValue)
         }.store(in: &subscriptions)
         
-        $hoursOvertime.sink { [weak self] newValue in
+        $hoursOvertime
+            .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
+            .sink { [weak self] newValue in
             guard let self else { return }
             self.settingsStore.maximumOvertimeAllowedInSeconds = self.calculateTimeInSeconds(hours: newValue, minutes: self.minutesOvertime)
         }.store(in: &subscriptions)
         
-        $minutesOvertime.sink { [weak self] newValue in
+        $minutesOvertime
+            .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
+            .sink { [weak self] newValue in
             guard let self else { return }
             self.settingsStore.maximumOvertimeAllowedInSeconds = self.calculateTimeInSeconds(hours: self.hoursOvertime, minutes: newValue)
         }.store(in: &subscriptions)
         
-        $grossPayPerMonthText.sink { [weak self] newValue in
+        $grossPayPerMonthText
+            .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
+            .sink { [weak self] newValue in
             guard let self else { return }
             let filtered = newValue.filter({ "0123456789".contains($0) })
             if let newGross = Int(filtered) {
