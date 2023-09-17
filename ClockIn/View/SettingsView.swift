@@ -43,7 +43,7 @@ struct SettingsView: View {
                         timePickers
                     } // END OF IF
                     
-                    Toggle(isOn: $viewModel.isSendingNotifications) {
+                    Toggle(isOn: $viewModel.settingsStore.isSendingNotification) {
                         Text("Send notification on finish")
                     } // END OF TOGGLE
                     .accessibilityIdentifier(Identifier.ToggableCells.sendNotificationsOnFinish.rawValue)
@@ -53,7 +53,7 @@ struct SettingsView: View {
                 } // END OF SECTION
                 Section {
                     
-                    Toggle(isOn: $viewModel.isLoggingOverTime) {
+                    Toggle(isOn: $viewModel.settingsStore.isLoggingOvertime) {
                         Text("Keep loging overtime")
                     }
                     .accessibilityIdentifier(Identifier.ToggableCells.keepLoggingOvertime.rawValue)
@@ -87,7 +87,7 @@ struct SettingsView: View {
                             .keyboardType(.numberPad)
                         Text("PLN")
                     }
-                    Toggle("Calculate net pay", isOn: $viewModel.calculateNetPaycheck)
+                    Toggle("Calculate net pay", isOn: $viewModel.settingsStore.isCalculatingNetPay)
                         .accessibilityIdentifier(Identifier.ToggableCells.calculateNetPay.rawValue)
                 } header: {
                     Text("Paycheck calculation")
@@ -123,15 +123,15 @@ struct SettingsView: View {
                 Section {
                     VStack{
                         Text("Color scheme")
-                        Picker("appearance", selection: $viewModel.preferredColorScheme) {
+                        Picker("appearance", selection: $viewModel.settingsStore.savedColorScheme) {
                             Text("System")
-                                .tag("system")
+                                .tag(nil as ColorScheme?)
                                 .accessibilityIdentifier(Identifier.SegmentedControlButtons.system.rawValue)
                             Text("Dark")
-                                .tag("dark")
+                                .tag(ColorScheme.dark)
                                 .accessibilityIdentifier(Identifier.SegmentedControlButtons.dark.rawValue)
                             Text("Light")
-                                .tag("light")
+                                .tag(ColorScheme.light)
                                 .accessibilityIdentifier(Identifier.SegmentedControlButtons.light.rawValue)
                         } // END OF PICKER
                         .accessibilityIdentifier(Identifier.Pickers.appearancePicker.rawValue)
