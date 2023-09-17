@@ -75,11 +75,8 @@ class SettingsViewModel: ObservableObject {
     private func setWorkTimeSubscribers() {
         $timerHours
             .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
+            .removeDuplicates()
             .combineLatest($timerMinutes.debounce(for: .milliseconds(500), scheduler: DispatchQueue.main))
-            .filter({ [weak self] (hours, minutes) in
-                guard let self else { return false }
-                return self.settingsStore.workTimeInSeconds != self.calculateTimeInSeconds(hours: hours, minutes: minutes)
-            })
             .sink { [weak self] (hours, minutes) in
                 guard let self else { return }
                 let newWorkTime = self.calculateTimeInSeconds(hours: hours, minutes: minutes )
@@ -90,11 +87,8 @@ class SettingsViewModel: ObservableObject {
         
         $timerMinutes
             .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
+            .removeDuplicates()
             .combineLatest($timerHours.debounce(for: .milliseconds(500), scheduler: DispatchQueue.main))
-            .filter({ [weak self] (minutes, hours) in
-                guard let self else { return false }
-                return self.settingsStore.workTimeInSeconds != self.calculateTimeInSeconds(hours: hours, minutes: minutes)
-            })
             .sink { [weak self] (minutes, hours) in
             guard let self else { return }
                 self.settingsStore.workTimeInSeconds = self.calculateTimeInSeconds(hours: hours, minutes: minutes)
@@ -104,11 +98,8 @@ class SettingsViewModel: ObservableObject {
     private func setOvertimeSubscribers() {
         $overtimeHours
             .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
+            .removeDuplicates()
             .combineLatest($overtimeMinutes.debounce(for: .milliseconds(500), scheduler: DispatchQueue.main))
-            .filter { [weak self] (hours, minutes) in
-                guard let self else { return false }
-                return self.settingsStore.maximumOvertimeAllowedInSeconds != self.calculateTimeInSeconds(hours: hours, minutes: minutes)
-            }
             .sink { [weak self] (hours, minutes) in
                 guard let self else { return }
                 self.settingsStore.maximumOvertimeAllowedInSeconds = self.calculateTimeInSeconds(hours: hours, minutes: minutes)
@@ -116,11 +107,8 @@ class SettingsViewModel: ObservableObject {
         
         $overtimeMinutes
             .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
+            .removeDuplicates()
             .combineLatest($overtimeHours.debounce(for: .milliseconds(500), scheduler: DispatchQueue.main))
-            .filter { [weak self] (minutes, hours) in
-                guard let self else { return false }
-                return self.settingsStore.maximumOvertimeAllowedInSeconds != self.calculateTimeInSeconds(hours: hours, minutes: minutes)
-            }
             .sink { [weak self] (minutes, hours) in
                 guard let self else { return }
                 self.settingsStore.maximumOvertimeAllowedInSeconds =  self.calculateTimeInSeconds(hours: hours, minutes: minutes)
