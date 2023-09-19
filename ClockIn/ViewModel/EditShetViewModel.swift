@@ -59,8 +59,8 @@ class EditSheetViewModel: ObservableObject {
         self.overTimerString = String()
         
         if overrideUserDefaults {
-            self.workTimeAllowed = UserDefaults.standard.integer(forKey: K.UserDefaultsKeys.workTimeInSeconds)
-            self.overTimeAllowed = UserDefaults.standard.integer(forKey: K.UserDefaultsKeys.maximumOverTimeAllowedInSeconds)
+            self.workTimeAllowed = UserDefaults.standard.integer(forKey: SettingsStore.SettingKey.workTimeInSeconds.rawValue)
+            self.overTimeAllowed = UserDefaults.standard.integer(forKey: SettingsStore.SettingKey.maximumOvertimeAllowedInSeconds.rawValue)
         } else {
             self.workTimeAllowed = 8 * 3600
             self.overTimeAllowed = 5 * 3600

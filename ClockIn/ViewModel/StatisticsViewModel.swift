@@ -67,8 +67,8 @@ class StatisticsViewModel: ObservableObject {
         self.dataManager = dataManager
         self.payManager = payManager
         if !overrideUserDefaults {
-            self.maximumOvertimeInSeconds = UserDefaults.standard.integer(forKey: K.UserDefaultsKeys.maximumOverTimeAllowedInSeconds)
-            self.workTimeInSeconds = UserDefaults.standard.integer(forKey: K.UserDefaultsKeys.workTimeInSeconds)
+            self.maximumOvertimeInSeconds = UserDefaults.standard.integer(forKey: SettingsStore.SettingKey.maximumOvertimeAllowedInSeconds.rawValue)
+            self.workTimeInSeconds = UserDefaults.standard.integer(forKey: SettingsStore.SettingKey.workTimeInSeconds.rawValue)
         } else {
             self.maximumOvertimeInSeconds = 5 * 3600
             self.workTimeInSeconds = 8 * 3600

@@ -10,8 +10,8 @@ import SwiftUI
 class HomeViewModel: NSObject, ObservableObject {
     
     // Timer countdown total values pulled from user defaults
-    @AppStorage(K.UserDefaultsKeys.workTimeInSeconds) var timerTotalSeconds: Int = 28800
-    @AppStorage(K.UserDefaultsKeys.maximumOverTimeAllowedInSeconds) var overtimeTotalSeconds: Int = 18000
+    @AppStorage(SettingsStore.SettingKey.workTimeInSeconds.rawValue) var timerTotalSeconds: Int = 28800
+    @AppStorage(SettingsStore.SettingKey.maximumOvertimeAllowedInSeconds.rawValue) var overtimeTotalSeconds: Int = 18000
     
     //MARK: DATA MANAGING PROPERTIES
     private var dataManager: DataManager

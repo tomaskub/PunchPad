@@ -30,8 +30,8 @@ class PayManager: ObservableObject {
     
     init(dataManager: DataManager = DataManager.shared) {
         
-        self.netPayAvaliable = UserDefaults.standard.bool(forKey: K.UserDefaultsKeys.isCalculatingNetPay)
-        self.grossPayPerMonth = Double(UserDefaults.standard.integer(forKey: K.UserDefaultsKeys.grossPayPerMonth))
+        self.netPayAvaliable = UserDefaults.standard.bool(forKey: SettingsStore.SettingKey.isCalculatingNetPay.rawValue)
+        self.grossPayPerMonth = Double(UserDefaults.standard.integer(forKey: SettingsStore.SettingKey.grossPayPerMonth.rawValue))
         self.dataManager = dataManager
         
         dataManager.$entryThisMonth.sink { [weak self] array in

@@ -40,7 +40,7 @@ class Container: ObservableObject {
             containerType = .test
         }
         if CommandLine.arguments.contains(LaunchArgument.setTestUserDefaults.rawValue) {
-            UserDefaults.standard.set(false, forKey: K.UserDefaultsKeys.isRunFirstTime)
+            UserDefaults.standard.set(false, forKey: SettingsStore.SettingKey.isRunFirstTime.rawValue)
             containerType = .test
         }
         
