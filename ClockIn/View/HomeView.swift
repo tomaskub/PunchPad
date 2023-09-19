@@ -92,7 +92,7 @@ struct Home_Previews: PreviewProvider {
         @StateObject private var container: Container = .init()
         var body: some View {
             NavigationView {
-                HomeView(viewModel: HomeViewModel(dataManager: container.dataManager, timerProvider: container.timerProvider))
+                HomeView(viewModel: HomeViewModel(dataManager: container.dataManager,settingsStore: container.settingsStore, timerProvider: container.timerProvider))
             }
             .environmentObject(Container())
         }
