@@ -11,8 +11,10 @@ struct SettingsView: View {
     private typealias Identifier = ScreenIdentifier.SettingsView
     @Environment(\.colorScheme) var colorScheme
     @StateObject private var viewModel: SettingsViewModel
+    @State private var isShowingWorkTimeEditor: Bool = false
+    @State private var isShowingOvertimeEditor: Bool = false
     
-    init(viewModel: SettingsViewModel = SettingsViewModel()) {
+    init(viewModel: SettingsViewModel) {
         self._viewModel = StateObject.init(wrappedValue: viewModel)
     }
     
@@ -27,21 +29,21 @@ struct SettingsView: View {
                     HStack {
                         Text("Set timer length")
                         Spacer()
-                        Image(systemName: viewModel.isShowingWorkTimeEditor ? "chevron.up" : "chevron.down")
+                        Image(systemName: isShowingWorkTimeEditor ? "chevron.up" : "chevron.down")
                     } // END OF HSTACK
                     .accessibilityIdentifier(Identifier.ExpandableCells.setTimerLength.rawValue)
                     .contentShape(Rectangle())
                     .onTapGesture {
                         withAnimation(.spring()) {
-                            viewModel.isShowingWorkTimeEditor.toggle()
+                            isShowingWorkTimeEditor.toggle()
                         }
                     } // END OF TAP GESTURE
                     
-                    if viewModel.isShowingWorkTimeEditor {
+                    if isShowingWorkTimeEditor {
                         timePickers
                     } // END OF IF
                     
-                    Toggle(isOn: $viewModel.isSendingNotifications) {
+                    Toggle(isOn: $viewModel.settingsStore.isSendingNotification) {
                         Text("Send notification on finish")
                     } // END OF TOGGLE
                     .accessibilityIdentifier(Identifier.ToggableCells.sendNotificationsOnFinish.rawValue)
@@ -51,7 +53,7 @@ struct SettingsView: View {
                 } // END OF SECTION
                 Section {
                     
-                    Toggle(isOn: $viewModel.isLoggingOverTime) {
+                    Toggle(isOn: $viewModel.settingsStore.isLoggingOvertime) {
                         Text("Keep loging overtime")
                     }
                     .accessibilityIdentifier(Identifier.ToggableCells.keepLoggingOvertime.rawValue)
@@ -59,17 +61,17 @@ struct SettingsView: View {
                     HStack {
                         Text("Maximum overtime allowed")
                         Spacer()
-                        Image(systemName: viewModel.isShowingOverTimeEditor ? "chevron.up" : "chevron.down")
+                        Image(systemName: isShowingOvertimeEditor ? "chevron.up" : "chevron.down")
                     } // END OF HSTACK
                     .accessibilityIdentifier(Identifier.ExpandableCells.setOvertimeLength.rawValue)
                     .contentShape(Rectangle())
                     .onTapGesture {
                         withAnimation(.spring()) {
-                            viewModel.isShowingOverTimeEditor.toggle()
+                            isShowingOvertimeEditor.toggle()
                         }
                     } // END OF TAP GESTURE
                     
-                    if viewModel.isShowingOverTimeEditor {
+                    if isShowingOvertimeEditor {
                         overTimePickers
                     }
                 } header: {
@@ -85,7 +87,7 @@ struct SettingsView: View {
                             .keyboardType(.numberPad)
                         Text("PLN")
                     }
-                    Toggle("Calculate net pay", isOn: $viewModel.calculateNetPaycheck)
+                    Toggle("Calculate net pay", isOn: $viewModel.settingsStore.isCalculatingNetPay)
                         .accessibilityIdentifier(Identifier.ToggableCells.calculateNetPay.rawValue)
                 } header: {
                     Text("Paycheck calculation")
@@ -121,15 +123,15 @@ struct SettingsView: View {
                 Section {
                     VStack{
                         Text("Color scheme")
-                        Picker("appearance", selection: $viewModel.preferredColorScheme) {
+                        Picker("appearance", selection: $viewModel.settingsStore.savedColorScheme) {
                             Text("System")
-                                .tag("system")
+                                .tag(nil as ColorScheme?)
                                 .accessibilityIdentifier(Identifier.SegmentedControlButtons.system.rawValue)
                             Text("Dark")
-                                .tag("dark")
+                                .tag(ColorScheme.dark)
                                 .accessibilityIdentifier(Identifier.SegmentedControlButtons.dark.rawValue)
                             Text("Light")
-                                .tag("light")
+                                .tag(ColorScheme.light)
                                 .accessibilityIdentifier(Identifier.SegmentedControlButtons.light.rawValue)
                         } // END OF PICKER
                         .accessibilityIdentifier(Identifier.Pickers.appearancePicker.rawValue)
@@ -197,10 +199,16 @@ struct SettingsView: View {
 }
 
 struct SettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            SettingsView()
+    private struct ContainerView: View {
+        @StateObject private var container = Container()
+        var body: some View {
+            NavigationView {
+                SettingsView(viewModel: SettingsViewModel(dataManger: container.dataManager, settingsStore: container.settingsStore))
+            }
         }
+    }
+    static var previews: some View {
+        ContainerView()
     }
         
 }

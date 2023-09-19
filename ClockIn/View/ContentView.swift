@@ -9,8 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @AppStorage(K.UserDefaultsKeys.isRunFirstTime) var isRunFirstTime: Bool = true
     @EnvironmentObject var container: Container
+    @AppStorage(SettingsStore.SettingKey.isRunFirstTime.rawValue) var isRunFirstTime: Bool = true 
     
     var body: some View {
         NavigationView {
@@ -18,10 +18,10 @@ struct ContentView: View {
                                        timerProvider: container.timerProvider)
             )
         }
-            .fullScreenCover(isPresented: $isRunFirstTime, onDismiss: {
-                isRunFirstTime = false
+        .fullScreenCover(isPresented: $isRunFirstTime, onDismiss: {
+            isRunFirstTime = false
             }) {
-                OnboardingView()
+                OnboardingView(viewModel: OnboardingViewModel(settingsStore: container.settingsStore))
             }
     }
 }

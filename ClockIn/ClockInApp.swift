@@ -11,16 +11,14 @@ import SwiftUI
 struct ClockInApp: App {
     
     @StateObject private var container = Container()
-    @AppStorage("colorScheme") var preferredColorScheme: String = "system"
+    @AppStorage(SettingsStore.SettingKey.savedColorScheme.rawValue) var preferredColorScheme: String?
     
     var colorScheme: ColorScheme? {
         switch preferredColorScheme {
-        case "dark":
-            return ColorScheme.dark
-        case "light":
-            return ColorScheme.light
-        default:
+        case .none:
             return nil
+        case .some(let wrapped):
+            return ColorScheme.fromStringValue(wrapped)
         }
     }
     

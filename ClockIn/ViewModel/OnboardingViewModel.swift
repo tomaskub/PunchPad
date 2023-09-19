@@ -6,105 +6,75 @@
 //
 
 import Foundation
-import SwiftUI
+import Combine
+import UserNotifications
 
 class OnboardingViewModel: ObservableObject {
     
-    //Onboarding stages:
-    /*
-     0 - Logo and welcome message
-     1 - Set the work time
-     2 - Ask if doing overtime and set maximum overtime
-     3 - Ask to send notifications on finish
-     4 - Ask user for salary and if to calculate net salary (after taxes)
-     5 - Inform setup complete, allows to Finish onboarding
-     */
+    private var subscriptions = Set<AnyCancellable>()
+    @Published var settingsStore: SettingsStore
+    @Published var grossPayPerMonthText: String = String()
+    @Published var hoursWorking: Int
+    @Published var minutesWorking: Int
+    @Published var hoursOvertime: Int
+    @Published var minutesOvertime: Int
     
-    @Published var onboardingStage: Int = 0
-    
-    @Published var isLoggingOvertime: Bool {
-        didSet {
-            UserDefaults.standard.set(isLoggingOvertime, forKey: K.UserDefaultsKeys.isLoggingOvertime)
-        }
+    init(settingsStore: SettingsStore) {
+        self.settingsStore = settingsStore
+        self.hoursWorking = settingsStore.workTimeInSeconds / 3600
+        self.minutesWorking = (settingsStore.workTimeInSeconds % 3600) / 60
+        self.hoursOvertime = settingsStore.maximumOvertimeAllowedInSeconds / 3600
+        self.minutesOvertime = (settingsStore.maximumOvertimeAllowedInSeconds % 3600) / 60
+        setPublishers()
     }
     
-    @Published var isSendingNotifications: Bool {
-        didSet {
-            UserDefaults.standard.set(isSendingNotifications, forKey: K.UserDefaultsKeys.isSendingNotifications)
-            if isSendingNotifications {
-                //ask for access to notifications
-                requestAuthorizationForNotifications()
-            }
-        }
-    }
-    
-    @Published var netPayAvaliable: Bool {
-        didSet {
-            UserDefaults.standard.set(netPayAvaliable, forKey: K.UserDefaultsKeys.isCalculatingNetPay)
-        }
-    }
-    
-    @Published var grossPayPerMonthText: String = "" {
-        didSet {
-            let filtered = grossPayPerMonthText.filter({ "0123456789".contains($0) })
+    private func setPublishers() {
+        $hoursWorking
+            .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
+            .sink { [weak self] newValue in
+            guard let self else { return }
+            self.settingsStore.workTimeInSeconds = self.calculateTimeInSeconds(hours: newValue, minutes: self.minutesWorking)
+        }.store(in: &subscriptions)
+        
+        $minutesWorking
+            .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
+            .sink { [weak self] newValue in
+            guard let self else { return }
+            self.settingsStore.workTimeInSeconds = self.calculateTimeInSeconds(hours: self.hoursWorking, minutes: newValue)
+        }.store(in: &subscriptions)
+        
+        $hoursOvertime
+            .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
+            .sink { [weak self] newValue in
+            guard let self else { return }
+            self.settingsStore.maximumOvertimeAllowedInSeconds = self.calculateTimeInSeconds(hours: newValue, minutes: self.minutesOvertime)
+        }.store(in: &subscriptions)
+        
+        $minutesOvertime
+            .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
+            .sink { [weak self] newValue in
+            guard let self else { return }
+            self.settingsStore.maximumOvertimeAllowedInSeconds = self.calculateTimeInSeconds(hours: self.hoursOvertime, minutes: newValue)
+        }.store(in: &subscriptions)
+        
+        $grossPayPerMonthText
+            .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
+            .sink { [weak self] newValue in
+            guard let self else { return }
+            let filtered = newValue.filter({ "0123456789".contains($0) })
             if let newGross = Int(filtered) {
-                grossPayPerMonth = newGross
+                self.settingsStore.grossPayPerMonth = newGross
             }
-        }
-    }
-    
-    var grossPayPerMonth: Int {
-        didSet {
-            UserDefaults.standard.set(grossPayPerMonth, forKey: K.UserDefaultsKeys.grossPayPerMonth)
-        }
-    }
-    
-    @Published var hoursWorking: Int = 8 {
-        didSet {
-            workTimeInSeconds = calculateTimeInSeconds(hours: hoursWorking, minutes: minutesWorking)
-        }
-    }
-    @Published var minutesWorking: Int = 0 {
-            didSet {
-                workTimeInSeconds = calculateTimeInSeconds(hours: hoursWorking, minutes: minutesWorking)
+        }.store(in: &subscriptions)
+        
+        settingsStore.$isSendingNotification.sink { [weak self] value in
+            guard let self else { return }
+            if value {
+                self.requestAuthorizationForNotifications()
             }
+        }.store(in: &subscriptions)
     }
-    
-    @Published var hoursOvertime: Int = 5 {
-        didSet {
-            maxOvertimeAllowedinSeconds = calculateTimeInSeconds(hours: hoursOvertime, minutes: minutesOvertime)
-        }
-    }
-    @Published var minutesOvertime: Int = 0 {
-        didSet {
-            maxOvertimeAllowedinSeconds = calculateTimeInSeconds(hours: hoursOvertime, minutes: minutesOvertime)
-        }
-    }
-    
-    
-    private var workTimeInSeconds: Int {
-        didSet {
-            UserDefaults.standard.set(workTimeInSeconds, forKey: K.UserDefaultsKeys.workTimeInSeconds)
-        }
-    }
-    private var maxOvertimeAllowedinSeconds: Int {
-        didSet {
-            UserDefaults.standard.set(maxOvertimeAllowedinSeconds, forKey: K.UserDefaultsKeys.maximumOverTimeAllowedInSeconds)
-        }
-    }
-    
-    
-    init() {
-        let userDef = UserDefaults.standard
-        self.workTimeInSeconds = userDef.integer(forKey: K.UserDefaultsKeys.workTimeInSeconds)
-        self.maxOvertimeAllowedinSeconds = userDef.integer(forKey: K.UserDefaultsKeys.maximumOverTimeAllowedInSeconds)
-        self.isLoggingOvertime = userDef.bool(forKey: K.UserDefaultsKeys.isLoggingOvertime)
-        self.isSendingNotifications = userDef.bool(forKey: K.UserDefaultsKeys.isSendingNotifications)
-        self.netPayAvaliable = userDef.bool(forKey: K.UserDefaultsKeys.isCalculatingNetPay)
-        self.grossPayPerMonth = userDef.integer(forKey: K.UserDefaultsKeys.grossPayPerMonth)
-    }
-    
-    func calculateTimeInSeconds(hours: Int, minutes: Int) -> Int {
+    private func calculateTimeInSeconds(hours: Int, minutes: Int) -> Int {
         return hours * 3600 + minutes * 60
     }
     
@@ -115,8 +85,7 @@ class OnboardingViewModel: ObservableObject {
             } else if let error = error {
                 print(error.localizedDescription)
                 guard let self else { return }
-                self.isSendingNotifications = false
-                UserDefaults.standard.set(self.isSendingNotifications, forKey: K.UserDefaultsKeys.isSendingNotifications)
+                self.settingsStore.isSendingNotification = false
             }
         })
     }

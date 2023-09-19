@@ -74,7 +74,10 @@ struct HomeView: View {
                 } // END OF TOOLBAR ITEM
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink {
-                        SettingsView(viewModel: SettingsViewModel(dataManger: container.dataManager))
+                        SettingsView(viewModel:
+                                        SettingsViewModel(
+                                            dataManger: container.dataManager,
+                                            settingsStore: container.settingsStore))
                     } label: {
                         Text("Settings")
                     } // END OF NAV LINK

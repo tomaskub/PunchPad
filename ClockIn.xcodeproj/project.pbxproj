@@ -17,6 +17,8 @@
 		D610074D2AAC77F300503C28 /* EditSheetScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D610074C2AAC77F300503C28 /* EditSheetScreen.swift */; };
 		D61945EC29E7306B0046DE1F /* TimerModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61945EB29E7306B0046DE1F /* TimerModelTests.swift */; };
 		D61945F029E735D80046DE1F /* MockTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61945EF29E735D80046DE1F /* MockTimer.swift */; };
+		D61F11312AB38F8700902D6D /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61F11302AB38F8700902D6D /* SettingsStore.swift */; };
+		D61F11342AB3A6FF00902D6D /* ColorScheme+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61F11332AB3A6FF00902D6D /* ColorScheme+Extension.swift */; };
 		D64574B029D9E6A000207168 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64574AF29D9E6A000207168 /* DataManager.swift */; };
 		D64574B329D9F16900207168 /* EntryMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64574B129D9F16900207168 /* EntryMO+CoreDataClass.swift */; };
 		D64574B429D9F16900207168 /* EntryMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64574B229D9F16900207168 /* EntryMO+CoreDataProperties.swift */; };
@@ -85,6 +87,8 @@
 		D610074C2AAC77F300503C28 /* EditSheetScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSheetScreen.swift; sourceTree = "<group>"; };
 		D61945EB29E7306B0046DE1F /* TimerModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerModelTests.swift; sourceTree = "<group>"; };
 		D61945EF29E735D80046DE1F /* MockTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTimer.swift; sourceTree = "<group>"; };
+		D61F11302AB38F8700902D6D /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
+		D61F11332AB3A6FF00902D6D /* ColorScheme+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ColorScheme+Extension.swift"; sourceTree = "<group>"; };
 		D64574AF29D9E6A000207168 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		D64574B129D9F16900207168 /* EntryMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EntryMO+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D64574B229D9F16900207168 /* EntryMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EntryMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -153,6 +157,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D61F11322AB3A6E700902D6D /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D61F11332AB3A6FF00902D6D /* ColorScheme+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		D67332E82AAE3C1A005FFE7F /* ScreenHelpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -189,6 +201,7 @@
 		D6C4589229D229210069D89B /* ClockIn */ = {
 			isa = PBXGroup;
 			children = (
+				D61F11322AB3A6E700902D6D /* Extensions */,
 				D67332E52AADB8B1005FFE7F /* LaunchArgument.swift */,
 				D6D906AF2AA12BBD004E09C9 /* Factory */,
 				D6C4589329D229210069D89B /* ClockInApp.swift */,
@@ -285,6 +298,7 @@
 				D6842EC329EC62DD00731E84 /* PayManager.swift */,
 				D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */,
 				D60EB9B52AB0D7000053136A /* Container.swift */,
+				D61F11302AB38F8700902D6D /* SettingsStore.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -429,6 +443,7 @@
 				D64574B329D9F16900207168 /* EntryMO+CoreDataClass.swift in Sources */,
 				D64574B429D9F16900207168 /* EntryMO+CoreDataProperties.swift in Sources */,
 				D6D906AE2AA0BEDE004E09C9 /* ScreenIdentifier.swift in Sources */,
+				D61F11342AB3A6FF00902D6D /* ColorScheme+Extension.swift in Sources */,
 				D6C458C529D35EAA0069D89B /* SettingsView.swift in Sources */,
 				D65FD53D29D8B259006CC34F /* PersistanceController.swift in Sources */,
 				D66750EA29D713C900757F17 /* HistoryView.swift in Sources */,
@@ -437,6 +452,7 @@
 				D67332E62AADB8B1005FFE7F /* LaunchArgument.swift in Sources */,
 				D68384F929DB25DD00228491 /* SettingViewModel.swift in Sources */,
 				D6C458C329D2DE2D0069D89B /* HomeView.swift in Sources */,
+				D61F11312AB38F8700902D6D /* SettingsStore.swift in Sources */,
 				D6842EC029EC178000731E84 /* StatisticsView.swift in Sources */,
 				D66750EC29D71C8300757F17 /* HistoryRow.swift in Sources */,
 				D65A976D29F323A900462D8C /* K.swift in Sources */,

@@ -6,18 +6,21 @@
 //
 
 import Foundation
+import Combine
 
 class Container: ObservableObject {
-    
+    private var subscriptions = Set<AnyCancellable>()
     private(set) var dataManager: DataManager
     private(set) var payManager: PayManager
     private(set) var timerProvider: Timer.Type
+    private(set) var settingsStore: SettingsStore
     
     enum ContainerType {
         case production, test, preview
     }
     
     init() {
+        self.timerProvider = Timer.self
         var containerType: ContainerType = .production
         
         if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
@@ -25,9 +28,12 @@ class Container: ObservableObject {
         }
         
         if CommandLine.arguments.contains(LaunchArgument.withOnboarding.rawValue) {
-            K.resetUserDefaults()
-            UserDefaults.standard.set(true, forKey: K.UserDefaultsKeys.isRunFirstTime)
+            SettingsStore.clearUserDefaults()
+            self.settingsStore = SettingsStore()
+            settingsStore.isRunFirstTime = true
             containerType = .test
+        } else {
+            self.settingsStore = SettingsStore()
         }
         
         if CommandLine.arguments.contains(LaunchArgument.inMemoryPresistenStore.rawValue) {
@@ -37,8 +43,6 @@ class Container: ObservableObject {
             UserDefaults.standard.set(false, forKey: K.UserDefaultsKeys.isRunFirstTime)
             containerType = .test
         }
-        
-        self.timerProvider = Timer.self
         
         switch containerType {
         case .production:
@@ -51,6 +55,5 @@ class Container: ObservableObject {
             self.dataManager = .preview
             self.payManager = PayManager(dataManager: .preview)
         }
-        
     }
 }

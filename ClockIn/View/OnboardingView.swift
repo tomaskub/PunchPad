@@ -13,60 +13,74 @@ struct OnboardingView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) var dismiss
     
-    @StateObject var viewModel = OnboardingViewModel()
-   
+    @StateObject var viewModel: OnboardingViewModel
+    
+    init(viewModel: OnboardingViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
+    //Onboarding stages:
+    /*
+     0 - Logo and welcome message
+     1 - Set the work time
+     2 - Ask if doing overtime and set maximum overtime
+     3 - Ask to send notifications on finish
+     4 - Ask user for salary and if to calculate net salary (after taxes)
+     5 - Inform setup complete, allows to Finish onboarding
+     */
+    @State var onboardingStage: Int = 0
+    
     let tansition: AnyTransition = .asymmetric(
         insertion: .move(edge: .trailing),
         removal: .move(edge: .leading))
     
     var body: some View {
         
-            ZStack{
-                //BACKGROUND
-                GradientFactory.build(colorScheme: colorScheme)
-                //CONTENT
-                ZStack {
-                    switch viewModel.onboardingStage {
-                    case 0:
-                        stage0Screen
-                    case 1:
-                        stage1Screen
-                    case 2:
-                        stage2Screen
-                    case 3:
-                        stage3Screen
-                    case 4:
-                        stage4Screen
-                    case 5:
-                        stage5Screen
-                    default:
-                        Rectangle()
-                            .foregroundColor(.accentColor)
-                            .cornerRadius(10)
-                            .frame(width: 200, height: 200)
-                            .overlay {
-                                Text("END OF ON \n BOARDING")
-                                    .font(.largeTitle)
-                                    .fontWeight(.heavy)
-                                    .foregroundColor(.white)
-                                    .multilineTextAlignment(.center)
-                            }
-                        
-                    }
-                }
-                
-                VStack {
-                    if viewModel.onboardingStage != 0 {
-                        HStack {
-                            topButton
-                            Spacer()
+        ZStack{
+            //BACKGROUND
+            GradientFactory.build(colorScheme: colorScheme)
+            //CONTENT
+            ZStack {
+                switch onboardingStage {
+                case 0:
+                    stage0Screen
+                case 1:
+                    stage1Screen
+                case 2:
+                    stage2Screen
+                case 3:
+                    stage3Screen
+                case 4:
+                    stage4Screen
+                case 5:
+                    stage5Screen
+                default:
+                    Rectangle()
+                        .foregroundColor(.accentColor)
+                        .cornerRadius(10)
+                        .frame(width: 200, height: 200)
+                        .overlay {
+                            Text("END OF ON \n BOARDING")
+                                .font(.largeTitle)
+                                .fontWeight(.heavy)
+                                .foregroundColor(.white)
+                                .multilineTextAlignment(.center)
                         }
-                    }
-                    Spacer()
-                    bottomButton
+                    
                 }
-                .padding(30)
             }
+            
+            VStack {
+                if onboardingStage != 0 {
+                    HStack {
+                        topButton
+                        Spacer()
+                    }
+                }
+                Spacer()
+                bottomButton
+            }
+            .padding(30)
+        }
     }
 }
 extension OnboardingView {
@@ -157,16 +171,17 @@ extension OnboardingView {
                         .offset(y: 20)
                         .foregroundColor(.primary)
                 }
-            if !viewModel.isLoggingOvertime {
+            if !viewModel.settingsStore.isLoggingOvertime {
                 Text("Let ClockIn know wheter you want to measure overtime")
                     .multilineTextAlignment(.center)
             }
-            Toggle("Keep logging overtime", isOn: $viewModel.isLoggingOvertime)
+            // should start as false is nto starting as false?
+            Toggle("Keep logging overtime", isOn: $viewModel.settingsStore.isLoggingOvertime)
                 .accessibilityIdentifier(Identifier.Toggles.overtime.rawValue)
                 .padding()
                 .background()
                 .cornerRadius(20)
-            if viewModel.isLoggingOvertime {
+            if viewModel.settingsStore.isLoggingOvertime {
                 Text("Let the app know what is the maximum overtime you can work for.")
                     .multilineTextAlignment(.center)
                 HStack {
@@ -214,7 +229,7 @@ extension OnboardingView {
             Text("Do you want to allow ClockIn to send you notifications when the work time is finished?")
                 .multilineTextAlignment(.center)
             
-            Toggle("Send notifications on finish", isOn: $viewModel.isSendingNotifications)
+            Toggle("Send notifications on finish", isOn: $viewModel.settingsStore.isSendingNotification)
                 .accessibilityIdentifier(Identifier.Toggles.notifications.rawValue)
                 .padding()
                 .background()
@@ -223,7 +238,7 @@ extension OnboardingView {
         }
         .padding(30)
     }
-
+    
     private var stage4Screen: some View {
         VStack(spacing: 40) {
             
@@ -252,7 +267,7 @@ extension OnboardingView {
             
             Text("Do you want to allow ClockIn to calculate your net salary based on Polish tax law?")
                 .multilineTextAlignment(.center)
-            Toggle("Calculate net salary", isOn: $viewModel.netPayAvaliable)
+            Toggle("Calculate net salary", isOn: $viewModel.settingsStore.isCalculatingNetPay)
                 .accessibilityIdentifier(Identifier.Toggles.calculateNetSalary.rawValue)
                 .padding()
                 .background()
@@ -274,28 +289,28 @@ extension OnboardingView {
             
             //This section is still in works until in-app tutorial is developed
             /*
-            Text("To enter a short tutorial on how to use the app and its functions click the tour button. Alternatively, if you are a person that assembles the IKEA furniture without looking at the instructions click the finish button")
-                .multilineTextAlignment(.center)
-            
-            
-            Text("Finish!")
-                .font(.headline)
-                .foregroundColor(.accentColor)
-                .frame(height: 55)
-                .frame(maxWidth: .infinity)
-                .background(Color.primary.colorInvert())
-                .cornerRadius(10)
-                .overlay {
-                    HStack {
-                        Spacer()
-                        Image(systemName: "bicycle")
-                        Image(systemName: "figure.walk")
-                    }
-                    .padding()
-                }
-                .onTapGesture {
-                    dismiss()
-                }
+             Text("To enter a short tutorial on how to use the app and its functions click the tour button. Alternatively, if you are a person that assembles the IKEA furniture without looking at the instructions click the finish button")
+             .multilineTextAlignment(.center)
+             
+             
+             Text("Finish!")
+             .font(.headline)
+             .foregroundColor(.accentColor)
+             .frame(height: 55)
+             .frame(maxWidth: .infinity)
+             .background(Color.primary.colorInvert())
+             .cornerRadius(10)
+             .overlay {
+             HStack {
+             Spacer()
+             Image(systemName: "bicycle")
+             Image(systemName: "figure.walk")
+             }
+             .padding()
+             }
+             .onTapGesture {
+             dismiss()
+             }
              */
         }
         .padding(30)
@@ -307,14 +322,14 @@ extension OnboardingView {
             .foregroundColor(.accentColor)
             .onTapGesture {
                 withAnimation(.spring()) {
-                    viewModel.onboardingStage -= 1
+                    onboardingStage -= 1
                 }
             }
     }
     
     private var bottomButton: some View {
-        Text(viewModel.onboardingStage == 0 ? "Let's start!" :
-                viewModel.onboardingStage == 5 ? "Finish set up!" : "Next")
+        Text(onboardingStage == 0 ? "Let's start!" :
+                onboardingStage == 5 ? "Finish set up!" : "Next")
         .accessibilityIdentifier(Identifier.Buttons.advanceStage.rawValue)
         .font(.headline)
         .foregroundColor(.blue)
@@ -336,10 +351,10 @@ extension OnboardingView {
         .cornerRadius(10)
         .onTapGesture {
             withAnimation(.spring()) {
-                if viewModel.onboardingStage == 5 {
+                if onboardingStage == 5 {
                     dismiss()
                 } else {
-                    viewModel.onboardingStage += 1
+                    onboardingStage += 1
                 }
             }
         }
@@ -348,6 +363,6 @@ extension OnboardingView {
 
 struct OnboardingView_Previews: PreviewProvider {
     static var previews: some View {
-        OnboardingView()
+        OnboardingView(viewModel: OnboardingViewModel(settingsStore: SettingsStore()))
     }
 }
