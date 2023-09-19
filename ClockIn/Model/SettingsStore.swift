@@ -50,48 +50,56 @@ final class SettingsStore: ObservableObject {
     
     func setUpSubscribersSavingToUserDefaults() {
         $isRunFirstTime
+            .dropFirst()
             .removeDuplicates()
             .sink { [weak self] value in
                 guard let self else { return }
                 self.updateSetting(setting: .isRunFirstTime, value: value)
             }.store(in: &subscriptions)
         $isLoggingOvertime
+            .dropFirst()
             .removeDuplicates()
             .sink { [weak self] value in
                 guard let self else { return }
                 self.updateSetting(setting: .isLoggingOvertime, value: value)
             }.store(in: &subscriptions)
         $isCalculatingNetPay
+            .dropFirst()
             .removeDuplicates()
             .sink { [weak self] value in
                 guard let self else { return }
                 self.updateSetting(setting: .isCalculatingNetPay, value: value)
             }.store(in: &subscriptions)
         $isSendingNotification
+            .dropFirst()
             .removeDuplicates()
             .sink { [weak self] value in
                 guard let self else { return }
                 self.updateSetting(setting: .isSendingNotifications, value: value)
             }.store(in: &subscriptions)
      $maximumOvertimeAllowedInSeconds
+            .dropFirst()
             .removeDuplicates()
             .sink { [weak self] value in
                 guard let self else { return }
                 self.updateSetting(setting: .maximumOvertimeAllowedInSeconds, value: value)
             }.store(in: &subscriptions)
         $workTimeInSeconds
+            .dropFirst()
             .removeDuplicates()
             .sink { [weak self] value in
                 guard let self else { return }
                 self.updateSetting(setting: .workTimeInSeconds, value: value)
             }.store(in: &subscriptions)
         $grossPayPerMonth
+            .dropFirst()
             .removeDuplicates()
             .sink { [weak self] value in
                 guard let self else { return }
                 self.updateSetting(setting: .grossPayPerMonth, value: value)
             }.store(in: &subscriptions)
         $savedColorScheme
+            .dropFirst()
             .removeDuplicates()
             .sink { [weak self] value  in
                 guard let self else { return }
