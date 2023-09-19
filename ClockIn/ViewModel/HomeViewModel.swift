@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 class HomeViewModel: NSObject, ObservableObject {
     
@@ -14,7 +15,7 @@ class HomeViewModel: NSObject, ObservableObject {
     private var settingsStore: SettingsStore
     private var startDate: Date?
     private var finishDate: Date?
-    
+    private var subscriptions = Set<AnyCancellable>()
     //MARK: TIMER PROPERTIES - PUBLISHED
     //Published progress properties for UI
     @Published var progress: CGFloat = 0.0
@@ -69,6 +70,17 @@ class HomeViewModel: NSObject, ObservableObject {
         //Add observers
         NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        settingsStore.$workTimeInSeconds
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { [weak self] value in
+                guard let self else { return }
+                if !self.isStarted {
+                    self.countSeconds = value
+                    self.updateTimerStringValue()
+                }
+            })
+            .store(in: &subscriptions)
+            
     }
     //MARK: HANDLING BACKGROUND TIMER UPDATE FUNC
     @objc private func appDidEnterBackground() {
