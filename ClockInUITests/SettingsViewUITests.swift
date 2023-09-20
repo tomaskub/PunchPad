@@ -70,6 +70,42 @@ final class SettingsViewUITests: XCTestCase {
         XCTAssertEqual(overtimePickerResult, .completed, " Overtime pickers should exist")
     }
     
+    func test_toggleButtonsRetainValues() {
+        // Given
+        navigateToSettingsView()
+        let initialValues: [String?] = [
+            settingsScreen.sendNotificationsToggle.value as? String,
+            settingsScreen.keepLogginOvertimeToggle.value as? String,
+            settingsScreen.calculateNetPayToggle.value as? String
+        ]
+        // When
+        settingsScreen.sendNotificationsToggle.switches.firstMatch.tap()
+        settingsScreen.keepLogginOvertimeToggle.switches.firstMatch.tap()
+        settingsScreen.calculateNetPayToggle.switches.firstMatch.tap()
+        // Then
+        let exitValues: [String?] = [
+            settingsScreen.sendNotificationsToggle.value as? String,
+            settingsScreen.keepLogginOvertimeToggle.value as? String,
+            settingsScreen.calculateNetPayToggle.value as? String
+        ]
+        XCTAssertNotEqual(exitValues[0], initialValues[0])
+        XCTAssertNotEqual(exitValues[1], initialValues[1])
+        XCTAssertNotEqual(exitValues[2], initialValues[2])
+        // When
+        app.terminate()
+        app = nil
+        app = .init()
+        app.launch()
+        navigateToSettingsView()
+        // Then
+        let resumeValues: [String?] = [
+            settingsScreen.sendNotificationsToggle.value as? String,
+            settingsScreen.keepLogginOvertimeToggle.value as? String,
+            settingsScreen.calculateNetPayToggle.value as? String
+        ]
+        XCTAssertEqual(exitValues, resumeValues)
+    }
+    
     private func navigateToSettingsView() {
         HomeViewScreen(app: app).settingsNavigationButton.tap()
     }
