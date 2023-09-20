@@ -75,7 +75,7 @@ class SettingsViewModel: ObservableObject {
     private func setWorkTimeSubscribers() {
         $timerHours
             .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
-            .removeDuplicates()
+//            .removeDuplicates()
             .combineLatest($timerMinutes.debounce(for: .milliseconds(500), scheduler: DispatchQueue.main))
             .sink { [weak self] (hours, minutes) in
                 guard let self else { return }
@@ -87,7 +87,7 @@ class SettingsViewModel: ObservableObject {
         
         $timerMinutes
             .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
-            .removeDuplicates()
+//            .removeDuplicates()
             .combineLatest($timerHours.debounce(for: .milliseconds(500), scheduler: DispatchQueue.main))
             .sink { [weak self] (minutes, hours) in
             guard let self else { return }

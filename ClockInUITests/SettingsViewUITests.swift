@@ -70,7 +70,7 @@ final class SettingsViewUITests: XCTestCase {
         XCTAssertEqual(overtimePickerResult, .completed, " Overtime pickers should exist")
     }
     
-    func test_toggleButtonsRetainValues() {
+    func test_toggleButtonsToggleAndRetainValues() {
         // Given
         navigateToSettingsView()
         let initialValues: [String?] = [
@@ -92,10 +92,7 @@ final class SettingsViewUITests: XCTestCase {
         XCTAssertNotEqual(exitValues[1], initialValues[1])
         XCTAssertNotEqual(exitValues[2], initialValues[2])
         // When
-        app.terminate()
-        app = nil
-        app = .init()
-        app.launch()
+        restartApp()
         navigateToSettingsView()
         // Then
         let resumeValues: [String?] = [
@@ -104,6 +101,63 @@ final class SettingsViewUITests: XCTestCase {
             settingsScreen.calculateNetPayToggle.value as? String
         ]
         XCTAssertEqual(exitValues, resumeValues)
+    }
+    
+    func test_pickersScrollAndRetainValues() {
+        enum PickerKeys: String, CaseIterable {
+            case worktimeHours, worktimeMinutes, overtimeHours, overtimeMinutes
+        }
+        // Given
+        navigateToSettingsView()
+        let expectedValues: [PickerKeys : String] = [
+            .worktimeHours : "6",
+            .worktimeMinutes : "10",
+            .overtimeHours : "3",
+            .overtimeMinutes : "20"]
+        // When
+        settingsScreen.setTimeLengthExpandText.tap()
+        // Then
+        var initialValues: [PickerKeys : String?] = [
+            .worktimeHours : settingsScreen.workTimeHoursPicker.pickerWheels.firstMatch.value as? String,
+            .worktimeMinutes : settingsScreen.workMinutesHoursPicker.pickerWheels.firstMatch.value as? String
+        ]
+        // When
+        settingsScreen.workTimeHoursPicker.pickerWheels.firstMatch.adjust(toPickerWheelValue: expectedValues[.worktimeHours]!)
+        settingsScreen.workMinutesHoursPicker.pickerWheels.firstMatch.adjust(toPickerWheelValue: expectedValues[.worktimeMinutes]!)
+        settingsScreen.setTimeLengthExpandText.tap()
+        settingsScreen.setOvertimeLengthExpandButton.tap()
+        // Then
+        initialValues.updateValue(settingsScreen.overtimeHoursPicker.pickerWheels.firstMatch.value as? String, forKey: .overtimeHours)
+        initialValues.updateValue(settingsScreen.overtimeMinutesPicker.pickerWheels.firstMatch.value as? String, forKey: .overtimeMinutes)
+        
+        for key in PickerKeys.allCases {
+            XCTAssertNotEqual(initialValues[key], expectedValues[key], "Initial and expected values should not be equal")
+        }
+        
+        // When
+        settingsScreen.overtimeHoursPicker.pickerWheels.firstMatch.adjust(toPickerWheelValue: expectedValues[.overtimeHours]!)
+        settingsScreen.overtimeMinutesPicker.pickerWheels.firstMatch.adjust(toPickerWheelValue: expectedValues[.overtimeMinutes]!)
+        restartApp()
+        navigateToSettingsView()
+        settingsScreen.setTimeLengthExpandText.tap()
+        // Then
+        _ = settingsScreen.workTimeHoursPicker.waitForExistence(timeout: standardTimeout)
+        XCTAssertEqual(expectedValues[.worktimeHours]!, settingsScreen.workTimeHoursPicker.pickerWheels.firstMatch.value as? String)
+        XCTAssertEqual(expectedValues[.worktimeMinutes]!, settingsScreen.workMinutesHoursPicker.pickerWheels.firstMatch.value as? String)
+        // When
+        settingsScreen.setTimeLengthExpandText.tap()
+        settingsScreen.setOvertimeLengthExpandButton.tap()
+        // Then
+        _ = settingsScreen.overtimeHoursPicker.waitForExistence(timeout: standardTimeout)
+        XCTAssertEqual(expectedValues[.overtimeHours]!, settingsScreen.overtimeHoursPicker.pickerWheels.firstMatch.value as? String)
+        XCTAssertEqual(expectedValues[.overtimeMinutes]!, settingsScreen.overtimeMinutesPicker.pickerWheels.firstMatch.value as? String)
+    }
+    
+    private func restartApp() {
+        app.terminate()
+        app = nil
+        app = .init()
+        app.launch()
     }
     
     private func navigateToSettingsView() {
