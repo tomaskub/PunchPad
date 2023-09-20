@@ -137,6 +137,7 @@ final class SettingsViewUITests: XCTestCase {
         // When
         settingsScreen.overtimeHoursPicker.pickerWheels.firstMatch.adjust(toPickerWheelValue: expectedValues[.overtimeHours]!)
         settingsScreen.overtimeMinutesPicker.pickerWheels.firstMatch.adjust(toPickerWheelValue: expectedValues[.overtimeMinutes]!)
+        settingsScreen.setOvertimeLengthExpandButton.tap()
         restartApp()
         navigateToSettingsView()
         settingsScreen.setTimeLengthExpandText.tap()
