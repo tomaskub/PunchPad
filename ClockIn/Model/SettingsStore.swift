@@ -133,6 +133,18 @@ final class SettingsStore: ObservableObject {
         }
     }
     
+    static func setTestUserDefaults() {
+        let defaults = UserDefaults.standard
+        defaults.set(false, forKey: SettingKey.isRunFirstTime.rawValue)
+        defaults.set(true, forKey: SettingKey.isLoggingOvertime.rawValue)
+        defaults.set(true, forKey: SettingKey.isCalculatingNetPay.rawValue)
+        defaults.set(false, forKey: SettingKey.isSendingNotifications.rawValue)
+        defaults.set(28800, forKey: SettingKey.workTimeInSeconds.rawValue)
+        defaults.set(14400, forKey: SettingKey.maximumOvertimeAllowedInSeconds.rawValue)
+        defaults.set(10000, forKey: SettingKey.grossPayPerMonth.rawValue)
+        defaults.set(nil as ColorScheme?, forKey: SettingKey.savedColorScheme.rawValue)
+    }
+    
     private func updateSetting<T>(setting: SettingKey, value: T) {
         defaults.set(value, forKey: setting.rawValue)
     }
