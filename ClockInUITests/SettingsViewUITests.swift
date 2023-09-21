@@ -154,6 +154,53 @@ final class SettingsViewUITests: XCTestCase {
         XCTAssertEqual(expectedValues[.overtimeMinutes]!, settingsScreen.overtimeMinutesPicker.pickerWheels.firstMatch.value as? String)
     }
     
+    func test_resetUserDefaults() {
+        // Given
+        let valuePredicate = NSPredicate(format: "value == '0'")
+        let initialToggleValueExpectations = generateToggleExpecations(predicate: valuePredicate)
+        let initialPickerWorkValueExpectations = generatePickerWorkExpectations(predicate: valuePredicate)
+        let initialPickerOvertimeValueExpectations = generatePickerOvertimeExpectations(predicate: valuePredicate)
+        let finalToggleValueExpectations = generateToggleExpecations(predicate: valuePredicate)
+        let finalPickerWorkValueExpectations = generatePickerWorkExpectations(predicate: valuePredicate)
+        let finalPickerOvertimeValueExpectations = generatePickerOvertimeExpectations(predicate: valuePredicate)
+        navigateToSettingsView()
+        // When
+        settingsScreen.resetPreferencesButton.tap()
+        // Then
+        let initialTogglesResult = XCTWaiter.wait(for: initialToggleValueExpectations, timeout: standardTimeout)
+        XCTAssertEqual(initialTogglesResult, .completed, "The toggles should have false value")
+        XCTAssertEqual(settingsScreen.grossPaycheckTextField.value as? String, "0", "TextField should show '0'")
+        // When
+        settingsScreen.setTimeLengthExpandText.tap()
+        // Then
+        let initialWorkPickerResult = XCTWaiter.wait(for: initialPickerWorkValueExpectations, timeout: standardTimeout)
+        XCTAssertEqual(initialWorkPickerResult, .completed, "The work time pickers should show 0s")
+        // When
+        settingsScreen.setTimeLengthExpandText.tap()
+        settingsScreen.setOvertimeLengthExpandButton.tap()
+        // Then
+        let initialOvertimePickerResult = XCTWaiter.wait(for: initialPickerOvertimeValueExpectations, timeout: standardTimeout)
+        XCTAssertEqual(initialOvertimePickerResult, .completed, "The overtime pickers should show 0s")
+        // When
+        restartApp()
+        navigateToSettingsView()
+        // Then
+        let finalTogglesResult = XCTWaiter.wait(for: finalToggleValueExpectations, timeout: standardTimeout)
+        XCTAssertEqual(finalTogglesResult, .completed, "The toggles should have false value")
+        XCTAssertEqual(settingsScreen.grossPaycheckTextField.value as? String, "0", "TextField should be show '0'")
+        // When
+        settingsScreen.setTimeLengthExpandText.tap()
+        // Then
+        let finalWorkPickerResult = XCTWaiter.wait(for: finalPickerWorkValueExpectations, timeout: standardTimeout)
+        XCTAssertEqual(finalWorkPickerResult, .completed, "The work time pickers should show 0s")
+        // When
+        settingsScreen.setTimeLengthExpandText.tap()
+        settingsScreen.setOvertimeLengthExpandButton.tap()
+        // Then
+        let finalOvertimePickerResult = XCTWaiter.wait(for: finalPickerOvertimeValueExpectations, timeout: standardTimeout)
+        XCTAssertEqual(finalOvertimePickerResult, .completed, "The overtime pickers should show 0s")
+    }
+    
     private func restartApp() {
         app.terminate()
         app = nil
@@ -163,5 +210,24 @@ final class SettingsViewUITests: XCTestCase {
     
     private func navigateToSettingsView() {
         HomeViewScreen(app: app).settingsNavigationButton.tap()
+    }
+}
+
+// MARK: EXPECTATION GENERATOR FUNCTIONS
+extension SettingsViewUITests {
+    private func generateToggleExpecations(predicate: NSPredicate) -> [XCTestExpectation] {
+        [expectation(for: predicate, evaluatedWith: settingsScreen.sendNotificationsToggle),
+         expectation(for: predicate, evaluatedWith: settingsScreen.keepLogginOvertimeToggle),
+         expectation(for: predicate, evaluatedWith: settingsScreen.calculateNetPayToggle)]
+    }
+    
+    private func generatePickerWorkExpectations(predicate: NSPredicate) -> [XCTestExpectation] {
+        [expectation(for: predicate, evaluatedWith: settingsScreen.workTimeHoursPicker.pickerWheels.firstMatch),
+         expectation(for: predicate, evaluatedWith: settingsScreen.workMinutesHoursPicker.pickerWheels.firstMatch)]
+    }
+    
+    func generatePickerOvertimeExpectations(predicate: NSPredicate) -> [XCTestExpectation] {
+        [expectation(for: predicate, evaluatedWith: settingsScreen.overtimeHoursPicker.pickerWheels.firstMatch),
+         expectation(for: predicate, evaluatedWith: settingsScreen.overtimeMinutesPicker.pickerWheels.firstMatch)]
     }
 }
