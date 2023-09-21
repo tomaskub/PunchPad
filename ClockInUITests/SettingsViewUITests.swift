@@ -21,7 +21,8 @@ final class SettingsViewUITests: XCTestCase {
         super.setUp()
         app = .init()
         app.launchArguments = [
-            LaunchArgument.setTestUserDefaults.rawValue
+            LaunchArgument.setTestUserDefaults.rawValue,
+            LaunchArgument.inMemoryPresistenStore.rawValue
         ]
         app.launch()
     }
@@ -199,6 +200,21 @@ final class SettingsViewUITests: XCTestCase {
         // Then
         let finalOvertimePickerResult = XCTWaiter.wait(for: finalPickerOvertimeValueExpectations, timeout: standardTimeout)
         XCTAssertEqual(finalOvertimePickerResult, .completed, "The overtime pickers should show 0s")
+    }
+    
+    func test_ClearSavedData() {
+        // Given
+        navigateToSettingsView()
+        // When
+        settingsScreen.clearAllSavedDataButton.tap()
+        app.navigationBars.buttons.firstMatch.tap()
+        HomeViewScreen(app: app).statisticsNavigationButton.tap()
+        StatisticsViewScreen(app: app).detailedHistoryNavigationButton.tap()
+        // Then
+        let countPredicate = NSPredicate(format: "count == 0")
+        let expectation = expectation(for: countPredicate, evaluatedWith: app.collectionViews.cells)
+        let result = XCTWaiter.wait(for: [expectation], timeout: standardTimeout)
+        XCTAssertEqual(result, .completed, "There should be no cells in app")
     }
     
     private func restartApp() {
