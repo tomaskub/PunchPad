@@ -110,12 +110,11 @@ final class SettingsStore: ObservableObject {
     func clearStore() {
         subscriptions.removeAll()
         for key in SettingKey.allCases {
-            UserDefaults.standard.removeObject(forKey: key.rawValue)
-        }
-        if let value = defaults.value(forKey: SettingKey.isRunFirstTime.rawValue) as? Bool {
-            self.isRunFirstTime = value
-        } else {
-            self.isRunFirstTime = true
+            if key != .isRunFirstTime {
+                UserDefaults.standard.removeObject(forKey: key.rawValue)
+            } else {
+                updateSetting(setting: key, value: false)
+            }
         }
         isLoggingOvertime = defaults.bool(forKey: SettingKey.isLoggingOvertime.rawValue)
         isCalculatingNetPay = defaults.bool(forKey: SettingKey.isCalculatingNetPay.rawValue)
