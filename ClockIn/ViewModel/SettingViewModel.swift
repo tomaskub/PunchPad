@@ -29,18 +29,57 @@ class SettingsViewModel: ObservableObject {
         self.grossPayPerMonthText = String(settingsStore.grossPayPerMonth)
         setSubscribers()
     }
+    
+    func deleteAllData() {
+        dataManager.deleteAll()
+    }
+    
+    func resetUserDefaults() {
+        settingsStore.clearStore()
+    }
+    
     private func setSubscribers() {
-        
-        settingsStore.objectWillChange
+        setSettingStoreSubscribers()
+        setWorkTimeUISubscribers()
+        setOvertimeUISubscribers()
+        setGrossPayUISubscribers()
+    }
+    
+    private func setSettingStoreSubscribers() {
+        settingsStore.$workTimeInSeconds
             .receive(on: RunLoop.main)
-            .sink { [weak self] _ in
+            .filter { [weak self] value in
+                guard let self else { return false }
+                return value/3600 != self.timerHours && (value % 3600) / 60 != self.timerHours
+            }
+            .sink { [weak self] value in
                 guard let self else { return }
-                self.objectWillChange.send()
-                self.timerHours = settingsStore.workTimeInSeconds / 3600
-                self.timerMinutes = (settingsStore.workTimeInSeconds % 3600) / 60
-                self.overtimeHours = settingsStore.maximumOvertimeAllowedInSeconds / 3600
-                self.overtimeMinutes = (settingsStore.maximumOvertimeAllowedInSeconds % 3600) / 60
-                self.grossPayPerMonthText = String(settingsStore.grossPayPerMonth)
+                self.timerHours = value / 3600
+                self.timerMinutes = (value % 3600) / 60
+            }.store(in: &subscriptions)
+        
+        settingsStore.$maximumOvertimeAllowedInSeconds
+            .receive(on: RunLoop.main)
+            .filter { [weak self] value in
+                guard let self else { return false }
+                print("New maximum overtime allowed: \(value) seconds")
+                return value/3600 != self.overtimeHours && (value % 3600) / 60 != self.overtimeMinutes
+            }
+            .sink { [weak self] value in
+                guard let self else { return }
+                self.overtimeHours = value / 3600
+                self.overtimeMinutes = (value % 3600) / 60
+            }.store(in: &subscriptions)
+        
+        settingsStore.$grossPayPerMonth
+            .receive(on: RunLoop.main)
+            .filter { [weak self] newGross in
+                guard let self else { return false }
+                return String(newGross) != self.grossPayPerMonthText
+            }
+            .sink { [weak self] newGross in
+                guard let self else { return }
+                self.grossPayPerMonthText = String(newGross)
             }.store(in: &subscriptions)
         
         settingsStore.$isSendingNotification
@@ -54,14 +93,9 @@ class SettingsViewModel: ObservableObject {
                     }
                 })
             }.store(in: &subscriptions)
-        
-        setWorkTimeSubscribers()
-        setOvertimeSubscribers()
-        setGrossPaySubscribers()
-        
     }
     
-    private func setGrossPaySubscribers() {
+    private func setGrossPayUISubscribers() {
         $grossPayPerMonthText.sink { [weak self] value in
             guard let self else { return }
             let filtered = value.filter({"0123456789".contains($0)})
@@ -69,60 +103,53 @@ class SettingsViewModel: ObservableObject {
                 self.settingsStore.grossPayPerMonth = newGross
             }
         }.store(in: &subscriptions)
-                
     }
     
-    private func setWorkTimeSubscribers() {
+    private func setWorkTimeUISubscribers() {
         $timerHours
-            .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
-//            .removeDuplicates()
-            .combineLatest($timerMinutes.debounce(for: .milliseconds(500), scheduler: DispatchQueue.main))
-            .sink { [weak self] (hours, minutes) in
+            .removeDuplicates()
+            .sink(receiveValue: { [weak self] hours in
                 guard let self else { return }
-                let newWorkTime = self.calculateTimeInSeconds(hours: hours, minutes: minutes )
+                let newWorkTime = self.calculateTimeInSeconds(hours: hours, minutes: self.timerMinutes)
                 if newWorkTime != self.settingsStore.workTimeInSeconds {
                     self.settingsStore.workTimeInSeconds = newWorkTime
                 }
-            }.store(in: &subscriptions)
+            }).store(in: &subscriptions)
         
         $timerMinutes
-            .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
-//            .removeDuplicates()
-            .combineLatest($timerHours.debounce(for: .milliseconds(500), scheduler: DispatchQueue.main))
-            .sink { [weak self] (minutes, hours) in
-            guard let self else { return }
-                self.settingsStore.workTimeInSeconds = self.calculateTimeInSeconds(hours: hours, minutes: minutes)
-            }.store(in: &subscriptions)
+            .removeDuplicates()
+            .sink(receiveValue: { [weak self] minutes in
+                guard let self else { return }
+                let newWorkTime = self.calculateTimeInSeconds(hours: self.timerHours, minutes: minutes)
+                if newWorkTime != self.settingsStore.workTimeInSeconds {
+                    self.settingsStore.workTimeInSeconds = newWorkTime
+                }
+            }).store(in: &subscriptions)
     }
     
-    private func setOvertimeSubscribers() {
+    private func setOvertimeUISubscribers() {
         $overtimeHours
-            .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
             .removeDuplicates()
-            .combineLatest($overtimeMinutes.debounce(for: .milliseconds(500), scheduler: DispatchQueue.main))
-            .sink { [weak self] (hours, minutes) in
+            .sink(receiveValue: { [weak self] hours in
                 guard let self else { return }
-                self.settingsStore.maximumOvertimeAllowedInSeconds = self.calculateTimeInSeconds(hours: hours, minutes: minutes)
-            }.store(in: &subscriptions)
+                let newOverTime = self.calculateTimeInSeconds(hours: hours, minutes: self.overtimeMinutes)
+                if newOverTime != self.settingsStore.maximumOvertimeAllowedInSeconds {
+                    self.settingsStore.maximumOvertimeAllowedInSeconds = newOverTime
+                }
+            }).store(in: &subscriptions)
         
         $overtimeMinutes
-            .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
             .removeDuplicates()
-            .combineLatest($overtimeHours.debounce(for: .milliseconds(500), scheduler: DispatchQueue.main))
-            .sink { [weak self] (minutes, hours) in
+            .sink(receiveValue: { [weak self] minutes in
                 guard let self else { return }
-                self.settingsStore.maximumOvertimeAllowedInSeconds =  self.calculateTimeInSeconds(hours: hours, minutes: minutes)
-            }.store(in: &subscriptions)
+                let newOverTime = self.calculateTimeInSeconds(hours: self.overtimeHours, minutes: minutes)
+                if newOverTime != self.settingsStore.maximumOvertimeAllowedInSeconds {
+                    self.settingsStore.maximumOvertimeAllowedInSeconds = newOverTime
+                }
+            }).store(in: &subscriptions)
     }
     
     private func calculateTimeInSeconds(hours: Int, minutes: Int) -> Int {
         return hours * 3600 + minutes * 60
-    }
-    func deleteAllData() {
-        dataManager.deleteAll()
-    }
-    
-    func resetUserDefaults() {
-        SettingsStore.clearUserDefaults()
     }
 }
