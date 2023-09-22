@@ -118,8 +118,8 @@ final class OnboardingUITests: XCTestCase {
         let result = XCTWaiter.wait(for: overtimePickersExpectations, timeout: standardTimeout)
         XCTAssertEqual(result, .completed, "After overtime toggles is set to true, overtime hours and minutes pickers should exist")
         // When
-        onboardingScreen.overtimeHoursPicker.children(matching: .pickerWheel).firstMatch.adjust(toPickerWheelValue: "4")
         onboardingScreen.overtimeMinutesPicker.children(matching: .pickerWheel).firstMatch.adjust(toPickerWheelValue: "30")
+        onboardingScreen.overtimeHoursPicker.children(matching: .pickerWheel).firstMatch.adjust(toPickerWheelValue: "4")
         onboardingScreen.advanceStageButton.tap()
         onboardingScreen.notificationToggleButton.switches.firstMatch.tap()
         onboardingScreen.advanceStageButton.tap()
