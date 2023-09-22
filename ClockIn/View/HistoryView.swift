@@ -84,7 +84,7 @@ struct HistoryView_Previews: PreviewProvider {
                 HistoryView(viewModel:
                                 HistoryViewModel(
                                     dataManager: container.dataManager,
-                                    overrideUD: true
+                                    settingsStore: container.settingsStore
                                 )
                 )
             }

@@ -12,22 +12,19 @@ import Combine
 class HistoryViewModel: ObservableObject {
     
     @Published private var dataManager: DataManager
-    private var maximumOvertimeInSeconds: Int
-    private var scheduledWorkTimeInSeconds: Int
+    private var settingsStore: SettingsStore
+    private var maximumOvertimeInSeconds: Int {
+        settingsStore.maximumOvertimeAllowedInSeconds
+    }
+    private var scheduledWorkTimeInSeconds: Int {
+        settingsStore.workTimeInSeconds
+    }
     
     var subscriptions: AnyCancellable? = nil
     
-    init(dataManager: DataManager = DataManager.shared, overrideUD: Bool = false) {
+    init(dataManager: DataManager, settingsStore: SettingsStore) {
         self.dataManager = dataManager
-        
-        // this should be removed
-        if !overrideUD {
-            self.maximumOvertimeInSeconds = UserDefaults.standard.integer(forKey: SettingsStore.SettingKey.maximumOvertimeAllowedInSeconds.rawValue)
-            self.scheduledWorkTimeInSeconds = UserDefaults.standard.integer(forKey: SettingsStore.SettingKey.workTimeInSeconds.rawValue)
-        } else {
-            self.maximumOvertimeInSeconds = 5 * 3600
-            self.scheduledWorkTimeInSeconds = 8 * 3600
-        }
+        self.settingsStore = settingsStore
         subscriptions = dataManager.objectWillChange.sink(receiveValue: { [weak self] _ in
             self?.objectWillChange.send()
         })
@@ -67,7 +64,6 @@ class HistoryViewModel: ObservableObject {
     }
     
     func deleteEntry(entry: Entry) {
-        
         dataManager.delete(entry: entry)
     }
     

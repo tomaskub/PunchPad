@@ -63,7 +63,8 @@ struct StatisticsView: View {
                     NavigationLink {
                         HistoryView(viewModel:
                                         HistoryViewModel(
-                                            dataManager: container.dataManager)
+                                            dataManager: container.dataManager,
+                                            settingsStore: container.settingsStore)
                         )
                     } label: {
                         Text("Detailed history")
