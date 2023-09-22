@@ -110,12 +110,11 @@ final class SettingsStore: ObservableObject {
     func clearStore() {
         subscriptions.removeAll()
         for key in SettingKey.allCases {
-            UserDefaults.standard.removeObject(forKey: key.rawValue)
-        }
-        if let value = defaults.value(forKey: SettingKey.isRunFirstTime.rawValue) as? Bool {
-            self.isRunFirstTime = value
-        } else {
-            self.isRunFirstTime = true
+            if key != .isRunFirstTime {
+                UserDefaults.standard.removeObject(forKey: key.rawValue)
+            } else {
+                updateSetting(setting: key, value: false)
+            }
         }
         isLoggingOvertime = defaults.bool(forKey: SettingKey.isLoggingOvertime.rawValue)
         isCalculatingNetPay = defaults.bool(forKey: SettingKey.isCalculatingNetPay.rawValue)
@@ -131,6 +130,18 @@ final class SettingsStore: ObservableObject {
         for key in SettingKey.allCases {
             UserDefaults.standard.removeObject(forKey: key.rawValue)
         }
+    }
+    
+    static func setTestUserDefaults() {
+        let defaults = UserDefaults.standard
+        defaults.set(false, forKey: SettingKey.isRunFirstTime.rawValue)
+        defaults.set(true, forKey: SettingKey.isLoggingOvertime.rawValue)
+        defaults.set(true, forKey: SettingKey.isCalculatingNetPay.rawValue)
+        defaults.set(false, forKey: SettingKey.isSendingNotifications.rawValue)
+        defaults.set(28800, forKey: SettingKey.workTimeInSeconds.rawValue)
+        defaults.set(14400, forKey: SettingKey.maximumOvertimeAllowedInSeconds.rawValue)
+        defaults.set(10000, forKey: SettingKey.grossPayPerMonth.rawValue)
+        defaults.set(nil as ColorScheme?, forKey: SettingKey.savedColorScheme.rawValue)
     }
     
     private func updateSetting<T>(setting: SettingKey, value: T) {

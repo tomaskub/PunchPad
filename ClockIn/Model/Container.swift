@@ -29,18 +29,12 @@ class Container: ObservableObject {
         
         if CommandLine.arguments.contains(LaunchArgument.withOnboarding.rawValue) {
             SettingsStore.clearUserDefaults()
-            self.settingsStore = SettingsStore()
-            settingsStore.isRunFirstTime = true
-            containerType = .test
-        } else {
-            self.settingsStore = SettingsStore()
+        } else if CommandLine.arguments.contains(LaunchArgument.setTestUserDefaults.rawValue) {
+            SettingsStore.setTestUserDefaults()
         }
+        self.settingsStore = SettingsStore()
         
         if CommandLine.arguments.contains(LaunchArgument.inMemoryPresistenStore.rawValue) {
-            containerType = .test
-        }
-        if CommandLine.arguments.contains(LaunchArgument.setTestUserDefaults.rawValue) {
-            UserDefaults.standard.set(false, forKey: SettingsStore.SettingKey.isRunFirstTime.rawValue)
             containerType = .test
         }
         
