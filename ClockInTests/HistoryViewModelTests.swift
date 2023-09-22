@@ -16,7 +16,7 @@ final class HistoryViewModelTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        sut = .init(dataManager: DataManager.testing, overrideUD: true)
+        sut = .init(dataManager: DataManager.testing, settingsStore: SettingsStore())
     }
 
     override func tearDown() {
