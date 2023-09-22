@@ -66,7 +66,7 @@ struct HomeView: View {
                                         StatisticsViewModel(
                                             dataManager: container.dataManager,
                                             payManager: container.payManager,
-                                            overrideUserDefaults: false))
+                                            settingsStore: container.settingsStore))
                     } label: {
                         Text("Statistics")
                     } // END OF NAV LINK

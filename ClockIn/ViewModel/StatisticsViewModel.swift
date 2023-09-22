@@ -17,10 +17,15 @@ class StatisticsViewModel: ObservableObject {
     //MARK: MODEL OBJECTS
     @Published private var dataManager: DataManager
     @Published private var payManager: PayManager
+    @Published private var settingsStore: SettingsStore
     private var subscriptions = Set<AnyCancellable>()
     //MARK: RETRIVED PROPERTIES
-    private var maximumOvertimeInSeconds: Int
-    private var workTimeInSeconds: Int
+    private var maximumOvertimeInSeconds: Int {
+        settingsStore.maximumOvertimeAllowedInSeconds
+    }
+    private var workTimeInSeconds: Int {
+        settingsStore.workTimeInSeconds
+    }
     
     
     //MARK: PUBLISHED VARIABLES
@@ -62,17 +67,10 @@ class StatisticsViewModel: ObservableObject {
     
     @Published var chartType: ChartType = .time
     
-    init(dataManager: DataManager = DataManager.shared, payManager: PayManager = PayManager(), overrideUserDefaults: Bool = false) {
-        
+    init(dataManager: DataManager, payManager: PayManager, settingsStore: SettingsStore) {
         self.dataManager = dataManager
         self.payManager = payManager
-        if !overrideUserDefaults {
-            self.maximumOvertimeInSeconds = UserDefaults.standard.integer(forKey: SettingsStore.SettingKey.maximumOvertimeAllowedInSeconds.rawValue)
-            self.workTimeInSeconds = UserDefaults.standard.integer(forKey: SettingsStore.SettingKey.workTimeInSeconds.rawValue)
-        } else {
-            self.maximumOvertimeInSeconds = 5 * 3600
-            self.workTimeInSeconds = 8 * 3600
-        }
+        self.settingsStore = settingsStore
         
         dataManager.objectWillChange.sink(receiveValue: { [weak self] _ in
             self?.objectWillChange.send()

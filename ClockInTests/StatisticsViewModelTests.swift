@@ -17,7 +17,7 @@ final class StatisticsViewModelTests: XCTestCase {
          
         sut = StatisticsViewModel(dataManager: DataManager.testing,
                                   payManager: PayManager(dataManager: DataManager.testing),
-                                  overrideUserDefaults: true)
+                                  settingsStore: SettingsStore())
     }
 
     override func tearDown() {

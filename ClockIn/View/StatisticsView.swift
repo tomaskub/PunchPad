@@ -14,7 +14,7 @@ struct StatisticsView: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var container: Container
     @StateObject private var viewModel: StatisticsViewModel
-    init(viewModel: StatisticsViewModel = StatisticsViewModel(dataManager: .shared, payManager: PayManager(dataManager: .shared), overrideUserDefaults: false)) {
+    init(viewModel: StatisticsViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     //MARK: VIEW BODY
@@ -216,18 +216,12 @@ struct StatisticsView_Previews: PreviewProvider {
                                 StatisticsViewModel(
                                     dataManager: container.dataManager,
                                     payManager: container.payManager,
-                                    overrideUserDefaults: false)
+                                    settingsStore: container.settingsStore)
                                )
             }
         }
     }
     static var previews: some View {
-        NavigationView {
-        StatisticsView(viewModel:
-                        StatisticsViewModel(
-                            dataManager: .preview,
-                            payManager: PayManager(dataManager: .preview)
-                        ))
-        }
+        ContainerView()
     }
 }
