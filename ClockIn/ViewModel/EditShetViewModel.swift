@@ -7,17 +7,21 @@
 
 import Foundation
 
-class EditSheetViewModel: ObservableObject {
+final class EditSheetViewModel: ObservableObject {
     
     private var dataManager: DataManager
+    private var settingsStore: SettingsStore
     private var entry: Entry
-    private var workTimeAllowed: Int
-    private var overTimeAllowed: Int
+    private var workTimeAllowed: Int {
+        settingsStore.workTimeInSeconds
+    }
+    private var overTimeAllowed: Int {
+        settingsStore.maximumOvertimeAllowedInSeconds
+    }
     
     @Published var startDate: Date {
         didSet {
             calculateTime()
-            
         }
     }
     @Published var finishDate: Date {
@@ -46,8 +50,9 @@ class EditSheetViewModel: ObservableObject {
     @Published var workTimeFraction: CGFloat
     @Published var overTimeFraction: CGFloat
     
-    init(dataManager: DataManager, entry: Entry, overrideUserDefaults: Bool = false) {
+    init(dataManager: DataManager,  settingsStore: SettingsStore, entry: Entry) {
         self.dataManager = dataManager
+        self.settingsStore = settingsStore
         self.entry = entry
         
         self.startDate = entry.startDate
@@ -57,17 +62,9 @@ class EditSheetViewModel: ObservableObject {
         
         self.workTimeString = String()
         self.overTimerString = String()
-        
-        if overrideUserDefaults {
-            self.workTimeAllowed = UserDefaults.standard.integer(forKey: SettingsStore.SettingKey.workTimeInSeconds.rawValue)
-            self.overTimeAllowed = UserDefaults.standard.integer(forKey: SettingsStore.SettingKey.maximumOvertimeAllowedInSeconds.rawValue)
-        } else {
-            self.workTimeAllowed = 8 * 3600
-            self.overTimeAllowed = 5 * 3600
-        }
-        
-        self.workTimeFraction = CGFloat(workTimeInSeconds) / CGFloat(workTimeAllowed)
-        self.overTimeFraction = CGFloat(overTimeInSeconds) / CGFloat(overTimeAllowed)
+
+        self.workTimeFraction = CGFloat(workTimeInSeconds) / CGFloat(settingsStore.workTimeInSeconds)
+        self.overTimeFraction = CGFloat(overTimeInSeconds) / CGFloat(settingsStore.maximumOvertimeAllowedInSeconds)
         
         self.workTimeString = generateHoursString(value: workTimeInSeconds)
         self.overTimerString = generateHoursString(value: overTimeInSeconds)

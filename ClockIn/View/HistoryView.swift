@@ -58,7 +58,9 @@ struct HistoryView: View {
             } // END OF LIST
             .scrollContentBackground(.hidden)
             .sheet(item: $selectedEntry) { entry in
-                EditSheetView(viewModel: EditSheetViewModel(dataManager: container.dataManager, entry: entry))
+                EditSheetView(viewModel: EditSheetViewModel(dataManager: container.dataManager,
+                                                            settingsStore: container.settingsStore,
+                                                            entry: entry))
             } // END OF SHEET
         } // END OF ZSTACK
         .toolbar {
