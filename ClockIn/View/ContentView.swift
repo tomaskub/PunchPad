@@ -15,7 +15,8 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             HomeView(viewModel: HomeViewModel(dataManager: container.dataManager,
-                                       timerProvider: container.timerProvider)
+                                              settingsStore: container.settingsStore,
+                                              timerProvider: container.timerProvider)
             )
         }
         .fullScreenCover(isPresented: $isRunFirstTime, onDismiss: {

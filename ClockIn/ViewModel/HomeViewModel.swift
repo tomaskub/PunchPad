@@ -6,18 +6,16 @@
 //
 
 import SwiftUI
+import Combine
 
 class HomeViewModel: NSObject, ObservableObject {
     
-    // Timer countdown total values pulled from user defaults
-    @AppStorage(K.UserDefaultsKeys.workTimeInSeconds) var timerTotalSeconds: Int = 28800
-    @AppStorage(K.UserDefaultsKeys.maximumOverTimeAllowedInSeconds) var overtimeTotalSeconds: Int = 18000
-    
     //MARK: DATA MANAGING PROPERTIES
     private var dataManager: DataManager
+    private var settingsStore: SettingsStore
     private var startDate: Date?
     private var finishDate: Date?
-    
+    private var subscriptions = Set<AnyCancellable>()
     //MARK: TIMER PROPERTIES - PUBLISHED
     //Published progress properties for UI
     @Published var progress: CGFloat = 0.0
@@ -60,16 +58,29 @@ class HomeViewModel: NSObject, ObservableObject {
     //MARK: BACKGROUND TIMER HANDLING PROPERTIES - PRIVATE
     private var appDidEnterBackgroundDate: Date?
     
-    init(dataManager: DataManager = DataManager.shared, timerProvider: Timer.Type = Timer.self) {
+    init(dataManager: DataManager, settingsStore: SettingsStore ,timerProvider: Timer.Type) {
         self.dataManager = dataManager
+        self.settingsStore = settingsStore
         self.timerProvider = timerProvider
         super.init()
         // initialize properties:
-        countSeconds = timerTotalSeconds
+        // this is not very intuitive?
+        countSeconds = settingsStore.workTimeInSeconds
         updateTimerStringValue()
         //Add observers
         NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        settingsStore.$workTimeInSeconds
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { [weak self] value in
+                guard let self else { return }
+                if !self.isStarted {
+                    self.countSeconds = value
+                    self.updateTimerStringValue()
+                }
+            })
+            .store(in: &subscriptions)
+            
     }
     //MARK: HANDLING BACKGROUND TIMER UPDATE FUNC
     @objc private func appDidEnterBackground() {
@@ -103,7 +114,7 @@ extension HomeViewModel {
         
         startDate = Date()
         
-        countSeconds = timerTotalSeconds
+        countSeconds = settingsStore.workTimeInSeconds
         countOvertimeSeconds = 0
         
         progress = 0
@@ -146,7 +157,7 @@ extension HomeViewModel {
      */
     func updateTimer(subtract subtrahend: Int = 1) {
         if isStarted && isRunning {
-            
+            let timerTotalSeconds = settingsStore.workTimeInSeconds
             //This is the situation when the timer is still in current state after the update, including 0
             if countSeconds >= subtrahend {
                 countSeconds -= subtrahend
@@ -164,7 +175,7 @@ extension HomeViewModel {
                     //update the progress rings
                     withAnimation(.easeInOut) {
                         progress = 1 - CGFloat(countSeconds) / CGFloat(timerTotalSeconds)
-                        overtimeProgress = CGFloat(countOvertimeSeconds) / CGFloat(overtimeTotalSeconds)
+                        overtimeProgress = CGFloat(countOvertimeSeconds) / CGFloat(settingsStore.maximumOvertimeAllowedInSeconds)
                     }
                     updateTimerStringValue()
                 } else {
@@ -231,7 +242,7 @@ extension HomeViewModel {
     func saveEntry() {
         guard let startDate = startDate, let finishDate = finishDate else { return }
         
-        let workTimeInSeconds = timerTotalSeconds - countSeconds
+        let workTimeInSeconds = settingsStore.workTimeInSeconds - countSeconds
         let overTimeInSeconds = countOvertimeSeconds
         
         let entryToSave = Entry(startDate: startDate, finishDate: finishDate, workTimeInSec: workTimeInSeconds, overTimeInSec: overTimeInSeconds)

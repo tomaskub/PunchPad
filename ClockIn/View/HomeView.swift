@@ -66,7 +66,7 @@ struct HomeView: View {
                                         StatisticsViewModel(
                                             dataManager: container.dataManager,
                                             payManager: container.payManager,
-                                            overrideUserDefaults: false))
+                                            settingsStore: container.settingsStore))
                     } label: {
                         Text("Statistics")
                     } // END OF NAV LINK
@@ -92,7 +92,7 @@ struct Home_Previews: PreviewProvider {
         @StateObject private var container: Container = .init()
         var body: some View {
             NavigationView {
-                HomeView(viewModel: HomeViewModel(dataManager: container.dataManager, timerProvider: container.timerProvider))
+                HomeView(viewModel: HomeViewModel(dataManager: container.dataManager,settingsStore: container.settingsStore, timerProvider: container.timerProvider))
             }
             .environmentObject(Container())
         }

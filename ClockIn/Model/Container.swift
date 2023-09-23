@@ -15,7 +15,7 @@ class Container: ObservableObject {
     private(set) var timerProvider: Timer.Type
     private(set) var settingsStore: SettingsStore
     
-    enum ContainerType {
+    private enum ContainerType {
         case production, test, preview
     }
     
@@ -41,13 +41,13 @@ class Container: ObservableObject {
         switch containerType {
         case .production:
             self.dataManager = .shared
-            self.payManager = PayManager(dataManager: .shared)
+            self.payManager = PayManager(dataManager: .shared, settingsStore: settingsStore)
         case .test:
             self.dataManager = .testing
-            self.payManager = PayManager(dataManager: .testing)
+            self.payManager = PayManager(dataManager: .testing, settingsStore: settingsStore)
         case .preview:
             self.dataManager = .preview
-            self.payManager = PayManager(dataManager: .preview)
+            self.payManager = PayManager(dataManager: .preview, settingsStore: settingsStore)
         }
     }
 }

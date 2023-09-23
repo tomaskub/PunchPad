@@ -9,30 +9,41 @@ import Foundation
 import Combine
 class PayManager: ObservableObject {
     
-    @Published private var dataManager: DataManager
-    
+    private var dataManager: DataManager
+    private var settingsStore: SettingsStore
     private var grossPayPerMonth: Double
-    
+    private var subscriptions = Set<AnyCancellable>()
+    var entriesThisMonth = [Entry]()
     //MARK: PUBLISHED PROPERTIES
     @Published var numberOfWorkingDays: Int = 20
     @Published var netPayToDate: Double  = 1.0
     @Published var netPayPredicted: Double = 1.0
     @Published var grossPayToDate: Double = 1
     @Published var grossPayPredicted: Double = 1
-    
     @Published var netPayAvaliable: Bool
-    
     @Published var grossPayPerHour: Double = 0
     
-    var entriesThisMonth = [Entry]()
-    
-    private var subscriptions = Set<AnyCancellable>()
-    
-    init(dataManager: DataManager = DataManager.shared) {
-        
-        self.netPayAvaliable = UserDefaults.standard.bool(forKey: K.UserDefaultsKeys.isCalculatingNetPay)
-        self.grossPayPerMonth = Double(UserDefaults.standard.integer(forKey: K.UserDefaultsKeys.grossPayPerMonth))
+    init(dataManager: DataManager, settingsStore: SettingsStore) {
+        self.settingsStore = settingsStore
         self.dataManager = dataManager
+        self.netPayAvaliable = settingsStore.isCalculatingNetPay
+        self.grossPayPerMonth = Double(settingsStore.grossPayPerMonth)
+        setSubscribers()
+    }
+    
+    private func setSubscribers() {
+        settingsStore.$grossPayPerMonth
+            .sink { [weak self] newGross in
+            guard let self else { return }
+            self.grossPayPerMonth = Double(newGross)
+            self.updatePublishedValues()
+        }.store(in: &subscriptions)
+        
+        settingsStore.$isCalculatingNetPay
+            .receive(on: RunLoop.main)
+            .sink { [weak self] newValue in
+                self?.netPayAvaliable = newValue
+            }.store(in: &subscriptions)
         
         dataManager.$entryThisMonth.sink { [weak self] array in
             guard let self else { return }
@@ -43,9 +54,6 @@ class PayManager: ObservableObject {
         dataManager.objectWillChange.sink { [weak self] _ in
             self?.objectWillChange.send()
         }.store(in: &subscriptions)
-        
-        
-        
     }
     
     /// Update all values published based on avaliable entriesThisMonth

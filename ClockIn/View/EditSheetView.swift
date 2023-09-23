@@ -108,6 +108,7 @@ struct EditSheetView_Previews: PreviewProvider {
         var body: some View {
             EditSheetView(viewModel:
                             EditSheetViewModel(dataManager: container.dataManager,
+                                               settingsStore: container.settingsStore,
                                                entry: entry)
             )
         }

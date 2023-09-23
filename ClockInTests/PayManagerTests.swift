@@ -15,7 +15,7 @@ final class PayManagerTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        sut = .init(dataManager: DataManager.testing)
+        sut = .init(dataManager: DataManager.testing, settingsStore: SettingsStore())
     }
 
     override func tearDown() {
