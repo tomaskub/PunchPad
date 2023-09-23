@@ -219,6 +219,7 @@ struct StatisticsView_Previews: PreviewProvider {
                                     settingsStore: container.settingsStore)
                                )
             }
+            .environmentObject(container)
         }
     }
     static var previews: some View {
