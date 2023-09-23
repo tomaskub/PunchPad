@@ -14,10 +14,10 @@ final class StatisticsViewModelTests: XCTestCase {
     var sut: StatisticsViewModel!
     
     override func setUp() {
-         
+        let settingsStore = SettingsStore()
         sut = StatisticsViewModel(dataManager: DataManager.testing,
-                                  payManager: PayManager(dataManager: DataManager.testing),
-                                  settingsStore: SettingsStore())
+                                  payManager: PayManager(dataManager: DataManager.testing, settingsStore: settingsStore),
+                                  settingsStore: settingsStore)
     }
 
     override func tearDown() {
