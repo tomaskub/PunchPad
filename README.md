@@ -20,15 +20,17 @@ ClockIn helps with tracking the work time and overtime you do at work. Whenever 
 - Combine
 - Charts 
 - CoreData
-- XCTest for unit testing (mocked timer and in - memory data manager)
+- UI and unit teseted with XCTest
 
 # Highlights 
-- RingView shows passsing time in intuitive manner 
-- DataManager allows to create easy previews and easy testing 
-- TimerModel has injected TimerProvider with metatypes allows for easy testing in XCTest with mock timer. 
+- DI is done with root container passed into environment. Services are retrieved from container and injected into subviews. Container is responsible for parsing launch arguments, detecting previews and configuring the environment, making UI testing much easier. 
+- SettingsStore wraps user defaults and provides a type safe access to the settings. It also is a single point of acess and shares state with multiple view models, ensuring that all parts of the app work on the same set of data.
+- RingView shows passsing time in intuitive manner
+- DataManager allows to create easy previews and easy testing
+- TimerModel has injected TimerProvider with metatypes allows for easy testing in XCTest with mock timer.
 
 # Build 
-No external dependencies - clone with xcode and run 
+No external dependencies - clone and run 
 
 # Feedback 
-Feel free to file an issue or submit a PR. 
+Feel free to file an issue or submit a PR. Im always looking to improve my work. 
