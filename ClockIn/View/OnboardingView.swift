@@ -9,29 +9,28 @@ import SwiftUI
 
 struct OnboardingView: View {
     
+    private enum OnboardingStage: Equatable, CaseIterable {
+        case welcome // Logo and welcome message
+        case worktime // Set the work time
+        case overtime // Ask if doing overtime and set maximum overtime
+        case notifications // Ask if send notifications on finish
+        case salary // Ask user for salary and if to calculate net salary (after taxes)
+        case exit // Inform setup complete, allow to finish onboarding
+    }
     private typealias Identifier = ScreenIdentifier.OnboardingView
+    let tansition: AnyTransition = .asymmetric(
+        insertion: .move(edge: .trailing),
+        removal: .move(edge: .leading)
+    )
+    
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) var dismiss
-    
-    @StateObject var viewModel: OnboardingViewModel
+    @StateObject private var viewModel: OnboardingViewModel
+    @State private var currentStage: OnboardingStage = .welcome
     
     init(viewModel: OnboardingViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
-    //Onboarding stages:
-    /*
-     0 - Logo and welcome message
-     1 - Set the work time
-     2 - Ask if doing overtime and set maximum overtime
-     3 - Ask to send notifications on finish
-     4 - Ask user for salary and if to calculate net salary (after taxes)
-     5 - Inform setup complete, allows to Finish onboarding
-     */
-    @State var onboardingStage: Int = 0
-    
-    let tansition: AnyTransition = .asymmetric(
-        insertion: .move(edge: .trailing),
-        removal: .move(edge: .leading))
     
     var body: some View {
         
@@ -39,38 +38,25 @@ struct OnboardingView: View {
             //BACKGROUND
             GradientFactory.build(colorScheme: colorScheme)
             //CONTENT
-            ZStack {
-                switch onboardingStage {
-                case 0:
+            
+                switch currentStage {
+                case .welcome:
                     stage0Screen
-                case 1:
+                case .worktime:
                     stage1Screen
-                case 2:
+                case .overtime:
                     stage2Screen
-                case 3:
+                case .notifications:
                     stage3Screen
-                case 4:
+                case .salary:
                     stage4Screen
-                case 5:
+                case .exit:
                     stage5Screen
-                default:
-                    Rectangle()
-                        .foregroundColor(.accentColor)
-                        .cornerRadius(10)
-                        .frame(width: 200, height: 200)
-                        .overlay {
-                            Text("END OF ON \n BOARDING")
-                                .font(.largeTitle)
-                                .fontWeight(.heavy)
-                                .foregroundColor(.white)
-                                .multilineTextAlignment(.center)
-                        }
-                    
                 }
-            }
+            
             
             VStack {
-                if onboardingStage != 0 {
+                if currentStage != .welcome {
                     HStack {
                         topButton
                         Spacer()
@@ -83,6 +69,7 @@ struct OnboardingView: View {
         }
     }
 }
+
 extension OnboardingView {
     
     private var stage0Screen: some View {
@@ -322,14 +309,14 @@ extension OnboardingView {
             .foregroundColor(.accentColor)
             .onTapGesture {
                 withAnimation(.spring()) {
-                    onboardingStage -= 1
+                    currentStage = currentStage.previous()
                 }
             }
     }
     
     private var bottomButton: some View {
-        Text(onboardingStage == 0 ? "Let's start!" :
-                onboardingStage == 5 ? "Finish set up!" : "Next")
+        Text(currentStage == .welcome ? "Let's start!" :
+                currentStage == .exit ? "Finish set up!" : "Next")
         .accessibilityIdentifier(Identifier.Buttons.advanceStage.rawValue)
         .font(.headline)
         .foregroundColor(.blue)
@@ -351,10 +338,10 @@ extension OnboardingView {
         .cornerRadius(10)
         .onTapGesture {
             withAnimation(.spring()) {
-                if onboardingStage == 5 {
+                if currentStage == .exit {
                     dismiss()
                 } else {
-                    onboardingStage += 1
+                    currentStage = currentStage.next()
                 }
             }
         }
