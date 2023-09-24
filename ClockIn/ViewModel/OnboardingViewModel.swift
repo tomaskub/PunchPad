@@ -30,31 +30,31 @@ class OnboardingViewModel: ObservableObject {
     
     private func setPublishers() {
         $hoursWorking
-            .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
-            .sink { [weak self] newValue in
+            .removeDuplicates()
+            .sink { [weak self] hours in
             guard let self else { return }
-            self.settingsStore.workTimeInSeconds = self.calculateTimeInSeconds(hours: newValue, minutes: self.minutesWorking)
+            self.settingsStore.workTimeInSeconds = self.calculateTimeInSeconds(hours: hours, minutes: self.minutesWorking)
         }.store(in: &subscriptions)
         
         $minutesWorking
-            .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
-            .sink { [weak self] newValue in
+            .removeDuplicates()
+            .sink { [weak self] minutes in
             guard let self else { return }
-            self.settingsStore.workTimeInSeconds = self.calculateTimeInSeconds(hours: self.hoursWorking, minutes: newValue)
+            self.settingsStore.workTimeInSeconds = self.calculateTimeInSeconds(hours: self.hoursWorking, minutes: minutes)
         }.store(in: &subscriptions)
         
         $hoursOvertime
-            .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
-            .sink { [weak self] newValue in
+            .removeDuplicates()
+            .sink { [weak self] hours in
             guard let self else { return }
-            self.settingsStore.maximumOvertimeAllowedInSeconds = self.calculateTimeInSeconds(hours: newValue, minutes: self.minutesOvertime)
+            self.settingsStore.maximumOvertimeAllowedInSeconds = self.calculateTimeInSeconds(hours: hours, minutes: self.minutesOvertime)
         }.store(in: &subscriptions)
         
         $minutesOvertime
-            .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
-            .sink { [weak self] newValue in
+            .removeDuplicates()
+            .sink { [weak self] minutes in
             guard let self else { return }
-            self.settingsStore.maximumOvertimeAllowedInSeconds = self.calculateTimeInSeconds(hours: self.hoursOvertime, minutes: newValue)
+            self.settingsStore.maximumOvertimeAllowedInSeconds = self.calculateTimeInSeconds(hours: self.hoursOvertime, minutes: minutes)
         }.store(in: &subscriptions)
         
         $grossPayPerMonthText

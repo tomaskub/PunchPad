@@ -50,7 +50,7 @@ class SettingsViewModel: ObservableObject {
             .receive(on: RunLoop.main)
             .filter { [weak self] value in
                 guard let self else { return false }
-                return value/3600 != self.timerHours && (value % 3600) / 60 != self.timerHours
+                return value/3600 != self.timerHours && (value % 3600) / 60 != self.timerMinutes
             }
             .sink { [weak self] value in
                 guard let self else { return }
@@ -62,7 +62,6 @@ class SettingsViewModel: ObservableObject {
             .receive(on: RunLoop.main)
             .filter { [weak self] value in
                 guard let self else { return false }
-                print("New maximum overtime allowed: \(value) seconds")
                 return value/3600 != self.overtimeHours && (value % 3600) / 60 != self.overtimeMinutes
             }
             .sink { [weak self] value in
