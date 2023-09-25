@@ -138,14 +138,6 @@ extension HomeViewModel {
         finishDate = Date()
         saveEntry()
     }
-    
-    func resumeTimer() {
-        isRunning = true
-    }
-    
-    func pauseTimer() {
-        isRunning = false
-    }
 }
    
     //MARK: TIMER UPDATE FUNCTIONS

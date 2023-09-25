@@ -15,7 +15,7 @@
 		D61007492AAB867C00503C28 /* HistoryViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61007482AAB867C00503C28 /* HistoryViewScreen.swift */; };
 		D610074B2AAB8BC800503C28 /* HistoryViewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D610074A2AAB8BC800503C28 /* HistoryViewUITests.swift */; };
 		D610074D2AAC77F300503C28 /* EditSheetScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D610074C2AAC77F300503C28 /* EditSheetScreen.swift */; };
-		D61945EC29E7306B0046DE1F /* TimerModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61945EB29E7306B0046DE1F /* TimerModelTests.swift */; };
+		D61945EC29E7306B0046DE1F /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61945EB29E7306B0046DE1F /* HomeViewModelTests.swift */; };
 		D61945F029E735D80046DE1F /* MockTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61945EF29E735D80046DE1F /* MockTimer.swift */; };
 		D61F11312AB38F8700902D6D /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61F11302AB38F8700902D6D /* SettingsStore.swift */; };
 		D61F11342AB3A6FF00902D6D /* ColorScheme+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61F11332AB3A6FF00902D6D /* ColorScheme+Extension.swift */; };
@@ -87,7 +87,7 @@
 		D61007482AAB867C00503C28 /* HistoryViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HistoryViewScreen.swift; path = ClockInUITests/ScreenHelpers/HistoryViewScreen.swift; sourceTree = SOURCE_ROOT; };
 		D610074A2AAB8BC800503C28 /* HistoryViewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewUITests.swift; sourceTree = "<group>"; };
 		D610074C2AAC77F300503C28 /* EditSheetScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSheetScreen.swift; sourceTree = "<group>"; };
-		D61945EB29E7306B0046DE1F /* TimerModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerModelTests.swift; sourceTree = "<group>"; };
+		D61945EB29E7306B0046DE1F /* HomeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
 		D61945EF29E735D80046DE1F /* MockTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTimer.swift; sourceTree = "<group>"; };
 		D61F11302AB38F8700902D6D /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
 		D61F11332AB3A6FF00902D6D /* ColorScheme+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ColorScheme+Extension.swift"; sourceTree = "<group>"; };
@@ -232,12 +232,12 @@
 		D6C458A329D229230069D89B /* ClockInTests */ = {
 			isa = PBXGroup;
 			children = (
+				D61945EB29E7306B0046DE1F /* HomeViewModelTests.swift */,
 				D6799EFB29E1BC0F0080E32A /* HistoryViewModelTests.swift */,
-				D6C458A429D229230069D89B /* ClockInTests.swift */,
-				D61945EB29E7306B0046DE1F /* TimerModelTests.swift */,
+				D65A976A29F2E6B800462D8C /* StatisticsViewModelTests.swift */,
 				D61945EF29E735D80046DE1F /* MockTimer.swift */,
 				D6842EC529EC6FDE00731E84 /* PayManagerTests.swift */,
-				D65A976A29F2E6B800462D8C /* StatisticsViewModelTests.swift */,
+				D6C458A429D229230069D89B /* ClockInTests.swift */,
 			);
 			path = ClockInTests;
 			sourceTree = "<group>";
@@ -479,7 +479,7 @@
 			files = (
 				D6842EC629EC6FDF00731E84 /* PayManagerTests.swift in Sources */,
 				D65A976B29F2E6B800462D8C /* StatisticsViewModelTests.swift in Sources */,
-				D61945EC29E7306B0046DE1F /* TimerModelTests.swift in Sources */,
+				D61945EC29E7306B0046DE1F /* HomeViewModelTests.swift in Sources */,
 				D61945F029E735D80046DE1F /* MockTimer.swift in Sources */,
 				D6C458A529D229230069D89B /* ClockInTests.swift in Sources */,
 				D6799EFC29E1BC0F0080E32A /* HistoryViewModelTests.swift in Sources */,
