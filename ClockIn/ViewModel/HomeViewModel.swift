@@ -63,13 +63,9 @@ class HomeViewModel: NSObject, ObservableObject {
         self.settingsStore = settingsStore
         self.timerProvider = timerProvider
         super.init()
-        // initialize properties:
-        // this is not very intuitive?
         countSeconds = settingsStore.workTimeInSeconds
         updateTimerStringValue()
-        //Add observers
-        NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        setAppStateObservers()
         settingsStore.$workTimeInSeconds
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] value in
@@ -80,9 +76,17 @@ class HomeViewModel: NSObject, ObservableObject {
                 }
             })
             .store(in: &subscriptions)
-            
+        
     }
-    //MARK: HANDLING BACKGROUND TIMER UPDATE FUNC
+}
+//MARK: HANDLING BACKGROUND TIMER UPDATE FUNC
+extension HomeViewModel {
+    
+    private func setAppStateObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+    }
+    
     @objc private func appDidEnterBackground() {
         if isRunning {
             appDidEnterBackgroundDate = Date()
