@@ -30,7 +30,7 @@ final class EditSheetViewModel: ObservableObject {
         }
     }
     
-    var workTimeInSeconds: Int {
+    private var workTimeInSeconds: Int {
         didSet {
             workTimeString = generateHoursString(value: workTimeInSeconds)
             workTimeFraction = CGFloat(workTimeInSeconds) / CGFloat(workTimeAllowed)
@@ -38,7 +38,7 @@ final class EditSheetViewModel: ObservableObject {
     }
     
     
-    var overTimeInSeconds: Int {
+    private var overTimeInSeconds: Int {
         didSet {
             overTimerString = generateHoursString(value: overTimeInSeconds)
             overTimeFraction = CGFloat(overTimeInSeconds) / CGFloat(overTimeAllowed)
@@ -72,7 +72,7 @@ final class EditSheetViewModel: ObservableObject {
         
     }
     
-    func calculateTime() {
+    private func calculateTime() {
         let timeInterval = Calendar.current.dateComponents([.second], from: startDate, to: finishDate)
         if let seconds = timeInterval.second {
             if seconds <= workTimeAllowed {
@@ -85,7 +85,7 @@ final class EditSheetViewModel: ObservableObject {
         }
     }
     
-    func generateHoursString(value: Int) -> String {
+    private func generateHoursString(value: Int) -> String {
         let resultValue: Double = Double(value) / 3600
         return String(format: "%.2f", resultValue)
     }

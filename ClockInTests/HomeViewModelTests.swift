@@ -8,7 +8,7 @@
 import XCTest
 @testable import ClockIn
 
-final class TimerModelTests: XCTestCase {
+final class HomeViewModelModelTests: XCTestCase {
     
     var sut: HomeViewModel!
     var settingsStore: SettingsStore!
@@ -17,7 +17,10 @@ final class TimerModelTests: XCTestCase {
         super.setUp()
         SettingsStore.setTestUserDefaults()
         self.settingsStore = SettingsStore()
-        sut = .init(HomeViewModel(dataManager: DataManager.testing, settingsStore: settingsStore, timerProvider: MockTimer.self))
+        sut = .init(HomeViewModel(dataManager: DataManager.testing,
+                                  settingsStore: settingsStore,
+                                  timerProvider: MockTimer.self)
+        )
     }
 
     override func tearDown() {
@@ -51,10 +54,8 @@ final class TimerModelTests: XCTestCase {
                 MockTimer.currentTimer.fire()
         }
         let valuePredicted: CGFloat = CGFloat(10) / CGFloat (settingsStore.maximumOvertimeAllowedInSeconds)
-        print(MockTimer.currentTimer.isValid)
         XCTAssertTrue(MockTimer.currentTimer.isValid, "Timer should be valid")
         XCTAssertEqual(sut.progress, 1, "Progress should be equal to 1")
         XCTAssertEqual(sut.overtimeProgress, valuePredicted, "overtimeProgress should be equal to predicted value")
-        
     }
 }

@@ -51,10 +51,17 @@ struct HomeView: View {
                     .frame(width: 50, height: 50)
                     .offset(y: 250)
                 } // END OF IF
-                RingView(progress: $viewModel.progress, ringColor: .primary, pointColor: colorScheme == .light ? .white : .black)
-                    .frame(width: UIScreen.main.bounds.size.width-120, height: UIScreen.main.bounds.size.width-120)
+                RingView(progress: $viewModel.progress,
+                         ringColor: .primary,
+                         pointColor: colorScheme == .light ? .white : .black)
+                    .frame(width: UIScreen.main.bounds.size.width-120,
+                           height: UIScreen.main.bounds.size.width-120)
                 if viewModel.overtimeProgress > 0 {
-                    RingView(progress: $viewModel.overtimeProgress, ringColor: .green, pointColor: .white, ringWidth: 5, startigPoint: 0.023)
+                    RingView(progress: $viewModel.overtimeProgress,
+                             ringColor: .green,
+                             pointColor: .white,
+                             ringWidth: 5,
+                             startigPoint: 0.023)
                         .frame(width: UIScreen.main.bounds.size.width-120, height: UIScreen.main.bounds.size.width-120)
                 } // END OF IF
             } // END OF ZSTACK
@@ -92,7 +99,9 @@ struct Home_Previews: PreviewProvider {
         @StateObject private var container: Container = .init()
         var body: some View {
             NavigationView {
-                HomeView(viewModel: HomeViewModel(dataManager: container.dataManager,settingsStore: container.settingsStore, timerProvider: container.timerProvider))
+                HomeView(viewModel: HomeViewModel(dataManager: container.dataManager,
+                                                  settingsStore: container.settingsStore,
+                                                  timerProvider: container.timerProvider))
             }
             .environmentObject(Container())
         }

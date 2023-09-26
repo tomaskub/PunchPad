@@ -63,13 +63,9 @@ class HomeViewModel: NSObject, ObservableObject {
         self.settingsStore = settingsStore
         self.timerProvider = timerProvider
         super.init()
-        // initialize properties:
-        // this is not very intuitive?
         countSeconds = settingsStore.workTimeInSeconds
         updateTimerStringValue()
-        //Add observers
-        NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        setAppStateObservers()
         settingsStore.$workTimeInSeconds
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] value in
@@ -80,13 +76,21 @@ class HomeViewModel: NSObject, ObservableObject {
                 }
             })
             .store(in: &subscriptions)
-            
+        
     }
-    //MARK: HANDLING BACKGROUND TIMER UPDATE FUNC
+}
+//MARK: HANDLING BACKGROUND TIMER UPDATE FUNC
+extension HomeViewModel {
+    
+    private func setAppStateObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+    }
+    
     @objc private func appDidEnterBackground() {
         if isRunning {
             appDidEnterBackgroundDate = Date()
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: Double(5/*countSeconds*/), repeats: false)
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: Double(countSeconds), repeats: false)
             checkForPermissionAndDispatch(withTrigger: trigger)
         }
     }
@@ -138,14 +142,6 @@ extension HomeViewModel {
         finishDate = Date()
         saveEntry()
     }
-    
-    func resumeTimer() {
-        isRunning = true
-    }
-    
-    func pauseTimer() {
-        isRunning = false
-    }
 }
    
     //MARK: TIMER UPDATE FUNCTIONS
@@ -190,18 +186,6 @@ extension HomeViewModel {
         }
     }
     
-    
-    func updateSecondProgress() {
-        withAnimation(.linear) {
-            secondProgress = 1 - (CGFloat(currentSeconds) / CGFloat(60))
-        }
-    }
-    
-    func updateMinuteProgres() {
-        withAnimation(.easeInOut) {
-            minuteProgress = 1 - (CGFloat(currentMinutes) / CGFloat(60))
-        }
-    }
     /// Updates the timer string value with current time components if the countSeconds > 0 and with current overtime components if countSeconds = 0.
     func updateTimerStringValue() {
         if countSeconds > 0 {
@@ -235,10 +219,7 @@ extension HomeViewModel {
 
     //MARK: DATA OPERATIONS
 extension HomeViewModel {
-    func checkForEntry() -> Bool {
-        guard let _ = dataManager.fetch(forDate: Date()) else { return false }
-        return true
-    }
+    
     func saveEntry() {
         guard let startDate = startDate, let finishDate = finishDate else { return }
         

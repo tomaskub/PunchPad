@@ -20,14 +20,14 @@ class HistoryViewModel: ObservableObject {
         settingsStore.workTimeInSeconds
     }
     
-    var subscriptions: AnyCancellable? = nil
+    private var subscriptions: Set<AnyCancellable> = .init()
     
     init(dataManager: DataManager, settingsStore: SettingsStore) {
         self.dataManager = dataManager
         self.settingsStore = settingsStore
-        subscriptions = dataManager.objectWillChange.sink(receiveValue: { [weak self] _ in
+        dataManager.objectWillChange.sink(receiveValue: { [weak self] _ in
             self?.objectWillChange.send()
-        })
+        }).store(in: &subscriptions)
     }
     
     var entries: [Entry] {
@@ -35,7 +35,7 @@ class HistoryViewModel: ObservableObject {
     }
     
     /// provide a formatted string describing the amount of hours between start and finish date in an Entry object
-    func timeWorkedLabel(for entry: Entry) -> String {//DateComponents {
+    func timeWorkedLabel(for entry: Entry) -> String {
         
         let sumWorkedInSec = entry.workTimeInSeconds + entry.overTimeInSeconds
         let hours = sumWorkedInSec / 3600
