@@ -18,7 +18,7 @@ struct OnboardingView: View {
         case exit // Inform setup complete, allow to finish onboarding
     }
     private typealias Identifier = ScreenIdentifier.OnboardingView
-    let tansition: AnyTransition = .asymmetric(
+    private let tansition: AnyTransition = .asymmetric(
         insertion: .move(edge: .trailing),
         removal: .move(edge: .leading)
     )
@@ -38,10 +38,9 @@ struct OnboardingView: View {
             //BACKGROUND
             GradientFactory.build(colorScheme: colorScheme)
             //CONTENT
-            
                 switch currentStage {
                 case .welcome:
-                    stage0Screen
+                    OnboardingWelcomeView()
                 case .worktime:
                     stage1Screen
                 case .overtime:
@@ -53,7 +52,6 @@ struct OnboardingView: View {
                 case .exit:
                     stage5Screen
                 }
-            
             
             VStack {
                 if currentStage != .welcome {
@@ -71,37 +69,9 @@ struct OnboardingView: View {
 }
 
 extension OnboardingView {
-    
-    private var stage0Screen: some View {
-        VStack(spacing: 40){
-            
-            ZStack {
-                Circle()
-                    .trim(from: 0.15, to: 0.85)
-                    .stroke(lineWidth: 10)
-                Rectangle()
-                    .frame(width: 10, height: 200)
-            }
-            .padding(.horizontal)
-            
-            Text("ClockIn")
-                .font(.largeTitle)
-                .fontWeight(.semibold)
-                .overlay {
-                    Capsule()
-                        .frame(height: 3)
-                        .offset(y: 20)
-                        .foregroundColor(.primary)
-                }
-            
-            Text("This app was built to help you track time and make sure you are spending at work exactly the time you want and need. \n\n Plan your workdays and plan your paycheck!")
-                .fontWeight(.medium)
-                .foregroundColor(.primary)
-                .multilineTextAlignment(.center)
-            
-            Spacer()
-        }
-        .padding(30)
+    private var bottomButtonText: String {
+        currentStage == .welcome ? "Let's start!" :
+                                currentStage == .exit ? "Finish set up!" : "Next"
     }
     
     private var stage1Screen: some View {
@@ -315,14 +285,16 @@ extension OnboardingView {
     }
     
     private var bottomButton: some View {
-        Text(currentStage == .welcome ? "Let's start!" :
-                currentStage == .exit ? "Finish set up!" : "Next")
-        .accessibilityIdentifier(Identifier.Buttons.advanceStage.rawValue)
-        .font(.headline)
-        .foregroundColor(.blue)
-        .frame(height: 55)
-        .frame(maxWidth: .infinity)
-        .background(Color.primary.colorInvert())
+        ButtonFactory.build(labelText: bottomButtonText)
+        .onTapGesture {
+            withAnimation(.spring()) {
+                if currentStage == .exit {
+                    dismiss()
+                } else {
+                    currentStage = currentStage.next()
+                }
+            }
+        }
         //This section is still in works until in-app tutorial is developed
         /*
          .overlay(content: {
@@ -335,16 +307,6 @@ extension OnboardingView {
          }
          })
          */
-        .cornerRadius(10)
-        .onTapGesture {
-            withAnimation(.spring()) {
-                if currentStage == .exit {
-                    dismiss()
-                } else {
-                    currentStage = currentStage.next()
-                }
-            }
-        }
     }
 }
 
