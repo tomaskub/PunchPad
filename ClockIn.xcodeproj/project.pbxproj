@@ -39,6 +39,8 @@
 		D6842EC229EC179200731E84 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6842EC129EC179200731E84 /* StatisticsViewModel.swift */; };
 		D6842EC429EC62DE00731E84 /* PayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6842EC329EC62DD00731E84 /* PayManager.swift */; };
 		D6842EC629EC6FDF00731E84 /* PayManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6842EC529EC6FDE00731E84 /* PayManagerTests.swift */; };
+		D684A3882AF6F3E700511E0D /* OnboardingWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D684A3872AF6F3E700511E0D /* OnboardingWelcomeView.swift */; };
+		D684A38A2AF6F54B00511E0D /* ButtonFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D684A3892AF6F54B00511E0D /* ButtonFactory.swift */; };
 		D6AB737029F562E600D5DE82 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AB736F29F562E600D5DE82 /* OnboardingViewModel.swift */; };
 		D6B3B2662ABA237800101A1F /* SettingsViewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B3B2652ABA237800101A1F /* SettingsViewUITests.swift */; };
 		D6C4589429D229210069D89B /* ClockInApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4589329D229210069D89B /* ClockInApp.swift */; };
@@ -110,6 +112,8 @@
 		D6842EC129EC179200731E84 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
 		D6842EC329EC62DD00731E84 /* PayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayManager.swift; sourceTree = "<group>"; };
 		D6842EC529EC6FDE00731E84 /* PayManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayManagerTests.swift; sourceTree = "<group>"; };
+		D684A3872AF6F3E700511E0D /* OnboardingWelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingWelcomeView.swift; sourceTree = "<group>"; };
+		D684A3892AF6F54B00511E0D /* ButtonFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonFactory.swift; sourceTree = "<group>"; };
 		D6AB736F29F562E600D5DE82 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		D6B3B2652ABA237800101A1F /* SettingsViewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewUITests.swift; sourceTree = "<group>"; };
 		D6C4589029D229210069D89B /* ClockIn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClockIn.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -181,6 +185,14 @@
 				D6ED26BC2AA3B739001E2390 /* StatisticsViewScreen.swift */,
 			);
 			path = ScreenHelpers;
+			sourceTree = "<group>";
+		};
+		D684A3862AF6F3C700511E0D /* OboardingViews */ = {
+			isa = PBXGroup;
+			children = (
+				D684A3872AF6F3E700511E0D /* OnboardingWelcomeView.swift */,
+			);
+			path = OboardingViews;
 			sourceTree = "<group>";
 		};
 		D6C4588729D229200069D89B = {
@@ -259,6 +271,7 @@
 		D6C458BE29D2D3E50069D89B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D684A3862AF6F3C700511E0D /* OboardingViews */,
 				D6C4589529D229210069D89B /* ContentView.swift */,
 				D6C458C229D2DE2D0069D89B /* HomeView.swift */,
 				D66750E929D713C900757F17 /* HistoryView.swift */,
@@ -289,6 +302,7 @@
 			isa = PBXGroup;
 			children = (
 				D6D906B02AA12BDB004E09C9 /* GradientFactory.swift */,
+				D684A3892AF6F54B00511E0D /* ButtonFactory.swift */,
 			);
 			path = Factory;
 			sourceTree = "<group>";
@@ -439,6 +453,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D684A3882AF6F3E700511E0D /* OnboardingWelcomeView.swift in Sources */,
 				D6842EC429EC62DE00731E84 /* PayManager.swift in Sources */,
 				D64574B629D9F37400207168 /* Entry.swift in Sources */,
 				D6C458C729D36C050069D89B /* RingView.swift in Sources */,
@@ -450,6 +465,7 @@
 				D64574B429D9F16900207168 /* EntryMO+CoreDataProperties.swift in Sources */,
 				D6D906AE2AA0BEDE004E09C9 /* ScreenIdentifier.swift in Sources */,
 				D61F11342AB3A6FF00902D6D /* ColorScheme+Extension.swift in Sources */,
+				D684A38A2AF6F54B00511E0D /* ButtonFactory.swift in Sources */,
 				D6C458C529D35EAA0069D89B /* SettingsView.swift in Sources */,
 				D666ADCC2AC05A0500B74663 /* CaseIterable+Extension.swift in Sources */,
 				D65FD53D29D8B259006CC34F /* PersistanceController.swift in Sources */,
