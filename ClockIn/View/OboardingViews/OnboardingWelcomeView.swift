@@ -50,14 +50,21 @@ struct OnboardingWelcomeView: View {
 }
 
 struct OnboardingWelcome_Previews: PreviewProvider {
-    static var previews: some View {
-        ZStack {
-            GradientFactory.build(colorScheme: .light)
-            OnboardingWelcomeView()
-            VStack {
-                Spacer()
-                ButtonFactory.build(labelText: "Preview button")
-            }.padding(30)
+    private struct PreviewContainerView: View {
+        @Environment(\.colorScheme) private var colorScheme
+        var body: some View {
+            ZStack {
+                GradientFactory.build(colorScheme: colorScheme)
+                OnboardingWelcomeView()
+                VStack {
+                    Spacer()
+                    ButtonFactory.build(labelText: "Preview button")
+                }.padding(30)
+            }
         }
+    }
+    
+    static var previews: some View {
+        PreviewContainerView()
     }
 }
