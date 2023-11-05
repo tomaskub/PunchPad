@@ -19,17 +19,8 @@ struct OnboardingWorktimeView: View {
     
     var body: some View {
         VStack(spacing: 40) {
-            Text(titleText)
-                .font(.largeTitle)
-                .fontWeight(.semibold)
-                .overlay {
-                    Capsule()
-                        .frame(height: 3)
-                        .offset(y: 20)
-                        .foregroundColor(.primary)
-                } // END OF OVERLAY
-            Text(descriptionText)
-                .multilineTextAlignment(.center)
+            title
+            description
             HStack {
                 VStack {
                     Text(hoursPickerLabel)
@@ -61,6 +52,14 @@ struct OnboardingWorktimeView: View {
         } // END OF VSTACK
         .padding(30)
     } // END OF BODY
+    
+    var title: some View {
+        TextFactory.buildTitle(titleText)
+    }
+    
+    var description: some View {
+        TextFactory.buildDescription(descriptionText)
+    }
 } // END OF VIEW
 
 struct OnbardingWorktime_Previews: PreviewProvider {

@@ -17,20 +17,9 @@ struct OnboardingWelcomeView: View {
             
             logoView
             
-            Text(titleText)
-                .font(.largeTitle)
-                .fontWeight(.semibold)
-                .overlay {
-                    Capsule()
-                        .frame(height: 3)
-                        .offset(y: 20)
-                        .foregroundColor(.primary)
-                }
+            title
             
-            Text(descriptionText)
-                .fontWeight(.medium)
-                .foregroundColor(.primary)
-                .multilineTextAlignment(.center)
+            description
             
             Spacer()
         }
@@ -46,6 +35,14 @@ struct OnboardingWelcomeView: View {
                 .frame(width: 10, height: 200)
         }
         .padding(.horizontal)
+    }
+    
+    var title: some View {
+        TextFactory.buildTitle(titleText)
+    }
+    
+    var description: some View {
+        TextFactory.buildDescription(descriptionText)
     }
 }
 
