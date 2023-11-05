@@ -42,7 +42,7 @@ struct OnboardingView: View {
                 case .welcome:
                     OnboardingWelcomeView()
                 case .worktime:
-                    stage1Screen
+                    OnboardingWorktimeView(viewModel: viewModel)
                 case .overtime:
                     stage2Screen
                 case .notifications:
@@ -72,49 +72,6 @@ extension OnboardingView {
     private var bottomButtonText: String {
         currentStage == .welcome ? "Let's start!" :
                                 currentStage == .exit ? "Finish set up!" : "Next"
-    }
-    
-    private var stage1Screen: some View {
-        VStack(spacing: 40) {
-            Text("Workday")
-                .font(.largeTitle)
-                .fontWeight(.semibold)
-                .overlay {
-                    Capsule()
-                        .frame(height: 3)
-                        .offset(y: 20)
-                        .foregroundColor(.primary)
-                }
-            Text("ClockIn needs to know what is your normal workday length to let you know when you are done or when you enter into overtime")
-                .multilineTextAlignment(.center)
-            HStack {
-                VStack {
-                    Text("Hours")
-                    Picker("Hours", selection: $viewModel.hoursWorking) {
-                        ForEach(0..<25){ i in
-                            Text("\(i)").tag(i)
-                        }
-                    }
-                    .accessibilityIdentifier(Identifier.Pickers.workingHours.rawValue)
-                    .pickerStyle(.wheel)
-                }
-                VStack {
-                    Text("Minutes")
-                    Picker("Minutes", selection: $viewModel.minutesWorking) {
-                        ForEach(0..<60) { i in
-                            Text("\(i)").tag(i)
-                        }
-                    }
-                    .accessibilityIdentifier(Identifier.Pickers.workingMinutes.rawValue)
-                    .pickerStyle(.wheel)
-                }
-            }
-            .padding()
-            .padding(.top)
-            .background(Color.primary.colorInvert())
-            .cornerRadius(20)
-        }
-        .padding(30)
     }
     
     private var stage2Screen: some View {
