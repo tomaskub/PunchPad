@@ -44,7 +44,7 @@ struct OnboardingView: View {
                 case .worktime:
                     OnboardingWorktimeView(viewModel: viewModel)
                 case .overtime:
-                    stage2Screen
+                    OnboardingOvertimeView(viewModel: viewModel)
                 case .notifications:
                     stage3Screen
                 case .salary:
@@ -73,62 +73,7 @@ extension OnboardingView {
         currentStage == .welcome ? "Let's start!" :
                                 currentStage == .exit ? "Finish set up!" : "Next"
     }
-    
-    private var stage2Screen: some View {
-        VStack(spacing: 40) {
-            Text("Overtime")
-                .font(.largeTitle)
-                .fontWeight(.semibold)
-                .overlay {
-                    Capsule()
-                        .frame(height: 3)
-                        .offset(y: 20)
-                        .foregroundColor(.primary)
-                }
-            if !viewModel.settingsStore.isLoggingOvertime {
-                Text("Let ClockIn know wheter you want to measure overtime")
-                    .multilineTextAlignment(.center)
-            }
-            // should start as false is nto starting as false?
-            Toggle("Keep logging overtime", isOn: $viewModel.settingsStore.isLoggingOvertime)
-                .accessibilityIdentifier(Identifier.Toggles.overtime.rawValue)
-                .padding()
-                .background()
-                .cornerRadius(20)
-            if viewModel.settingsStore.isLoggingOvertime {
-                Text("Let the app know what is the maximum overtime you can work for.")
-                    .multilineTextAlignment(.center)
-                HStack {
-                    VStack {
-                        Text("Hours")
-                        Picker("Hours", selection: $viewModel.hoursOvertime) {
-                            ForEach(0..<25){ i in
-                                Text("\(i)").tag(i)
-                            }
-                        }
-                        .accessibilityIdentifier(Identifier.Pickers.overtimeHours.rawValue)
-                        .pickerStyle(.wheel)
-                    }
-                    VStack {
-                        Text("Minutes")
-                        Picker("Minutes", selection: $viewModel.minutesOvertime) {
-                            ForEach(0..<60) { i in
-                                Text("\(i)").tag(i)
-                            }
-                        }
-                        .accessibilityIdentifier(Identifier.Pickers.overtimeMinutes.rawValue)
-                        .pickerStyle(.wheel)
-                    }
-                }
-                .padding()
-                .padding(.top)
-                .background(Color.primary.colorInvert())
-                .cornerRadius(20)
-            }
-        }
-        .padding(30)
-    }
-    
+   
     private var stage3Screen: some View {
         VStack(spacing: 40) {
             Text("Notifications")
