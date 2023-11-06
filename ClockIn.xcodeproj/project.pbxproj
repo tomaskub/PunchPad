@@ -61,6 +61,7 @@
 		D6E2C15929D6C20E00229286 /* WorkHistory.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15729D6C20E00229286 /* WorkHistory.xcdatamodeld */; };
 		D6E2C15B29D6C31800229286 /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15A29D6C31800229286 /* HistoryViewModel.swift */; };
 		D6E6B8732AF98A4B0073D911 /* OnboardingNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E6B8722AF98A4B0073D911 /* OnboardingNotificationView.swift */; };
+		D6E6B8752AF98EB40073D911 /* OnboardingSalaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E6B8742AF98EB40073D911 /* OnboardingSalaryView.swift */; };
 		D6EA695A2AF83E7800D8F6C3 /* OnboardingWorktimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EA69592AF83E7800D8F6C3 /* OnboardingWorktimeView.swift */; };
 		D6EA695C2AF8452A00D8F6C3 /* TextFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EA695B2AF8452A00D8F6C3 /* TextFactory.swift */; };
 		D6EA695E2AF8498D00D8F6C3 /* OnboardingOvertimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EA695D2AF8498D00D8F6C3 /* OnboardingOvertimeView.swift */; };
@@ -141,6 +142,7 @@
 		D6E2C15829D6C20E00229286 /* WorkHistory.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WorkHistory.xcdatamodel; sourceTree = "<group>"; };
 		D6E2C15A29D6C31800229286 /* HistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
 		D6E6B8722AF98A4B0073D911 /* OnboardingNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingNotificationView.swift; sourceTree = "<group>"; };
+		D6E6B8742AF98EB40073D911 /* OnboardingSalaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSalaryView.swift; sourceTree = "<group>"; };
 		D6EA69592AF83E7800D8F6C3 /* OnboardingWorktimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingWorktimeView.swift; sourceTree = "<group>"; };
 		D6EA695B2AF8452A00D8F6C3 /* TextFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFactory.swift; sourceTree = "<group>"; };
 		D6EA695D2AF8498D00D8F6C3 /* OnboardingOvertimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingOvertimeView.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				D6EA69592AF83E7800D8F6C3 /* OnboardingWorktimeView.swift */,
 				D6EA695D2AF8498D00D8F6C3 /* OnboardingOvertimeView.swift */,
 				D6E6B8722AF98A4B0073D911 /* OnboardingNotificationView.swift */,
+				D6E6B8742AF98EB40073D911 /* OnboardingSalaryView.swift */,
 			);
 			path = OboardingViews;
 			sourceTree = "<group>";
@@ -500,6 +503,7 @@
 				D6C4589429D229210069D89B /* ClockInApp.swift in Sources */,
 				D6E2C15929D6C20E00229286 /* WorkHistory.xcdatamodeld in Sources */,
 				D60EB9B62AB0D7000053136A /* Container.swift in Sources */,
+				D6E6B8752AF98EB40073D911 /* OnboardingSalaryView.swift in Sources */,
 				D65A976F29F3BBDD00462D8C /* OnboardingView.swift in Sources */,
 				D6842EC229EC179200731E84 /* StatisticsViewModel.swift in Sources */,
 			);
