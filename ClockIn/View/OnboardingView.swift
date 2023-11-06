@@ -50,7 +50,7 @@ struct OnboardingView: View {
                 case .salary:
                     OnboardingSalaryView(viewModel: viewModel)
                 case .exit:
-                    stage5Screen
+                    OnboardingFinishView()
                 }
             
             VStack {
@@ -72,46 +72,6 @@ extension OnboardingView {
     private var bottomButtonText: String {
         currentStage == .welcome ? "Let's start!" :
                                 currentStage == .exit ? "Finish set up!" : "Next"
-    }
-    
-    private var stage5Screen: some View {
-        VStack(spacing: 40) {
-            
-            Text("Clock In has been succsessfully set up")
-                .font(.largeTitle)
-                .fontWeight(.semibold)
-                .multilineTextAlignment(.center)
-            
-            Text("You are all ready to go! Enjoy using the app!")
-                .multilineTextAlignment(.center)
-            
-            //This section is still in works until in-app tutorial is developed
-            /*
-             Text("To enter a short tutorial on how to use the app and its functions click the tour button. Alternatively, if you are a person that assembles the IKEA furniture without looking at the instructions click the finish button")
-             .multilineTextAlignment(.center)
-             
-             
-             Text("Finish!")
-             .font(.headline)
-             .foregroundColor(.accentColor)
-             .frame(height: 55)
-             .frame(maxWidth: .infinity)
-             .background(Color.primary.colorInvert())
-             .cornerRadius(10)
-             .overlay {
-             HStack {
-             Spacer()
-             Image(systemName: "bicycle")
-             Image(systemName: "figure.walk")
-             }
-             .padding()
-             }
-             .onTapGesture {
-             dismiss()
-             }
-             */
-        }
-        .padding(30)
     }
     
     private var topButton: some View {

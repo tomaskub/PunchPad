@@ -21,6 +21,14 @@ struct TextFactory {
             }
     }
     @ViewBuilder
+    static func buildMultilineTitle(_ text: String) -> some View {
+        Text(text)
+            .font(.largeTitle)
+            .fontWeight(.semibold)
+            .multilineTextAlignment(.center)
+    }
+    
+    @ViewBuilder
     static func buildDescription(_ text: String) -> some View {
         Text(text)
             .fontWeight(.medium)
