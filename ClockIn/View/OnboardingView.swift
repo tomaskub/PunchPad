@@ -46,7 +46,7 @@ struct OnboardingView: View {
                 case .overtime:
                     OnboardingOvertimeView(viewModel: viewModel)
                 case .notifications:
-                    stage3Screen
+                    OnboardingNotificationView(viewModel: viewModel)
                 case .salary:
                     stage4Screen
                 case .exit:
@@ -72,30 +72,6 @@ extension OnboardingView {
     private var bottomButtonText: String {
         currentStage == .welcome ? "Let's start!" :
                                 currentStage == .exit ? "Finish set up!" : "Next"
-    }
-   
-    private var stage3Screen: some View {
-        VStack(spacing: 40) {
-            Text("Notifications")
-                .font(.largeTitle)
-                .fontWeight(.semibold)
-                .overlay {
-                    Capsule()
-                        .foregroundColor(.primary)
-                        .frame(height: 3)
-                        .offset(y: 20)
-                }
-            Text("Do you want to allow ClockIn to send you notifications when the work time is finished?")
-                .multilineTextAlignment(.center)
-            
-            Toggle("Send notifications on finish", isOn: $viewModel.settingsStore.isSendingNotification)
-                .accessibilityIdentifier(Identifier.Toggles.notifications.rawValue)
-                .padding()
-                .background()
-                .cornerRadius(20)
-            
-        }
-        .padding(30)
     }
     
     private var stage4Screen: some View {
