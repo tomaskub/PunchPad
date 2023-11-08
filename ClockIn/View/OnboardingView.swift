@@ -18,7 +18,7 @@ struct OnboardingView: View {
         case exit // Inform setup complete, allow to finish onboarding
     }
     private typealias Identifier = ScreenIdentifier.OnboardingView
-    let tansition: AnyTransition = .asymmetric(
+    private let tansition: AnyTransition = .asymmetric(
         insertion: .move(edge: .trailing),
         removal: .move(edge: .leading)
     )
@@ -38,22 +38,20 @@ struct OnboardingView: View {
             //BACKGROUND
             GradientFactory.build(colorScheme: colorScheme)
             //CONTENT
-            
                 switch currentStage {
                 case .welcome:
-                    stage0Screen
+                    OnboardingWelcomeView()
                 case .worktime:
-                    stage1Screen
+                    OnboardingWorktimeView(viewModel: viewModel)
                 case .overtime:
-                    stage2Screen
+                    OnboardingOvertimeView(viewModel: viewModel)
                 case .notifications:
-                    stage3Screen
+                    OnboardingNotificationView(viewModel: viewModel)
                 case .salary:
-                    stage4Screen
+                    OnboardingSalaryView(viewModel: viewModel)
                 case .exit:
-                    stage5Screen
+                    OnboardingFinishView()
                 }
-            
             
             VStack {
                 if currentStage != .welcome {
@@ -71,236 +69,9 @@ struct OnboardingView: View {
 }
 
 extension OnboardingView {
-    
-    private var stage0Screen: some View {
-        VStack(spacing: 40){
-            
-            ZStack {
-                Circle()
-                    .trim(from: 0.15, to: 0.85)
-                    .stroke(lineWidth: 10)
-                Rectangle()
-                    .frame(width: 10, height: 200)
-            }
-            .padding(.horizontal)
-            
-            Text("ClockIn")
-                .font(.largeTitle)
-                .fontWeight(.semibold)
-                .overlay {
-                    Capsule()
-                        .frame(height: 3)
-                        .offset(y: 20)
-                        .foregroundColor(.primary)
-                }
-            
-            Text("This app was built to help you track time and make sure you are spending at work exactly the time you want and need. \n\n Plan your workdays and plan your paycheck!")
-                .fontWeight(.medium)
-                .foregroundColor(.primary)
-                .multilineTextAlignment(.center)
-            
-            Spacer()
-        }
-        .padding(30)
-    }
-    
-    private var stage1Screen: some View {
-        VStack(spacing: 40) {
-            Text("Workday")
-                .font(.largeTitle)
-                .fontWeight(.semibold)
-                .overlay {
-                    Capsule()
-                        .frame(height: 3)
-                        .offset(y: 20)
-                        .foregroundColor(.primary)
-                }
-            Text("ClockIn needs to know what is your normal workday length to let you know when you are done or when you enter into overtime")
-                .multilineTextAlignment(.center)
-            HStack {
-                VStack {
-                    Text("Hours")
-                    Picker("Hours", selection: $viewModel.hoursWorking) {
-                        ForEach(0..<25){ i in
-                            Text("\(i)").tag(i)
-                        }
-                    }
-                    .accessibilityIdentifier(Identifier.Pickers.workingHours.rawValue)
-                    .pickerStyle(.wheel)
-                }
-                VStack {
-                    Text("Minutes")
-                    Picker("Minutes", selection: $viewModel.minutesWorking) {
-                        ForEach(0..<60) { i in
-                            Text("\(i)").tag(i)
-                        }
-                    }
-                    .accessibilityIdentifier(Identifier.Pickers.workingMinutes.rawValue)
-                    .pickerStyle(.wheel)
-                }
-            }
-            .padding()
-            .padding(.top)
-            .background(Color.primary.colorInvert())
-            .cornerRadius(20)
-        }
-        .padding(30)
-    }
-    
-    private var stage2Screen: some View {
-        VStack(spacing: 40) {
-            Text("Overtime")
-                .font(.largeTitle)
-                .fontWeight(.semibold)
-                .overlay {
-                    Capsule()
-                        .frame(height: 3)
-                        .offset(y: 20)
-                        .foregroundColor(.primary)
-                }
-            if !viewModel.settingsStore.isLoggingOvertime {
-                Text("Let ClockIn know wheter you want to measure overtime")
-                    .multilineTextAlignment(.center)
-            }
-            // should start as false is nto starting as false?
-            Toggle("Keep logging overtime", isOn: $viewModel.settingsStore.isLoggingOvertime)
-                .accessibilityIdentifier(Identifier.Toggles.overtime.rawValue)
-                .padding()
-                .background()
-                .cornerRadius(20)
-            if viewModel.settingsStore.isLoggingOvertime {
-                Text("Let the app know what is the maximum overtime you can work for.")
-                    .multilineTextAlignment(.center)
-                HStack {
-                    VStack {
-                        Text("Hours")
-                        Picker("Hours", selection: $viewModel.hoursOvertime) {
-                            ForEach(0..<25){ i in
-                                Text("\(i)").tag(i)
-                            }
-                        }
-                        .accessibilityIdentifier(Identifier.Pickers.overtimeHours.rawValue)
-                        .pickerStyle(.wheel)
-                    }
-                    VStack {
-                        Text("Minutes")
-                        Picker("Minutes", selection: $viewModel.minutesOvertime) {
-                            ForEach(0..<60) { i in
-                                Text("\(i)").tag(i)
-                            }
-                        }
-                        .accessibilityIdentifier(Identifier.Pickers.overtimeMinutes.rawValue)
-                        .pickerStyle(.wheel)
-                    }
-                }
-                .padding()
-                .padding(.top)
-                .background(Color.primary.colorInvert())
-                .cornerRadius(20)
-            }
-        }
-        .padding(30)
-    }
-    
-    private var stage3Screen: some View {
-        VStack(spacing: 40) {
-            Text("Notifications")
-                .font(.largeTitle)
-                .fontWeight(.semibold)
-                .overlay {
-                    Capsule()
-                        .foregroundColor(.primary)
-                        .frame(height: 3)
-                        .offset(y: 20)
-                }
-            Text("Do you want to allow ClockIn to send you notifications when the work time is finished?")
-                .multilineTextAlignment(.center)
-            
-            Toggle("Send notifications on finish", isOn: $viewModel.settingsStore.isSendingNotification)
-                .accessibilityIdentifier(Identifier.Toggles.notifications.rawValue)
-                .padding()
-                .background()
-                .cornerRadius(20)
-            
-        }
-        .padding(30)
-    }
-    
-    private var stage4Screen: some View {
-        VStack(spacing: 40) {
-            
-            Text("Salary")
-                .font(.largeTitle)
-                .fontWeight(.semibold)
-                .overlay(content: {
-                    Capsule()
-                        .foregroundColor(.primary)
-                        .frame(height: 3)
-                        .offset(y: 20)
-                })
-            Text("To let ClockIn calculate the salary you need to enter your gross montly income")
-                .multilineTextAlignment(.center)
-            HStack {
-                Text("Gross paycheck")
-                TextField("", text: $viewModel.grossPayPerMonthText)
-                    .accessibilityIdentifier(Identifier.TextFields.grossPaycheck.rawValue)
-                    .textFieldStyle(.roundedBorder)
-                    .keyboardType(.numberPad)
-                Text("PLN")
-            }
-            .padding()
-            .background()
-            .cornerRadius(20)
-            
-            Text("Do you want to allow ClockIn to calculate your net salary based on Polish tax law?")
-                .multilineTextAlignment(.center)
-            Toggle("Calculate net salary", isOn: $viewModel.settingsStore.isCalculatingNetPay)
-                .accessibilityIdentifier(Identifier.Toggles.calculateNetSalary.rawValue)
-                .padding()
-                .background()
-                .cornerRadius(20)
-        }
-        .padding(30)
-    }
-    
-    private var stage5Screen: some View {
-        VStack(spacing: 40) {
-            
-            Text("Clock In has been succsessfully set up")
-                .font(.largeTitle)
-                .fontWeight(.semibold)
-                .multilineTextAlignment(.center)
-            
-            Text("You are all ready to go! Enjoy using the app!")
-                .multilineTextAlignment(.center)
-            
-            //This section is still in works until in-app tutorial is developed
-            /*
-             Text("To enter a short tutorial on how to use the app and its functions click the tour button. Alternatively, if you are a person that assembles the IKEA furniture without looking at the instructions click the finish button")
-             .multilineTextAlignment(.center)
-             
-             
-             Text("Finish!")
-             .font(.headline)
-             .foregroundColor(.accentColor)
-             .frame(height: 55)
-             .frame(maxWidth: .infinity)
-             .background(Color.primary.colorInvert())
-             .cornerRadius(10)
-             .overlay {
-             HStack {
-             Spacer()
-             Image(systemName: "bicycle")
-             Image(systemName: "figure.walk")
-             }
-             .padding()
-             }
-             .onTapGesture {
-             dismiss()
-             }
-             */
-        }
-        .padding(30)
+    private var bottomButtonText: String {
+        currentStage == .welcome ? "Let's start!" :
+                                currentStage == .exit ? "Finish set up!" : "Next"
     }
     
     private var topButton: some View {
@@ -315,14 +86,16 @@ extension OnboardingView {
     }
     
     private var bottomButton: some View {
-        Text(currentStage == .welcome ? "Let's start!" :
-                currentStage == .exit ? "Finish set up!" : "Next")
-        .accessibilityIdentifier(Identifier.Buttons.advanceStage.rawValue)
-        .font(.headline)
-        .foregroundColor(.blue)
-        .frame(height: 55)
-        .frame(maxWidth: .infinity)
-        .background(Color.primary.colorInvert())
+        ButtonFactory.build(labelText: bottomButtonText)
+        .onTapGesture {
+            withAnimation(.spring()) {
+                if currentStage == .exit {
+                    dismiss()
+                } else {
+                    currentStage = currentStage.next()
+                }
+            }
+        }
         //This section is still in works until in-app tutorial is developed
         /*
          .overlay(content: {
@@ -335,16 +108,6 @@ extension OnboardingView {
          }
          })
          */
-        .cornerRadius(10)
-        .onTapGesture {
-            withAnimation(.spring()) {
-                if currentStage == .exit {
-                    dismiss()
-                } else {
-                    currentStage = currentStage.next()
-                }
-            }
-        }
     }
 }
 

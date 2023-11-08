@@ -39,8 +39,11 @@
 		D6842EC229EC179200731E84 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6842EC129EC179200731E84 /* StatisticsViewModel.swift */; };
 		D6842EC429EC62DE00731E84 /* PayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6842EC329EC62DD00731E84 /* PayManager.swift */; };
 		D6842EC629EC6FDF00731E84 /* PayManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6842EC529EC6FDE00731E84 /* PayManagerTests.swift */; };
+		D684A3882AF6F3E700511E0D /* OnboardingWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D684A3872AF6F3E700511E0D /* OnboardingWelcomeView.swift */; };
+		D684A38A2AF6F54B00511E0D /* ButtonFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D684A3892AF6F54B00511E0D /* ButtonFactory.swift */; };
 		D6AB737029F562E600D5DE82 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AB736F29F562E600D5DE82 /* OnboardingViewModel.swift */; };
 		D6B3B2662ABA237800101A1F /* SettingsViewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B3B2652ABA237800101A1F /* SettingsViewUITests.swift */; };
+		D6BC457E2AFAE0640030820C /* ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BC457D2AFAE0640030820C /* ColorTheme.swift */; };
 		D6C4589429D229210069D89B /* ClockInApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4589329D229210069D89B /* ClockInApp.swift */; };
 		D6C4589629D229210069D89B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4589529D229210069D89B /* ContentView.swift */; };
 		D6C4589829D229230069D89B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6C4589729D229230069D89B /* Assets.xcassets */; };
@@ -58,6 +61,12 @@
 		D6D906B12AA12BDB004E09C9 /* GradientFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D906B02AA12BDB004E09C9 /* GradientFactory.swift */; };
 		D6E2C15929D6C20E00229286 /* WorkHistory.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15729D6C20E00229286 /* WorkHistory.xcdatamodeld */; };
 		D6E2C15B29D6C31800229286 /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15A29D6C31800229286 /* HistoryViewModel.swift */; };
+		D6E6B8732AF98A4B0073D911 /* OnboardingNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E6B8722AF98A4B0073D911 /* OnboardingNotificationView.swift */; };
+		D6E6B8752AF98EB40073D911 /* OnboardingSalaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E6B8742AF98EB40073D911 /* OnboardingSalaryView.swift */; };
+		D6E6B8772AF992F90073D911 /* OnboardingFinishView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E6B8762AF992F90073D911 /* OnboardingFinishView.swift */; };
+		D6EA695A2AF83E7800D8F6C3 /* OnboardingWorktimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EA69592AF83E7800D8F6C3 /* OnboardingWorktimeView.swift */; };
+		D6EA695C2AF8452A00D8F6C3 /* TextFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EA695B2AF8452A00D8F6C3 /* TextFactory.swift */; };
+		D6EA695E2AF8498D00D8F6C3 /* OnboardingOvertimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EA695D2AF8498D00D8F6C3 /* OnboardingOvertimeView.swift */; };
 		D6ED26BD2AA3B739001E2390 /* StatisticsViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED26BC2AA3B739001E2390 /* StatisticsViewScreen.swift */; };
 		D6ED26BF2AA3BA05001E2390 /* OnboardingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED26BE2AA3BA05001E2390 /* OnboardingUITests.swift */; };
 /* End PBXBuildFile section */
@@ -110,8 +119,11 @@
 		D6842EC129EC179200731E84 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
 		D6842EC329EC62DD00731E84 /* PayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayManager.swift; sourceTree = "<group>"; };
 		D6842EC529EC6FDE00731E84 /* PayManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayManagerTests.swift; sourceTree = "<group>"; };
+		D684A3872AF6F3E700511E0D /* OnboardingWelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingWelcomeView.swift; sourceTree = "<group>"; };
+		D684A3892AF6F54B00511E0D /* ButtonFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonFactory.swift; sourceTree = "<group>"; };
 		D6AB736F29F562E600D5DE82 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		D6B3B2652ABA237800101A1F /* SettingsViewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewUITests.swift; sourceTree = "<group>"; };
+		D6BC457D2AFAE0640030820C /* ColorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTheme.swift; sourceTree = "<group>"; };
 		D6C4589029D229210069D89B /* ClockIn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClockIn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6C4589329D229210069D89B /* ClockInApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockInApp.swift; sourceTree = "<group>"; };
 		D6C4589529D229210069D89B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -132,6 +144,12 @@
 		D6D906B02AA12BDB004E09C9 /* GradientFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientFactory.swift; sourceTree = "<group>"; };
 		D6E2C15829D6C20E00229286 /* WorkHistory.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WorkHistory.xcdatamodel; sourceTree = "<group>"; };
 		D6E2C15A29D6C31800229286 /* HistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
+		D6E6B8722AF98A4B0073D911 /* OnboardingNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingNotificationView.swift; sourceTree = "<group>"; };
+		D6E6B8742AF98EB40073D911 /* OnboardingSalaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSalaryView.swift; sourceTree = "<group>"; };
+		D6E6B8762AF992F90073D911 /* OnboardingFinishView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFinishView.swift; sourceTree = "<group>"; };
+		D6EA69592AF83E7800D8F6C3 /* OnboardingWorktimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingWorktimeView.swift; sourceTree = "<group>"; };
+		D6EA695B2AF8452A00D8F6C3 /* TextFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFactory.swift; sourceTree = "<group>"; };
+		D6EA695D2AF8498D00D8F6C3 /* OnboardingOvertimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingOvertimeView.swift; sourceTree = "<group>"; };
 		D6ED26BC2AA3B739001E2390 /* StatisticsViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewScreen.swift; sourceTree = "<group>"; };
 		D6ED26BE2AA3BA05001E2390 /* OnboardingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingUITests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -166,6 +184,7 @@
 			children = (
 				D61F11332AB3A6FF00902D6D /* ColorScheme+Extension.swift */,
 				D666ADCB2AC05A0500B74663 /* CaseIterable+Extension.swift */,
+				D6BC457D2AFAE0640030820C /* ColorTheme.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -181,6 +200,19 @@
 				D6ED26BC2AA3B739001E2390 /* StatisticsViewScreen.swift */,
 			);
 			path = ScreenHelpers;
+			sourceTree = "<group>";
+		};
+		D684A3862AF6F3C700511E0D /* OboardingViews */ = {
+			isa = PBXGroup;
+			children = (
+				D684A3872AF6F3E700511E0D /* OnboardingWelcomeView.swift */,
+				D6EA69592AF83E7800D8F6C3 /* OnboardingWorktimeView.swift */,
+				D6EA695D2AF8498D00D8F6C3 /* OnboardingOvertimeView.swift */,
+				D6E6B8722AF98A4B0073D911 /* OnboardingNotificationView.swift */,
+				D6E6B8742AF98EB40073D911 /* OnboardingSalaryView.swift */,
+				D6E6B8762AF992F90073D911 /* OnboardingFinishView.swift */,
+			);
+			path = OboardingViews;
 			sourceTree = "<group>";
 		};
 		D6C4588729D229200069D89B = {
@@ -259,6 +291,7 @@
 		D6C458BE29D2D3E50069D89B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D684A3862AF6F3C700511E0D /* OboardingViews */,
 				D6C4589529D229210069D89B /* ContentView.swift */,
 				D6C458C229D2DE2D0069D89B /* HomeView.swift */,
 				D66750E929D713C900757F17 /* HistoryView.swift */,
@@ -289,6 +322,8 @@
 			isa = PBXGroup;
 			children = (
 				D6D906B02AA12BDB004E09C9 /* GradientFactory.swift */,
+				D684A3892AF6F54B00511E0D /* ButtonFactory.swift */,
+				D6EA695B2AF8452A00D8F6C3 /* TextFactory.swift */,
 			);
 			path = Factory;
 			sourceTree = "<group>";
@@ -439,22 +474,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D684A3882AF6F3E700511E0D /* OnboardingWelcomeView.swift in Sources */,
 				D6842EC429EC62DE00731E84 /* PayManager.swift in Sources */,
 				D64574B629D9F37400207168 /* Entry.swift in Sources */,
 				D6C458C729D36C050069D89B /* RingView.swift in Sources */,
+				D6EA695E2AF8498D00D8F6C3 /* OnboardingOvertimeView.swift in Sources */,
+				D6E6B8772AF992F90073D911 /* OnboardingFinishView.swift in Sources */,
 				D64574B029D9E6A000207168 /* DataManager.swift in Sources */,
 				D6D906B12AA12BDB004E09C9 /* GradientFactory.swift in Sources */,
 				D6D02FB029EF0B7F006CD0B2 /* EditShetViewModel.swift in Sources */,
 				D6E2C15B29D6C31800229286 /* HistoryViewModel.swift in Sources */,
+				D6EA695C2AF8452A00D8F6C3 /* TextFactory.swift in Sources */,
 				D64574B329D9F16900207168 /* EntryMO+CoreDataClass.swift in Sources */,
 				D64574B429D9F16900207168 /* EntryMO+CoreDataProperties.swift in Sources */,
 				D6D906AE2AA0BEDE004E09C9 /* ScreenIdentifier.swift in Sources */,
 				D61F11342AB3A6FF00902D6D /* ColorScheme+Extension.swift in Sources */,
+				D684A38A2AF6F54B00511E0D /* ButtonFactory.swift in Sources */,
 				D6C458C529D35EAA0069D89B /* SettingsView.swift in Sources */,
 				D666ADCC2AC05A0500B74663 /* CaseIterable+Extension.swift in Sources */,
 				D65FD53D29D8B259006CC34F /* PersistanceController.swift in Sources */,
 				D66750EA29D713C900757F17 /* HistoryView.swift in Sources */,
 				D6C458C129D2DD4F0069D89B /* HomeViewModel.swift in Sources */,
+				D6BC457E2AFAE0640030820C /* ColorTheme.swift in Sources */,
 				D6C4589629D229210069D89B /* ContentView.swift in Sources */,
 				D67332E62AADB8B1005FFE7F /* LaunchArgument.swift in Sources */,
 				D68384F929DB25DD00228491 /* SettingViewModel.swift in Sources */,
@@ -462,12 +503,15 @@
 				D61F11312AB38F8700902D6D /* SettingsStore.swift in Sources */,
 				D6842EC029EC178000731E84 /* StatisticsView.swift in Sources */,
 				D66750EC29D71C8300757F17 /* HistoryRow.swift in Sources */,
+				D6EA695A2AF83E7800D8F6C3 /* OnboardingWorktimeView.swift in Sources */,
 				D65A976D29F323A900462D8C /* K.swift in Sources */,
+				D6E6B8732AF98A4B0073D911 /* OnboardingNotificationView.swift in Sources */,
 				D6D02FAE29EF0B13006CD0B2 /* EditSheetView.swift in Sources */,
 				D6AB737029F562E600D5DE82 /* OnboardingViewModel.swift in Sources */,
 				D6C4589429D229210069D89B /* ClockInApp.swift in Sources */,
 				D6E2C15929D6C20E00229286 /* WorkHistory.xcdatamodeld in Sources */,
 				D60EB9B62AB0D7000053136A /* Container.swift in Sources */,
+				D6E6B8752AF98EB40073D911 /* OnboardingSalaryView.swift in Sources */,
 				D65A976F29F3BBDD00462D8C /* OnboardingView.swift in Sources */,
 				D6842EC229EC179200731E84 /* StatisticsViewModel.swift in Sources */,
 			);
