@@ -67,18 +67,7 @@ struct HomeView: View {
             } // END OF ZSTACK
             .navigationTitle("ClockIn")
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    NavigationLink {
-                        StatisticsView(viewModel:
-                                        StatisticsViewModel(
-                                            dataManager: container.dataManager,
-                                            payManager: container.payManager,
-                                            settingsStore: container.settingsStore))
-                    } label: {
-                        Text("Statistics")
-                    } // END OF NAV LINK
-                    .accessibilityIdentifier(Identifier.statisticsNavigationButton.rawValue)
-                } // END OF TOOLBAR ITEM
+                //TODO: REMOVE STATISTICS NAVIGATION BUTTON FROM IDENTIFIERS
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink {
                         SettingsView(viewModel:
@@ -86,7 +75,7 @@ struct HomeView: View {
                                             dataManger: container.dataManager,
                                             settingsStore: container.settingsStore))
                     } label: {
-                        Text("Settings")
+                        Label("Settings", systemImage: "gearshape.fill")
                     } // END OF NAV LINK
                     .accessibilityIdentifier(Identifier.settingNavigationButton.rawValue)
                 } // END OF TOOLBAR ITEM
