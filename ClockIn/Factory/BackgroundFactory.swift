@@ -17,4 +17,14 @@ struct BackgroundFactory {
         )
             .ignoresSafeArea()
     }
+    
+    @ViewBuilder
+    static func buildSolidColor(_ color: Color? = nil) -> some View {
+        if let color {
+            color.ignoresSafeArea()
+        } else {
+            Color.theme.background
+                .ignoresSafeArea()
+        }
+    }
 }
