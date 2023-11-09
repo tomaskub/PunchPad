@@ -90,10 +90,6 @@ extension HomeView {
     var timerIndicator: some View {
         ZStack {
             timerLabel
-            Circle()
-                .stroke(lineWidth: 5)
-                .frame(width: UIScreen.main.bounds.size.width-120,
-                       height: UIScreen.main.bounds.size.width-120)
             worktimeProgressRing
             if viewModel.overtimeProgress > 0 {
                 overtimeProgressRing
