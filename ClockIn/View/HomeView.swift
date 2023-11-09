@@ -18,27 +18,21 @@ struct HomeView: View {
     }
     
     var body: some View {
-            ZStack {
-                //BACKGROUND LAYER
-                background
-                // CONTENT
-                mainButton
-                worktimeProgressRing
-                if viewModel.overtimeProgress > 0 {
-                    overtimeProgressRing
-                }
+        ZStack {
+            background
+            VStack(spacing: 64) {
+                timerIndicator
                 controlButtons
-                    .offset(y: 200)
-            } // END OF ZSTACK
-            .navigationTitle("ClockIn")
-            .toolbar {
-                toolbar
-            } // END OF TOOLBAR
+            } // END OF VSTACK
+        } // END OF ZSTACK
+        .navigationTitle("ClockIn")
+        .toolbar { toolbar }
     } // END OF BODY
     
     var background: some View {
-        BackgroundFactory.buildGradient(colorScheme: colorScheme)
+        BackgroundFactory.buildSolidColor()//.white)
     }
+    
     var toolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             NavigationLink {
@@ -49,48 +43,79 @@ struct HomeView: View {
             } label: {
                 Label("Settings", systemImage: "gearshape.fill")
             } // END OF NAV LINK
+            .tint(.primary)
             .accessibilityIdentifier(Identifier.settingNavigationButton.rawValue)
         } // END OF TOOLBAR ITEM
     }
+} // END OF VIEW
+
+//MARK: - TIMER CONTROLS
+extension HomeView {
     var controlButtons: some View {
-//        if viewModel.isStarted {
-            Button {
-                viewModel.isRunning.toggle()
-            } label: {
-                Image(systemName: viewModel.isRunning ? "pause.fill" : "play.fill")
-                    .resizable()
-            } // END OF BUTTON
-            .accessibilityIdentifier(Identifier.resumePauseButton.rawValue)
-            .accentColor(.primary)
-            .frame(width: 50, height: 50)
-//        } // END OF IF
+        HStack(spacing: 50) {
+            if viewModel.isStarted {
+                finishButton
+            } // END OF IF
+            startPauseButton
+        }
     }
-    var mainButton: some View {
-        Button(action:
-                viewModel.isStarted ? viewModel.stopTimer : viewModel.startTimer) {
-            ZStack(alignment: .center) {
-                Circle()
-                    .fill(.blue.opacity(0.5))
-                    .padding()
-                Text("\(viewModel.timerStringValue)")
-                    .accessibilityIdentifier(Identifier.timerLabel.rawValue)
-                    .foregroundColor(.white)
-                    .font(.largeTitle)
-                    .padding()
-                    .background(.gray.opacity(0.5))
-                    .cornerRadius(10)
-            } // END OF ZSTACK
+    
+    var finishButton: some View {
+        Button {
+            viewModel.stopTimer()
+        } label: {
+            Image(systemName: "stop.fill")
+                .resizable()
+                .foregroundColor(.primary)
+                .frame(width: 50, height: 50)
+        }
+        .accessibilityIdentifier(Identifier.finishButton.rawValue)
+    }
+    
+    var startPauseButton: some View {
+        Button {
+            viewModel.isStarted ? viewModel.isRunning.toggle() : viewModel.startTimer()
+        } label: {
+            Image(systemName: viewModel.isRunning ? "pause.fill" : "play.fill")
+                .resizable()
         } // END OF BUTTON
-                .accessibilityIdentifier(Identifier.startStopButton.rawValue)
-                .padding(60)
+        .accessibilityIdentifier(Identifier.startPauseButton.rawValue)
+        .accentColor(.primary)
+        .frame(width: 50, height: 50)
     }
+}
+
+// MARK: - TIMER INDICATORS
+extension HomeView {
+    var timerIndicator: some View {
+        ZStack {
+            timerLabel
+            Circle()
+                .stroke(lineWidth: 5)
+                .frame(width: UIScreen.main.bounds.size.width-120,
+                       height: UIScreen.main.bounds.size.width-120)
+            worktimeProgressRing
+            if viewModel.overtimeProgress > 0 {
+                overtimeProgressRing
+            }
+        }
+    }
+    
+    var timerLabel: some View {
+        Text("\(viewModel.timerStringValue)")
+            .accessibilityIdentifier(Identifier.timerLabel.rawValue)
+            .foregroundColor(.primary)
+            .font(.largeTitle)
+    }
+    
     var worktimeProgressRing: some View {
         return RingView(progress: $viewModel.progress,
-                 ringColor: .primary,
-                 pointColor: colorScheme == .light ? .white : .black)
+                        ringColor: .theme.background,
+                        displayPointer: false)
             .frame(width: UIScreen.main.bounds.size.width-120,
                    height: UIScreen.main.bounds.size.width-120)
     }
+    
     var overtimeProgressRing: some View {
             RingView(progress: $viewModel.overtimeProgress,
                      ringColor: .green,
@@ -99,8 +124,10 @@ struct HomeView: View {
                      startigPoint: 0.023)
                 .frame(width: UIScreen.main.bounds.size.width-120, height: UIScreen.main.bounds.size.width-120)
     }
-} // END OF VIEW
+    
+}
 
+//MARK: - PREVIEW
 struct Home_Previews: PreviewProvider {
     private struct ContainerView: View {
         @StateObject private var container: Container = .init()

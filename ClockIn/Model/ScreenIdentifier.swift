@@ -10,8 +10,8 @@ import Foundation
 enum ScreenIdentifier {
     
     enum HomeView: String {
-        case startStopButton
-        case resumePauseButton
+        case startPauseButton
+        case finishButton
         case timerLabel
         case settingNavigationButton
     }
