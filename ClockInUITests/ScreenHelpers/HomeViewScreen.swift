@@ -26,10 +26,6 @@ class HomeViewScreen {
         app.buttons.staticTexts[ScreenIdentifier.HomeView.timerLabel.rawValue]
     }
     
-    var statisticsNavigationButton: XCUIElement {
-        app.buttons[ScreenIdentifier.HomeView.statisticsNavigationButton.rawValue]
-    }
-    
     var settingsNavigationButton: XCUIElement {
         app.buttons[ScreenIdentifier.HomeView.settingNavigationButton.rawValue]
     }

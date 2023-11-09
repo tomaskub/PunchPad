@@ -13,7 +13,6 @@ enum ScreenIdentifier {
         case startStopButton
         case resumePauseButton
         case timerLabel
-        case statisticsNavigationButton
         case settingNavigationButton
     }
     
