@@ -21,7 +21,7 @@ struct SettingsView: View {
     var body: some View {
         ZStack{
             //BACKGROUND
-            GradientFactory.build(colorScheme: colorScheme)
+            BackgroundFactory.buildGradient(colorScheme: colorScheme)
             //CONTENT
             List {
                 Section {

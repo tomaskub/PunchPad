@@ -37,7 +37,7 @@ struct HomeView: View {
     } // END OF BODY
     
     var background: some View {
-        GradientFactory.build(colorScheme: colorScheme)
+        BackgroundFactory.buildGradient(colorScheme: colorScheme)
     }
     var toolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {

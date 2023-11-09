@@ -36,7 +36,7 @@ struct OnboardingView: View {
         
         ZStack{
             //BACKGROUND
-            GradientFactory.build(colorScheme: colorScheme)
+            BackgroundFactory.buildGradient(colorScheme: colorScheme)
             //CONTENT
                 switch currentStage {
                 case .welcome:

@@ -16,7 +16,7 @@ struct EditSheetView: View {
     
     var body: some View {
         ZStack {
-            GradientFactory.build(colorScheme: colorScheme)
+            BackgroundFactory.buildGradient(colorScheme: colorScheme)
             VStack{
                 ZStack {
                     RingView(progress: $viewModel.workTimeFraction, ringColor: .blue, displayPointer: false)

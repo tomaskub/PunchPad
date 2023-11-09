@@ -58,7 +58,7 @@
 		D6D02FAE29EF0B13006CD0B2 /* EditSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D02FAD29EF0B13006CD0B2 /* EditSheetView.swift */; };
 		D6D02FB029EF0B7F006CD0B2 /* EditShetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D02FAF29EF0B7F006CD0B2 /* EditShetViewModel.swift */; };
 		D6D906AE2AA0BEDE004E09C9 /* ScreenIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */; };
-		D6D906B12AA12BDB004E09C9 /* GradientFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D906B02AA12BDB004E09C9 /* GradientFactory.swift */; };
+		D6D906B12AA12BDB004E09C9 /* BackgroundFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D906B02AA12BDB004E09C9 /* BackgroundFactory.swift */; };
 		D6E2C15929D6C20E00229286 /* WorkHistory.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15729D6C20E00229286 /* WorkHistory.xcdatamodeld */; };
 		D6E2C15B29D6C31800229286 /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15A29D6C31800229286 /* HistoryViewModel.swift */; };
 		D6E6B8732AF98A4B0073D911 /* OnboardingNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E6B8722AF98A4B0073D911 /* OnboardingNotificationView.swift */; };
@@ -141,7 +141,7 @@
 		D6D02FAD29EF0B13006CD0B2 /* EditSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSheetView.swift; sourceTree = "<group>"; };
 		D6D02FAF29EF0B7F006CD0B2 /* EditShetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditShetViewModel.swift; sourceTree = "<group>"; };
 		D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenIdentifier.swift; sourceTree = "<group>"; };
-		D6D906B02AA12BDB004E09C9 /* GradientFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientFactory.swift; sourceTree = "<group>"; };
+		D6D906B02AA12BDB004E09C9 /* BackgroundFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundFactory.swift; sourceTree = "<group>"; };
 		D6E2C15829D6C20E00229286 /* WorkHistory.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WorkHistory.xcdatamodel; sourceTree = "<group>"; };
 		D6E2C15A29D6C31800229286 /* HistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
 		D6E6B8722AF98A4B0073D911 /* OnboardingNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingNotificationView.swift; sourceTree = "<group>"; };
@@ -321,7 +321,7 @@
 		D6D906AF2AA12BBD004E09C9 /* Factory */ = {
 			isa = PBXGroup;
 			children = (
-				D6D906B02AA12BDB004E09C9 /* GradientFactory.swift */,
+				D6D906B02AA12BDB004E09C9 /* BackgroundFactory.swift */,
 				D684A3892AF6F54B00511E0D /* ButtonFactory.swift */,
 				D6EA695B2AF8452A00D8F6C3 /* TextFactory.swift */,
 			);
@@ -481,7 +481,7 @@
 				D6EA695E2AF8498D00D8F6C3 /* OnboardingOvertimeView.swift in Sources */,
 				D6E6B8772AF992F90073D911 /* OnboardingFinishView.swift in Sources */,
 				D64574B029D9E6A000207168 /* DataManager.swift in Sources */,
-				D6D906B12AA12BDB004E09C9 /* GradientFactory.swift in Sources */,
+				D6D906B12AA12BDB004E09C9 /* BackgroundFactory.swift in Sources */,
 				D6D02FB029EF0B7F006CD0B2 /* EditShetViewModel.swift in Sources */,
 				D6E2C15B29D6C31800229286 /* HistoryViewModel.swift in Sources */,
 				D6EA695C2AF8452A00D8F6C3 /* TextFactory.swift in Sources */,

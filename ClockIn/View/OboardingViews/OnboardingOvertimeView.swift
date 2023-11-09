@@ -99,7 +99,7 @@ struct OnbardingOvertime_Previews: PreviewProvider {
         
         var body: some View {
             ZStack {
-                GradientFactory.build(colorScheme: colorScheme)
+                BackgroundFactory.buildGradient(colorScheme: colorScheme)
                 OnboardingOvertimeView(viewModel: vm)
                 VStack {
                     Spacer()

@@ -27,7 +27,7 @@ struct HistoryView: View {
     var body: some View {
         ZStack {
             // BACKGROUND LAYER
-            GradientFactory.build(colorScheme: colorScheme)
+            BackgroundFactory.buildGradient(colorScheme: colorScheme)
             // CONTENT LAYER
             List {
                 ForEach(viewModel.entries) { entry in

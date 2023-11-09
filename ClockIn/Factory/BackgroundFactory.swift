@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct GradientFactory {
+struct BackgroundFactory {
     @ViewBuilder
-    static func build(colorScheme: ColorScheme) -> some View {
+    static func buildGradient(colorScheme: ColorScheme) -> some View {
         LinearGradient(
             colors: [ colorScheme == .light ? .white : .black, .blue.opacity(0.5)],
             startPoint: .topLeading,

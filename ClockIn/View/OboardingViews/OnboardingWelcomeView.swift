@@ -51,7 +51,7 @@ struct OnboardingWelcome_Previews: PreviewProvider {
         @Environment(\.colorScheme) private var colorScheme
         var body: some View {
             ZStack {
-                GradientFactory.build(colorScheme: colorScheme)
+                BackgroundFactory.buildGradient(colorScheme: colorScheme)
                 OnboardingWelcomeView()
                 VStack {
                     Spacer()
