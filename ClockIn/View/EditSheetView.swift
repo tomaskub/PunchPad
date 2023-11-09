@@ -19,8 +19,8 @@ struct EditSheetView: View {
             BackgroundFactory.buildGradient(colorScheme: colorScheme)
             VStack{
                 ZStack {
-                    RingView(progress: $viewModel.workTimeFraction, ringColor: .blue, displayPointer: false)
-                    RingView(progress: $viewModel.overTimeFraction, ringColor: .green, displayPointer: false)
+                    RingView(startPoint: .constant(0),endPoint: $viewModel.workTimeFraction, ringColor: .blue, displayPointer: false)
+                    RingView(startPoint: .constant(0), endPoint: $viewModel.overTimeFraction, ringColor: .green, displayPointer: false)
                         .padding(30)
                 }  // END OF ZSTACK
                 .frame(width: 250, height: 250)

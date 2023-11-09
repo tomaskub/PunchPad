@@ -51,8 +51,8 @@ struct HistoryRow: View {
                     switch detailType {
                     case .circleDisplay:
                         ZStack {
-                            RingView(progress: .constant(workTime), ringColor: .blue, ringWidth: 5, displayPointer: false)
-                            RingView(progress: .constant(overTime), ringColor: .green, ringWidth: 5, displayPointer: false)
+                            RingView(startPoint: .constant(0), endPoint: .constant(workTime), ringColor: .blue, ringWidth: 5, displayPointer: false)
+                            RingView(startPoint: .constant(0), endPoint: .constant(overTime), ringColor: .green, ringWidth: 5, displayPointer: false)
                                 .padding(8)
                         } // END OF ZSTACK
                         .accessibilityIdentifier(Identifier.DetailView.circleDetail.rawValue)

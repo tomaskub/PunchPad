@@ -8,13 +8,12 @@
 import SwiftUI
 
 struct RingView: View {
-    
-    @Binding var progress: CGFloat
+    @Binding var startPoint: CGFloat
+    @Binding var endPoint: CGFloat
     
     var ringColor: Color
     var pointColor: Color?
     var ringWidth: CGFloat = 10
-    var startigPoint: CGFloat = 0
     var displayPointer: Bool = true
     var pointerDiameter: CGFloat = 30
     
@@ -28,18 +27,18 @@ struct RingView: View {
                 
                 //Ring circle
                     Circle()
-                        .trim(from: startigPoint, to: progress)
+                        .trim(from: startPoint, to: endPoint)
                         .stroke(ringColor, lineWidth: ringWidth)
                         .rotationEffect(.degrees(-90))
-                        .opacity(startigPoint <= progress ? 1 : 0)
+                        .opacity(startPoint <= endPoint ? 1 : 0)
                         .frame(width: size, height: size)
                     //Ring begining circle
                     Circle()
                         .fill(ringColor)
                         .frame(width: ringWidth)
                         .offset(y: -size/2)
-                        .opacity(startigPoint <= progress ? 1: 0)
-                        .rotationEffect(.degrees(startigPoint*360))
+                        .opacity(startPoint <= endPoint ? 1: 0)
+                        .rotationEffect(.degrees(startPoint*360))
                 
                 //Leading point circle
                 if displayPointer {
@@ -52,13 +51,13 @@ struct RingView: View {
                                 .padding(5)
                         })
                         .offset(y: -size/2)
-                        .rotationEffect(.degrees( progress * 360))
+                        .rotationEffect(.degrees( endPoint * 360))
                 } else {
                     Circle()
                         .fill(ringColor)
                         .frame(width: ringWidth)
                         .offset(y: -size/2)
-                        .rotationEffect(.degrees(progress*360))
+                        .rotationEffect(.degrees(endPoint*360))
                 }
             }
         }
@@ -70,7 +69,9 @@ struct RingView: View {
 struct RingView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            RingView(progress: .constant(0.5), ringColor: .black)
+            RingView(startPoint: .constant(0), 
+                     endPoint: .constant(0.4),
+                     ringColor: .black)
                 .padding(.horizontal, 50)
         }
     }
