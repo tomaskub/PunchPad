@@ -108,17 +108,18 @@ extension HomeView {
         return RingView(startPoint: $viewModel.progress,
                         endPoint: .constant(1),
                         ringColor: .primary,
+                        ringWidth: 5,
                         displayPointer: false)
             .frame(width: UIScreen.main.bounds.size.width-120,
                    height: UIScreen.main.bounds.size.width-120)
     }
     
     var overtimeProgressRing: some View {
-            RingView(startPoint: .constant(0.023),
+            RingView(startPoint: .constant(0),
                      endPoint: $viewModel.overtimeProgress,
-                     ringColor: .green,
-                     pointColor: .white,
-                     ringWidth: 5)
+                     ringColor: .secondary,
+                     ringWidth: 5,
+                     displayPointer: false)
                 .frame(width: UIScreen.main.bounds.size.width-120, height: UIScreen.main.bounds.size.width-120)
     }
     
