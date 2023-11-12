@@ -19,8 +19,7 @@ struct StatisticsView: View {
     let navTitleText: String = "Statistics"
     let salaryCalculationHeaderText: String = "Salary calculation"
     var chartTitle: String {
-        // this is related to view not view model?
-        switch viewModel.chartType {
+        switch chartType {
         case .finishTime:
             return "Time finished"
         case .startTime:
@@ -81,7 +80,7 @@ struct StatisticsView: View {
 //MARK: AUX. UI ELEMENTS
 extension StatisticsView {
     var chartTypePicker: some View {
-        Picker("Chart type", selection: $viewModel.chartType) {
+        Picker("Chart type", selection: $chartType) {
             Text("Time")
                 .tag(ChartType.time)
                 .accessibilityIdentifier(Identifier.ChartTypeButton.workTime.rawValue)
@@ -127,7 +126,7 @@ extension StatisticsView {
 extension StatisticsView {
     @ViewBuilder
     var chart: some View {
-        switch viewModel.chartType {
+        switch chartType {
         case .time:
             chartWorkTime
             chartWorkTimeLegend
