@@ -72,6 +72,7 @@
 		D6ED26BF2AA3BA05001E2390 /* OnboardingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED26BE2AA3BA05001E2390 /* OnboardingUITests.swift */; };
 		D6FA94FB2B013C770034B16A /* ChartLegendItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FA94FA2B013C770034B16A /* ChartLegendItem.swift */; };
 		D6FA94FD2B013F060034B16A /* ChartLegendItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FA94FC2B013F060034B16A /* ChartLegendItemView.swift */; };
+		D6FA94FF2B0145FF0034B16A /* ChartFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FA94FE2B0145FE0034B16A /* ChartFactory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -158,6 +159,7 @@
 		D6ED26BE2AA3BA05001E2390 /* OnboardingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingUITests.swift; sourceTree = "<group>"; };
 		D6FA94FA2B013C770034B16A /* ChartLegendItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLegendItem.swift; sourceTree = "<group>"; };
 		D6FA94FC2B013F060034B16A /* ChartLegendItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLegendItemView.swift; sourceTree = "<group>"; };
+		D6FA94FE2B0145FE0034B16A /* ChartFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartFactory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -332,6 +334,7 @@
 				D6D906B02AA12BDB004E09C9 /* BackgroundFactory.swift */,
 				D684A3892AF6F54B00511E0D /* ButtonFactory.swift */,
 				D6EA695B2AF8452A00D8F6C3 /* TextFactory.swift */,
+				D6FA94FE2B0145FE0034B16A /* ChartFactory.swift */,
 			);
 			path = Factory;
 			sourceTree = "<group>";
@@ -526,6 +529,7 @@
 				D6E6B8752AF98EB40073D911 /* OnboardingSalaryView.swift in Sources */,
 				D65A976F29F3BBDD00462D8C /* OnboardingView.swift in Sources */,
 				D6842EC229EC179200731E84 /* StatisticsViewModel.swift in Sources */,
+				D6FA94FF2B0145FF0034B16A /* ChartFactory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
