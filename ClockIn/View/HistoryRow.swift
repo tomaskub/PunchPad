@@ -12,8 +12,9 @@ struct HistoryRow: View {
     
     private typealias Identifier = ScreenIdentifier.HistoryRowView
     enum DetailDisplayType: String {
-        case circleDisplay = "circleDisplay"
-        case barDisplay = "barDisplay"
+        case circleDisplay
+        case barDisplay
+        case singleBarDisplay
     }
     
     var startDate: Date
@@ -70,6 +71,19 @@ struct HistoryRow: View {
                             .padding(.top)
                             .padding(.leading)
                         } // END OF GEO READER
+                    case .singleBarDisplay:
+                        GeometryReader { proxy in
+                            HStack(spacing: 0) {
+                                Rectangle()
+                                    .fill(.blue)
+                                    .frame(width: (proxy.size.width - 10) * workTime / 2, height: 24)
+                                Rectangle()
+                                    .fill(.green)
+                                    .frame(width: (proxy.size.width - 10) * overTime / 2, height: 24)
+                            } // END OF VSTACK
+                            .padding(.top)
+                            .padding(.leading)
+                        } // END OF GEO READER
                     } // END OF SWITCH
                 } // END OF HSTACK
             } // END OF IF
@@ -103,6 +117,15 @@ struct HistoryRow_Previews: PreviewProvider {
                 timeWorked: "09:00",
                 isShowingDetails: true,
                 detailType: .barDisplay
+            )
+            HistoryRow(
+                startDate: Calendar.current.date(byAdding: .hour, value: -7 , to: Date())!,
+                finishDate: Calendar.current.date(byAdding: .hour, value: 2 , to: Date())!,
+                workTime: 1,
+                overTime: 0.3,
+                timeWorked: "09:00",
+                isShowingDetails: true,
+                detailType: .singleBarDisplay
             )
         } // END OF LIST
     } // END OF PREVIEW
