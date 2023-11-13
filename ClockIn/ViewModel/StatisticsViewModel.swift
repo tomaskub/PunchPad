@@ -33,16 +33,16 @@ class StatisticsViewModel: ObservableObject {
         payManager.netPayAvaliable
     }
     var salaryListDataNetPay: [(String, String)] {
-        [ ("Net pay up to date:", String(format: "%.2f", payManager.netPayToDate)),
-          ("Net pay predicted:", String(format: "%.2f", payManager.netPayPredicted))
+        [ ("Net pay up to date:", String(format: "%.2f", payManager.netPayToDate) + " PLN"),
+          ("Net pay predicted:", String(format: "%.2f", payManager.netPayPredicted) + " PLN")
         ]
     }
     
     var salaryListDataGrossPay: [(String, String)] {
-        [("Gross pay per hour:", String(format: "%.2f", payManager.grossPayPerHour)),
-         ("Gross pay up to date:", String(format: "%.2f", payManager.grossPayToDate)),
-         ("Gross pay predicted:", String(format: "%.2f", payManager.grossPayPredicted)),
-         ("Number of working days:", String(format: "%u", payManager.numberOfWorkingDays))
+        [("Gross pay per hour:", String(format: "%.2f", payManager.grossPayPerHour) + " PLN"),
+         ("Gross pay up to date:", String(format: "%.2f", payManager.grossPayToDate) + " PLN"),
+         ("Gross pay predicted:", String(format: "%.2f", payManager.grossPayPredicted) + " PLN"),
+         ("Number of working days:", String(format: "%u", payManager.numberOfWorkingDays) + " DAYS")
         ]
     }
     

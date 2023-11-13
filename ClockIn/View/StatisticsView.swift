@@ -40,13 +40,51 @@ struct StatisticsView: View {
             // CONTENT LAYER
             List {
                 Section {
+                    Picker("Time range", selection: .constant("Month")) {
+                        Text("Week")
+                        Text("Month").tag("Month")
+                        Text("Year")
+                        Text("All")
+                    }
+                    .pickerStyle(.segmented)
+                    VStack(alignment: .leading) {
+                        HStack(alignment: .bottom, spacing: 16) {
+                            VStack(alignment: .leading ) {
+                                Text("worked".uppercased())
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                                HStack(alignment: .bottom, spacing: 0) {
+                                    Text(String(generateTotalHoursWorked()))
+                                        .font(.title)
+                                    Text("hours")
+                                        .foregroundColor(.secondary)
+                                        .font(.caption)
+                                }
+                            }
+                            VStack(alignment: .leading ) {
+                                Text("overtime".uppercased())
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                                HStack(alignment: .bottom, spacing: 0) {
+                                    Text(String(generateTotalHoursOvertime()))
+                                        .font(.title)
+                                    Text("hours")
+                                        .foregroundColor(.secondary)
+                                        .font(.caption)
+                                }
+                            }
+                        }
+                        Text("7-13 Nov 2023")
+                            .foregroundStyle(.secondary)
+                            .font(.caption)
+                    }
                     chart
-                        .padding(.top, 16)
-                    chartTypePicker
+                        
                 } header: {
                     sectionHeader(chartTitle)
                         .accessibilityIdentifier(Identifier.SectionHeaders.chart.rawValue)
                 }//END OF SECTION
+                .listRowSeparator(.hidden)
                 
                 Section {
                     if viewModel.netPayAvaliable {
@@ -63,6 +101,18 @@ struct StatisticsView: View {
             .navigationTitle(navTitleText)
         } // END OF ZSTACK
     } //END OF VIEW
+    
+    func generateTotalHoursWorked() -> Int {
+        viewModel.entriesForChart.map { entry in
+            (entry.workTimeInSeconds + entry.overTimeInSeconds ) / 3600
+        }.reduce(0, +)
+    }
+    
+    func generateTotalHoursOvertime() -> Int {
+        viewModel.entriesForChart.map { entry in
+            entry.overTimeInSeconds / 3600
+        }.reduce(0, +)
+    }
 }
 
 //MARK: AUX. UI ELEMENTS
@@ -83,7 +133,7 @@ extension StatisticsView {
         .pickerStyle(.segmented)
     } // END OF VAR
     var background: some View {
-        BackgroundFactory.buildSolidColor()
+        BackgroundFactory.buildSolidColor(.gray.opacity(0.1))
     }
     
     var toolbar: some ToolbarContent {
@@ -148,9 +198,10 @@ extension StatisticsView {
     }
     @ViewBuilder
     func generateRow(label: String, value: String) -> some View {
-        HStack{
+        VStack(alignment: .leading) {
             Text(label)
-            Spacer()
+                .foregroundStyle(.secondary)
+                .font(.caption)
             Text(value)
         } // END OF HSTACK
     }
