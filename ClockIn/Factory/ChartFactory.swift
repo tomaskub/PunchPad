@@ -24,12 +24,10 @@ struct ChartFactory {
                     x: .value("Date", $0.startDate, unit: .day),
                     y: .value("Hours worked", $0.workTimeInSeconds / 3600))
                 .foregroundStyle(.blue)
-                .cornerRadius(10)
                 
                 BarMark(x: .value("Date", $0.startDate,unit: .day),
                         y: .value("Hours worked", $0.overTimeInSeconds / 3600))
                 .foregroundStyle(.green)
-                .cornerRadius(10)
             }
             
             //Additional chart properties x-axis and y-scale
