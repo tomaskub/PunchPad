@@ -15,7 +15,7 @@ struct HistoryView: View {
     @EnvironmentObject private var container: Container
     @StateObject private var viewModel: HistoryViewModel
     @State var selectedEntry: Entry? = nil
-    
+    let navigationTitleText: String = "History"
     init(viewModel: HistoryViewModel) {
         self._viewModel = StateObject.init(wrappedValue: viewModel)        
     }
@@ -27,7 +27,7 @@ struct HistoryView: View {
     var body: some View {
         ZStack {
             // BACKGROUND LAYER
-            BackgroundFactory.buildGradient(colorScheme: colorScheme)
+            background
             // CONTENT LAYER
             List {
                 ForEach(viewModel.entries) { entry in
@@ -36,23 +36,11 @@ struct HistoryView: View {
                                workTime: viewModel.convertWorkTimeToFraction(entry: entry),
                                overTime: viewModel.convertOvertimeToFraction(entry: entry),
                                timeWorked: viewModel.timeWorkedLabel(for: entry),
-                               detailType: .circleDisplay)
+                               detailType: .singleBarDisplay)
                     .accessibilityIdentifier(Identifier.entryRow.rawValue)
                     .swipeActions {
-                        Button {
-                            viewModel.deleteEntry(entry: entry)
-                        } label: {
-                            Image(systemName: "xmark")
-                                .foregroundColor(.red)
-                        } // END OF BUTTON
-                        .accessibilityIdentifier(Identifier.deleteEntryButton.rawValue)
-                        .tint(.red)
-                        Button {
-                            selectedEntry = entry
-                        } label: {
-                            Image(systemName: "pencil")
-                        } // END OF BUTTON
-                        .accessibilityIdentifier(Identifier.editEntryButton.rawValue)
+                        makeDeleteButton(entry)
+                        makeEditButton(entry)
                     } // END OF SWIPE ACTIONS
                 } // END OF FOR-EACH
             } // END OF LIST
@@ -64,17 +52,54 @@ struct HistoryView: View {
             } // END OF SHEET
         } // END OF ZSTACK
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    selectedEntry = Entry()
-                } label: {
-                    Image(systemName: "plus.circle")
-                } // END OF BUTTON
-                .accessibilityIdentifier(Identifier.addEntryButton.rawValue)
-            } // END OF TOOBAR ITEM
+            addEntryToolbar
+            navigationToolbar
         } // END OF TOOLBAR
-        .navigationTitle("History")
+        .navigationTitle(navigationTitleText)
+        .navigationBarTitleDisplayMode(.inline)
     } // END OF BODY
+    @ViewBuilder
+    func makeDeleteButton(_ entry: Entry) -> some View {
+        Button {
+            viewModel.deleteEntry(entry: entry)
+        } label: {
+            Image(systemName: "xmark")
+                .foregroundColor(.red)
+        } // END OF BUTTON
+        .accessibilityIdentifier(Identifier.deleteEntryButton.rawValue)
+        .tint(.red)
+    }
+    @ViewBuilder
+    func makeEditButton(_ entry: Entry) -> some View {
+        Button {
+            selectedEntry = entry
+        } label: {
+            Image(systemName: "pencil")
+                .foregroundColor(.gray)
+        } // END OF BUTTON
+        .accessibilityIdentifier(Identifier.editEntryButton.rawValue)
+    }
+    var background: some View {
+        BackgroundFactory.buildSolidColor(.gray.opacity(0.1))
+    }
+    var addEntryToolbar: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button {
+                selectedEntry = Entry()
+            } label: {
+                Image(systemName: "plus.circle")
+            } // END OF BUTTON
+            .tint(.primary)
+            .accessibilityIdentifier(Identifier.addEntryButton.rawValue)
+        } // END OF TOOBAR ITEM
+    }
+    var navigationToolbar: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            NavigationLink(destination: Text("Settings")) {
+                Label("Settings", systemImage: "gearshape.fill")
+            }
+        }
+    }
 } // END OF STRUCT
 
 
