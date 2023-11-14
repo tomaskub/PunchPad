@@ -31,12 +31,11 @@ struct HistoryView: View {
             // CONTENT LAYER
             List {
                 ForEach(viewModel.entries) { entry in
-                    HistoryRow(startDate: entry.startDate,
+                    HistoryRowViewPrototype(startDate: entry.startDate,
                                finishDate: entry.finishDate,
                                workTime: viewModel.convertWorkTimeToFraction(entry: entry),
                                overTime: viewModel.convertOvertimeToFraction(entry: entry),
-                               timeWorked: viewModel.timeWorkedLabel(for: entry),
-                               detailType: .singleBarDisplay)
+                               timeWorked: viewModel.timeWorkedLabel(for: entry))
                     .accessibilityIdentifier(Identifier.entryRow.rawValue)
                     .swipeActions {
                         makeDeleteButton(entry)
