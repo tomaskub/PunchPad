@@ -30,7 +30,7 @@ struct HomeView: View {
     } // END OF BODY
     
     var background: some View {
-        BackgroundFactory.buildSolidColor()//.white)
+        BackgroundFactory.buildSolidColor()
     }
     
     var toolbar: some ToolbarContent {

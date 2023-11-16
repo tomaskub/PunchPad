@@ -97,8 +97,8 @@ struct StatisticsView: View {
                 }// END OF SECTION
             } //END OF LIST
             .scrollContentBackground(.hidden)
-            .toolbar { toolbar }
             .navigationTitle(navTitleText)
+            .toolbar { toolbar }
         } // END OF ZSTACK
     } //END OF VIEW
     
@@ -133,23 +133,19 @@ extension StatisticsView {
         .pickerStyle(.segmented)
     } // END OF VAR
     var background: some View {
-        BackgroundFactory.buildSolidColor(.gray.opacity(0.1))
+        BackgroundFactory.buildSolidColor()
     }
-    
+//TODO: FIX THE ISSUE WITH NAV LINK NOT WORKING
     var toolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
-            //TODO: REPLACE WITH SETTINGS LINK - settings link does not work for some reason?
             NavigationLink {
-                HistoryView(viewModel:
-                                HistoryViewModel(
-                                    dataManager: container.dataManager,
-                                    settingsStore: container.settingsStore)
-                )
+                            SettingsView(viewModel: SettingsViewModel(
+                                dataManger: container.dataManager,
+                                settingsStore: container.settingsStore))
             } label: {
                 Label("Settings", systemImage: "gearshape.fill")
             } // END OF NAV LINK
             .tint(.primary)
-            .accessibilityIdentifier(Identifier.NavigationBarButtons.detailedHistory.rawValue)
         } // END OF TOOLBAR ITEM
     }
     

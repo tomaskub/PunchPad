@@ -55,8 +55,11 @@ class StatisticsViewModel: ObservableObject {
             self?.objectWillChange.send()
         }).store(in: &subscriptions)
         
+        // This causes to update publish changes from withing view updates, for now wrapped in queue
         payManager.objectWillChange.sink { [weak self] _ in
-            self?.objectWillChange.send()
+            DispatchQueue.main.async {
+                self?.objectWillChange.send()
+            }
         }.store(in: &subscriptions)
         
     }
