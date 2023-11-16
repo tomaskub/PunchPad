@@ -79,7 +79,7 @@ struct HistoryView: View {
         .accessibilityIdentifier(Identifier.editEntryButton.rawValue)
     }
     var background: some View {
-        BackgroundFactory.buildSolidColor(.gray.opacity(0.1))
+        BackgroundFactory.buildSolidColor()
     }
     var addEntryToolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
@@ -94,9 +94,15 @@ struct HistoryView: View {
     }
     var navigationToolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
-            NavigationLink(destination: Text("Settings")) {
+            NavigationLink{
+                SettingsView(viewModel: SettingsViewModel(
+                    dataManger: container.dataManager,
+                    settingsStore: container.settingsStore)
+                )
+            } label: {
                 Label("Settings", systemImage: "gearshape.fill")
             }
+            .tint(.primary)
         }
     }
 } // END OF STRUCT
