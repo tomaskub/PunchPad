@@ -25,6 +25,7 @@ class Container: ObservableObject {
         
         if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
             containerType = .preview
+            SettingsStore.setTestUserDefaults()
         }
         
         if CommandLine.arguments.contains(LaunchArgument.withOnboarding.rawValue) {

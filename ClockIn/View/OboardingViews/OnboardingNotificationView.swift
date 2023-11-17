@@ -48,7 +48,7 @@ struct OnboardingNotification_Preview: PreviewProvider {
         
         var body: some View {
             ZStack {
-                GradientFactory.build(colorScheme: colorScheme)
+                BackgroundFactory.buildGradient(colorScheme: colorScheme)
                 OnboardingNotificationView(viewModel: vm)
                 VStack {
                     Spacer()

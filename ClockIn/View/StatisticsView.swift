@@ -14,71 +14,12 @@ struct StatisticsView: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var container: Container
     @StateObject private var viewModel: StatisticsViewModel
-    init(viewModel: StatisticsViewModel) {
-        self._viewModel = StateObject(wrappedValue: viewModel)
-    }
-    //MARK: VIEW BODY
-    var body: some View {
-        ZStack {
-            // BACKGROUND LAYER
-            GradientFactory.build(colorScheme: colorScheme)
-            // CONTENT LAYER
-            List {
-                Section {
-                    chart
-                        .padding(.top, 16)
-                    chartTypePicker
-                } header: {
-                    Text(chartTitle)
-                        .accessibilityIdentifier(Identifier.SectionHeaders.chart.rawValue)
-                        .bold()
-                        .foregroundColor(.primary)
-                }//END OF SECTION
-                
-                Section {
-                    if viewModel.netPayAvaliable {
-                        ForEach(viewModel.salaryListDataNetPay, id: \.0) { data in
-                            HStack{
-                                Text(data.0)
-                                Spacer()
-                                Text(data.1)
-                            } // END OF HSTACK
-                        } // END OF FOR EACH
-                    } // END OF IF
-                    ForEach(viewModel.salaryListDataGrossPay, id: \.0) { data in
-                        HStack{
-                            Text(data.0)
-                            Spacer()
-                            Text(data.1)
-                        } // END OF HSTACK
-                    } // END OF FOR EACH
-                } header: {
-                    Text("Salary calculation")
-                        .accessibilityIdentifier(Identifier.SectionHeaders.salaryCalculation.rawValue)
-                }// END OF SECTION
-            } //END OF LIST
-            .scrollContentBackground(.hidden)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink {
-                        HistoryView(viewModel:
-                                        HistoryViewModel(
-                                            dataManager: container.dataManager,
-                                            settingsStore: container.settingsStore)
-                        )
-                    } label: {
-                        Text("Detailed history")
-                    } // END OF NAV LINK
-                    .accessibilityIdentifier(Identifier.NavigationBarButtons.detailedHistory.rawValue)
-                } // END OF TOOLBAR ITEM
-            } // END OF TOOLBAR
-            .navigationTitle("Statistics")
-        } // END OF ZSTACK
-    } //END OF VIEW
+    @State var chartType: ChartType = .time
     
-    //MARK: UI ELEMENTS
+    let navTitleText: String = "Statistics"
+    let salaryCalculationHeaderText: String = "Salary calculation"
     var chartTitle: String {
-        switch viewModel.chartType {
+        switch chartType {
         case .finishTime:
             return "Time finished"
         case .startTime:
@@ -86,111 +27,98 @@ struct StatisticsView: View {
         case .time:
             return "Time worked"
         }
-    } // END OF VAR
+    }
     
-    @ViewBuilder
-    var chart: some View {
-        switch viewModel.chartType {
-        case .time:
-            chartWorkTime
-            chartWorkTimeLegend
-        case .startTime:
-            chartStartTime
-            chartStartTimeLegend
-        case .finishTime:
-            chartFinishTime
-            chartFinishTimeLegend
-        } // END OF SWITCH
-    } // END OF VAR
+    init(viewModel: StatisticsViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
     
-    var chartWorkTime: some View {
-        Chart(viewModel.entriesForChart) {
-            RuleMark(y: .value("WorkGoal", 8))
-                .lineStyle(.init(dash: [10]))
-                .foregroundStyle(.red)
-            
-            BarMark(
-                x: .value("Date", $0.startDate, unit: .day),
-                y: .value("Hours worked", $0.workTimeInSeconds / 3600))
-            .foregroundStyle(.blue)
-            .cornerRadius(10)
-            BarMark(x: .value("Date", $0.startDate,unit: .day),
-                    y: .value("Hours worked", $0.overTimeInSeconds / 3600))
-            .foregroundStyle(.green)
-            .cornerRadius(10)
-        }
-        .accessibilityIdentifier(Identifier.Chart.workTimeChart.rawValue)
-        //Additional chart properties x-axis and y-scale
-        .chartYScale(domain: 0...15)
-         
-    } // END OF VAR
+    //MARK: VIEW BODY
+    var body: some View {
+        ZStack {
+            background
+            // CONTENT LAYER
+            List {
+                Section {
+                    Picker("Time range", selection: .constant("Month")) {
+                        Text("Week")
+                        Text("Month").tag("Month")
+                        Text("Year")
+                        Text("All")
+                    }
+                    .pickerStyle(.segmented)
+                    VStack(alignment: .leading) {
+                        HStack(alignment: .bottom, spacing: 16) {
+                            VStack(alignment: .leading ) {
+                                Text("worked".uppercased())
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                                HStack(alignment: .bottom, spacing: 0) {
+                                    Text(String(generateTotalHoursWorked()))
+                                        .font(.title)
+                                    Text("hours")
+                                        .foregroundColor(.secondary)
+                                        .font(.caption)
+                                }
+                            }
+                            VStack(alignment: .leading ) {
+                                Text("overtime".uppercased())
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                                HStack(alignment: .bottom, spacing: 0) {
+                                    Text(String(generateTotalHoursOvertime()))
+                                        .font(.title)
+                                    Text("hours")
+                                        .foregroundColor(.secondary)
+                                        .font(.caption)
+                                }
+                            }
+                        }
+                        Text("7-13 Nov 2023")
+                            .foregroundStyle(.secondary)
+                            .font(.caption)
+                    }
+                    chart
+                        
+                } header: {
+                    sectionHeader(chartTitle)
+                        .accessibilityIdentifier(Identifier.SectionHeaders.chart.rawValue)
+                }//END OF SECTION
+                .listRowSeparator(.hidden)
+                
+                Section {
+                    if viewModel.netPayAvaliable {
+                        netSalaryData
+                    } // END OF IF
+                     grossSalaryData
+                } header: {
+                    sectionHeader(salaryCalculationHeaderText)
+                        .accessibilityIdentifier(Identifier.SectionHeaders.salaryCalculation.rawValue)
+                }// END OF SECTION
+            } //END OF LIST
+            .scrollContentBackground(.hidden)
+            .navigationTitle(navTitleText)
+            .toolbar { toolbar }
+        } // END OF ZSTACK
+    } //END OF VIEW
     
-    var chartWorkTimeLegend: some View {
-        HStack {
-            Text("Legend:")
-            Rectangle()
-                .fill(.blue)
-                .frame(width: 14, height: 14)
-            Text("Working time")
-            Rectangle()
-                .fill(.green)
-                .frame(width: 14, height: 14)
-            Text("Overtime")
-        }
-        .accessibilityIdentifier(Identifier.ChartLegend.workTimeChartLegend.rawValue)
-        .font(.caption)
-    } // END OF VAR
+    func generateTotalHoursWorked() -> Int {
+        viewModel.entriesForChart.map { entry in
+            (entry.workTimeInSeconds + entry.overTimeInSeconds ) / 3600
+        }.reduce(0, +)
+    }
     
-    var chartStartTime: some View {
-        Chart(viewModel.entriesForChart) {
-                PointMark(
-                    x: .value("Date", $0.startDate),
-                    y: .value("Date", Calendar.current.dateComponents([.hour, .minute], from:  $0.startDate).hour!)
-                )
-                .foregroundStyle($0.workTimeInSeconds == 0 ? .clear : .blue)
-        }
-        .accessibilityIdentifier(Identifier.Chart.startTimeChart.rawValue)
-        .chartYScale(domain: 0...24)
-    } // END OF VAR
-    
-    var chartStartTimeLegend: some View {
-        HStack {
-            Text("Legend:")
-            Circle()
-                .fill(.blue)
-                .frame(width: 14, height: 14)
-            Text("Clock in")
-        }
-        .accessibilityIdentifier(Identifier.ChartLegend.startTimeChartLegend.rawValue)
-        .font(.caption)
-    } // END OF VAR
-    
-    var chartFinishTime: some View {
-        Chart(viewModel.entriesForChart) {
-                PointMark(
-                    x: .value("Date", $0.startDate),
-                    y: .value("Date", Calendar.current.dateComponents([.hour, .minute], from:  $0.finishDate).hour!)
-                )
-                .foregroundStyle($0.workTimeInSeconds == 0 ? .clear : .red)
-        }
-        .accessibilityIdentifier(Identifier.Chart.finishTimeChart.rawValue)
-        .chartYScale(domain: 0...24)
-    } // END OF VAR
-    
-    var chartFinishTimeLegend: some View {
-        HStack {
-            Text("Legend:")
-            Circle()
-                .fill(.red)
-                .frame(width: 14, height: 14)
-            Text("Clock out")
-        }
-        .accessibilityIdentifier(Identifier.ChartLegend.finishTimeChartLegend.rawValue)
-        .font(.caption)
-    } // END OF VAR
-    
+    func generateTotalHoursOvertime() -> Int {
+        viewModel.entriesForChart.map { entry in
+            entry.overTimeInSeconds / 3600
+        }.reduce(0, +)
+    }
+}
+
+//MARK: AUX. UI ELEMENTS
+extension StatisticsView {
     var chartTypePicker: some View {
-        Picker("Chart type", selection: $viewModel.chartType) {
+        Picker("Chart type", selection: $chartType) {
             Text("Time")
                 .tag(ChartType.time)
                 .accessibilityIdentifier(Identifier.ChartTypeButton.workTime.rawValue)
@@ -204,6 +132,75 @@ struct StatisticsView: View {
         .accessibilityIdentifier(Identifier.SegmentedControl.chartType.rawValue)
         .pickerStyle(.segmented)
     } // END OF VAR
+    var background: some View {
+        BackgroundFactory.buildSolidColor()
+    }
+//TODO: FIX THE ISSUE WITH NAV LINK NOT WORKING
+    var toolbar: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            NavigationLink {
+                            SettingsView(viewModel: SettingsViewModel(
+                                dataManger: container.dataManager,
+                                settingsStore: container.settingsStore))
+            } label: {
+                Label("Settings", systemImage: "gearshape.fill")
+            } // END OF NAV LINK
+            .tint(.primary)
+        } // END OF TOOLBAR ITEM
+    }
+    
+    @ViewBuilder
+    func sectionHeader(_ text: String) -> some View {
+        Text(text)
+            .bold()
+            .foregroundColor(.primary)
+    }
+}
+
+//MARK: CHART VIEW BUILDERS
+extension StatisticsView {
+    @ViewBuilder
+    var chart: some View {
+        switch chartType {
+        case .time:
+            ChartFactory.buildBarChart(entries: viewModel.entriesForChart, includeRuleMark: false)
+        case .startTime:
+            ChartFactory.buildPointChartForPunchTime(
+                entries: viewModel.entriesForChart,
+                property: \.startDate,
+                color: .blue,
+                displayName: "Clock in")
+        case .finishTime:
+            ChartFactory.buildPointChartForPunchTime(
+                entries: viewModel.entriesForChart, 
+                property: \.finishDate,
+                color: .red,
+                displayName: "Clock out")
+        } // END OF SWITCH
+    } // END OF VAR
+}
+
+//MARK: DATA VIEW BUILDERS
+extension StatisticsView {
+    var netSalaryData: some View {
+        ForEach(viewModel.salaryListDataNetPay, id: \.0) { data in
+            generateRow(label: data.0, value: data.1)
+        } // END OF FOR EACH
+    }
+    var grossSalaryData: some View {
+        ForEach(viewModel.salaryListDataGrossPay, id: \.0) { data in
+            generateRow(label: data.0, value: data.1)
+        }
+    }
+    @ViewBuilder
+    func generateRow(label: String, value: String) -> some View {
+        VStack(alignment: .leading) {
+            Text(label)
+                .foregroundStyle(.secondary)
+                .font(.caption)
+            Text(value)
+        } // END OF HSTACK
+    }
 }
 
 //MARK: PREVIEW

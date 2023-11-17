@@ -27,45 +27,24 @@ class StatisticsViewModel: ObservableObject {
         settingsStore.workTimeInSeconds
     }
     
-    
+    //TODO: WRAP IN MODEL STRUCT
     //MARK: PUBLISHED VARIABLES
-    var numberOfWorkingDays: Int {
-        payManager.numberOfWorkingDays
-    }
-    var netPayToDate: Double {
-        payManager.netPayToDate
-    }
-    var netPayPredicted: Double {
-        payManager.netPayPredicted
-    }
-    var grossPayToDate: Double {
-        payManager.grossPayToDate
-    }
-    var grossPayPredicted: Double {
-        payManager.grossPayPredicted
-    }
     var netPayAvaliable: Bool {
         payManager.netPayAvaliable
     }
-    var grossPayPerHour: Double {
-        payManager.grossPayPerHour
-    }
-    
     var salaryListDataNetPay: [(String, String)] {
-        [ ("Net pay up to date:", String(format: "%.2f", netPayToDate)),
-          ("Net pay predicted:", String(format: "%.2f", netPayPredicted))
+        [ ("Net pay up to date:", String(format: "%.2f", payManager.netPayToDate) + " PLN"),
+          ("Net pay predicted:", String(format: "%.2f", payManager.netPayPredicted) + " PLN")
         ]
     }
     
     var salaryListDataGrossPay: [(String, String)] {
-        [("Gross pay per hour:", String(format: "%.2f", grossPayPerHour)),
-         ("Gross pay up to date:", String(format: "%.2f", grossPayToDate)),
-         ("Gross pay predicted:", String(format: "%.2f", grossPayPredicted)),
-         ("Number of working days:", String(format: "%u", numberOfWorkingDays))
+        [("Gross pay per hour:", String(format: "%.2f", payManager.grossPayPerHour) + " PLN"),
+         ("Gross pay up to date:", String(format: "%.2f", payManager.grossPayToDate) + " PLN"),
+         ("Gross pay predicted:", String(format: "%.2f", payManager.grossPayPredicted) + " PLN"),
+         ("Number of working days:", String(format: "%u", payManager.numberOfWorkingDays) + " DAYS")
         ]
     }
-    
-    @Published var chartType: ChartType = .time
     
     init(dataManager: DataManager, payManager: PayManager, settingsStore: SettingsStore) {
         self.dataManager = dataManager
@@ -76,12 +55,16 @@ class StatisticsViewModel: ObservableObject {
             self?.objectWillChange.send()
         }).store(in: &subscriptions)
         
+        // This causes to update publish changes from withing view updates, for now wrapped in queue
         payManager.objectWillChange.sink { [weak self] _ in
-            self?.objectWillChange.send()
+            DispatchQueue.main.async {
+                self?.objectWillChange.send()
+            }
         }.store(in: &subscriptions)
         
     }
     
+    //TODO: ENCAPSULATE TO FUNC SO THE RANGES CAN BE USED, REFRESH BASED ON VIEW PICKER (1D, 1W, 1M, 1Y AND SO ON)
     ///Entries for use with a chart - contains empy entries for days without the entry in this monts
     var entriesForChart: [Entry] {
         var dateComponents = Calendar.current.dateComponents([.month, .year], from: Date())

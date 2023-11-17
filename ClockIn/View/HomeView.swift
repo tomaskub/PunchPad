@@ -18,82 +18,114 @@ struct HomeView: View {
     }
     
     var body: some View {
-            ZStack {
-                //BACKGROUND LAYER
-                GradientFactory.build(colorScheme: colorScheme)
-                // CONTENT
-                Button(action:
-                        viewModel.isStarted ? viewModel.stopTimer : viewModel.startTimer) {
-                    ZStack(alignment: .center) {
-                        Circle()
-                            .fill(.blue.opacity(0.5))
-                            .padding()
-                        Text("\(viewModel.timerStringValue)")
-                            .accessibilityIdentifier(Identifier.timerLabel.rawValue)
-                            .foregroundColor(.white)
-                            .font(.largeTitle)
-                            .padding()
-                            .background(.gray.opacity(0.5))
-                            .cornerRadius(10)
-                    } // END OF ZSTACK
-                } // END OF BUTTON
-                        .accessibilityIdentifier(Identifier.startStopButton.rawValue)
-                        .padding(60)
-                if viewModel.isStarted {
-                    Button {
-                        viewModel.isRunning.toggle()
-                    } label: {
-                        Image(systemName: viewModel.isRunning ? "pause.fill" : "play.fill")
-                            .resizable()
-                    } // END OF BUTTON
-                    .accessibilityIdentifier(Identifier.resumePauseButton.rawValue)
-                    .accentColor(.primary)
-                    .frame(width: 50, height: 50)
-                    .offset(y: 250)
-                } // END OF IF
-                RingView(progress: $viewModel.progress,
-                         ringColor: .primary,
-                         pointColor: colorScheme == .light ? .white : .black)
-                    .frame(width: UIScreen.main.bounds.size.width-120,
-                           height: UIScreen.main.bounds.size.width-120)
-                if viewModel.overtimeProgress > 0 {
-                    RingView(progress: $viewModel.overtimeProgress,
-                             ringColor: .green,
-                             pointColor: .white,
-                             ringWidth: 5,
-                             startigPoint: 0.023)
-                        .frame(width: UIScreen.main.bounds.size.width-120, height: UIScreen.main.bounds.size.width-120)
-                } // END OF IF
-            } // END OF ZSTACK
-            .navigationTitle("ClockIn")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    NavigationLink {
-                        StatisticsView(viewModel:
-                                        StatisticsViewModel(
-                                            dataManager: container.dataManager,
-                                            payManager: container.payManager,
-                                            settingsStore: container.settingsStore))
-                    } label: {
-                        Text("Statistics")
-                    } // END OF NAV LINK
-                    .accessibilityIdentifier(Identifier.statisticsNavigationButton.rawValue)
-                } // END OF TOOLBAR ITEM
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink {
-                        SettingsView(viewModel:
-                                        SettingsViewModel(
-                                            dataManger: container.dataManager,
-                                            settingsStore: container.settingsStore))
-                    } label: {
-                        Text("Settings")
-                    } // END OF NAV LINK
-                    .accessibilityIdentifier(Identifier.settingNavigationButton.rawValue)
-                } // END OF TOOLBAR ITEM
-            } // END OF TOOLBAR
+        ZStack {
+            background
+            VStack(spacing: 64) {
+                timerIndicator
+                controlButtons
+            } // END OF VSTACK
+        } // END OF ZSTACK
+        .navigationTitle("ClockIn")
+        .toolbar { toolbar }
     } // END OF BODY
+    
+    var background: some View {
+        BackgroundFactory.buildSolidColor()
+    }
+    
+    var toolbar: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            NavigationLink {
+                SettingsView(viewModel:
+                                SettingsViewModel(
+                                    dataManger: container.dataManager,
+                                    settingsStore: container.settingsStore))
+            } label: {
+                Label("Settings", systemImage: "gearshape.fill")
+            } // END OF NAV LINK
+            .tint(.primary)
+            .accessibilityIdentifier(Identifier.settingNavigationButton.rawValue)
+        } // END OF TOOLBAR ITEM
+    }
 } // END OF VIEW
 
+//MARK: - TIMER CONTROLS
+extension HomeView {
+    var controlButtons: some View {
+        HStack(spacing: 50) {
+            if viewModel.isStarted {
+                finishButton
+            } // END OF IF
+            startPauseButton
+        }
+    }
+    
+    var finishButton: some View {
+        Button {
+            viewModel.stopTimer()
+        } label: {
+            Image(systemName: "stop.fill")
+                .resizable()
+                .foregroundColor(.primary)
+                .frame(width: 50, height: 50)
+        }
+        .accessibilityIdentifier(Identifier.finishButton.rawValue)
+    }
+    
+    var startPauseButton: some View {
+        Button {
+            viewModel.isStarted ? viewModel.isRunning.toggle() : viewModel.startTimer()
+        } label: {
+            Image(systemName: viewModel.isRunning ? "pause.fill" : "play.fill")
+                .resizable()
+        } // END OF BUTTON
+        .accessibilityIdentifier(Identifier.startPauseButton.rawValue)
+        .accentColor(.primary)
+        .frame(width: 50, height: 50)
+    }
+}
+
+// MARK: - TIMER INDICATORS
+extension HomeView {
+    var timerIndicator: some View {
+        ZStack {
+            timerLabel
+            worktimeProgressRing
+            if viewModel.overtimeProgress > 0 {
+                overtimeProgressRing
+            }
+        }
+    }
+    
+    var timerLabel: some View {
+        Text("\(viewModel.timerStringValue)")
+            .accessibilityIdentifier(Identifier.timerLabel.rawValue)
+            .foregroundColor(.primary)
+            .font(.largeTitle)
+    }
+    
+    var worktimeProgressRing: some View {
+        return RingView(startPoint: $viewModel.progress,
+                        endPoint: .constant(1),
+                        ringColor: .primary,
+                        ringWidth: 5,
+                        displayPointer: false)
+            .frame(width: UIScreen.main.bounds.size.width-120,
+                   height: UIScreen.main.bounds.size.width-120)
+    }
+    
+    var overtimeProgressRing: some View {
+            RingView(startPoint: .constant(0),
+                     endPoint: $viewModel.overtimeProgress,
+                     ringColor: .secondary,
+                     ringWidth: 5,
+                     displayPointer: false)
+                .frame(width: UIScreen.main.bounds.size.width-120, height: UIScreen.main.bounds.size.width-120)
+    }
+    
+}
+
+//MARK: - PREVIEW
 struct Home_Previews: PreviewProvider {
     private struct ContainerView: View {
         @StateObject private var container: Container = .init()
