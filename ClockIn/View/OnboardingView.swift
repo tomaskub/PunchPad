@@ -35,8 +35,7 @@ struct OnboardingView: View {
     var body: some View {
         
         ZStack{
-            //BACKGROUND
-            BackgroundFactory.buildGradient(colorScheme: colorScheme)
+            background
             //CONTENT
                 switch currentStage {
                 case .welcome:
@@ -69,6 +68,10 @@ struct OnboardingView: View {
 }
 
 extension OnboardingView {
+    private var background: some View {
+        BackgroundFactory.buildSolidColor()
+    }
+    
     private var bottomButtonText: String {
         currentStage == .welcome ? "Let's start!" :
                                 currentStage == .exit ? "Finish set up!" : "Next"
