@@ -29,6 +29,8 @@ class StatisticsViewModel: ObservableObject {
     
     //TODO: WRAP IN MODEL STRUCT
     //MARK: PUBLISHED VARIABLES
+    @Published var chartTimeRange: ChartTimeRange = .week
+    
     var netPayAvaliable: Bool {
         payManager.netPayAvaliable
     }

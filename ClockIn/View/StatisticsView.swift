@@ -7,28 +7,23 @@
 
 import SwiftUI
 import Charts
-
+enum ChartTimeRange {
+    case week
+    case month
+    case year
+    case all
+}
 struct StatisticsView: View {
     private typealias Identifier = ScreenIdentifier.StatisticsView
+    
     //MARK: PROPERTIES
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var container: Container
     @StateObject private var viewModel: StatisticsViewModel
-    @State var chartType: ChartType = .time
     
     let navTitleText: String = "Statistics"
     let salaryCalculationHeaderText: String = "Salary calculation"
-    var chartTitle: String {
-        switch chartType {
-        case .finishTime:
-            return "Time finished"
-        case .startTime:
-            return "Time started"
-        case .time:
-            return "Time worked"
-        }
-    }
-    
+    let chartTitleText: String = "time worked"
     init(viewModel: StatisticsViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
@@ -40,13 +35,7 @@ struct StatisticsView: View {
             // CONTENT LAYER
             List {
                 Section {
-                    Picker("Time range", selection: .constant("Month")) {
-                        Text("Week")
-                        Text("Month").tag("Month")
-                        Text("Year")
-                        Text("All")
-                    }
-                    .pickerStyle(.segmented)
+                    chartTimeRangePicker
                     VStack(alignment: .leading) {
                         HStack(alignment: .bottom, spacing: 16) {
                             VStack(alignment: .leading ) {
@@ -81,7 +70,7 @@ struct StatisticsView: View {
                     chart
                         
                 } header: {
-                    sectionHeader(chartTitle)
+                    sectionHeader(chartTitleText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.chart.rawValue)
                 }//END OF SECTION
                 .listRowSeparator(.hidden)
@@ -102,6 +91,7 @@ struct StatisticsView: View {
         } // END OF ZSTACK
     } //END OF VIEW
     
+    
     func generateTotalHoursWorked() -> Int {
         viewModel.entriesForChart.map { entry in
             (entry.workTimeInSeconds + entry.overTimeInSeconds ) / 3600
@@ -117,21 +107,6 @@ struct StatisticsView: View {
 
 //MARK: AUX. UI ELEMENTS
 extension StatisticsView {
-    var chartTypePicker: some View {
-        Picker("Chart type", selection: $chartType) {
-            Text("Time")
-                .tag(ChartType.time)
-                .accessibilityIdentifier(Identifier.ChartTypeButton.workTime.rawValue)
-            Text("Start time")
-                .tag(ChartType.startTime)
-                .accessibilityIdentifier(Identifier.ChartTypeButton.startTime.rawValue)
-            Text("Finish time")
-                .tag(ChartType.finishTime)
-                .accessibilityIdentifier(Identifier.ChartTypeButton.finishTime.rawValue)
-        }
-        .accessibilityIdentifier(Identifier.SegmentedControl.chartType.rawValue)
-        .pickerStyle(.segmented)
-    } // END OF VAR
     var background: some View {
         BackgroundFactory.buildSolidColor()
     }
@@ -157,26 +132,20 @@ extension StatisticsView {
     }
 }
 
-//MARK: CHART VIEW BUILDERS
+//MARK: CHART VIEW BUILDERS & VARIABLES
 extension StatisticsView {
+    var chartTimeRangePicker: some View {
+        Picker("Time range", selection: $viewModel.chartTimeRange) {
+            Text("Week").tag(ChartTimeRange.week)
+            Text("Month").tag(ChartTimeRange.month)
+            Text("Year").tag(ChartTimeRange.year)
+            Text("All").tag(ChartTimeRange.all)
+        }
+        .pickerStyle(.segmented)
+    }
     @ViewBuilder
     var chart: some View {
-        switch chartType {
-        case .time:
             ChartFactory.buildBarChart(entries: viewModel.entriesForChart, includeRuleMark: false)
-        case .startTime:
-            ChartFactory.buildPointChartForPunchTime(
-                entries: viewModel.entriesForChart,
-                property: \.startDate,
-                color: .blue,
-                displayName: "Clock in")
-        case .finishTime:
-            ChartFactory.buildPointChartForPunchTime(
-                entries: viewModel.entriesForChart, 
-                property: \.finishDate,
-                color: .red,
-                displayName: "Clock out")
-        } // END OF SWITCH
     } // END OF VAR
 }
 
