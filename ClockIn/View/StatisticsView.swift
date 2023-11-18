@@ -36,36 +36,10 @@ struct StatisticsView: View {
             List {
                 Section {
                     chartTimeRangePicker
+                    
                     VStack(alignment: .leading) {
-                        HStack(alignment: .bottom, spacing: 16) {
-                            VStack(alignment: .leading ) {
-                                Text("worked".uppercased())
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                                HStack(alignment: .bottom, spacing: 0) {
-                                    Text(String(generateTotalHoursWorked()))
-                                        .font(.title)
-                                    Text("hours")
-                                        .foregroundColor(.secondary)
-                                        .font(.caption)
-                                }
-                            }
-                            VStack(alignment: .leading ) {
-                                Text("overtime".uppercased())
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                                HStack(alignment: .bottom, spacing: 0) {
-                                    Text(String(generateTotalHoursOvertime()))
-                                        .font(.title)
-                                    Text("hours")
-                                        .foregroundColor(.secondary)
-                                        .font(.caption)
-                                }
-                            }
-                        }
-                        Text("7-13 Nov 2023")
-                            .foregroundStyle(.secondary)
-                            .font(.caption)
+                        hoursCount
+                        displayedChartRange
                     }
                     chart
                         
@@ -91,17 +65,38 @@ struct StatisticsView: View {
         } // END OF ZSTACK
     } //END OF VIEW
     
-    
-    func generateTotalHoursWorked() -> Int {
-        viewModel.entriesForChart.map { entry in
-            (entry.workTimeInSeconds + entry.overTimeInSeconds ) / 3600
-        }.reduce(0, +)
+    var displayedChartRange: some View {
+        Text("7-13 Nov 2023")
+            .foregroundStyle(.secondary)
+            .font(.caption)
     }
-    
-    func generateTotalHoursOvertime() -> Int {
-        viewModel.entriesForChart.map { entry in
-            entry.overTimeInSeconds / 3600
-        }.reduce(0, +)
+    var hoursCount: some View {
+        HStack(alignment: .bottom, spacing: 16) {
+            VStack(alignment: .leading ) {
+                Text("worked".uppercased())
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                HStack(alignment: .bottom, spacing: 0) {
+                    Text(String(viewModel.workedHoursInPeriod))
+                        .font(.title)
+                    Text("hours")
+                        .foregroundColor(.secondary)
+                        .font(.caption)
+                }
+            }
+            VStack(alignment: .leading ) {
+                Text("overtime".uppercased())
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                HStack(alignment: .bottom, spacing: 0) {
+                    Text(String(viewModel.overtimeHoursInPeriod))
+                        .font(.title)
+                    Text("hours")
+                        .foregroundColor(.secondary)
+                        .font(.caption)
+                }
+            }
+        }
     }
 }
 

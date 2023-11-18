@@ -47,6 +47,16 @@ class StatisticsViewModel: ObservableObject {
          ("Number of working days:", String(format: "%u", payManager.numberOfWorkingDays) + " DAYS")
         ]
     }
+    var workedHoursInPeriod: Int {
+        entriesForChart.map { entry in
+            (entry.workTimeInSeconds + entry.overTimeInSeconds ) / 3600
+        }.reduce(0, +)
+    }
+    var overtimeHoursInPeriod: Int {
+        entriesForChart.map { entry in
+            entry.overTimeInSeconds / 3600
+        }.reduce(0, +)
+    }
     
     init(dataManager: DataManager, payManager: PayManager, settingsStore: SettingsStore) {
         self.dataManager = dataManager
