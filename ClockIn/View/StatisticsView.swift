@@ -65,8 +65,26 @@ struct StatisticsView: View {
         } // END OF ZSTACK
     } //END OF VIEW
     
+    
+    //TODO: IMPROVE FORMAT AND ADD LOGIC TO SHORTEN TO BELOW OUTPUTS
+    func makeChartRangeString(for period: StatisticsViewModel.Period) -> String {
+        let periodEndMonth = Calendar.current.dateComponents([.month], from: period.1)
+        let periodEndYear = Calendar.current.dateComponents([.year], from: period.1)
+        let isSameMonth = Calendar.current.date(period.0, matchesComponents: periodEndMonth)
+        if isSameMonth {
+            let startDay = Calendar.current.dateComponents([.day], from: period.0)
+            return "\(startDay.day ?? 0) - \(period.1.formatted(date: .abbreviated, time: .omitted))"
+        }
+        let isSameYear = Calendar.current.date(period.0, matchesComponents: periodEndYear)
+        if isSameYear {
+            let startDate = Calendar.current.dateComponents([.day, .month], from: period.0)
+            let startString = String(period.0.formatted(date: .abbreviated, time: .omitted).dropLast(5))
+            return startString + " - " + period.1.formatted(date: .abbreviated, time: .omitted)
+        }
+        return period.0.formatted(date: .abbreviated, time: .omitted) + " - " + period.1.formatted(date: .abbreviated, time: .omitted)
+    }
     var displayedChartRange: some View {
-        Text("7-13 Nov 2023")
+        Text(makeChartRangeString(for: viewModel.periodDisplayed))
             .foregroundStyle(.secondary)
             .font(.caption)
     }
