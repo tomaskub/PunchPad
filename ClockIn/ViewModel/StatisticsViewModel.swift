@@ -13,7 +13,7 @@ enum ChartType {
 }
 
 class StatisticsViewModel: ObservableObject {
-    
+    typealias Period = (Date, Date)
     //MARK: MODEL OBJECTS
     @Published private var dataManager: DataManager
     @Published private var payManager: PayManager
@@ -102,6 +102,42 @@ class StatisticsViewModel: ObservableObject {
             return replacer ?? placeholder
         }
         return result
+    }
+    
+    /// Generate Period (touple of dates)  encompasing given time range, containing date
+    /// - Parameters:
+    ///     - date: the date that the period contains
+    ///     - timeRange:  time range that should be encompased in period
+    /// - Returns: a touple of start date and end date of the period
+    func generatePeriod(for date: Date, in timeRange: ChartTimeRange) -> Period {
+        let dateComponents = {
+            switch timeRange {
+            case .week:
+                return Calendar.current.dateComponents([.weekOfYear, .year], from: date)
+            case .month:
+                return Calendar.current.dateComponents([.month, .year], from: date)
+            case .year:
+                return Calendar.current.dateComponents([.year], from: date)
+            case .all:
+                //TODO: REPLACE WITH FIRST ENTRY IN DATA MANAGER
+                return Calendar.current.dateComponents([.quarter], from: date)
+            }
+        }()
+        let startDate: Date = Calendar.current.date(from: dateComponents)!
+        let numberOfDays: Int = {
+            switch timeRange {
+            case .week:
+                return Calendar.current.range(of: .day, in: .weekOfYear, for: startDate)!.count
+            case .month:
+                return Calendar.current.range(of: .day, in: .month, for: startDate)!.count
+            case .year:
+                return Calendar.current.range(of: .day, in: .year, for: startDate)!.count
+            case .all:
+                return Calendar.current.range(of: .day, in: .quarter, for: startDate)!.count
+            }
+        }()
+        let finishDate: Date = Calendar.current.date(byAdding: .day, value: numberOfDays, to: startDate)!
+        return (startDate, finishDate)
     }
 }
 
