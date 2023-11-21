@@ -27,10 +27,11 @@ class StatisticsViewModel: ObservableObject {
         settingsStore.workTimeInSeconds
     }
     
-    //TODO: WRAP IN MODEL STRUCT
+    
     //MARK: PUBLISHED VARIABLES
     @Published var chartTimeRange: ChartTimeRange = .week
-    
+    @Published var periodDisplayed: Period = (Date(), Date())
+    //TODO: WRAP IN MODEL STRUCT
     var netPayAvaliable: Bool {
         payManager.netPayAvaliable
     }
@@ -73,7 +74,6 @@ class StatisticsViewModel: ObservableObject {
                 self?.objectWillChange.send()
             }
         }.store(in: &subscriptions)
-        
     }
     
     //TODO: ENCAPSULATE TO FUNC SO THE RANGES CAN BE USED, REFRESH BASED ON VIEW PICKER (1D, 1W, 1M, 1Y AND SO ON)
