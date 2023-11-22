@@ -129,7 +129,6 @@ final class HistoryViewUITests: XCTestCase {
     }
     
     private func navigateToHistoryView() {
-        HomeViewScreen(app: app).statisticsNavigationButton.tap()
-        StatisticsViewScreen(app: app).detailedHistoryNavigationButton.tap()
+        ContentViewScreen(app: app).tabBarHistoryButton.tap()
     }
 }
