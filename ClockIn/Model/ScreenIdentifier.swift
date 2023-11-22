@@ -9,6 +9,11 @@ import Foundation
 
 enum ScreenIdentifier {
     
+    enum TabBar: String {
+        case home
+        case statistics
+        case history
+    }
     enum HomeView: String {
         case startPauseButton
         case finishButton
