@@ -62,6 +62,6 @@ final class StatisticsUITests: XCTestCase {
     }
     
     private func navigateToStatisticsView() {
-        HomeViewScreen(app: app).statisticsNavigationButton.tap()
+        ContentViewScreen(app: app).tabBarStatisticsButton.tap()
     }
 }
