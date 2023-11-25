@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D60480D82B122CDA00D6D70D /* ChartPeriodServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60480D72B122CDA00D6D70D /* ChartPeriodServiceTests.swift */; };
+		D60480DA2B122D3F00D6D70D /* ChartPeriodService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60480D92B122D3F00D6D70D /* ChartPeriodService.swift */; };
 		D60594DC2AA7A2C400B8B264 /* SettingsViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60594DB2AA7A2C400B8B264 /* SettingsViewScreen.swift */; };
 		D60D21F22AA30F310055BE34 /* HomeViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60D21F12AA30F310055BE34 /* HomeViewScreen.swift */; };
 		D60D21F32AA330BC0055BE34 /* ScreenIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */; };
@@ -95,6 +97,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D60480D72B122CDA00D6D70D /* ChartPeriodServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartPeriodServiceTests.swift; sourceTree = "<group>"; };
+		D60480D92B122D3F00D6D70D /* ChartPeriodService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartPeriodService.swift; sourceTree = "<group>"; };
 		D60594DB2AA7A2C400B8B264 /* SettingsViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewScreen.swift; sourceTree = "<group>"; };
 		D60D21F12AA30F310055BE34 /* HomeViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewScreen.swift; sourceTree = "<group>"; };
 		D60D21F42AA357BA0055BE34 /* OnboardingViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewScreen.swift; sourceTree = "<group>"; };
@@ -260,6 +264,7 @@
 				D6C4589329D229210069D89B /* ClockInApp.swift */,
 				D67332E52AADB8B1005FFE7F /* LaunchArgument.swift */,
 				D65A976C29F323A900462D8C /* K.swift */,
+				D60480D92B122D3F00D6D70D /* ChartPeriodService.swift */,
 				D6C4589729D229230069D89B /* Assets.xcassets */,
 				D6E2C15729D6C20E00229286 /* WorkHistory.xcdatamodeld */,
 				D6C4589929D229230069D89B /* Preview Content */,
@@ -281,6 +286,7 @@
 				D61945EB29E7306B0046DE1F /* HomeViewModelTests.swift */,
 				D6799EFB29E1BC0F0080E32A /* HistoryViewModelTests.swift */,
 				D65A976A29F2E6B800462D8C /* StatisticsViewModelTests.swift */,
+				D60480D72B122CDA00D6D70D /* ChartPeriodServiceTests.swift */,
 				D61945EF29E735D80046DE1F /* MockTimer.swift */,
 				D6842EC529EC6FDE00731E84 /* PayManagerTests.swift */,
 				D6C458A429D229230069D89B /* ClockInTests.swift */,
@@ -515,6 +521,7 @@
 				D6FA94FB2B013C770034B16A /* ChartLegendItem.swift in Sources */,
 				D666ADCC2AC05A0500B74663 /* CaseIterable+Extension.swift in Sources */,
 				D65FD53D29D8B259006CC34F /* PersistanceController.swift in Sources */,
+				D60480DA2B122D3F00D6D70D /* ChartPeriodService.swift in Sources */,
 				D66750EA29D713C900757F17 /* HistoryView.swift in Sources */,
 				D6C458C129D2DD4F0069D89B /* HomeViewModel.swift in Sources */,
 				D6BC457E2AFAE0640030820C /* ColorTheme.swift in Sources */,
@@ -547,6 +554,7 @@
 				D6842EC629EC6FDF00731E84 /* PayManagerTests.swift in Sources */,
 				D65A976B29F2E6B800462D8C /* StatisticsViewModelTests.swift in Sources */,
 				D61945EC29E7306B0046DE1F /* HomeViewModelTests.swift in Sources */,
+				D60480D82B122CDA00D6D70D /* ChartPeriodServiceTests.swift in Sources */,
 				D61945F029E735D80046DE1F /* MockTimer.swift in Sources */,
 				D6C458A529D229230069D89B /* ClockInTests.swift in Sources */,
 				D6799EFC29E1BC0F0080E32A /* HistoryViewModelTests.swift in Sources */,

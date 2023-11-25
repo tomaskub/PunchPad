@@ -67,7 +67,7 @@ struct StatisticsView: View {
     
     
     //TODO: IMPROVE FORMAT AND ADD LOGIC TO SHORTEN TO BELOW OUTPUTS
-    func makeChartRangeString(for period: StatisticsViewModel.Period) -> String {
+    func makeChartRangeString(for period: Period) -> String {
         let periodEndMonth = Calendar.current.dateComponents([.month], from: period.1)
         let periodEndYear = Calendar.current.dateComponents([.year], from: period.1)
         let isSameMonth = Calendar.current.date(period.0, matchesComponents: periodEndMonth)

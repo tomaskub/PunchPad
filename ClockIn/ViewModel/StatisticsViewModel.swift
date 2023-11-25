@@ -12,9 +12,12 @@ enum ChartType {
     case time, startTime, finishTime
 }
 
+
+typealias Period = (Date, Date)
 class StatisticsViewModel: ObservableObject {
-    typealias Period = (Date, Date)
+    
     //MARK: MODEL OBJECTS
+    private var chartPeriodService: ChartPeriodService = .init(calendar: .current)
     @Published private var dataManager: DataManager
     @Published private var payManager: PayManager
     @Published private var settingsStore: SettingsStore
@@ -102,60 +105,4 @@ class StatisticsViewModel: ObservableObject {
         }
         return result
     }
-    
-    /// Generate Period (touple of dates)  encompasing given time range, containing date
-    /// - Parameters:
-    ///     - calendar: the calendar used to establish the date periods (default calendar is .current)
-    ///     - date: the date that the period contains
-    ///     - timeRange:  time range that should be encompased in period
-    /// - Returns: a touple of start date and end date of the period
-    func generatePeriod(with calendar: Calendar = .current, for date: Date, in timeRange: ChartTimeRange) -> Period {
-        let dateComponents = {
-            switch timeRange {
-            case .week:
-                return calendar.dateComponents([.weekOfYear, .yearForWeekOfYear], from: date)
-            case .month:
-                return calendar.dateComponents([.month, .year], from: date)
-            case .year:
-                return calendar.dateComponents([.year], from: date)
-            case .all:
-                //TODO: REPLACE WITH FIRST ENTRY IN DATA MANAGER
-                return calendar.dateComponents([.quarter], from: date)
-            }
-        }()
-        let startDate: Date = calendar.date(from: dateComponents)!
-        let numberOfDays: Int = {
-            switch timeRange {
-            case .week:
-                return 6
-            case .month:
-                return calendar.range(of: .day, in: .month, for: startDate)!.count - 1
-            case .year:
-                return calendar.range(of: .day, in: .year, for: startDate)!.count - 1
-            case .all:
-                return calendar.range(of: .day, in: .quarter, for: startDate)!.count
-            }
-        }()
-        let finishDate: Date = calendar.date(byAdding: .day, value: numberOfDays, to: startDate)!
-        return (startDate, finishDate)
-    }
-    
-    func decreasePeriod(with calendar: Calendar = .current, by timeRange: ChartTimeRange, from currentPeriod: Period) -> Period {
-        let numberOfDays: Int = {
-            switch timeRange {
-            case .week:
-                return 6
-            case .month:
-                return calendar.range(of: .day, in: .month, for: currentPeriod.0)!.count - 1
-            case .year:
-                return calendar.range(of: .day, in: .year, for: currentPeriod.0)!.count - 1
-            case .all:
-                return calendar.range(of: .day, in: .quarter, for: currentPeriod.0)!.count
-            }
-        }()
-        let newPeriodStartDate = calendar.date(byAdding: .day, value: -numberOfDays, to: currentPeriod.0)!
-        let newPeriodFinishDate = calendar.date(byAdding: .day, value: -numberOfDays, to: currentPeriod.1)!
-        return (newPeriodStartDate, newPeriodFinishDate)
-    }
 }
-
