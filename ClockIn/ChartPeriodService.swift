@@ -46,12 +46,10 @@ class ChartPeriodService {
         return (startDate, finishDate)
     }
     
-    // not tested
     func retardPeriod(with calendar: Calendar = .current, by timeRange: ChartTimeRange, from currentPeriod: Period) throws -> Period {
-        let numberOfDays = try getNumberOfDays(in: timeRange, for: currentPeriod.0)
-        let newPeriodStartDate = calendar.date(byAdding: .day, value: -numberOfDays, to: currentPeriod.0)!
-        let newPeriodFinishDate = calendar.date(byAdding: .day, value: -numberOfDays, to: currentPeriod.1)!
-        return (newPeriodStartDate, newPeriodFinishDate)
+        let dateInPreviousPeriod = calendar.date(byAdding: .day, value: -1, to: currentPeriod.0)!
+        let previousPeriod = try generatePeriod(for: dateInPreviousPeriod, in: timeRange)
+        return previousPeriod
     }
     
     // not tested
