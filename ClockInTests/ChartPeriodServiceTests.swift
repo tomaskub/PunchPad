@@ -75,7 +75,7 @@ extension ChartPeriodServiceTests {
         
         // Then
         XCTAssertEqual(result.0, expectedResult.0, "Start date is \(result.0), and it should be \(expectedResult.0)")
-        XCTAssert(result.1 == expectedResult.1, "Finish date is \(result.1), and it should be \(expectedResult.1)")
+        XCTAssertEqual(result.1, expectedResult.1, "Finish date is \(result.1), and it should be \(expectedResult.1)")
     }
     
     func test_generatePeriod_forYear() throws {
@@ -122,5 +122,82 @@ extension ChartPeriodServiceTests {
             XCTAssertEqual(error as? ChartPeriodServiceError, .attemptedToRetrievePeriodForAll, "Error thrown should be `.attemptedToRetrievePeriodForAll`")
         }
         
+    }
+}
+
+//MARK: TESTS FOR RETARDING PERIOD
+extension ChartPeriodServiceTests {
+    func test_RetardingPeriodForWeek() throws {
+        // Given
+        guard let inputStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 20)),
+              let inputFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 26)),
+              let expectedStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 13)),
+              let expectedFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 19)) else {
+                XCTFail("Failed to generate input and predicted output dates")
+                return
+            }
+        let inputPeriod: Period = (inputStartDate, inputFinishDate)
+        let expectedResult: Period = (expectedStartDate, expectedFinishDate)
+        
+        // When
+        let result = try sut.retardPeriod(by: .week, from: inputPeriod)
+
+        // Then
+        XCTAssertEqual(result.0, expectedResult.0, "Start date is \(result.0), and it should be \(expectedResult.0)")
+        XCTAssertEqual(result.1, expectedResult.1, "Finish date is \(result.1), and it should be \(expectedResult.1)")
+    }
+    
+    func test_RetardingPeriodForMonth() throws {
+        // Given
+        guard let inputStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 1)),
+              let inputFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 30)),
+              let expectedStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 10, day: 1)),
+              let expectedFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 10, day: 31)) else {
+                XCTFail("Failed to generate input and predicted output dates")
+                return
+            }
+        let inputPeriod: Period = (inputStartDate, inputFinishDate)
+        let expectedResult: Period = (expectedStartDate, expectedFinishDate)
+        
+        // When
+        let result = try sut.retardPeriod(by: .month, from: inputPeriod)
+
+        // Then
+        XCTAssertEqual(result.0, expectedResult.0, "Start date is \(result.0), and it should be \(expectedResult.0)")
+        XCTAssertEqual(result.1, expectedResult.1, "Finish date is \(result.1), and it should be \(expectedResult.1)")
+    }
+    
+    func test_RetardingPeriodForYear() throws {
+        // Given
+        guard let inputStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 1, day: 1)),
+              let inputFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 12, day: 31)),
+              let expectedStartDate = Calendar.current.date(from: DateComponents(year: 2022, month: 1, day: 1)),
+              let expectedFinishDate = Calendar.current.date(from: DateComponents(year: 2022, month: 12, day: 31)) else {
+                XCTFail("Failed to generate input and predicted output dates")
+                return
+            }
+        let inputPeriod: Period = (inputStartDate, inputFinishDate)
+        let expectedResult: Period = (expectedStartDate, expectedFinishDate)
+        
+        // When
+        let result = try sut.retardPeriod(by: .year, from: inputPeriod)
+        
+        // Then
+        XCTAssertEqual(result.0, expectedResult.0, "Start date is \(result.0), and it should be \(expectedResult.0)")
+        XCTAssertEqual(result.1, expectedResult.1, "Finish date is \(result.1), and it should be \(expectedResult.1)")
+    }
+    
+    func test_RetardingPeriodForAll_throwsError() throws {
+        // Given
+        guard let inputStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 1, day: 1)),
+              let inputFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 12, day: 31)) else {
+            XCTFail("Failed to generate input and predicted output dates")
+            return
+        }
+        let inputPeriod: Period = (inputStartDate, inputFinishDate)
+        
+        XCTAssertThrowsError(try sut.retardPeriod(by: .all, from: inputPeriod), "Function should throw") { error in
+            XCTAssertEqual(error as? ChartPeriodServiceError, .attemptedToRetrievePeriodForAll, "Error thrown should be `.attemptedToRetrievePeriodForAll`")
+        }
     }
 }

@@ -42,7 +42,7 @@ class ChartPeriodService {
         }
         guard let startDate = calendar.date(from: startDateComponents) else { throw  ChartPeriodServiceError.failedToCreateStartDateFromComponents }
         let numberOfDays = try getNumberOfDays(in: timeRange, for: date)
-        let finishDate: Date = calendar.date(byAdding: .day, value: numberOfDays, to: startDate)!
+        let finishDate: Date = calendar.date(byAdding: .day, value: numberOfDays - 1, to: startDate)!
         return (startDate, finishDate)
     }
     
@@ -74,17 +74,17 @@ class ChartPeriodService {
     private func getNumberOfDays(with calendar: Calendar = .current, in timeRange: ChartTimeRange, for date: Date) throws -> Int {
         switch timeRange {
         case .week:
-            return 6
+            return 7
         case .month:
             guard let range = calendar.range(of: .day, in: .month, for: date) else {
                 throw ChartPeriodServiceError.failedToRetrieveChartTimeRangeCount
             }
-            return range.count - 1
+            return range.count
         case .year:
             guard let range = calendar.range(of: .day, in: .year, for: date) else {
                 throw ChartPeriodServiceError.failedToRetrieveChartTimeRangeCount
             }
-            return range.count - 1
+            return range.count
         case .all:
             guard let range = calendar.range(of: .day, in: .quarter, for: date) else {
                 throw ChartPeriodServiceError.attemptedToRetrievePeriodForAll
