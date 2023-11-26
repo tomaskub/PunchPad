@@ -10,6 +10,7 @@ import Foundation
 enum ChartPeriodServiceError: Error {
     case attemptedToRetrievePeriodForAll
     case failedToCreateStartDateFromComponents
+    case failedToCreateDateByAddingComponents
     case failedToRetrieveChartTimeRangeCount
 }
 
@@ -47,17 +48,19 @@ class ChartPeriodService {
     }
     
     func retardPeriod(with calendar: Calendar = .current, by timeRange: ChartTimeRange, from currentPeriod: Period) throws -> Period {
-        let dateInPreviousPeriod = calendar.date(byAdding: .day, value: -1, to: currentPeriod.0)!
+        guard let dateInPreviousPeriod = calendar.date(byAdding: .day, value: -1, to: currentPeriod.0) else {
+            throw ChartPeriodServiceError.failedToCreateDateByAddingComponents
+        }
         let previousPeriod = try generatePeriod(for: dateInPreviousPeriod, in: timeRange)
         return previousPeriod
     }
     
-    // not tested
     func advancePeriod(with calendar: Calendar = .current, by timeRange: ChartTimeRange, from currentPeriod: Period) throws -> Period {
-        let numberOfDays = try getNumberOfDays(in: timeRange, for: currentPeriod.0)
-        let newPeriodStartDate = calendar.date(byAdding: .day, value: numberOfDays, to: currentPeriod.0)!
-        let newPeriodFinishDate = calendar.date(byAdding: .day, value: numberOfDays, to: currentPeriod.1)!
-        return (newPeriodStartDate, newPeriodFinishDate)
+        guard let dateInNextPeriod = calendar.date(byAdding: .day, value: 1, to: currentPeriod.1) else {
+            throw ChartPeriodServiceError.failedToCreateDateByAddingComponents
+        }
+        let nextPeriod = try generatePeriod(for: dateInNextPeriod, in: timeRange)
+        return nextPeriod
     }
     
     /**
