@@ -12,6 +12,7 @@ enum ChartPeriodServiceError: Error {
     case failedToCreateStartDateFromComponents
     case failedToCreateDateByAddingComponents
     case failedToRetrieveChartTimeRangeCount
+    case failedToRetriveDayComponentFromPeriod
 }
 
 class ChartPeriodService {
@@ -62,6 +63,15 @@ class ChartPeriodService {
         }
         let nextPeriod = try generatePeriod(for: dateInNextPeriod, in: timeRange)
         return nextPeriod
+    }
+    
+    func returnPeriodMidDate(for period: Period) throws -> Date {
+        guard let numberOfDays = calendar.dateComponents([.day], from: period.0, to: period.1).day else {
+            throw ChartPeriodServiceError.failedToRetriveDayComponentFromPeriod
+        }
+        var dateComponents = calendar.dateComponents([.day, .month, .year], from: period.0)
+        dateComponents.day! += numberOfDays/2
+        return calendar.date(from: dateComponents)!
     }
     
     /**
