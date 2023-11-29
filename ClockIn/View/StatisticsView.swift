@@ -7,12 +7,11 @@
 
 import SwiftUI
 import Charts
-enum ChartTimeRange {
-    case week
-    case month
-    case year
-    case all
+enum ChartTimeRange: String, Identifiable, CaseIterable {
+    var id: ChartTimeRange { self }
+    case week, month, year, all
 }
+
 struct StatisticsView: View {
     private typealias Identifier = ScreenIdentifier.StatisticsView
     
@@ -35,7 +34,7 @@ struct StatisticsView: View {
             // CONTENT LAYER
             List {
                 Section {
-                    chartTimeRangePicker
+                    ChartTimeRangePicker(pickerSelection: $viewModel.chartTimeRange)
                     
                     VStack(alignment: .leading) {
                         hoursCount
@@ -147,15 +146,17 @@ extension StatisticsView {
 
 //MARK: CHART VIEW BUILDERS & VARIABLES
 extension StatisticsView {
-    var chartTimeRangePicker: some View {
-        Picker("Time range", selection: $viewModel.chartTimeRange) {
-            Text("Week").tag(ChartTimeRange.week)
-            Text("Month").tag(ChartTimeRange.month)
-            Text("Year").tag(ChartTimeRange.year)
-            Text("All").tag(ChartTimeRange.all)
+    private struct ChartTimeRangePicker: View {
+        @Binding var pickerSelection: ChartTimeRange
+        var body: some View {
+            Picker(String(), selection: $pickerSelection) {
+                ForEach(ChartTimeRange.allCases) { range in
+                    Text(range.rawValue.capitalized)}
+            }
+            .pickerStyle(.segmented)
         }
-        .pickerStyle(.segmented)
     }
+    
     @ViewBuilder
     var chart: some View {
             ChartFactory.buildBarChart(entries: viewModel.entriesForChart, includeRuleMark: false)
