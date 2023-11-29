@@ -15,7 +15,6 @@ final class StatisticsViewModelTests: XCTestCase {
     var container: Container!
     override func setUp() {
         container = Container()
-        let settingsStore = SettingsStore()
         sut = StatisticsViewModel(dataManager: container.dataManager,
                                   payManager: container.payManager,
                                   settingsStore: container.settingsStore)
@@ -44,4 +43,15 @@ final class StatisticsViewModelTests: XCTestCase {
         XCTAssert(result.count == correctValue, "There should be 7 objects in the array")
     }
     
+    func test_createPlaceholderEntries() {
+        guard let inputStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 13)),
+              let inputFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 19)) else {
+                XCTFail("Failed to generate input and predicted output dates")
+                return
+            }
+        let inputPeriod = (inputStartDate, inputFinishDate)
+        let result = sut.createPlaceholderEntries(for: inputPeriod)
+        XCTAssertTrue(result[0].startDate == inputStartDate, "Results should start with entry with input start date")
+        XCTAssertTrue(result.last?.startDate == inputFinishDate, "Results should end with entry with input finish date")
+    }
 }
