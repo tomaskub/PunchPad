@@ -41,6 +41,17 @@ struct StatisticsView: View {
                         displayedChartRange
                     }
                     chart
+                        .gesture(DragGesture()
+                            .onEnded({ value in
+                                switch detectDirection(value: value) {
+                                case .left:
+                                    viewModel.loadPreviousPeriod()
+                                case .right:
+                                    viewModel.loadNextPeriod()
+                                default:
+                                    break
+                                }
+                            }))
                         
                 } header: {
                     sectionHeader(chartTitleText)
@@ -63,9 +74,75 @@ struct StatisticsView: View {
             .toolbar { toolbar }
         } // END OF ZSTACK
     } //END OF VIEW
+}
+
+//MARK: SWIPE GESTURES
+extension StatisticsView {
+    enum SwipeDirection: String {
+        case left, right, up, down, none
+    }
     
+    func detectDirection(value: DragGesture.Value, _ tolerance: Double = 24) -> SwipeDirection {
+        if value.startLocation.x < value.location.x - tolerance {
+            return .left
+        }
+        if value.startLocation.x > value.location.x + tolerance {
+            return .right
+        }
+        if value.startLocation.y < value.location.y - tolerance {
+            return .down
+        }
+        if value.startLocation.y > value.location.y + tolerance {
+            return .up
+        }
+        return .none
+    }
+}
+
+//MARK: AUX. UI ELEMENTS
+extension StatisticsView {
+    var background: some View {
+        BackgroundFactory.buildSolidColor()
+    }
+//TODO: FIX THE ISSUE WITH NAV LINK NOT WORKING
+    var toolbar: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            NavigationLink {
+                            SettingsView(viewModel: SettingsViewModel(
+                                dataManger: container.dataManager,
+                                settingsStore: container.settingsStore))
+            } label: {
+                Label("Settings", systemImage: "gearshape.fill")
+            } // END OF NAV LINK
+            .tint(.primary)
+        } // END OF TOOLBAR ITEM
+    }
     
-    //TODO: IMPROVE FORMAT AND ADD LOGIC TO SHORTEN TO BELOW OUTPUTS
+    @ViewBuilder
+    func sectionHeader(_ text: String) -> some View {
+        Text(text)
+            .bold()
+            .foregroundColor(.primary)
+    }
+}
+
+//MARK: CHART VIEW BUILDERS & VARIABLES
+extension StatisticsView {
+    private struct ChartTimeRangePicker: View {
+        @Binding var pickerSelection: ChartTimeRange
+        var body: some View {
+            Picker(String(), selection: $pickerSelection) {
+                ForEach(ChartTimeRange.allCases) { range in
+                    Text(range.rawValue.capitalized)}
+            }
+            .pickerStyle(.segmented)
+        }
+    }
+    
+    @ViewBuilder
+    var chart: some View {
+            ChartFactory.buildBarChart(entries: viewModel.entriesForChart, includeRuleMark: false)
+    } // END OF VAR
     func makeChartRangeString(for period: Period) -> String {
         let periodEndMonth = Calendar.current.dateComponents([.month], from: period.1)
         let periodEndYear = Calendar.current.dateComponents([.year], from: period.1)
@@ -115,52 +192,6 @@ struct StatisticsView: View {
             }
         }
     }
-}
-
-//MARK: AUX. UI ELEMENTS
-extension StatisticsView {
-    var background: some View {
-        BackgroundFactory.buildSolidColor()
-    }
-//TODO: FIX THE ISSUE WITH NAV LINK NOT WORKING
-    var toolbar: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            NavigationLink {
-                            SettingsView(viewModel: SettingsViewModel(
-                                dataManger: container.dataManager,
-                                settingsStore: container.settingsStore))
-            } label: {
-                Label("Settings", systemImage: "gearshape.fill")
-            } // END OF NAV LINK
-            .tint(.primary)
-        } // END OF TOOLBAR ITEM
-    }
-    
-    @ViewBuilder
-    func sectionHeader(_ text: String) -> some View {
-        Text(text)
-            .bold()
-            .foregroundColor(.primary)
-    }
-}
-
-//MARK: CHART VIEW BUILDERS & VARIABLES
-extension StatisticsView {
-    private struct ChartTimeRangePicker: View {
-        @Binding var pickerSelection: ChartTimeRange
-        var body: some View {
-            Picker(String(), selection: $pickerSelection) {
-                ForEach(ChartTimeRange.allCases) { range in
-                    Text(range.rawValue.capitalized)}
-            }
-            .pickerStyle(.segmented)
-        }
-    }
-    
-    @ViewBuilder
-    var chart: some View {
-            ChartFactory.buildBarChart(entries: viewModel.entriesForChart, includeRuleMark: false)
-    } // END OF VAR
 }
 
 //MARK: DATA VIEW BUILDERS
