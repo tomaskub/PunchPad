@@ -40,19 +40,6 @@ class DataManager: NSObject, ObservableObject {
         case .preview:
             let persistanceController = PersistanceController(inMemory: true)
             self.managedObjectContext = persistanceController.viewContext
-            //add data to preview
-            for i in 1...5 {
-                let date = Calendar.current.startOfDay(for: Calendar.current.date(byAdding: .day, value: -i, to: Date())!)
-                let entry = EntryMO(context: managedObjectContext)
-                entry.id = UUID()
-                entry.startDate = Calendar.current.date(byAdding: .hour, value: 8, to: date)!
-                entry.finishDate = Calendar.current.date(byAdding: .hour, value: 16+i, to: date)!
-                entry.overTime = Int64(i * 1800)
-                entry.workTime = 8 * 3600
-            }
-            //save added data
-            try? self.managedObjectContext.save()
-        
         case .testing:
             let persistanceController = PersistanceController(inMemory: true)
             self.managedObjectContext = persistanceController.viewContext
@@ -96,7 +83,9 @@ class DataManager: NSObject, ObservableObject {
         
         super.init()
         
-        // add entries here?
+        if type == .preview {
+            addPreviewDataFromFactory()
+        }
         
         entryFetchResultsController.delegate = self
         entryThisMonthFetchResultsController.delegate = self
@@ -135,6 +124,13 @@ class DataManager: NSObject, ObservableObject {
             return .success(result?.first)
         } catch {
             return .failure(error)
+        }
+    }
+    
+    private func addPreviewDataFromFactory() {
+        let entryToAdd = PreviewDataFactory.buildDataForPreviewForMonth()
+        for entry in entryToAdd {
+            self.updateAndSave(entry: entry)
         }
     }
 }
