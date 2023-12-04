@@ -107,7 +107,7 @@ class StatisticsViewModel: ObservableObject {
         var placeholders: [Entry] = []
         let numberOfDaysInPeriod = Calendar.current.dateComponents([.day], from: period.0, to: period.1).day!
         let dateComponents = Calendar.current.dateComponents([.day, .month, .year], from: period.0)
-        for day in 0...numberOfDaysInPeriod {
+        for day in 0...numberOfDaysInPeriod - 1 {
             var currentDateComponents = dateComponents
             currentDateComponents.day = dateComponents.day! + day
             let date = Calendar.current.date(from: currentDateComponents)!
