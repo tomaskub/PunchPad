@@ -123,8 +123,9 @@ class StatisticsViewModel: ObservableObject {
     }
     
     func replacePlaceholderEntries(_ placeholders: [Entry]) -> [Entry] {
+        guard let fetchedEntries = dataManager.fetch(for: periodDisplayed) else { return placeholders }
         let result = placeholders.map { placeholder in
-            let replacer = dataManager.entryArray.first { entry in
+            let replacer = fetchedEntries.first { entry in
                 let dateComponentsToCompare: Set<Calendar.Component> = [.day, .month, .year]
                 return Calendar.current.dateComponents(dateComponentsToCompare, from: entry.startDate) == Calendar.current.dateComponents(dateComponentsToCompare, from: placeholder.startDate)
             }
