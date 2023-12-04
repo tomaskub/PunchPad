@@ -215,6 +215,7 @@ extension DataManager {
             print("Delete all function failed to delete all objects - \(error):\(error.localizedDescription)")
         }
     }
+    
     func fetch(forDate date: Date) -> Entry? {
         let startDate = Calendar.current.startOfDay(for: date)
         guard let finishDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate) else {
@@ -238,6 +239,11 @@ extension DataManager {
             return nil
         }
     }
+    
+    func fetch(for period: Period) -> [Entry]? {
+        return fetch(from: period.0, to: period.1)
+    }
+    
     func fetch(from startDate: Date, to finishDate: Date) -> [Entry]? {
         
         let request: NSFetchRequest<EntryMO> = EntryMO.fetchRequest()
@@ -250,7 +256,7 @@ extension DataManager {
         request.predicate = compPredicate
         do {
             let result = try managedObjectContext.fetch(request)
-            return result.map({Entry(entryMO: $0)})
+            return result.map({ Entry(entryMO: $0) })
         } catch {
             return nil
         }
@@ -267,18 +273,5 @@ extension DataManager {
         entryMO.finishDate = entry.finishDate
         entryMO.workTime = Int64(entry.workTimeInSeconds)
         entryMO.overTime = Int64(entry.overTimeInSeconds)
-    }
-    
-    //may be obsoleted due to NSFRC
-    func fetchWorkHistory() {
-        let request: NSFetchRequest<EntryMO> = EntryMO.fetchRequest()
-        do {
-            let entryMO = try managedObjectContext.fetch(request)
-            entryArray = entryMO.map({ entryMO in
-                Entry(entryMO: entryMO)
-            })
-        } catch let error {
-            print("Error fetching: \(error.localizedDescription)")
-        }
     }
 }
