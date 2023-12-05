@@ -45,7 +45,7 @@ class ChartPeriodService {
         guard let startDate = calendar.date(from: startDateComponents) else { 
             throw  ChartPeriodServiceError.failedToCreateStartDateFromComponents }
         let numberOfDays = try getNumberOfDays(in: timeRange, for: date)
-        let finishDate: Date = calendar.date(byAdding: .day, value: numberOfDays - 1, to: startDate)!
+        guard let finishDate: Date = calendar.date(byAdding: .day, value: numberOfDays, to: startDate) else { throw ChartPeriodServiceError.failedToCreateDateByAddingComponents }
         return (startDate, finishDate)
     }
     
