@@ -128,7 +128,7 @@ class DataManager: NSObject, ObservableObject {
     }
     
     private func addPreviewDataFromFactory() {
-        let entryToAdd = PreviewDataFactory.buildDataForPreviewForMonth()
+        let entryToAdd = PreviewDataFactory.buildDataForPreviewForYear()
         for entry in entryToAdd {
             self.updateAndSave(entry: entry)
         }
