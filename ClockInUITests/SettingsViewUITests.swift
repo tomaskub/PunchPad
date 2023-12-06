@@ -208,8 +208,7 @@ final class SettingsViewUITests: XCTestCase {
         // When
         settingsScreen.clearAllSavedDataButton.tap()
         app.navigationBars.buttons.firstMatch.tap()
-        HomeViewScreen(app: app).statisticsNavigationButton.tap()
-        StatisticsViewScreen(app: app).detailedHistoryNavigationButton.tap()
+        navigateToHistoryView()
         // Then
         let countPredicate = NSPredicate(format: "count == 0")
         let expectation = expectation(for: countPredicate, evaluatedWith: app.collectionViews.cells)
@@ -226,6 +225,10 @@ final class SettingsViewUITests: XCTestCase {
     
     private func navigateToSettingsView() {
         HomeViewScreen(app: app).settingsNavigationButton.tap()
+    }
+    
+    private func navigateToHistoryView() {
+        ContentViewScreen(app: app).tabBarHistoryButton.tap()
     }
 }
 

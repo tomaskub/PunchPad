@@ -40,19 +40,6 @@ class DataManager: NSObject, ObservableObject {
         case .preview:
             let persistanceController = PersistanceController(inMemory: true)
             self.managedObjectContext = persistanceController.viewContext
-            //add data to preview
-            for i in 1...5 {
-                let date = Calendar.current.startOfDay(for: Calendar.current.date(byAdding: .day, value: -i, to: Date())!)
-                let entry = EntryMO(context: managedObjectContext)
-                entry.id = UUID()
-                entry.startDate = Calendar.current.date(byAdding: .hour, value: 8, to: date)!
-                entry.finishDate = Calendar.current.date(byAdding: .hour, value: 16+i, to: date)!
-                entry.overTime = Int64(i * 1800)
-                entry.workTime = 8 * 3600
-            }
-            //save added data
-            try? self.managedObjectContext.save()
-        
         case .testing:
             let persistanceController = PersistanceController(inMemory: true)
             self.managedObjectContext = persistanceController.viewContext
@@ -96,7 +83,9 @@ class DataManager: NSObject, ObservableObject {
         
         super.init()
         
-        // add entries here?
+        if type == .preview {
+            addPreviewDataFromFactory()
+        }
         
         entryFetchResultsController.delegate = self
         entryThisMonthFetchResultsController.delegate = self
@@ -135,6 +124,13 @@ class DataManager: NSObject, ObservableObject {
             return .success(result?.first)
         } catch {
             return .failure(error)
+        }
+    }
+    
+    private func addPreviewDataFromFactory() {
+        let entryToAdd = PreviewDataFactory.buildDataForPreviewForYear()
+        for entry in entryToAdd {
+            self.updateAndSave(entry: entry)
         }
     }
 }
@@ -215,6 +211,7 @@ extension DataManager {
             print("Delete all function failed to delete all objects - \(error):\(error.localizedDescription)")
         }
     }
+    
     func fetch(forDate date: Date) -> Entry? {
         let startDate = Calendar.current.startOfDay(for: date)
         guard let finishDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate) else {
@@ -238,6 +235,11 @@ extension DataManager {
             return nil
         }
     }
+    
+    func fetch(for period: Period) -> [Entry]? {
+        return fetch(from: period.0, to: period.1)
+    }
+    
     func fetch(from startDate: Date, to finishDate: Date) -> [Entry]? {
         
         let request: NSFetchRequest<EntryMO> = EntryMO.fetchRequest()
@@ -250,7 +252,7 @@ extension DataManager {
         request.predicate = compPredicate
         do {
             let result = try managedObjectContext.fetch(request)
-            return result.map({Entry(entryMO: $0)})
+            return result.map({ Entry(entryMO: $0) })
         } catch {
             return nil
         }
@@ -267,18 +269,5 @@ extension DataManager {
         entryMO.finishDate = entry.finishDate
         entryMO.workTime = Int64(entry.workTimeInSeconds)
         entryMO.overTime = Int64(entry.overTimeInSeconds)
-    }
-    
-    //may be obsoleted due to NSFRC
-    func fetchWorkHistory() {
-        let request: NSFetchRequest<EntryMO> = EntryMO.fetchRequest()
-        do {
-            let entryMO = try managedObjectContext.fetch(request)
-            entryArray = entryMO.map({ entryMO in
-                Entry(entryMO: entryMO)
-            })
-        } catch let error {
-            print("Error fetching: \(error.localizedDescription)")
-        }
     }
 }

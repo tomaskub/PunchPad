@@ -7,28 +7,22 @@
 
 import SwiftUI
 import Charts
+enum ChartTimeRange: String, Identifiable, CaseIterable {
+    var id: ChartTimeRange { self }
+    case week, month, year, all
+}
 
 struct StatisticsView: View {
     private typealias Identifier = ScreenIdentifier.StatisticsView
+    
     //MARK: PROPERTIES
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var container: Container
     @StateObject private var viewModel: StatisticsViewModel
-    @State var chartType: ChartType = .time
     
     let navTitleText: String = "Statistics"
     let salaryCalculationHeaderText: String = "Salary calculation"
-    var chartTitle: String {
-        switch chartType {
-        case .finishTime:
-            return "Time finished"
-        case .startTime:
-            return "Time started"
-        case .time:
-            return "Time worked"
-        }
-    }
-    
+    let chartTitleText: String = "time worked"
     init(viewModel: StatisticsViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
@@ -40,48 +34,27 @@ struct StatisticsView: View {
             // CONTENT LAYER
             List {
                 Section {
-                    Picker("Time range", selection: .constant("Month")) {
-                        Text("Week")
-                        Text("Month").tag("Month")
-                        Text("Year")
-                        Text("All")
-                    }
-                    .pickerStyle(.segmented)
+                    ChartTimeRangePicker(pickerSelection: $viewModel.chartTimeRange)
+                    
                     VStack(alignment: .leading) {
-                        HStack(alignment: .bottom, spacing: 16) {
-                            VStack(alignment: .leading ) {
-                                Text("worked".uppercased())
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                                HStack(alignment: .bottom, spacing: 0) {
-                                    Text(String(generateTotalHoursWorked()))
-                                        .font(.title)
-                                    Text("hours")
-                                        .foregroundColor(.secondary)
-                                        .font(.caption)
-                                }
-                            }
-                            VStack(alignment: .leading ) {
-                                Text("overtime".uppercased())
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                                HStack(alignment: .bottom, spacing: 0) {
-                                    Text(String(generateTotalHoursOvertime()))
-                                        .font(.title)
-                                    Text("hours")
-                                        .foregroundColor(.secondary)
-                                        .font(.caption)
-                                }
-                            }
-                        }
-                        Text("7-13 Nov 2023")
-                            .foregroundStyle(.secondary)
-                            .font(.caption)
+                        hoursCount
+                        displayedChartRange
                     }
                     chart
+                        .gesture(DragGesture()
+                            .onEnded({ value in
+                                switch detectDirection(value: value) {
+                                case .left:
+                                    viewModel.loadPreviousPeriod()
+                                case .right:
+                                    viewModel.loadNextPeriod()
+                                default:
+                                    break
+                                }
+                            }))
                         
                 } header: {
-                    sectionHeader(chartTitle)
+                    sectionHeader(chartTitleText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.chart.rawValue)
                 }//END OF SECTION
                 .listRowSeparator(.hidden)
@@ -101,37 +74,33 @@ struct StatisticsView: View {
             .toolbar { toolbar }
         } // END OF ZSTACK
     } //END OF VIEW
-    
-    func generateTotalHoursWorked() -> Int {
-        viewModel.entriesForChart.map { entry in
-            (entry.workTimeInSeconds + entry.overTimeInSeconds ) / 3600
-        }.reduce(0, +)
+}
+
+//MARK: SWIPE GESTURES
+extension StatisticsView {
+    enum SwipeDirection: String {
+        case left, right, up, down, none
     }
     
-    func generateTotalHoursOvertime() -> Int {
-        viewModel.entriesForChart.map { entry in
-            entry.overTimeInSeconds / 3600
-        }.reduce(0, +)
+    func detectDirection(value: DragGesture.Value, _ tolerance: Double = 24) -> SwipeDirection {
+        if value.startLocation.x < value.location.x - tolerance {
+            return .left
+        }
+        if value.startLocation.x > value.location.x + tolerance {
+            return .right
+        }
+        if value.startLocation.y < value.location.y - tolerance {
+            return .down
+        }
+        if value.startLocation.y > value.location.y + tolerance {
+            return .up
+        }
+        return .none
     }
 }
 
 //MARK: AUX. UI ELEMENTS
 extension StatisticsView {
-    var chartTypePicker: some View {
-        Picker("Chart type", selection: $chartType) {
-            Text("Time")
-                .tag(ChartType.time)
-                .accessibilityIdentifier(Identifier.ChartTypeButton.workTime.rawValue)
-            Text("Start time")
-                .tag(ChartType.startTime)
-                .accessibilityIdentifier(Identifier.ChartTypeButton.startTime.rawValue)
-            Text("Finish time")
-                .tag(ChartType.finishTime)
-                .accessibilityIdentifier(Identifier.ChartTypeButton.finishTime.rawValue)
-        }
-        .accessibilityIdentifier(Identifier.SegmentedControl.chartType.rawValue)
-        .pickerStyle(.segmented)
-    } // END OF VAR
     var background: some View {
         BackgroundFactory.buildSolidColor()
     }
@@ -157,27 +126,72 @@ extension StatisticsView {
     }
 }
 
-//MARK: CHART VIEW BUILDERS
+//MARK: CHART VIEW BUILDERS & VARIABLES
 extension StatisticsView {
+    private struct ChartTimeRangePicker: View {
+        @Binding var pickerSelection: ChartTimeRange
+        var body: some View {
+            Picker(String(), selection: $pickerSelection) {
+                ForEach(ChartTimeRange.allCases) { range in
+                    Text(range.rawValue.capitalized)}
+            }
+            .pickerStyle(.segmented)
+        }
+    }
+    
     @ViewBuilder
     var chart: some View {
-        switch chartType {
-        case .time:
             ChartFactory.buildBarChart(entries: viewModel.entriesForChart, includeRuleMark: false)
-        case .startTime:
-            ChartFactory.buildPointChartForPunchTime(
-                entries: viewModel.entriesForChart,
-                property: \.startDate,
-                color: .blue,
-                displayName: "Clock in")
-        case .finishTime:
-            ChartFactory.buildPointChartForPunchTime(
-                entries: viewModel.entriesForChart, 
-                property: \.finishDate,
-                color: .red,
-                displayName: "Clock out")
-        } // END OF SWITCH
     } // END OF VAR
+    func makeChartRangeString(for period: Period) -> String {
+        let periodEndMonth = Calendar.current.dateComponents([.month], from: period.1)
+        let periodEndYear = Calendar.current.dateComponents([.year], from: period.1)
+        let isSameMonth = Calendar.current.date(period.0, matchesComponents: periodEndMonth)
+        if isSameMonth {
+            let startDay = Calendar.current.dateComponents([.day], from: period.0)
+            return "\(startDay.day ?? 0) - \(period.1.formatted(date: .abbreviated, time: .omitted))"
+        }
+        let isSameYear = Calendar.current.date(period.0, matchesComponents: periodEndYear)
+        if isSameYear {
+            let startDate = Calendar.current.dateComponents([.day, .month], from: period.0)
+            let startString = String(period.0.formatted(date: .abbreviated, time: .omitted).dropLast(5))
+            return startString + " - " + period.1.formatted(date: .abbreviated, time: .omitted)
+        }
+        return period.0.formatted(date: .abbreviated, time: .omitted) + " - " + period.1.formatted(date: .abbreviated, time: .omitted)
+    }
+    var displayedChartRange: some View {
+        Text(makeChartRangeString(for: viewModel.periodDisplayed))
+            .foregroundStyle(.secondary)
+            .font(.caption)
+    }
+    var hoursCount: some View {
+        HStack(alignment: .bottom, spacing: 16) {
+            VStack(alignment: .leading ) {
+                Text("worked".uppercased())
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                HStack(alignment: .bottom, spacing: 0) {
+                    Text(String(viewModel.workedHoursInPeriod))
+                        .font(.title)
+                    Text("hours")
+                        .foregroundColor(.secondary)
+                        .font(.caption)
+                }
+            }
+            VStack(alignment: .leading ) {
+                Text("overtime".uppercased())
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                HStack(alignment: .bottom, spacing: 0) {
+                    Text(String(viewModel.overtimeHoursInPeriod))
+                        .font(.title)
+                    Text("hours")
+                        .foregroundColor(.secondary)
+                        .font(.caption)
+                }
+            }
+        }
+    }
 }
 
 //MARK: DATA VIEW BUILDERS

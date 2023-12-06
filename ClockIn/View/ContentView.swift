@@ -23,6 +23,7 @@ struct ContentView: View {
             }
             .tabItem {
                 Label("Home", systemImage: "house")
+                    .accessibilityIdentifier(ScreenIdentifier.TabBar.home.rawValue)
             }
             NavigationView {
                 StatisticsView(viewModel:
@@ -33,6 +34,7 @@ struct ContentView: View {
             }
             .tabItem {
                 Label("Statistics", systemImage: "chart.bar.xaxis")
+                    .accessibilityIdentifier(ScreenIdentifier.TabBar.statistics.rawValue)
             }
             NavigationView {
                 HistoryView(viewModel:
@@ -42,6 +44,7 @@ struct ContentView: View {
             }
             .tabItem {
                 Label("History", systemImage: "rectangle.grid.1x2.fill")
+                    .accessibilityIdentifier(ScreenIdentifier.TabBar.history.rawValue)
             }
         }
         .fullScreenCover(isPresented: $isRunFirstTime, onDismiss: {
