@@ -30,6 +30,7 @@ struct HistoryView: View {
             background
             // CONTENT LAYER
             List {
+                searchBar
                 ForEach(viewModel.entries) { entry in
                     HistoryRowViewPrototype(startDate: entry.startDate,
                                finishDate: entry.finishDate,
@@ -103,6 +104,14 @@ struct HistoryView: View {
                 Label("Settings", systemImage: "gearshape.fill")
             }
             .tint(.primary)
+        }
+    }
+    var searchBar: some View {
+        Section {
+            HStack {
+                TextField("", text: .constant(String()), prompt: Text("Search"))
+                Image(systemName: "calendar")
+            }
         }
     }
 } // END OF STRUCT
