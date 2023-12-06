@@ -9,21 +9,17 @@ import SwiftUI
 import Charts
 
 struct HistoryView: View {
-    
     private typealias Identifier = ScreenIdentifier.HistoryView
+    let navigationTitleText: String = "History"
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject private var container: Container
     @StateObject private var viewModel: HistoryViewModel
     @State var selectedEntry: Entry? = nil
-    let navigationTitleText: String = "History"
+    
     init(viewModel: HistoryViewModel) {
         self._viewModel = StateObject.init(wrappedValue: viewModel)        
     }
     
-    //unused for now - have to implement
-    /*
-     @AppStorage("detail_display_mode") var detailDisplayMode: String = HistoryRow.DetailDisplayType.circleDisplay.rawValue
-     */
     var body: some View {
         ZStack {
             // BACKGROUND LAYER
@@ -31,18 +27,7 @@ struct HistoryView: View {
             // CONTENT LAYER
             List {
                 searchBar
-                ForEach(viewModel.entries) { entry in
-                    HistoryRowViewPrototype(startDate: entry.startDate,
-                               finishDate: entry.finishDate,
-                               workTime: viewModel.convertWorkTimeToFraction(entry: entry),
-                               overTime: viewModel.convertOvertimeToFraction(entry: entry),
-                               timeWorked: viewModel.timeWorkedLabel(for: entry))
-                    .accessibilityIdentifier(Identifier.entryRow.rawValue)
-                    .swipeActions {
-                        makeDeleteButton(entry)
-                        makeEditButton(entry)
-                    } // END OF SWIPE ACTIONS
-                } // END OF FOR-EACH
+                makeListConent(viewModel.entries)
             } // END OF LIST
             .scrollContentBackground(.hidden)
             .sheet(item: $selectedEntry) { entry in
@@ -58,30 +43,52 @@ struct HistoryView: View {
         .navigationTitle(navigationTitleText)
         .navigationBarTitleDisplayMode(.inline)
     } // END OF BODY
+} // END OF STRUCT
+
+//MARK: VIEW BUILDER FUNCTIONS
+extension HistoryView {
+    @ViewBuilder
+    func makeListConent(_ entries: [Entry]) -> some View {
+        ForEach(entries) { entry in
+            HistoryRowViewPrototype(startDate: entry.startDate,
+                       finishDate: entry.finishDate,
+                       workTime: viewModel.convertWorkTimeToFraction(entry: entry),
+                       overTime: viewModel.convertOvertimeToFraction(entry: entry),
+                       timeWorked: viewModel.timeWorkedLabel(for: entry))
+            .accessibilityIdentifier(Identifier.entryRow.rawValue)
+            .swipeActions {
+                makeDeleteButton(entry)
+                makeEditButton(entry)
+            } // END OF SWIPE ACTIONS
+        } // END OF FOR-EACH
+    }
+    
     @ViewBuilder
     func makeDeleteButton(_ entry: Entry) -> some View {
         Button {
             viewModel.deleteEntry(entry: entry)
         } label: {
             Image(systemName: "xmark")
-                .foregroundColor(.red)
+//                .foregroundColor(.red)
         } // END OF BUTTON
         .accessibilityIdentifier(Identifier.deleteEntryButton.rawValue)
         .tint(.red)
     }
+    
     @ViewBuilder
     func makeEditButton(_ entry: Entry) -> some View {
         Button {
             selectedEntry = entry
         } label: {
             Image(systemName: "pencil")
-                .foregroundColor(.gray)
+//                .foregroundColor(.gray)
         } // END OF BUTTON
         .accessibilityIdentifier(Identifier.editEntryButton.rawValue)
     }
-    var background: some View {
-        BackgroundFactory.buildSolidColor()
-    }
+}
+
+//MARK: VIEW COMPONENTS
+extension HistoryView {
     var addEntryToolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
@@ -93,6 +100,7 @@ struct HistoryView: View {
             .accessibilityIdentifier(Identifier.addEntryButton.rawValue)
         } // END OF TOOBAR ITEM
     }
+    
     var navigationToolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             NavigationLink{
@@ -106,6 +114,7 @@ struct HistoryView: View {
             .tint(.primary)
         }
     }
+    
     var searchBar: some View {
         Section {
             HStack {
@@ -114,8 +123,11 @@ struct HistoryView: View {
             }
         }
     }
-} // END OF STRUCT
-
+    
+    var background: some View {
+        BackgroundFactory.buildSolidColor()
+    }
+}
 
 struct HistoryView_Previews: PreviewProvider {
     private struct ContainerView: View {
