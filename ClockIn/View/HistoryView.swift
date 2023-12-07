@@ -28,6 +28,9 @@ struct HistoryView: View {
             List {
                 searchBar
                 makeListConent(viewModel.entries)
+                if viewModel.isMoreEntriesAvaliable {
+                    lastRow
+                }
             } // END OF LIST
             .scrollContentBackground(.hidden)
             .sheet(item: $selectedEntry) { entry in
@@ -121,6 +124,24 @@ extension HistoryView {
                 TextField("", text: .constant(String()), prompt: Text("Search"))
                 Image(systemName: "calendar")
             }
+        }
+    }
+    
+    var lastRow: some View {
+        ZStack(alignment: .center) {
+            switch viewModel.paginationState {
+            case .isLoading:
+                ProgressView()
+                    .frame(height: 50)
+                    .frame(maxWidth: .infinity)
+            case .idle:
+                EmptyView()
+            case .error:
+                Text("Something went wrong")
+            }
+        }
+        .onAppear {
+            viewModel.loadMoreItems()
         }
     }
     

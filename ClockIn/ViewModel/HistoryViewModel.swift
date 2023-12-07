@@ -12,6 +12,9 @@ import Combine
 class HistoryViewModel: ObservableObject {
     
     @Published private var dataManager: DataManager
+    @Published var paginationState: PaginationState = .idle
+    @Published var isMoreEntriesAvaliable: Bool
+    
     private var settingsStore: SettingsStore
     private var maximumOvertimeInSeconds: Int {
         settingsStore.maximumOvertimeAllowedInSeconds
@@ -25,14 +28,17 @@ class HistoryViewModel: ObservableObject {
     init(dataManager: DataManager, settingsStore: SettingsStore) {
         self.dataManager = dataManager
         self.settingsStore = settingsStore
+        self.isMoreEntriesAvaliable = {
+           return true
+        }()
+        self.entries = dataManager.entryThisMonth
+        
         dataManager.objectWillChange.sink(receiveValue: { [weak self] _ in
             self?.objectWillChange.send()
         }).store(in: &subscriptions)
     }
     
-    var entries: [Entry] {
-        dataManager.entryArray
-    }
+    var entries: [Entry]
     
     /// provide a formatted string describing the amount of hours between start and finish date in an Entry object
     func timeWorkedLabel(for entry: Entry) -> String {
@@ -69,6 +75,12 @@ class HistoryViewModel: ObservableObject {
     
     func updateAndSave(entry: Entry) {
         dataManager.updateAndSave(entry: entry)
+    }
+    
+    func loadMoreItems() {
+        print("loading more items")
+        paginationState = .isLoading
+        print("Entries this month: \(dataManager.entryThisMonth.count)")
     }
 }
  
