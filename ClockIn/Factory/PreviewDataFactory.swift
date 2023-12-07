@@ -12,8 +12,7 @@ struct PreviewDataFactory {
         var result = [Entry]()
         let year = calendar.dateComponents([.year], from: date).year!
         for i in 1...12 {
-            guard let dateInMonth = calendar.date(from: DateComponents(year: year, month: i)) else { print("Failed to get date in month where i = \(i)")
-            break }
+            guard let dateInMonth = calendar.date(from: DateComponents(year: year, month: i)) else { continue }
             let dataForMonth = buildDataForPreviewForMonth(containing: dateInMonth, using: calendar)
             result.append(contentsOf: dataForMonth)
         }
@@ -30,13 +29,13 @@ struct PreviewDataFactory {
             localDateComponents.day = i
             guard let workingDate = calendar.date(from: localDateComponents),
                   !calendar.isDateInWeekend(workingDate),
-                  let entry = buildDataForDay(for: workingDate, using: calendar) else { break }
+                  let entry = buildDataForDay(for: workingDate, using: calendar) else { continue }
             result.append(entry)
         }
         return result
     }
     
-    static private func buildDataForDay(for dayDate: Date = Date(), 
+    static private func buildDataForDay(for dayDate: Date = Date(),
                                         using calendar: Calendar = .current,
                                         startDateVariation: ClosedRange<Int> = 0...4,
                                         timeLengthVariation: ClosedRange<Int> = -4...4) -> Entry? {
@@ -45,7 +44,9 @@ struct PreviewDataFactory {
         let workTime = randomLengthComponent < 0 ? (8 + randomLengthComponent) * 3600 : 8 * 3600
         let overtime = randomLengthComponent <= 0 ? 0 : randomLengthComponent * 3600
         guard let startDate = calendar.date(byAdding: .hour, value: 6 + randomStartComponent, to: dayDate),
-              let finishDate = calendar.date(byAdding: .hour, value: 8 + randomLengthComponent, to: startDate) else { return nil }
+              let finishDate = calendar.date(byAdding: .hour, value: 8 + randomLengthComponent, to: startDate) else {
+            return nil
+        }
         return Entry(
             startDate: startDate,
             finishDate: finishDate,
