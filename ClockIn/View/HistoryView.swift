@@ -33,16 +33,17 @@ struct HistoryView: View {
             // CONTENT LAYER
             List {
                 searchBar
-                makeListConent(viewModel.entries)
+                makeListConent(viewModel.groupedEntries)
                 if viewModel.isMoreEntriesAvaliable {
                     lastRow
                 }
             } // END OF LIST
             .scrollContentBackground(.hidden)
             .sheet(item: $selectedEntry) { entry in
-                EditSheetView(viewModel: EditSheetViewModel(dataManager: container.dataManager,
-                                                            settingsStore: container.settingsStore,
-                                                            entry: entry))
+                EditSheetView(viewModel: 
+                                EditSheetViewModel(dataManager: container.dataManager,
+                                                   settingsStore: container.settingsStore,
+                                                   entry: entry))
             } // END OF SHEET
         } // END OF ZSTACK
         .toolbar {
@@ -64,19 +65,27 @@ struct HistoryView: View {
 //MARK: VIEW BUILDER FUNCTIONS
 extension HistoryView {
     @ViewBuilder
-    func makeListConent(_ entries: [Entry]) -> some View {
-        ForEach(entries) { entry in
-            HistoryRowViewPrototype(startDate: entry.startDate,
-                       finishDate: entry.finishDate,
-                       workTime: viewModel.convertWorkTimeToFraction(entry: entry),
-                       overTime: viewModel.convertOvertimeToFraction(entry: entry),
-                       timeWorked: viewModel.timeWorkedLabel(for: entry))
-            .accessibilityIdentifier(Identifier.entryRow.rawValue)
-            .swipeActions {
-                makeDeleteButton(entry)
-                makeEditButton(entry)
-            } // END OF SWIPE ACTIONS
-        } // END OF FOR-EACH
+    func makeListConent(_ groupedEntries: [[Entry]]) -> some View {
+        ForEach(groupedEntries, id: \.self) { groupEntry in
+            makeListSection(groupEntry)
+        }
+    }
+    @ViewBuilder
+    func makeListSection(_ entries: [Entry]) -> some View {
+        Section(makeSectionHeader(entries.first)) {
+            ForEach(entries) { entry in
+                HistoryRowViewPrototype(startDate: entry.startDate,
+                                        finishDate: entry.finishDate,
+                                        workTime: viewModel.convertWorkTimeToFraction(entry: entry),
+                                        overTime: viewModel.convertOvertimeToFraction(entry: entry),
+                                        timeWorked: viewModel.timeWorkedLabel(for: entry))
+                .accessibilityIdentifier(Identifier.entryRow.rawValue)
+                .swipeActions {
+                    makeDeleteButton(entry)
+                    makeEditButton(entry)
+                } // END OF SWIPE ACTIONS
+            }
+        }
     }
     
     @ViewBuilder
