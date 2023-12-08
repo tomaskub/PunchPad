@@ -11,6 +11,12 @@ import Charts
 struct HistoryView: View {
     private typealias Identifier = ScreenIdentifier.HistoryView
     let navigationTitleText: String = "History"
+    let headerFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM yyyy"
+        return formatter
+    }()
+    
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject private var container: Container
     @StateObject private var viewModel: HistoryViewModel
@@ -46,6 +52,13 @@ struct HistoryView: View {
         .navigationTitle(navigationTitleText)
         .navigationBarTitleDisplayMode(.inline)
     } // END OF BODY
+    func makeSectionHeader(_ entry: Entry?) -> String {
+        if let date = entry?.startDate {
+            return headerFormatter.string(from: date)
+        } else {
+            return String()
+        }
+    }
 } // END OF STRUCT
 
 //MARK: VIEW BUILDER FUNCTIONS
