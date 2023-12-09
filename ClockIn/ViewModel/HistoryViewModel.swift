@@ -12,8 +12,12 @@ import Combine
 class HistoryViewModel: ObservableObject {
     @Published private var dataManager: DataManager
     @Published var paginationState: PaginationState = .idle
-    @Published var isMoreEntriesAvaliable: Bool
+    @Published var isMoreEntriesAvaliable: Bool = true
     
+    @Published var groupedEntries: [[Entry]] = []
+    
+    private var periodService: ChartPeriodService = .init(calendar: .current)
+    private var sizeOfChunk: Int = 15
     private var settingsStore: SettingsStore
     private var maximumOvertimeInSeconds: Int {
         settingsStore.maximumOvertimeAllowedInSeconds
@@ -21,50 +25,29 @@ class HistoryViewModel: ObservableObject {
     private var scheduledWorkTimeInSeconds: Int {
         settingsStore.workTimeInSeconds
     }
-    
     private var subscriptions: Set<AnyCancellable> = .init()
     
     init(dataManager: DataManager, settingsStore: SettingsStore) {
         self.dataManager = dataManager
         self.settingsStore = settingsStore
-        self.isMoreEntriesAvaliable = {
-           return true
-        }()
-        self.entries = dataManager.entryThisMonth
-        self.groupedEntries = groupEntriesByYearMonth(dataManager.entryArray)
         dataManager.objectWillChange.sink(receiveValue: { [weak self] _ in
             self?.objectWillChange.send()
         }).store(in: &subscriptions)
-    }
-    
-    var entries: [Entry]
-    
-    var groupedEntries: [[Entry]] = []
-        
-    
-    func groupEntriesByYearMonth(_ entries: [Entry]) -> [[Entry]] {
-        var result: [[Entry]] = .init()
-        
-        var currentYearMonth: DateComponents?
-        var currentEntries: [Entry] = .init()
-        
-        for entry in dataManager.entryArray {
-            let entryDateComponents = Calendar.current.dateComponents([.month,.year], from: entry.startDate)
-            if entryDateComponents != currentYearMonth {
-                if !currentEntries.isEmpty {
-                    result.append(currentEntries)
+        self.$groupedEntries
+            .map { [weak self] array in
+                guard let self,
+                      let lastEntry = array.last?.last else { return false }
+                if let _ = self.dataManager.fetch(from: nil, 
+                                                  to: lastEntry.startDate,
+                                                  ascendingOrder: false,
+                                                  fetchLimit: 1) {
+                    return true
+                } else {
+                    return false
                 }
-                currentEntries = [entry]
-                currentYearMonth = entryDateComponents
-            } else {
-                currentEntries.append(entry)
-            }
-        }
-        if !currentEntries.isEmpty {
-            result.append(currentEntries)
-        }
+            }.assign(to: &self.$isMoreEntriesAvaliable)
             
-        return result
+        self.groupedEntries = loadInitialEntries()
     }
     
     /// provide a formatted string describing the amount of hours between start and finish date in an Entry object
@@ -103,11 +86,54 @@ class HistoryViewModel: ObservableObject {
     func updateAndSave(entry: Entry) {
         dataManager.updateAndSave(entry: entry)
     }
+}
+
+//MARK: POPULATE LIST DATA
+extension HistoryViewModel {
+    func loadInitialEntries() -> [[Entry]] {
+        guard let entries = dataManager.fetch(from: nil, to: nil, fetchLimit: sizeOfChunk) else { return [[]] }
+        return groupEntriesByYearMonth(entries)
+    }
     
     func loadMoreItems() {
-        print("loading more items")
         paginationState = .isLoading
-        print("Entries this month: \(dataManager.entryThisMonth.count)")
+        
+        guard let lastDateEntry = groupedEntries.last?.last else {
+            paginationState = .error
+            return
+        }
+        
+        let currentStartDate = lastDateEntry.startDate
+        guard let fetchedEntries = dataManager.fetch(from: nil, to: currentStartDate, fetchLimit: sizeOfChunk) else { return }
+        var entryPool = groupedEntries.flatMap({ $0 })
+        entryPool.append(contentsOf: fetchedEntries)
+        groupedEntries = groupEntriesByYearMonth(entryPool)
+        
+        paginationState = .idle
+    }
+    
+    private func groupEntriesByYearMonth(_ entries: [Entry]) -> [[Entry]] {
+        var result: [[Entry]] = .init()
+        
+        var currentYearMonth: DateComponents?
+        var currentEntries: [Entry] = .init()
+        
+        for entry in entries {
+            let entryDateComponents = Calendar.current.dateComponents([.month,.year], from: entry.startDate)
+            if entryDateComponents != currentYearMonth {
+                if !currentEntries.isEmpty {
+                    result.append(currentEntries)
+                }
+                currentEntries = [entry]
+                currentYearMonth = entryDateComponents
+            } else {
+                currentEntries.append(entry)
+            }
+        }
+        if !currentEntries.isEmpty {
+            result.append(currentEntries)
+        }
+        return result
     }
 }
  
