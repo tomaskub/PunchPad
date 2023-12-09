@@ -50,18 +50,6 @@ class HistoryViewModel: ObservableObject {
         self.groupedEntries = loadInitialEntries()
     }
     
-    /// provide a formatted string describing the amount of hours between start and finish date in an Entry object
-    func timeWorkedLabel(for entry: Entry) -> String {
-        
-        let sumWorkedInSec = entry.workTimeInSeconds + entry.overTimeInSeconds
-        let hours = sumWorkedInSec / 3600
-        let minutes = (sumWorkedInSec % 3600) / 60
-        
-        let hoursString = hours > 9 ? "\(hours)" : "0\(hours)"
-        let minutesString = minutes > 9 ? "\(minutes)" : "0\(minutes)"
-        
-        return "\(hoursString) hours \(minutesString) minutes"
-    }
     
     ///Converts overtime value in seconds to a fraction of the current user maximum for overtime
     ///Value return is between 0 and 1

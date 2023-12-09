@@ -60,6 +60,22 @@ struct HistoryView: View {
             return String()
         }
     }
+    
+    func makeTimeWorkedLabel(_ entry: Entry) -> String {
+        let sumWorkedInSec = entry.workTimeInSeconds + entry.overTimeInSeconds
+        let hours = sumWorkedInSec / 3600
+        let minutes = (sumWorkedInSec % 3600) / 60
+        
+        let hoursString = hours > 9 ? "\(hours)" : "0\(hours)"
+        let minutesString = minutes > 9 ? "\(minutes)" : "0\(minutes)"
+        
+        return "\(hoursString) hours \(minutesString) minutes"
+    }
+    
+    func isLastEntry(_ entry: Entry) -> Bool {
+        guard let lastEntry = viewModel.groupedEntries.last?.last else { return true }
+        return lastEntry == entry
+    }
 } // END OF STRUCT
 
 //MARK: VIEW BUILDER FUNCTIONS
