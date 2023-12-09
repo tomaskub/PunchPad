@@ -34,9 +34,6 @@ struct HistoryView: View {
             List {
                 searchBar
                 makeListConent(viewModel.groupedEntries)
-                if viewModel.isMoreEntriesAvaliable {
-                    lastRow
-                }
             } // END OF LIST
             .scrollContentBackground(.hidden)
             .sheet(item: $selectedEntry) { entry in
@@ -53,6 +50,7 @@ struct HistoryView: View {
         .navigationTitle(navigationTitleText)
         .navigationBarTitleDisplayMode(.inline)
     } // END OF BODY
+    
     func makeSectionHeader(_ entry: Entry?) -> String {
         if let date = entry?.startDate {
             return headerFormatter.string(from: date)
@@ -90,16 +88,21 @@ extension HistoryView {
     func makeListSection(_ entries: [Entry]) -> some View {
         Section(makeSectionHeader(entries.first)) {
             ForEach(entries) { entry in
-                HistoryRowViewPrototype(startDate: entry.startDate,
-                                        finishDate: entry.finishDate,
-                                        workTime: viewModel.convertWorkTimeToFraction(entry: entry),
-                                        overTime: viewModel.convertOvertimeToFraction(entry: entry),
-                                        timeWorked: viewModel.timeWorkedLabel(for: entry))
-                .accessibilityIdentifier(Identifier.entryRow.rawValue)
-                .swipeActions {
-                    makeDeleteButton(entry)
-                    makeEditButton(entry)
-                } // END OF SWIPE ACTIONS
+                VStack {
+                    HistoryRowViewPrototype(startDate: entry.startDate,
+                                            finishDate: entry.finishDate,
+                                            workTime: viewModel.convertWorkTimeToFraction(entry: entry),
+                                            overTime: viewModel.convertOvertimeToFraction(entry: entry),
+                                            timeWorked: makeTimeWorkedLabel(entry))
+                    .accessibilityIdentifier(Identifier.entryRow.rawValue)
+                    .swipeActions {
+                        makeDeleteButton(entry)
+                        makeEditButton(entry)
+                    } // END OF SWIPE ACTIONS
+                    if isLastEntry(entry) && viewModel.isMoreEntriesAvaliable {
+                        lastRow
+                    }
+                }
             }
         }
     }
