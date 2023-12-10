@@ -9,45 +9,38 @@ import SwiftUI
 import Charts
 
 struct HistoryView: View {
-    
     private typealias Identifier = ScreenIdentifier.HistoryView
+    let navigationTitleText: String = "History"
+    let headerFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM yyyy"
+        return formatter
+    }()
+    
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject private var container: Container
     @StateObject private var viewModel: HistoryViewModel
     @State var selectedEntry: Entry? = nil
-    let navigationTitleText: String = "History"
+    
     init(viewModel: HistoryViewModel) {
         self._viewModel = StateObject.init(wrappedValue: viewModel)        
     }
     
-    //unused for now - have to implement
-    /*
-     @AppStorage("detail_display_mode") var detailDisplayMode: String = HistoryRow.DetailDisplayType.circleDisplay.rawValue
-     */
     var body: some View {
         ZStack {
             // BACKGROUND LAYER
             background
             // CONTENT LAYER
             List {
-                ForEach(viewModel.entries) { entry in
-                    HistoryRowViewPrototype(startDate: entry.startDate,
-                               finishDate: entry.finishDate,
-                               workTime: viewModel.convertWorkTimeToFraction(entry: entry),
-                               overTime: viewModel.convertOvertimeToFraction(entry: entry),
-                               timeWorked: viewModel.timeWorkedLabel(for: entry))
-                    .accessibilityIdentifier(Identifier.entryRow.rawValue)
-                    .swipeActions {
-                        makeDeleteButton(entry)
-                        makeEditButton(entry)
-                    } // END OF SWIPE ACTIONS
-                } // END OF FOR-EACH
+                searchBar
+                makeListConent(viewModel.groupedEntries)
             } // END OF LIST
             .scrollContentBackground(.hidden)
             .sheet(item: $selectedEntry) { entry in
-                EditSheetView(viewModel: EditSheetViewModel(dataManager: container.dataManager,
-                                                            settingsStore: container.settingsStore,
-                                                            entry: entry))
+                EditSheetView(viewModel: 
+                                EditSheetViewModel(dataManager: container.dataManager,
+                                                   settingsStore: container.settingsStore,
+                                                   entry: entry))
             } // END OF SHEET
         } // END OF ZSTACK
         .toolbar {
@@ -57,30 +50,92 @@ struct HistoryView: View {
         .navigationTitle(navigationTitleText)
         .navigationBarTitleDisplayMode(.inline)
     } // END OF BODY
+    
+    func makeSectionHeader(_ entry: Entry?) -> String {
+        if let date = entry?.startDate {
+            return headerFormatter.string(from: date)
+        } else {
+            return String()
+        }
+    }
+    
+    func makeTimeWorkedLabel(_ entry: Entry) -> String {
+        let sumWorkedInSec = entry.workTimeInSeconds + entry.overTimeInSeconds
+        let hours = sumWorkedInSec / 3600
+        let minutes = (sumWorkedInSec % 3600) / 60
+        
+        let hoursString = hours > 9 ? "\(hours)" : "0\(hours)"
+        let minutesString = minutes > 9 ? "\(minutes)" : "0\(minutes)"
+        
+        return "\(hoursString) hours \(minutesString) minutes"
+    }
+    
+    func isLastEntry(_ entry: Entry) -> Bool {
+        guard let lastEntry = viewModel.groupedEntries.last?.last else { return true }
+        return lastEntry == entry
+    }
+} // END OF STRUCT
+
+//MARK: VIEW BUILDER FUNCTIONS
+extension HistoryView {
+    @ViewBuilder
+    func makeListConent(_ groupedEntries: [[Entry]]) -> some View {
+        ForEach(groupedEntries, id: \.self) { groupEntry in
+            makeListSection(groupEntry)
+        }
+    }
+    @ViewBuilder
+    func makeListSection(_ entries: [Entry]) -> some View {
+        Section(makeSectionHeader(entries.first)) {
+            ForEach(entries) { entry in
+                VStack {
+                    HistoryRowViewPrototype(startDate: entry.startDate,
+                                            finishDate: entry.finishDate,
+                                            workTime: viewModel.convertWorkTimeToFraction(entry: entry),
+                                            overTime: viewModel.convertOvertimeToFraction(entry: entry),
+                                            timeWorked: makeTimeWorkedLabel(entry))
+                    .accessibilityIdentifier(Identifier.entryRow.rawValue)
+                    .onLongPressGesture(perform: {
+                        selectedEntry = entry
+                    })
+                    .swipeActions {
+                        makeDeleteButton(entry)
+                        makeEditButton(entry)
+                    } // END OF SWIPE ACTIONS
+                    if isLastEntry(entry) && viewModel.isMoreEntriesAvaliable {
+                        lastRow
+                    }
+                }
+            }
+        }
+    }
+    
     @ViewBuilder
     func makeDeleteButton(_ entry: Entry) -> some View {
         Button {
             viewModel.deleteEntry(entry: entry)
         } label: {
             Image(systemName: "xmark")
-                .foregroundColor(.red)
+//                .foregroundColor(.red)
         } // END OF BUTTON
         .accessibilityIdentifier(Identifier.deleteEntryButton.rawValue)
         .tint(.red)
     }
+    
     @ViewBuilder
     func makeEditButton(_ entry: Entry) -> some View {
         Button {
             selectedEntry = entry
         } label: {
             Image(systemName: "pencil")
-                .foregroundColor(.gray)
+//                .foregroundColor(.gray)
         } // END OF BUTTON
         .accessibilityIdentifier(Identifier.editEntryButton.rawValue)
     }
-    var background: some View {
-        BackgroundFactory.buildSolidColor()
-    }
+}
+
+//MARK: VIEW COMPONENTS
+extension HistoryView {
     var addEntryToolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
@@ -92,6 +147,7 @@ struct HistoryView: View {
             .accessibilityIdentifier(Identifier.addEntryButton.rawValue)
         } // END OF TOOBAR ITEM
     }
+    
     var navigationToolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             NavigationLink{
@@ -105,8 +161,38 @@ struct HistoryView: View {
             .tint(.primary)
         }
     }
-} // END OF STRUCT
-
+    
+    var searchBar: some View {
+        Section {
+            HStack {
+                TextField("", text: .constant(String()), prompt: Text("Search"))
+                Image(systemName: "calendar")
+            }
+        }
+    }
+    
+    var lastRow: some View {
+        ZStack(alignment: .center) {
+            switch viewModel.paginationState {
+            case .isLoading:
+                ProgressView()
+                    .frame(height: 50)
+                    .frame(maxWidth: .infinity)
+            case .idle:
+                EmptyView()
+            case .error:
+                Text("Something went wrong")
+            }
+        }
+        .onAppear {
+            viewModel.loadMoreItems()
+        }
+    }
+    
+    var background: some View {
+        BackgroundFactory.buildSolidColor()
+    }
+}
 
 struct HistoryView_Previews: PreviewProvider {
     private struct ContainerView: View {

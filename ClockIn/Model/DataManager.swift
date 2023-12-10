@@ -240,16 +240,29 @@ extension DataManager {
         return fetch(from: period.0, to: period.1)
     }
     
-    func fetch(from startDate: Date, to finishDate: Date) -> [Entry]? {
-        
+    func fetch(from startDate: Date?, 
+               to finishDate: Date?,
+               ascendingOrder: Bool = false,
+               fetchLimit: Int? = nil) -> [Entry]? {
         let request: NSFetchRequest<EntryMO> = EntryMO.fetchRequest()
-        request.sortDescriptors = [NSSortDescriptor(key: "startDate", ascending: false)]
-            
-        let startPredicate = NSPredicate(format: "finishDate > %@", startDate as CVarArg)
-        let finishPredicate = NSPredicate(format: "finishDate < %@", finishDate as CVarArg)
-        let compPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [startPredicate, finishPredicate])
+        request.sortDescriptors = [NSSortDescriptor(key: "startDate", ascending: ascendingOrder)]
+        var subpredicates = [NSPredicate]()
         
+        if let startDate {
+            let startPredicate = NSPredicate(format: "finishDate > %@", startDate as CVarArg)
+            subpredicates.append(startPredicate)
+        }
+        if let finishDate {
+            let finishPredicate = NSPredicate(format: "finishDate < %@", finishDate as CVarArg)
+            subpredicates.append(finishPredicate)
+        }
+        if let fetchLimit {
+            request.fetchLimit = fetchLimit
+        }
+        
+        let compPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: subpredicates)
         request.predicate = compPredicate
+        
         do {
             let result = try managedObjectContext.fetch(request)
             return result.map({ Entry(entryMO: $0) })
