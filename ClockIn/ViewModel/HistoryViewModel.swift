@@ -12,7 +12,7 @@ import Combine
 class HistoryViewModel: ObservableObject {
     @Published private var dataManager: DataManager
     @Published var paginationState: PaginationState = .idle
-    @Published var isMoreEntriesAvaliable: Bool = true
+    @Published var isMoreEntriesAvaliable: Bool = false
     
     @Published var groupedEntries: [[Entry]] = []
     
@@ -33,6 +33,7 @@ class HistoryViewModel: ObservableObject {
         dataManager.objectWillChange.sink(receiveValue: { [weak self] _ in
             self?.objectWillChange.send()
         }).store(in: &subscriptions)
+        
         self.$groupedEntries
             .map { [weak self] array in
                 guard let self,

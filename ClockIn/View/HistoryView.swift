@@ -95,6 +95,9 @@ extension HistoryView {
                                             overTime: viewModel.convertOvertimeToFraction(entry: entry),
                                             timeWorked: makeTimeWorkedLabel(entry))
                     .accessibilityIdentifier(Identifier.entryRow.rawValue)
+                    .onLongPressGesture(perform: {
+                        selectedEntry = entry
+                    })
                     .swipeActions {
                         makeDeleteButton(entry)
                         makeEditButton(entry)
