@@ -11,6 +11,7 @@ import Charts
 struct HistoryView: View {
     private typealias Identifier = ScreenIdentifier.HistoryView
     let navigationTitleText: String = "History"
+    
     let headerFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM yyyy"
@@ -20,7 +21,9 @@ struct HistoryView: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject private var container: Container
     @StateObject private var viewModel: HistoryViewModel
-    @State var selectedEntry: Entry? = nil
+    @State private var selectedEntry: Entry? = nil
+    @State private var isShowingFiltering: Bool = false
+    @State private var filteringPresentationDetents: PresentationDetent = .medium
     
     init(viewModel: HistoryViewModel) {
         self._viewModel = StateObject.init(wrappedValue: viewModel)        
@@ -32,7 +35,6 @@ struct HistoryView: View {
             background
             // CONTENT LAYER
             List {
-                searchBar
                 makeListConent(viewModel.groupedEntries)
             } // END OF LIST
             .scrollContentBackground(.hidden)
@@ -42,9 +44,15 @@ struct HistoryView: View {
                                                    settingsStore: container.settingsStore,
                                                    entry: entry))
             } // END OF SHEET
+            .sheet(isPresented: $isShowingFiltering) {
+                filterSheet
+                    .presentationDetents([.medium])
+                //, selection: $filteringPresentationDetents)
+            }
         } // END OF ZSTACK
         .toolbar {
             addEntryToolbar
+            filterToolbar
             navigationToolbar
         } // END OF TOOLBAR
         .navigationTitle(navigationTitleText)
@@ -136,6 +144,52 @@ extension HistoryView {
 
 //MARK: VIEW COMPONENTS
 extension HistoryView {
+    var filterSheet: some View {
+        VStack(alignment: .leading) {
+            Text("Filter")
+                .font(.title)
+                .fontWeight(.semibold)
+                .padding(.top, 16)
+                .padding(.leading, 16)
+            List {
+                Section("Date") {
+                    Picker("Date filter type", selection: .constant(1)) {
+                        Text("To-from").tag(1)
+                        Text("On")
+                    }
+                    .pickerStyle(.segmented)
+                    DatePicker("From:", selection: $viewModel.filterFromDate)
+                    DatePicker("To:", selection: $viewModel.filterToDate)
+                }
+                Section("Work time") {
+                    Toggle("Did not meet work time", isOn: .constant(false))
+                    
+                }
+                Section("Overtime") {
+                    Toggle("Has overtime", isOn: .constant(true))
+                }
+                HStack {
+                    ButtonFactory.build(labelText: "Clear all")
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(lineWidth: 5)
+                                .foregroundColor(.gray)
+                        )
+                    Text("Apply")
+                        .font(.headline)
+                        .padding()
+                        .foregroundColor(.white)
+                        .frame(height: 60)
+                        .frame(maxWidth: .infinity)
+                        .padding(.horizontal)
+                        .background(.blue)
+                        .cornerRadius(8)
+                }
+            }
+            .scrollContentBackground(.hidden)
+        }
+        .background(Color.gray.opacity(0.1))
+    }
     var addEntryToolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
@@ -147,7 +201,14 @@ extension HistoryView {
             .accessibilityIdentifier(Identifier.addEntryButton.rawValue)
         } // END OF TOOBAR ITEM
     }
-    
+    var filterToolbar: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Image(systemName: "line.3.horizontal.decrease.circle")
+                .onTapGesture {
+                    isShowingFiltering.toggle()
+                }
+        }
+    }
     var navigationToolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             NavigationLink{
@@ -159,15 +220,6 @@ extension HistoryView {
                 Label("Settings", systemImage: "gearshape.fill")
             }
             .tint(.primary)
-        }
-    }
-    
-    var searchBar: some View {
-        Section {
-            HStack {
-                TextField("", text: .constant(String()), prompt: Text("Search"))
-                Image(systemName: "calendar")
-            }
         }
     }
     

@@ -16,6 +16,9 @@ class HistoryViewModel: ObservableObject {
     
     @Published var groupedEntries: [[Entry]] = []
     
+    @Published var filterFromDate: Date = Date()
+    @Published var filterToDate: Date = Date()
+    
     private var periodService: ChartPeriodService = .init(calendar: .current)
     private var sizeOfChunk: Int = 15
     private var settingsStore: SettingsStore
