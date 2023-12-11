@@ -47,6 +47,7 @@
 		D684A38A2AF6F54B00511E0D /* ButtonFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D684A3892AF6F54B00511E0D /* ButtonFactory.swift */; };
 		D68732022B2243C9008CB0D4 /* PaginationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68732012B2243C9008CB0D4 /* PaginationState.swift */; };
 		D6AB737029F562E600D5DE82 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AB736F29F562E600D5DE82 /* OnboardingViewModel.swift */; };
+		D6B2BDF22B27810700CB4FA7 /* DateFilterSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B2BDF12B27810700CB4FA7 /* DateFilterSheetView.swift */; };
 		D6B3B2662ABA237800101A1F /* SettingsViewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B3B2652ABA237800101A1F /* SettingsViewUITests.swift */; };
 		D6B7D1C82B0EB41A00E6F7A8 /* ContentViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B7D1C72B0EB41A00E6F7A8 /* ContentViewScreen.swift */; };
 		D6BC457E2AFAE0640030820C /* ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BC457D2AFAE0640030820C /* ColorTheme.swift */; };
@@ -137,6 +138,7 @@
 		D684A3892AF6F54B00511E0D /* ButtonFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonFactory.swift; sourceTree = "<group>"; };
 		D68732012B2243C9008CB0D4 /* PaginationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationState.swift; sourceTree = "<group>"; };
 		D6AB736F29F562E600D5DE82 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
+		D6B2BDF12B27810700CB4FA7 /* DateFilterSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DateFilterSheetView.swift; path = ClockIn/View/DateFilterSheetView.swift; sourceTree = "<group>"; };
 		D6B3B2652ABA237800101A1F /* SettingsViewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewUITests.swift; sourceTree = "<group>"; };
 		D6B7D1C72B0EB41A00E6F7A8 /* ContentViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewScreen.swift; sourceTree = "<group>"; };
 		D6BC457D2AFAE0640030820C /* ColorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTheme.swift; sourceTree = "<group>"; };
@@ -240,6 +242,7 @@
 		D6C4588729D229200069D89B = {
 			isa = PBXGroup;
 			children = (
+				D6B2BDF12B27810700CB4FA7 /* DateFilterSheetView.swift */,
 				D6C4589229D229210069D89B /* ClockIn */,
 				D6C458A329D229230069D89B /* ClockInTests */,
 				D6C458AD29D229230069D89B /* ClockInUITests */,
@@ -548,6 +551,7 @@
 				D6C4589429D229210069D89B /* ClockInApp.swift in Sources */,
 				D6E2C15929D6C20E00229286 /* WorkHistory.xcdatamodeld in Sources */,
 				D60EB9B62AB0D7000053136A /* Container.swift in Sources */,
+				D6B2BDF22B27810700CB4FA7 /* DateFilterSheetView.swift in Sources */,
 				D6E6B8752AF98EB40073D911 /* OnboardingSalaryView.swift in Sources */,
 				D65A976F29F3BBDD00462D8C /* OnboardingView.swift in Sources */,
 				D6842EC229EC179200731E84 /* StatisticsViewModel.swift in Sources */,
