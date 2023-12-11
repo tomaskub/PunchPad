@@ -23,7 +23,6 @@ struct HistoryView: View {
     @StateObject private var viewModel: HistoryViewModel
     @State private var selectedEntry: Entry? = nil
     @State private var isShowingFiltering: Bool = false
-    @State private var filteringPresentationDetents: PresentationDetent = .medium
     
     init(viewModel: HistoryViewModel) {
         self._viewModel = StateObject.init(wrappedValue: viewModel)        
@@ -45,9 +44,8 @@ struct HistoryView: View {
                                                    entry: entry))
             } // END OF SHEET
             .sheet(isPresented: $isShowingFiltering) {
-                filterSheet
-                    .presentationDetents([.medium])
-                //, selection: $filteringPresentationDetents)
+                filteringView
+                    .presentationDetents([.fraction(0.4)])
             }
         } // END OF ZSTACK
         .toolbar {
@@ -58,7 +56,7 @@ struct HistoryView: View {
         .navigationTitle(navigationTitleText)
         .navigationBarTitleDisplayMode(.inline)
     } // END OF BODY
-    
+
     func makeSectionHeader(_ entry: Entry?) -> String {
         if let date = entry?.startDate {
             return headerFormatter.string(from: date)
@@ -144,52 +142,17 @@ extension HistoryView {
 
 //MARK: VIEW COMPONENTS
 extension HistoryView {
-    var filterSheet: some View {
-        VStack(alignment: .leading) {
-            Text("Filter")
-                .font(.title)
-                .fontWeight(.semibold)
-                .padding(.top, 16)
-                .padding(.leading, 16)
-            List {
-                Section("Date") {
-                    Picker("Date filter type", selection: .constant(1)) {
-                        Text("To-from").tag(1)
-                        Text("On")
-                    }
-                    .pickerStyle(.segmented)
-                    DatePicker("From:", selection: $viewModel.filterFromDate)
-                    DatePicker("To:", selection: $viewModel.filterToDate)
-                }
-                Section("Work time") {
-                    Toggle("Did not meet work time", isOn: .constant(false))
-                    
-                }
-                Section("Overtime") {
-                    Toggle("Has overtime", isOn: .constant(true))
-                }
-                HStack {
-                    ButtonFactory.build(labelText: "Clear all")
-                        .background(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(lineWidth: 5)
-                                .foregroundColor(.gray)
-                        )
-                    Text("Apply")
-                        .font(.headline)
-                        .padding()
-                        .foregroundColor(.white)
-                        .frame(height: 60)
-                        .frame(maxWidth: .infinity)
-                        .padding(.horizontal)
-                        .background(.blue)
-                        .cornerRadius(8)
-                }
-            }
-            .scrollContentBackground(.hidden)
+    var filteringView: some View {
+        DateFilterSheetView(fromDate: $viewModel.filterFromDate,
+                            toDate: $viewModel.filterToDate,
+                            sortAscending: $viewModel.sortAscending)
+        {
+            viewModel.resetFilters()
+        } confirmAction: {
+            viewModel.applyFilters()
         }
-        .background(Color.gray.opacity(0.1))
     }
+    
     var addEntryToolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
@@ -201,6 +164,7 @@ extension HistoryView {
             .accessibilityIdentifier(Identifier.addEntryButton.rawValue)
         } // END OF TOOBAR ITEM
     }
+    
     var filterToolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Image(systemName: "line.3.horizontal.decrease.circle")
@@ -209,6 +173,7 @@ extension HistoryView {
                 }
         }
     }
+    
     var navigationToolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             NavigationLink{
