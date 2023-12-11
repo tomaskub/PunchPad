@@ -48,6 +48,7 @@
 		D68732022B2243C9008CB0D4 /* PaginationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68732012B2243C9008CB0D4 /* PaginationState.swift */; };
 		D6AB737029F562E600D5DE82 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AB736F29F562E600D5DE82 /* OnboardingViewModel.swift */; };
 		D6B2BDF22B27810700CB4FA7 /* DateFilterSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B2BDF12B27810700CB4FA7 /* DateFilterSheetView.swift */; };
+		D6B2BDF42B27C22400CB4FA7 /* EmptyPlaceholderModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B2BDF32B27C22400CB4FA7 /* EmptyPlaceholderModifier.swift */; };
 		D6B3B2662ABA237800101A1F /* SettingsViewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B3B2652ABA237800101A1F /* SettingsViewUITests.swift */; };
 		D6B7D1C82B0EB41A00E6F7A8 /* ContentViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B7D1C72B0EB41A00E6F7A8 /* ContentViewScreen.swift */; };
 		D6BC457E2AFAE0640030820C /* ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BC457D2AFAE0640030820C /* ColorTheme.swift */; };
@@ -139,6 +140,7 @@
 		D68732012B2243C9008CB0D4 /* PaginationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationState.swift; sourceTree = "<group>"; };
 		D6AB736F29F562E600D5DE82 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		D6B2BDF12B27810700CB4FA7 /* DateFilterSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DateFilterSheetView.swift; path = ClockIn/View/DateFilterSheetView.swift; sourceTree = "<group>"; };
+		D6B2BDF32B27C22400CB4FA7 /* EmptyPlaceholderModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyPlaceholderModifier.swift; sourceTree = "<group>"; };
 		D6B3B2652ABA237800101A1F /* SettingsViewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewUITests.swift; sourceTree = "<group>"; };
 		D6B7D1C72B0EB41A00E6F7A8 /* ContentViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewScreen.swift; sourceTree = "<group>"; };
 		D6BC457D2AFAE0640030820C /* ColorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTheme.swift; sourceTree = "<group>"; };
@@ -239,6 +241,14 @@
 			path = OboardingViews;
 			sourceTree = "<group>";
 		};
+		D6B2BDF52B27C42800CB4FA7 /* ViewModifiers */ = {
+			isa = PBXGroup;
+			children = (
+				D6B2BDF32B27C22400CB4FA7 /* EmptyPlaceholderModifier.swift */,
+			);
+			path = ViewModifiers;
+			sourceTree = "<group>";
+		};
 		D6C4588729D229200069D89B = {
 			isa = PBXGroup;
 			children = (
@@ -263,6 +273,7 @@
 		D6C4589229D229210069D89B /* ClockIn */ = {
 			isa = PBXGroup;
 			children = (
+				D6B2BDF52B27C42800CB4FA7 /* ViewModifiers */,
 				D61F11322AB3A6E700902D6D /* Extensions */,
 				D6D906AF2AA12BBD004E09C9 /* Factory */,
 				D6E2C15629D6BF9F00229286 /* Model */,
@@ -531,6 +542,7 @@
 				D6FA94FB2B013C770034B16A /* ChartLegendItem.swift in Sources */,
 				D666ADCC2AC05A0500B74663 /* CaseIterable+Extension.swift in Sources */,
 				D65FD53D29D8B259006CC34F /* PersistanceController.swift in Sources */,
+				D6B2BDF42B27C22400CB4FA7 /* EmptyPlaceholderModifier.swift in Sources */,
 				D60480DA2B122D3F00D6D70D /* ChartPeriodService.swift in Sources */,
 				D66750EA29D713C900757F17 /* HistoryView.swift in Sources */,
 				D64313B82B1E606B003B5DBC /* PreviewDataFactory.swift in Sources */,

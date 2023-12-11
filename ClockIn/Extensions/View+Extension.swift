@@ -34,4 +34,12 @@ extension View {
             self
         }
     }
+    
+    func emptyPlaceholder<Items: Collection, PlaceholderView: View>(_ items: Items, _ placeholder: @escaping () -> PlaceholderView) -> some View {
+        self.modifier(
+            EmptyPlaceholderModifier(items: items,
+                                     placeholder: AnyView(placeholder())
+                                    )
+        )
+    }
 }
