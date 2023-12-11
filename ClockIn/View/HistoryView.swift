@@ -11,7 +11,10 @@ import Charts
 struct HistoryView: View {
     private typealias Identifier = ScreenIdentifier.HistoryView
     let navigationTitleText: String = "History"
-    
+    let placeholderText: String = """
+                    Ooops! Something went wrong,
+                    or you never recorded time...
+                    """
     let headerFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM yyyy"
@@ -36,6 +39,9 @@ struct HistoryView: View {
             List {
                 makeListConent(viewModel.groupedEntries)
             } // END OF LIST
+            .emptyPlaceholder(viewModel.groupedEntries) {
+                emptyPlaceholderView
+            }
             .scrollContentBackground(.hidden)
             .sheet(item: $selectedEntry) { entry in
                 EditSheetView(viewModel: 
@@ -142,6 +148,14 @@ extension HistoryView {
 
 //MARK: VIEW COMPONENTS
 extension HistoryView {
+    var emptyPlaceholderView: some View {
+        VStack {
+            Image(systemName: "nosign")
+            Text(placeholderText)
+                .multilineTextAlignment(.center)
+        }
+    }
+    
     var filteringView: some View {
         DateFilterSheetView(fromDate: $viewModel.filterFromDate,
                             toDate: $viewModel.filterToDate,
