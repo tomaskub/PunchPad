@@ -22,7 +22,7 @@ class HistoryViewModel: ObservableObject {
     @Published var isSortingActive: Bool = false
     
     private var periodService: ChartPeriodService = .init(calendar: .current)
-    private var sizeOfChunk: Int = 15
+    private var sizeOfChunk: Int?
     private var settingsStore: SettingsStore
     private var maximumOvertimeInSeconds: Int {
         settingsStore.maximumOvertimeAllowedInSeconds
@@ -32,9 +32,11 @@ class HistoryViewModel: ObservableObject {
     }
     private var subscriptions: Set<AnyCancellable> = .init()
     
-    init(dataManager: DataManager, settingsStore: SettingsStore) {
+    init(dataManager: DataManager, settingsStore: SettingsStore, sizeOfChunk: Int? = 15) {
         self.dataManager = dataManager
         self.settingsStore = settingsStore
+        self.sizeOfChunk = sizeOfChunk
+        
         dataManager.objectWillChange.sink(receiveValue: { [weak self] _ in
             self?.objectWillChange.send()
         }).store(in: &subscriptions)
