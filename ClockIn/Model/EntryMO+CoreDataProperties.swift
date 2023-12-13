@@ -24,7 +24,7 @@ extension EntryMO {
     @NSManaged public var maximumOvertimeAllowedInSeconds: Int64
     @NSManaged public var standardWorktimeAllowedInSeconds: Int64
     @NSManaged public var grossPayPerMonth: Int64
-    @NSManaged public var calculatedNetPay: Int64
+    @NSManaged public var calculatedNetPay: Double
 }
 
 extension EntryMO : Identifiable {

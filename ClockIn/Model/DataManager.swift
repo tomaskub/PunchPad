@@ -175,7 +175,7 @@ extension Entry {
         self.maximumOvertimeAllowedInSeconds = Int(entryMO.maximumOvertimeAllowedInSeconds)
         self.standardWorktimeAllowedInSeconds = Int(entryMO.standardWorktimeAllowedInSeconds)
         self.grossPayPerMonth = Int(entryMO.grossPayPerMonth)
-        self.calculatedNetPay = Int(entryMO.calculatedNetPay)
+        self.calculatedNetPay = Double(entryMO.calculatedNetPay)
     }
 }
 

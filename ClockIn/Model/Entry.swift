@@ -18,7 +18,7 @@ struct Entry: Identifiable, Hashable {
     var maximumOvertimeAllowedInSeconds: Int
     var standardWorktimeAllowedInSeconds: Int
     var grossPayPerMonth: Int
-    var calculatedNetPay: Int?
+    var calculatedNetPay: Double?
     
     init(startDate: Date, 
          finishDate: Date,
@@ -27,7 +27,7 @@ struct Entry: Identifiable, Hashable {
          maximumOvertimeAllowedInSeconds: Int,
          standardWorktimeAllowedInSeconds: Int,
          grossPayPerMonth: Int,
-         calculatedNetPay: Int?) {
+         calculatedNetPay: Double?) {
         self.id = UUID()
         self.startDate = startDate
         self.finishDate = finishDate
