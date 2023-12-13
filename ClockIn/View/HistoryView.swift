@@ -11,6 +11,10 @@ import Charts
 struct HistoryView: View {
     private typealias Identifier = ScreenIdentifier.HistoryView
     let navigationTitleText: String = "History"
+    let placeholderText: String = """
+                    Ooops! Something went wrong,
+                    or you never recorded time...
+                    """
     let headerFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM yyyy"
@@ -20,7 +24,8 @@ struct HistoryView: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject private var container: Container
     @StateObject private var viewModel: HistoryViewModel
-    @State var selectedEntry: Entry? = nil
+    @State private var selectedEntry: Entry? = nil
+    @State private var isShowingFiltering: Bool = false
     
     init(viewModel: HistoryViewModel) {
         self._viewModel = StateObject.init(wrappedValue: viewModel)        
@@ -32,9 +37,11 @@ struct HistoryView: View {
             background
             // CONTENT LAYER
             List {
-                searchBar
                 makeListConent(viewModel.groupedEntries)
             } // END OF LIST
+            .emptyPlaceholder(viewModel.groupedEntries) {
+                emptyPlaceholderView
+            }
             .scrollContentBackground(.hidden)
             .sheet(item: $selectedEntry) { entry in
                 EditSheetView(viewModel: 
@@ -42,15 +49,20 @@ struct HistoryView: View {
                                                    settingsStore: container.settingsStore,
                                                    entry: entry))
             } // END OF SHEET
+            .sheet(isPresented: $isShowingFiltering) {
+                filteringView
+                    .presentationDetents([.fraction(0.4)])
+            }
         } // END OF ZSTACK
         .toolbar {
             addEntryToolbar
+            filterToolbar
             navigationToolbar
         } // END OF TOOLBAR
         .navigationTitle(navigationTitleText)
         .navigationBarTitleDisplayMode(.inline)
     } // END OF BODY
-    
+
     func makeSectionHeader(_ entry: Entry?) -> String {
         if let date = entry?.startDate {
             return headerFormatter.string(from: date)
@@ -136,6 +148,25 @@ extension HistoryView {
 
 //MARK: VIEW COMPONENTS
 extension HistoryView {
+    var emptyPlaceholderView: some View {
+        VStack {
+            Image(systemName: "nosign")
+            Text(placeholderText)
+                .multilineTextAlignment(.center)
+        }
+    }
+    
+    var filteringView: some View {
+        DateFilterSheetView(fromDate: $viewModel.filterFromDate,
+                            toDate: $viewModel.filterToDate,
+                            sortAscending: $viewModel.sortAscending)
+        {
+            viewModel.resetFilters()
+        } confirmAction: {
+            viewModel.applyFilters()
+        }
+    }
+    
     var addEntryToolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
@@ -146,6 +177,15 @@ extension HistoryView {
             .tint(.primary)
             .accessibilityIdentifier(Identifier.addEntryButton.rawValue)
         } // END OF TOOBAR ITEM
+    }
+    
+    var filterToolbar: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Image(systemName: "line.3.horizontal.decrease.circle")
+                .onTapGesture {
+                    isShowingFiltering.toggle()
+                }
+        }
     }
     
     var navigationToolbar: some ToolbarContent {
@@ -159,15 +199,6 @@ extension HistoryView {
                 Label("Settings", systemImage: "gearshape.fill")
             }
             .tint(.primary)
-        }
-    }
-    
-    var searchBar: some View {
-        Section {
-            HStack {
-                TextField("", text: .constant(String()), prompt: Text("Search"))
-                Image(systemName: "calendar")
-            }
         }
     }
     

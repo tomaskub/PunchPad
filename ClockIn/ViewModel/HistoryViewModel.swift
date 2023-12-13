@@ -16,8 +16,13 @@ class HistoryViewModel: ObservableObject {
     
     @Published var groupedEntries: [[Entry]] = []
     
+    @Published var filterFromDate: Date = Date()
+    @Published var filterToDate: Date = Date()
+    @Published var sortAscending: Bool = false
+    @Published var isSortingActive: Bool = false
+    
     private var periodService: ChartPeriodService = .init(calendar: .current)
-    private var sizeOfChunk: Int = 15
+    private var sizeOfChunk: Int?
     private var settingsStore: SettingsStore
     private var maximumOvertimeInSeconds: Int {
         settingsStore.maximumOvertimeAllowedInSeconds
@@ -27,14 +32,20 @@ class HistoryViewModel: ObservableObject {
     }
     private var subscriptions: Set<AnyCancellable> = .init()
     
-    init(dataManager: DataManager, settingsStore: SettingsStore) {
+    init(dataManager: DataManager, settingsStore: SettingsStore, sizeOfChunk: Int? = 15) {
         self.dataManager = dataManager
         self.settingsStore = settingsStore
+        self.sizeOfChunk = sizeOfChunk
+        
         dataManager.objectWillChange.sink(receiveValue: { [weak self] _ in
             self?.objectWillChange.send()
         }).store(in: &subscriptions)
         
         self.$groupedEntries
+            .filter({ [weak self] _ in
+                guard let self else { return false }
+                return !self.isSortingActive
+            })
             .map { [weak self] array in
                 guard let self,
                       let lastEntry = array.last?.last else { return false }
@@ -79,12 +90,31 @@ class HistoryViewModel: ObservableObject {
 
 //MARK: POPULATE LIST DATA
 extension HistoryViewModel {
+    func resetFilters() {
+        isSortingActive = false
+        groupedEntries = loadInitialEntries()
+    }
+    
+    func applyFilters() {
+        isSortingActive = true
+        let startDate = Calendar.current.startOfDay(for: filterFromDate)
+        let finishDate = Calendar.current.startOfDay(for: filterToDate)
+        guard let entries = dataManager.fetch(from: startDate,
+                                              to: finishDate,
+                                              ascendingOrder: sortAscending) else {
+            groupedEntries = []
+            return
+        }
+        groupedEntries = groupEntriesByYearMonth(entries)
+    }
+    
     func loadInitialEntries() -> [[Entry]] {
         guard let entries = dataManager.fetch(from: nil, to: nil, fetchLimit: sizeOfChunk) else { return [[]] }
         return groupEntriesByYearMonth(entries)
     }
     
     func loadMoreItems() {
+        guard isSortingActive == false else { return }
         paginationState = .isLoading
         
         guard let lastDateEntry = groupedEntries.last?.last else {
