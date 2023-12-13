@@ -16,7 +16,7 @@ struct Entry: Identifiable, Hashable {
     var workTimeInSeconds: Int
     var overTimeInSeconds: Int
     var maximumOvertimeAllowedInSeconds: Int
-    var standardWorktimeAllowedInSeconds: Int
+    var standardWorktimeInSeconds: Int
     var grossPayPerMonth: Int
     var calculatedNetPay: Double?
     
@@ -25,7 +25,7 @@ struct Entry: Identifiable, Hashable {
          workTimeInSec: Int,
          overTimeInSec: Int,
          maximumOvertimeAllowedInSeconds: Int,
-         standardWorktimeAllowedInSeconds: Int,
+         standardWorktimeInSeconds: Int,
          grossPayPerMonth: Int,
          calculatedNetPay: Double?) {
         self.id = UUID()
@@ -34,13 +34,13 @@ struct Entry: Identifiable, Hashable {
         self.workTimeInSeconds = workTimeInSec
         self.overTimeInSeconds = overTimeInSec
         self.maximumOvertimeAllowedInSeconds = maximumOvertimeAllowedInSeconds
-        self.standardWorktimeAllowedInSeconds = standardWorktimeAllowedInSeconds
+        self.standardWorktimeInSeconds = standardWorktimeInSeconds
         self.grossPayPerMonth = grossPayPerMonth
         self.calculatedNetPay = calculatedNetPay
     }
     
     ///Initialize with current date for start and finish, work time and overtime is set to 0
     init() {
-        self.init(startDate: Date(), finishDate: Date(), workTimeInSec: 0, overTimeInSec: 0, maximumOvertimeAllowedInSeconds: 0, standardWorktimeAllowedInSeconds: 0, grossPayPerMonth: 0, calculatedNetPay: nil)
+        self.init(startDate: Date(), finishDate: Date(), workTimeInSec: 0, overTimeInSec: 0, maximumOvertimeAllowedInSeconds: 0, standardWorktimeInSeconds: 0, grossPayPerMonth: 0, calculatedNetPay: nil)
     }
 }
