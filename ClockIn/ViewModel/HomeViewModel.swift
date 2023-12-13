@@ -225,9 +225,20 @@ extension HomeViewModel {
         
         let workTimeInSeconds = settingsStore.workTimeInSeconds - countSeconds
         let overTimeInSeconds = countOvertimeSeconds
-        
-        let entryToSave = Entry(startDate: startDate, finishDate: finishDate, workTimeInSec: workTimeInSeconds, overTimeInSec: overTimeInSeconds)
-        
+        let calculatedNetPay: Double? = {
+            if settingsStore.isCalculatingNetPay {
+                let payService = PayManager(dataManager: dataManager, settingsStore: settingsStore)
+                return payService.calculateNetPay(gross: Double(settingsStore.grossPayPerMonth))
+            }
+            return nil
+        }()
+        let entryToSave = Entry(startDate: startDate,
+                                finishDate: finishDate,
+                                workTimeInSec: workTimeInSeconds,
+                                overTimeInSec: overTimeInSeconds,
+                                maximumOvertimeAllowedInSeconds: settingsStore.maximumOvertimeAllowedInSeconds,
+                                standardWorktimeAllowedInSeconds: settingsStore.workTimeInSeconds,
+                                grossPayPerMonth: settingsStore.grossPayPerMonth, calculatedNetPay: calculatedNetPay)
         dataManager.updateAndSave(entry: entryToSave)
     }
 }
