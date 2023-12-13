@@ -159,6 +159,10 @@ extension Entry {
         self.finishDate = entryMO.finishDate
         self.workTimeInSeconds = Int(entryMO.workTime)
         self.overTimeInSeconds = Int(entryMO.overTime)
+        self.maximumOvertimeAllowedInSeconds = Int(entryMO.maximumOvertimeAllowedInSeconds)
+        self.standardWorktimeAllowedInSeconds = Int(entryMO.standardWorktimeAllowedInSeconds)
+        self.grossPayPerMonth = Int(entryMO.grossPayPerMonth)
+        self.calculatedNetPay = Int(entryMO.calculatedNetPay)
     }
 }
 
@@ -282,5 +286,11 @@ extension DataManager {
         entryMO.finishDate = entry.finishDate
         entryMO.workTime = Int64(entry.workTimeInSeconds)
         entryMO.overTime = Int64(entry.overTimeInSeconds)
+        entryMO.maximumOvertimeAllowedInSeconds = Int64(entry.maximumOvertimeAllowedInSeconds)
+        entryMO.standardWorktimeAllowedInSeconds = Int64(entry.standardWorktimeAllowedInSeconds)
+        entryMO.grossPayPerMonth = Int64(entry.grossPayPerMonth)
+        if let netPay = entry.calculatedNetPay {
+            entryMO.calculatedNetPay = Int64(netPay)
+        }
     }
 }
