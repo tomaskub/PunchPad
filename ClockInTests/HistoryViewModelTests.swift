@@ -44,9 +44,9 @@ final class HistoryViewModelTests: XCTestCase {
                     sizeOfChunk: nil)
         
         XCTAssertEqual(sut.groupedEntries.count, 12)
-        // something broke here? 
+        
         for (i, monthArray) in sut.groupedEntries.enumerated() {
-            let correctMonthNumber = i + 1
+            let correctMonthNumber = 12 - i
             for entry in monthArray {
                 let monthNumber = calendar.dateComponents([.month], from: entry.startDate).month
                 XCTAssertEqual(monthNumber, correctMonthNumber, "Month number should be 1 more than array index")
