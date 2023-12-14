@@ -43,9 +43,9 @@ final class StatisticsViewModelTests: XCTestCase {
             let startOfTheMonth = Calendar.current.date(from: components)!
             return Calendar.current.range(of: .day, in: .month, for: startOfTheMonth)!.count
         }()
-        
+        sut.chartTimeRange = .month
         let result = sut.entriesForChart
-        XCTAssert(result.count == correctValue, "There should be 7 objects in the array")
+        XCTAssert(result.count == correctValue, "There should be objects in the array")
     }
     
     func test_createPlaceholderEntries() {
