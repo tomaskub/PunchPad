@@ -237,7 +237,7 @@ extension HomeViewModel {
                                 workTimeInSec: workTimeInSeconds,
                                 overTimeInSec: overTimeInSeconds,
                                 maximumOvertimeAllowedInSeconds: settingsStore.maximumOvertimeAllowedInSeconds,
-                                standardWorktimeAllowedInSeconds: settingsStore.workTimeInSeconds,
+                                standardWorktimeInSeconds: settingsStore.workTimeInSeconds,
                                 grossPayPerMonth: settingsStore.grossPayPerMonth, calculatedNetPay: calculatedNetPay)
         dataManager.updateAndSave(entry: entryToSave)
     }

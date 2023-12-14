@@ -142,7 +142,7 @@ class DataManager: NSObject, ObservableObject {
         entry.overTime = Int64(1 * 1800)
         entry.workTime = 8 * 3600
         entry.maximumOvertimeAllowedInSeconds = 5 * 3600
-        entry.standardWorktimeAllowedInSeconds = 8 * 3600
+        entry.standardWorktimeInSeconds = 8 * 3600
         entry.grossPayPerMonth = 10000
         saveContext()
     }
@@ -173,7 +173,7 @@ extension Entry {
         self.workTimeInSeconds = Int(entryMO.workTime)
         self.overTimeInSeconds = Int(entryMO.overTime)
         self.maximumOvertimeAllowedInSeconds = Int(entryMO.maximumOvertimeAllowedInSeconds)
-        self.standardWorktimeAllowedInSeconds = Int(entryMO.standardWorktimeAllowedInSeconds)
+        self.standardWorktimeInSeconds = Int(entryMO.standardWorktimeInSeconds)
         self.grossPayPerMonth = Int(entryMO.grossPayPerMonth)
         self.calculatedNetPay = Double(entryMO.calculatedNetPay)
     }
@@ -300,10 +300,10 @@ extension DataManager {
         entryMO.workTime = Int64(entry.workTimeInSeconds)
         entryMO.overTime = Int64(entry.overTimeInSeconds)
         entryMO.maximumOvertimeAllowedInSeconds = Int64(entry.maximumOvertimeAllowedInSeconds)
-        entryMO.standardWorktimeAllowedInSeconds = Int64(entry.standardWorktimeAllowedInSeconds)
+        entryMO.standardWorktimeInSeconds = Int64(entry.standardWorktimeInSeconds)
         entryMO.grossPayPerMonth = Int64(entry.grossPayPerMonth)
         if let netPay = entry.calculatedNetPay {
-            entryMO.calculatedNetPay = Int64(netPay)
+            entryMO.calculatedNetPay = Double(netPay)
         }
     }
 }

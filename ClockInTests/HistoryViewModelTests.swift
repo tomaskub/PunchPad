@@ -44,11 +44,12 @@ final class HistoryViewModelTests: XCTestCase {
                     sizeOfChunk: nil)
         
         XCTAssertEqual(sut.groupedEntries.count, 12)
+        // something broke here? 
         for (i, monthArray) in sut.groupedEntries.enumerated() {
             let correctMonthNumber = i + 1
             for entry in monthArray {
                 let monthNumber = calendar.dateComponents([.month], from: entry.startDate).month
-                XCTAssertEqual(correctMonthNumber, correctMonthNumber, "Month number should be 1 more than array index")
+                XCTAssertEqual(monthNumber, correctMonthNumber, "Month number should be 1 more than array index")
             }
         }
     }
@@ -142,23 +143,33 @@ final class HistoryViewModelTests: XCTestCase {
         XCTAssertEqual(sut.groupedEntries.flatMap({ $0 }).count, chunkSize, "Number of entries should be equal to two times chunk size")
         
     }
+    // this is ok to fail for now
+    //TODO: REMOVE THE FUNCTIONS AND COVERT TO GET PROPERTIES IN ENTRY
     func testConvertOvertimeToFraction_for2hours30minutes() {
         let startDate = Calendar.current.date(byAdding: .hour, value: -7 , to: Date())!
         let finishDate = Calendar.current.date(byAdding: .hour, value: 2 , to: Date())!
-        let entry = Entry(startDate: startDate, finishDate: finishDate, workTimeInSec: 8 * 3600, overTimeInSec: Int(2.5 * 3600))
+        let entry = Entry(startDate: startDate, finishDate: finishDate, workTimeInSec: 8 * 3600, overTimeInSec: Int(2.5 * 3600),
+                          maximumOvertimeAllowedInSeconds: 5*3600,
+                          standardWorktimeInSeconds: 8*3600,
+                          grossPayPerMonth: 10000,
+                          calculatedNetPay: nil)
         
         let result = sut.convertOvertimeToFraction(entry: entry)
         
         XCTAssertTrue(result == 0.5, "Results should be 0.5")
     }
-    
+    //TODO: REMOVE THE FUNCTION AND CONVERT TO GET PROPERTY IN ENTRY
     func testConvertWorkTimeToFraction_for4hours() {
         let startDate = Calendar.current.date(byAdding: .hour, value: -7 , to: Date())!
         let finishDate = Calendar.current.date(byAdding: .hour, value: 2 , to: Date())!
         let entry = Entry(startDate: startDate,
                           finishDate: finishDate,
                           workTimeInSec: 4 * 3600,
-                          overTimeInSec: 0)
+                          overTimeInSec: 0,
+                          maximumOvertimeAllowedInSeconds: 5*3600,
+                          standardWorktimeInSeconds: 8*3600,
+                          grossPayPerMonth: 10000,
+                          calculatedNetPay: nil)
         
         let result = sut.convertWorkTimeToFraction(entry: entry)
         

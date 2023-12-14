@@ -58,7 +58,11 @@ final class PayManagerTests: XCTestCase {
                 startDate:  Calendar.current.date(byAdding: .hour, value: 8, to: date)!,
                 finishDate: Calendar.current.date(byAdding: .hour, value: 16, to: date)!,
                 workTimeInSec: 8 * 3600,
-                overTimeInSec: 0)
+                overTimeInSec: 0,
+                maximumOvertimeAllowedInSeconds: 5*3600,
+                standardWorktimeInSeconds: 8*3600,
+                grossPayPerMonth: 10000,
+                calculatedNetPay: nil)
             DataManager.testing.updateAndSave(entry: entry)
         }
         
