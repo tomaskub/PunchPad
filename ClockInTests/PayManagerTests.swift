@@ -20,27 +20,27 @@ final class PayManagerTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
+        DataManager.testing.deleteAll()
         sut = nil
     }
     
     func testGetNumberOfWorkingDays() {
         
-        let formatter = Date.FormatStyle()
-            .year(.defaultDigits)
-            .month(.wide)
-            .day(.defaultDigits)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM d, yyyy"
         let dateString = "April 16, 2023"
         
-        do {
-            let date = try formatter.parse(dateString)
-            
-            let numberOfDays = sut.getNumberOfWorkingDays(inMonthOfDate: date)
-            
-            XCTAssert(numberOfDays == 20, "Number of working days should be 20" )
-            
-        } catch {
-            XCTFail(error.localizedDescription)
+        
+        guard let date = formatter.date(from: dateString) else {
+            XCTFail("Failed to build date from given string")
+            return
         }
+        
+        let numberOfDays = sut.getNumberOfWorkingDays(inMonthOfDate: date)
+        
+        XCTAssert(numberOfDays == 20, "Number of working days should be 20" )
+        
+        
         
     }
     func testCalculateGrossPay_whenNoDateIsGiven() {
