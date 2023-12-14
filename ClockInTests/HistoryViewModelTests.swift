@@ -25,6 +25,7 @@ final class HistoryViewModelTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         sut = nil
+        container.dataManager.deleteAll()
         container = nil
     }
     
@@ -116,6 +117,7 @@ final class HistoryViewModelTests: XCTestCase {
         XCTAssertEqual(sut.groupedEntries.flatMap({ $0 }).count, 5, "There should be 5 entries")
         
     }
+    
     func test_resetFilters() {
         sut = nil
         let calendar = Calendar.current
