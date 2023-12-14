@@ -211,9 +211,9 @@ extension ChartPeriodServiceTests {
     func test_advancingPeriodForWeek() throws {
         // Given
         guard let inputStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 13)),
-              let inputFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 19)),
+              let inputFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 20)),
               let expectedStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 20)),
-              let expectedFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 26)) else {
+              let expectedFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 27)) else {
                 XCTFail("Failed to generate input and predicted output dates")
                 return
             }
@@ -231,9 +231,9 @@ extension ChartPeriodServiceTests {
     func test_advancingPeriodForMonth() throws {
         // Given
         guard let inputStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 10, day: 1)),
-              let inputFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 10, day: 31)),
+              let inputFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 1)),
               let expectedStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 1)),
-              let expectedFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 30)) else {
+              let expectedFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 12, day: 1)) else {
                 XCTFail("Failed to generate input and predicted output dates")
                 return
             }
@@ -251,9 +251,9 @@ extension ChartPeriodServiceTests {
     func test_advancingPeriodForYear() throws {
         // Given
         guard let inputStartDate = Calendar.current.date(from: DateComponents(year: 2022, month: 1, day: 1)),
-              let inputFinishDate = Calendar.current.date(from: DateComponents(year: 2022, month: 12, day: 31)),
+              let inputFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 1, day: 1)),
               let expectedStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 1, day: 1)),
-              let expectedFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 12, day: 31)) else {
+              let expectedFinishDate = Calendar.current.date(from: DateComponents(year: 2024, month: 1, day: 1)) else {
                 XCTFail("Failed to generate input and predicted output dates")
                 return
             }
