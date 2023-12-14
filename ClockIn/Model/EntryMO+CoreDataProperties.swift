@@ -22,7 +22,7 @@ extension EntryMO {
     @NSManaged public var workTime: Int64
     @NSManaged public var id: UUID
     @NSManaged public var maximumOvertimeAllowedInSeconds: Int64
-    @NSManaged public var standardWorktimeAllowedInSeconds: Int64
+    @NSManaged public var standardWorktimeInSeconds: Int64
     @NSManaged public var grossPayPerMonth: Int64
     @NSManaged public var calculatedNetPay: Double
 }

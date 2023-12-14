@@ -5,7 +5,7 @@
         <attribute name="finishDate" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="grossPayPerMonth" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="maximumOvertimeAllowedInSecond" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="maximumOvertimeAllowedInSeconds" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="overTime" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="standardWorktimeInSeconds" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="startDate" attributeType="Date" usesScalarValueType="NO"/>
