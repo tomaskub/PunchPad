@@ -22,6 +22,10 @@ final class ChartPeriodServiceTests: XCTestCase {
 
 //MARK: TEST FOR GENERATING PERIOD
 extension ChartPeriodServiceTests {
+    //NOTE ON DATE GENERATION IN TESTS
+    /*
+     Period service returns start of the day dates - hence, the finish of the period is a start of the next day to encompass whole day before
+     */
     func test_generatePeriod_forMonth() throws {
         // Given
         let inputDate = {
@@ -33,7 +37,7 @@ extension ChartPeriodServiceTests {
             return Calendar.current.date(from: dateComponents)
         }()
         let finishDate = {
-            let dateComponents = DateComponents(year: 2023, month: 11, day: 30)
+            let dateComponents = DateComponents(year: 2023, month: 12, day: 1)
             return Calendar.current.date(from: dateComponents)
         }()
         guard let inputDate, let startDate, let finishDate else {
@@ -61,7 +65,7 @@ extension ChartPeriodServiceTests {
             return Calendar.current.date(from: dateComponents)
         }()
         let finishDate = {
-            let dateComponents = DateComponents(year: 2023, month: 11, day: 26)
+            let dateComponents = DateComponents(year: 2023, month: 11, day: 27)
             return Calendar.current.date(from: dateComponents)
         }()
         guard let inputDate, let startDate, let finishDate else {
@@ -89,7 +93,7 @@ extension ChartPeriodServiceTests {
             return Calendar.current.date(from: dateComponents)
         }()
         let finishDate = {
-            let dateComponents = DateComponents(year: 2023, month: 12, day: 31)
+            let dateComponents = DateComponents(year: 2024, month: 1, day: 1)
             return Calendar.current.date(from: dateComponents)
         }()
         guard let inputDate, let startDate, let finishDate else {
