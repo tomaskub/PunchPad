@@ -12,10 +12,12 @@ import CoreData
 final class PayManagerTests: XCTestCase {
 
     var sut: PayManager!
-    
+    var container: Container!
     override func setUp() {
         super.setUp()
-        sut = .init(dataManager: DataManager.testing, settingsStore: SettingsStore())
+        container = Container()
+        sut = .init(dataManager: container.dataManager,
+                    settingsStore: container.settingsStore)
     }
 
     override func tearDown() {
@@ -39,10 +41,8 @@ final class PayManagerTests: XCTestCase {
         let numberOfDays = sut.getNumberOfWorkingDays(inMonthOfDate: date)
         
         XCTAssert(numberOfDays == 20, "Number of working days should be 20" )
-        
-        
-        
     }
+    
     func testCalculateGrossPay_whenNoDateIsGiven() {
         //Add entries to memory
         let components = Calendar.current.dateComponents([.month, .year], from: Date())
@@ -61,7 +61,7 @@ final class PayManagerTests: XCTestCase {
                 overTimeInSec: 0,
                 maximumOvertimeAllowedInSeconds: 5*3600,
                 standardWorktimeInSeconds: 8*3600,
-                grossPayPerMonth: 10000,
+                grossPayPerMonth: container.settingsStore.grossPayPerMonth,
                 calculatedNetPay: nil)
             DataManager.testing.updateAndSave(entry: entry)
         }
