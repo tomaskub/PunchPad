@@ -7,8 +7,8 @@
 
 import Foundation
 import Combine
+
 class PayManager: ObservableObject {
-    
     private var dataManager: DataManager
     private var settingsStore: SettingsStore
     private var grossPayPerMonth: Double
@@ -68,29 +68,49 @@ class PayManager: ObservableObject {
         self.grossPayPredicted = calculatePredictedGrossPay()
         self.netPayPredicted = calculateNetPay(gross: grossPayPredicted)
     }
-    
-    
-    ///Calculate net pay based on gross pay given, using standard polish taxation for work contract
-    /// - Parameters:
-    /// - gross - the gross pay to be taxed as a Double
-    ///
-    func calculateNetPay(gross: Double) -> Double {
-        
-        let skladkaEmerytalna = 0.0976 * gross
-        let skladkaRentowa = 0.015 * gross
-        let skladkaChorobowa = 0.0245 * gross
-        let skladkaWypoczynkowa = 0.0132 * gross
-        let sumOfSkladka = skladkaEmerytalna + skladkaRentowa + skladkaChorobowa + skladkaWypoczynkowa
-        let skladkaZdrowotna = (gross - sumOfSkladka) * 0.09
-        var podatekDochodowy = 0.12 * (gross - sumOfSkladka - 300)//- 300
-        if podatekDochodowy < 0 {
-            podatekDochodowy = 0
+}
+//MARK: CALENDAR FUNCTIONS
+extension PayManager {
+    func getNumberOfWorkingDays(inMonthOfDate date: Date = Date()) -> Int {
+        let components = Calendar.current.dateComponents([.month, .year], from: date)
+        let startOfTheMonth = Calendar.current.date(from: components)!
+        let numberOfDays = Calendar.current.range(of: .day, in: .month, for: startOfTheMonth)!.count
+        let daysInMonth = Array(0..<numberOfDays).map { i in
+            Calendar.current.date(byAdding: .day, value: i, to: startOfTheMonth)!
         }
-        let netPay = gross - podatekDochodowy - skladkaZdrowotna - sumOfSkladka
-        
-        return netPay
+        let workDays = daysInMonth.filter({!Calendar.current.isDateInWeekend($0)})
+        return workDays.count
     }
     
+    func getNumberOfWorkingDaysPassed(till date: Date = Date()) -> Int {
+        // calculate how many working days already passed
+        let components = Calendar.current.dateComponents([.month, .year], from: date)
+        let startOfTheMonth = Calendar.current.date(from: components)!
+        
+        guard let numberOfDays = Calendar.current.dateComponents([.day], from: startOfTheMonth, to: date).day else { return 0 }
+        
+        let daysPassed = Array(0..<numberOfDays).map { i in
+            Calendar.current.date(byAdding: .day, value: i, to: startOfTheMonth)!
+        }
+        let workDaysPassed = daysPassed.filter({ !Calendar.current.isDateInWeekend($0) })
+        
+        return workDaysPassed.count
+    }
+}
+
+//MARK: GROSS PAY FUNCTIONS
+extension PayManager {
+    func calculatePredictedGrossPay() -> Double {
+        
+        let numberOfWorkingDays = getNumberOfWorkingDays()
+        let numberOfWorkingDaysPassed = getNumberOfWorkingDaysPassed()
+        
+        let grossToDate = calculateGrossPay()
+        
+        let multiplier: Double = Double(numberOfWorkingDays) / Double(numberOfWorkingDaysPassed)
+        
+        return grossToDate * multiplier
+    }
     /// Calculate gross pay based on the saved entries in the time span given. If either of parameters is nil, gross pay for this month will be calculated
     func calculateGrossPay(from: Date? = nil, to: Date? = nil) -> Double {
         var sumAllTimeWorkedInSec = Int()
@@ -121,42 +141,27 @@ class PayManager: ObservableObject {
         let numberOfWorkHours = Double(getNumberOfWorkingDays() * 8)
         return grossPayPerMonth / numberOfWorkHours
     }
-    
-    func getNumberOfWorkingDays(inMonthOfDate date: Date = Date()) -> Int {
-        let components = Calendar.current.dateComponents([.month, .year], from: date)
-        let startOfTheMonth = Calendar.current.date(from: components)!
-        let numberOfDays = Calendar.current.range(of: .day, in: .month, for: startOfTheMonth)!.count
-        let daysInMonth = Array(0..<numberOfDays).map { i in
-            Calendar.current.date(byAdding: .day, value: i, to: startOfTheMonth)!
+}
+
+//MARK: NET PAY FUNCTIONS
+extension PayManager {
+    ///Calculate net pay based on gross pay given, using standard polish taxation for work contract
+    /// - Parameters:
+    /// - gross - the gross pay to be taxed as a Double
+    /// - Returns: net pay calculated
+    func calculateNetPay(gross: Double) -> Double {
+        let skladkaEmerytalna = 0.0976 * gross
+        let skladkaRentowa = 0.015 * gross
+        let skladkaChorobowa = 0.0245 * gross
+        let skladkaWypoczynkowa = 0.0132 * gross
+        let sumOfSkladka = skladkaEmerytalna + skladkaRentowa + skladkaChorobowa + skladkaWypoczynkowa
+        let skladkaZdrowotna = (gross - sumOfSkladka) * 0.09
+        var podatekDochodowy = 0.12 * (gross - sumOfSkladka - 300)
+        if podatekDochodowy < 0 {
+            podatekDochodowy = 0
         }
-        let workDays = daysInMonth.filter({!Calendar.current.isDateInWeekend($0)})
-        return workDays.count
-    }
-    
-    func getNumberOfWorkingDaysPassed(till date: Date = Date()) -> Int {
-        // calculate how many working days already passed
-        let components = Calendar.current.dateComponents([.month, .year], from: date)
-        let startOfTheMonth = Calendar.current.date(from: components)!
+        let netPay = gross - podatekDochodowy - skladkaZdrowotna - sumOfSkladka
         
-        guard let numberOfDays = Calendar.current.dateComponents([.day], from: startOfTheMonth, to: date).day else { return 0 }
-        
-        let daysPassed = Array(0..<numberOfDays).map { i in
-            Calendar.current.date(byAdding: .day, value: i, to: startOfTheMonth)!
-        }
-        let workDaysPassed = daysPassed.filter({ !Calendar.current.isDateInWeekend($0) })
-        
-        return workDaysPassed.count
-    }
-    
-    func calculatePredictedGrossPay() -> Double {
-        
-        let numberOfWorkingDays = getNumberOfWorkingDays()
-        let numberOfWorkingDaysPassed = getNumberOfWorkingDaysPassed()
-        
-        let grossToDate = calculateGrossPay()
-        
-        let multiplier: Double = Double(numberOfWorkingDays) / Double(numberOfWorkingDaysPassed)
-        
-        return grossToDate * multiplier
+        return netPay
     }
 }
