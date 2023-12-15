@@ -20,7 +20,14 @@ struct Entry: Identifiable, Hashable {
     var grossPayPerMonth: Int
     var calculatedNetPay: Double?
     
-    init(startDate: Date, 
+    var overtimeFraction: CGFloat {
+        CGFloat(overTimeInSeconds) / CGFloat(maximumOvertimeAllowedInSeconds)
+    }
+    var worktimeFraction: CGFloat {
+        CGFloat(workTimeInSeconds) / CGFloat(standardWorktimeInSeconds)
+    }
+    
+    init(startDate: Date,
          finishDate: Date,
          workTimeInSec: Int,
          overTimeInSec: Int,
