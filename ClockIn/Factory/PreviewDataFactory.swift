@@ -51,7 +51,11 @@ struct PreviewDataFactory {
             startDate: startDate,
             finishDate: finishDate,
             workTimeInSec: workTime,
-            overTimeInSec: overtime
+            overTimeInSec: overtime,
+            maximumOvertimeAllowedInSeconds: 5*3600,
+            standardWorktimeInSeconds: 8*3600,
+            grossPayPerMonth: 10000,
+            calculatedNetPay: nil
         )
     }
 }

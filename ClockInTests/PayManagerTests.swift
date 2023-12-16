@@ -12,37 +12,37 @@ import CoreData
 final class PayManagerTests: XCTestCase {
 
     var sut: PayManager!
-    
+    var container: Container!
     override func setUp() {
         super.setUp()
-        sut = .init(dataManager: DataManager.testing, settingsStore: SettingsStore())
+        container = Container()
+        sut = .init(dataManager: container.dataManager,
+                    settingsStore: container.settingsStore)
     }
 
     override func tearDown() {
         super.tearDown()
+        DataManager.testing.deleteAll()
         sut = nil
     }
     
     func testGetNumberOfWorkingDays() {
         
-        let formatter = Date.FormatStyle()
-            .year(.defaultDigits)
-            .month(.wide)
-            .day(.defaultDigits)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM d, yyyy"
         let dateString = "April 16, 2023"
         
-        do {
-            let date = try formatter.parse(dateString)
-            
-            let numberOfDays = sut.getNumberOfWorkingDays(inMonthOfDate: date)
-            
-            XCTAssert(numberOfDays == 20, "Number of working days should be 20" )
-            
-        } catch {
-            XCTFail(error.localizedDescription)
+        
+        guard let date = formatter.date(from: dateString) else {
+            XCTFail("Failed to build date from given string")
+            return
         }
         
+        let numberOfDays = sut.getNumberOfWorkingDays(inMonthOfDate: date)
+        
+        XCTAssert(numberOfDays == 20, "Number of working days should be 20" )
     }
+    
     func testCalculateGrossPay_whenNoDateIsGiven() {
         //Add entries to memory
         let components = Calendar.current.dateComponents([.month, .year], from: Date())
@@ -58,7 +58,11 @@ final class PayManagerTests: XCTestCase {
                 startDate:  Calendar.current.date(byAdding: .hour, value: 8, to: date)!,
                 finishDate: Calendar.current.date(byAdding: .hour, value: 16, to: date)!,
                 workTimeInSec: 8 * 3600,
-                overTimeInSec: 0)
+                overTimeInSec: 0,
+                maximumOvertimeAllowedInSeconds: 5*3600,
+                standardWorktimeInSeconds: 8*3600,
+                grossPayPerMonth: container.settingsStore.grossPayPerMonth,
+                calculatedNetPay: nil)
             DataManager.testing.updateAndSave(entry: entry)
         }
         

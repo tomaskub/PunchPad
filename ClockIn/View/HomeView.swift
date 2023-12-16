@@ -133,6 +133,7 @@ struct Home_Previews: PreviewProvider {
             NavigationView {
                 HomeView(viewModel: HomeViewModel(dataManager: container.dataManager,
                                                   settingsStore: container.settingsStore,
+                                                  payManager: container.payManager,
                                                   timerProvider: container.timerProvider))
             }
             .environmentObject(Container())

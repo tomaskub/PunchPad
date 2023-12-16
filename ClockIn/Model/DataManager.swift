@@ -9,7 +9,7 @@ import Foundation
 import CoreData
 
 enum DataManagerType {
-case normal, preview, testing
+    case normal, preview, testing
 }
 
 class DataManager: NSObject, ObservableObject {
@@ -19,6 +19,7 @@ class DataManager: NSObject, ObservableObject {
     static let preview = DataManager(type: .preview)
     static let testing = DataManager(type: .testing)
     
+    //TODO: THINK ABOUT REMOVING THE VALUES TO NOT GET ALL OF THE OBJECTS AT THE START OF THE APPLICATION
     //MARK: PUBLISHED PROPERTIES
     @Published var entryArray = [Entry]()
     @Published var entryThisMonth = [Entry]()
@@ -43,16 +44,6 @@ class DataManager: NSObject, ObservableObject {
         case .testing:
             let persistanceController = PersistanceController(inMemory: true)
             self.managedObjectContext = persistanceController.viewContext
-                var dateComponents = Calendar.current.dateComponents([.month,.year], from: Date())
-                dateComponents.day = 1
-                let date = Calendar.current.date(from: dateComponents)!
-                let entry = EntryMO(context: managedObjectContext)
-                entry.id = UUID()
-                entry.startDate = Calendar.current.date(byAdding: .hour, value: 6, to: date)!
-                entry.finishDate = Calendar.current.date(byAdding: DateComponents(hour: 14, minute: 30), to: date)!
-                entry.overTime = Int64(1 * 1800)
-                entry.workTime = 8 * 3600
-            
         }
         
         //Build FRCs
@@ -75,16 +66,23 @@ class DataManager: NSObject, ObservableObject {
         let compPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [startPredicate, finishPredicate])
         fetchRequestThisMonth.predicate = compPredicate
         
-        entryThisMonthFetchResultsController = NSFetchedResultsController(fetchRequest: fetchRequestThisMonth,
-                                                                          managedObjectContext: managedObjectContext,
-                                                                          sectionNameKeyPath: nil,
-                                                                          cacheName: nil)
+        entryThisMonthFetchResultsController = NSFetchedResultsController(
+            fetchRequest: fetchRequestThisMonth,
+            managedObjectContext: managedObjectContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
         
         
         super.init()
         
-        if type == .preview {
+        switch type {
+        case .normal:
+            break
+        case .preview:
             addPreviewDataFromFactory()
+        case .testing:
+            addTestingData()
         }
         
         entryFetchResultsController.delegate = self
@@ -133,11 +131,26 @@ class DataManager: NSObject, ObservableObject {
             self.updateAndSave(entry: entry)
         }
     }
+    
+    private func addTestingData() {
+        var dateComponents = Calendar.current.dateComponents([.month,.year], from: Date())
+        dateComponents.day = 1
+        let date = Calendar.current.date(from: dateComponents)!
+        let entry = EntryMO(context: managedObjectContext)
+        entry.id = UUID()
+        entry.startDate = Calendar.current.date(byAdding: .hour, value: 6, to: date)!
+        entry.finishDate = Calendar.current.date(byAdding: DateComponents(hour: 14, minute: 30), to: date)!
+        entry.overTime = Int64(1 * 1800)
+        entry.workTime = 8 * 3600
+        entry.maximumOvertimeAllowedInSeconds = 5 * 3600
+        entry.standardWorktimeInSeconds = 8 * 3600
+        entry.grossPayPerMonth = 10000
+        saveContext()
+    }
 }
 extension DataManager: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        if controller == entryFetchResultsController { 
-            //controller.fetchRequest.predicate == nil {
+        if controller == entryFetchResultsController {
             guard let fetchedObjects = controller.fetchedObjects else { return }
             let newEntries = fetchedObjects.compactMap({$0 as? EntryMO})
             self.entryArray = newEntries.map { Entry(entryMO: $0) }
@@ -159,6 +172,10 @@ extension Entry {
         self.finishDate = entryMO.finishDate
         self.workTimeInSeconds = Int(entryMO.workTime)
         self.overTimeInSeconds = Int(entryMO.overTime)
+        self.maximumOvertimeAllowedInSeconds = Int(entryMO.maximumOvertimeAllowedInSeconds)
+        self.standardWorktimeInSeconds = Int(entryMO.standardWorktimeInSeconds)
+        self.grossPayPerMonth = Int(entryMO.grossPayPerMonth)
+        self.calculatedNetPay = Double(entryMO.calculatedNetPay)
     }
 }
 
@@ -282,5 +299,11 @@ extension DataManager {
         entryMO.finishDate = entry.finishDate
         entryMO.workTime = Int64(entry.workTimeInSeconds)
         entryMO.overTime = Int64(entry.overTimeInSeconds)
+        entryMO.maximumOvertimeAllowedInSeconds = Int64(entry.maximumOvertimeAllowedInSeconds)
+        entryMO.standardWorktimeInSeconds = Int64(entry.standardWorktimeInSeconds)
+        entryMO.grossPayPerMonth = Int64(entry.grossPayPerMonth)
+        if let netPay = entry.calculatedNetPay {
+            entryMO.calculatedNetPay = Double(netPay)
+        }
     }
 }

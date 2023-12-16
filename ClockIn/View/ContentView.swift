@@ -17,7 +17,8 @@ struct ContentView: View {
             NavigationView {
                 HomeView(viewModel:
                             HomeViewModel(dataManager: container.dataManager,
-                                          settingsStore: container.settingsStore,
+                                          settingsStore: container.settingsStore, 
+                                          payManager: container.payManager,
                                           timerProvider: container.timerProvider)
                 )
             }

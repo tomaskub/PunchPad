@@ -146,10 +146,14 @@ struct EditSheetView_Previews: PreviewProvider {
             let startOfDay = Calendar.current.startOfDay(for: Date())
             let startDate = Calendar.current.date(byAdding: .hour, value: 6, to: startOfDay)!
             let finishDate = Calendar.current.date(byAdding: .hour, value: 9, to: startDate)!
-            return Entry(startDate: startDate,
+            return Entry(startDate: startDate, 
                          finishDate: finishDate,
                          workTimeInSec: 8*3600,
-                         overTimeInSec: 1*3600)
+                         overTimeInSec: 3600,
+                         maximumOvertimeAllowedInSeconds: 5*3600,
+                         standardWorktimeInSeconds: 8*3600,
+                         grossPayPerMonth: 10000,
+                         calculatedNetPay: nil)
         }()
         var body: some View {
             ZStack {

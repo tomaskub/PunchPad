@@ -13,6 +13,7 @@ class HomeViewModel: NSObject, ObservableObject {
     //MARK: DATA MANAGING PROPERTIES
     private var dataManager: DataManager
     private var settingsStore: SettingsStore
+    private var payManager: PayManager
     private var startDate: Date?
     private var finishDate: Date?
     private var subscriptions = Set<AnyCancellable>()
@@ -58,10 +59,11 @@ class HomeViewModel: NSObject, ObservableObject {
     //MARK: BACKGROUND TIMER HANDLING PROPERTIES - PRIVATE
     private var appDidEnterBackgroundDate: Date?
     
-    init(dataManager: DataManager, settingsStore: SettingsStore ,timerProvider: Timer.Type) {
+    init(dataManager: DataManager, settingsStore: SettingsStore, payManager: PayManager ,timerProvider: Timer.Type) {
         self.dataManager = dataManager
         self.settingsStore = settingsStore
         self.timerProvider = timerProvider
+        self.payManager = payManager
         super.init()
         countSeconds = settingsStore.workTimeInSeconds
         updateTimerStringValue()
@@ -109,9 +111,8 @@ extension HomeViewModel {
     }
     
 }
-    
 
-    //MARK: TIMER START & STOP FUNCTIONS
+//MARK: TIMER START & STOP FUNCTIONS
 extension HomeViewModel {
 
     func startTimer()  {
@@ -144,7 +145,7 @@ extension HomeViewModel {
     }
 }
    
-    //MARK: TIMER UPDATE FUNCTIONS
+//MARK: TIMER UPDATE FUNCTIONS
 extension HomeViewModel {
     
     /**
@@ -225,9 +226,16 @@ extension HomeViewModel {
         
         let workTimeInSeconds = settingsStore.workTimeInSeconds - countSeconds
         let overTimeInSeconds = countOvertimeSeconds
-        
-        let entryToSave = Entry(startDate: startDate, finishDate: finishDate, workTimeInSec: workTimeInSeconds, overTimeInSec: overTimeInSeconds)
-        
+        let calculatedNetPay: Double? = {
+            settingsStore.isCalculatingNetPay ? payManager.calculateNetPay(gross: Double(settingsStore.grossPayPerMonth)) : nil
+        }()
+        let entryToSave = Entry(startDate: startDate,
+                                finishDate: finishDate,
+                                workTimeInSec: workTimeInSeconds,
+                                overTimeInSec: overTimeInSeconds,
+                                maximumOvertimeAllowedInSeconds: settingsStore.maximumOvertimeAllowedInSeconds,
+                                standardWorktimeInSeconds: settingsStore.workTimeInSeconds,
+                                grossPayPerMonth: settingsStore.grossPayPerMonth, calculatedNetPay: calculatedNetPay)
         dataManager.updateAndSave(entry: entryToSave)
     }
 }

@@ -19,6 +19,7 @@ final class HomeViewModelModelTests: XCTestCase {
         self.settingsStore = SettingsStore()
         sut = .init(HomeViewModel(dataManager: DataManager.testing,
                                   settingsStore: settingsStore,
+                                  payManager: PayManager(dataManager: DataManager.testing, settingsStore: settingsStore),
                                   timerProvider: MockTimer.self)
         )
     }
