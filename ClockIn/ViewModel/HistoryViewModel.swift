@@ -9,36 +9,32 @@ import Foundation
 import CoreData
 import Combine
 
-class HistoryViewModel: ObservableObject {
+final class HistoryViewModel: ObservableObject {
     @Published private var dataManager: DataManager
+    private var settingsStore: SettingsStore
+    private var periodService: ChartPeriodService = .init(calendar: .current)
+    private var sizeOfChunk: Int?
+    private var subscriptions: Set<AnyCancellable> = .init()
+    @Published var groupedEntries: [[Entry]] = []
     @Published var paginationState: PaginationState = .idle
     @Published var isMoreEntriesAvaliable: Bool = false
-    
-    @Published var groupedEntries: [[Entry]] = []
-    
     @Published var filterFromDate: Date = Date()
     @Published var filterToDate: Date = Date()
     @Published var sortAscending: Bool = false
     @Published var isSortingActive: Bool = false
-    
-    private var periodService: ChartPeriodService = .init(calendar: .current)
-    private var sizeOfChunk: Int?
-    private var settingsStore: SettingsStore
-    private var maximumOvertimeInSeconds: Int {
-        settingsStore.maximumOvertimeAllowedInSeconds
-    }
-    private var scheduledWorkTimeInSeconds: Int {
-        settingsStore.workTimeInSeconds
-    }
-    private var subscriptions: Set<AnyCancellable> = .init()
     
     init(dataManager: DataManager, settingsStore: SettingsStore, sizeOfChunk: Int? = 15) {
         self.dataManager = dataManager
         self.settingsStore = settingsStore
         self.sizeOfChunk = sizeOfChunk
         
-        dataManager.objectWillChange.sink(receiveValue: { [weak self] _ in
-            self?.objectWillChange.send()
+        dataManager.objectWillChange.sink(receiveValue: { [weak self] value in
+            guard let self else { return }
+            if !self.isSortingActive {
+                self.groupedEntries = self.loadInitialEntries()
+            } else {
+                self.applyFilters()
+            }
         }).store(in: &subscriptions)
         
         self.$groupedEntries
