@@ -103,8 +103,8 @@ extension HistoryView {
                 VStack {
                     HistoryRowViewPrototype(startDate: entry.startDate,
                                             finishDate: entry.finishDate,
-                                            workTime: viewModel.convertWorkTimeToFraction(entry: entry),
-                                            overTime: viewModel.convertOvertimeToFraction(entry: entry),
+                                            workTime: entry.worktimeFraction,
+                                            overTime: entry.overtimeFraction,
                                             timeWorked: makeTimeWorkedLabel(entry))
                     .accessibilityIdentifier(Identifier.entryRow.rawValue)
                     .onLongPressGesture(perform: {

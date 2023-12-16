@@ -62,23 +62,6 @@ class HistoryViewModel: ObservableObject {
         self.groupedEntries = loadInitialEntries()
     }
     
-    
-    ///Converts overtime value in seconds to a fraction of the current user maximum for overtime
-    ///Value return is between 0 and 1
-    ///If the maximum overtime value retrived is equal to 0, the return will be 1
-    func convertOvertimeToFraction(entry: Entry) -> CGFloat {
-        guard maximumOvertimeInSeconds != 0 else { return 1 }
-        return CGFloat(entry.overTimeInSeconds) / CGFloat(maximumOvertimeInSeconds)
-    }
-    
-    ///Converts work time value in seconds to a fraction of the current user normal workday
-    ///Value returned is between 0 and 1
-    ///If the maximum overtime value retrived is equal to 0, the return will be 1
-    func convertWorkTimeToFraction(entry: Entry) -> CGFloat {
-        guard scheduledWorkTimeInSeconds != 0 else { return 1 }
-        return CGFloat(entry.workTimeInSeconds) / CGFloat(scheduledWorkTimeInSeconds)
-    }
-    
     func deleteEntry(entry: Entry) {
         dataManager.delete(entry: entry)
     }
