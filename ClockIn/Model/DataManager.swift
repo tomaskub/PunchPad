@@ -9,7 +9,7 @@ import Foundation
 import CoreData
 
 enum DataManagerType {
-case normal, preview, testing
+    case normal, preview, testing
 }
 
 class DataManager: NSObject, ObservableObject {
@@ -19,6 +19,7 @@ class DataManager: NSObject, ObservableObject {
     static let preview = DataManager(type: .preview)
     static let testing = DataManager(type: .testing)
     
+    //TODO: THINK ABOUT REMOVING THE VALUES TO NOT GET ALL OF THE OBJECTS AT THE START OF THE APPLICATION
     //MARK: PUBLISHED PROPERTIES
     @Published var entryArray = [Entry]()
     @Published var entryThisMonth = [Entry]()
@@ -149,8 +150,7 @@ class DataManager: NSObject, ObservableObject {
 }
 extension DataManager: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        if controller == entryFetchResultsController { 
-            //controller.fetchRequest.predicate == nil {
+        if controller == entryFetchResultsController {
             guard let fetchedObjects = controller.fetchedObjects else { return }
             let newEntries = fetchedObjects.compactMap({$0 as? EntryMO})
             self.entryArray = newEntries.map { Entry(entryMO: $0) }
