@@ -16,6 +16,13 @@ struct EditSheetView: View {
     @State private var isShowingOverrideControls: Bool = false
     let regularTimeText: String = "Regular time"
     let overtimeText: String = "Overtime"
+    let titleText: String = "Edit entry"
+    let timeIndicatorText: String = "work time"
+    let overrideSettingsHeaderText: String = "Override settings"
+    let startDateText: String = "Start date"
+    let finishDateText: String = "Finish date"
+    let saveButtonText: String = "save"
+    let cancelButtonText: String = "cancel"
     var body: some View {
         ZStack {
             background
@@ -87,7 +94,7 @@ struct EditSheetView: View {
                 .onTapGesture {
                     isShowingOverrideControls.toggle()
                 }
-            Text("Override settings")
+            Text(overrideSettingsHeaderText)
             Spacer()
         }
     }
@@ -113,23 +120,9 @@ struct EditSheetView: View {
     var editControls: some View {
         HStack {
             Button {
-                viewModel.saveEntry()
                 dismiss()
             } label: {
-                Text("SAVE")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(width: 140, height: 38)
-                    .background {
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(.blue)
-                    } // END OF BACKGROUND
-            } // END OF BUTTON
-            .accessibilityIdentifier(Identifier.Button.save.rawValue)
-            Button {
-                dismiss()
-            } label: {
-                Text("CANCEL")
+                Text(cancelButtonText.uppercased())
                     .font(.headline)
                     .foregroundColor(.white)
                     .frame(width: 140, height: 38)
@@ -139,14 +132,28 @@ struct EditSheetView: View {
                     } // END OF BACKGROUND
             } // END OF BUTTON
             .accessibilityIdentifier(Identifier.Button.cancel.rawValue)
+            Button {
+                viewModel.saveEntry()
+                dismiss()
+            } label: {
+                Text(saveButtonText.uppercased())
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .frame(width: 140, height: 38)
+                    .background {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(.blue)
+                    } // END OF BACKGROUND
+            } // END OF BUTTON
+            .accessibilityIdentifier(Identifier.Button.save.rawValue)
         } // END OF HSTACK
     }
     
     var dateControls: some View {
         Group {
-            DatePicker("Start date", selection: $viewModel.startDate)
+            DatePicker(startDateText, selection: $viewModel.startDate)
                 .accessibilityIdentifier(Identifier.DatePicker.startDate.rawValue)
-            DatePicker("Finish date:", selection: $viewModel.finishDate)
+            DatePicker(finishDateText, selection: $viewModel.finishDate)
                 .accessibilityIdentifier(Identifier.DatePicker.finishDate.rawValue)
         }
     }
@@ -157,7 +164,7 @@ struct EditSheetView: View {
             RingView(startPoint: .constant(0), endPoint: $viewModel.overTimeFraction, ringColor: .green, ringWidth: 5, displayPointer: false)
                 .padding(10)
             VStack {
-                Text("work time".uppercased())
+                Text(timeIndicatorText.uppercased())
                     .font(.caption)
                 Text("04:20")
                     .font(.largeTitle)
@@ -167,7 +174,7 @@ struct EditSheetView: View {
     }
     
     var title: some View {
-        Text("Edit Entry")
+        Text(titleText)
             .font(.title)
     }
     
