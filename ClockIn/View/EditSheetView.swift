@@ -28,10 +28,14 @@ struct EditSheetView: View {
                 ScrollView {
                     timeIndicator
                         .padding(.bottom)
-                    regularTimeLabel
-                    overtimeLabel
-                        .padding(.bottom)
+                    HStack {
+                        regularTimeLabel
+                        Spacer()
+                        overtimeLabel
+                    }
+                    Divider()
                     dateControls
+                    Divider()
                     overrideSettingsHeader
                         .padding(.top)
                     if isShowingOverrideControls {
@@ -87,34 +91,25 @@ struct EditSheetView: View {
             Spacer()
         }
     }
+    
     var overtimeLabel: some View {
-        HStack {
-            Text(overtimeText)
-            Spacer()
-            Text(viewModel.overTimerString)
-                .accessibilityIdentifier(Identifier.Label.overtimeValue.rawValue)
-//                .padding(EdgeInsets(top: 4, leading: 28, bottom: 4, trailing: 28))
-//                .background {
-//                    Rectangle()
-//                        .cornerRadius(8)
-//                    .opacity(0.05)
-//                } // END OF BACKGROUND
-        } // END OF HSTACK
+            HStack {
+                Text(String(viewModel.overTimerString))
+                    .font(.title)
+                Text(overtimeText)
+                    .font(.caption)
+            }
     }
+    
     var regularTimeLabel: some View {
-        HStack {
-            Text(regularTimeText)
-            Spacer()
-            Text(viewModel.workTimeString)
-                .accessibilityIdentifier(Identifier.Label.timeWorkedValue.rawValue)
-//                .padding(EdgeInsets(top: 4, leading: 28, bottom: 4, trailing: 28))
-//                .background {
-//                    Rectangle()
-//                        .cornerRadius(8)
-//                    .opacity(0.05)
-//                } // END OF BACKGROUND
-        } // END OF HSTACK
+            HStack {
+                Text(String(viewModel.workTimeString))
+                    .font(.title)
+                Text(regularTimeText)
+                    .font(.caption)
+            }
     }
+    
     var editControls: some View {
         HStack {
             Button {
@@ -146,6 +141,7 @@ struct EditSheetView: View {
             .accessibilityIdentifier(Identifier.Button.cancel.rawValue)
         } // END OF HSTACK
     }
+    
     var dateControls: some View {
         Group {
             DatePicker("Start date", selection: $viewModel.startDate)
@@ -154,6 +150,7 @@ struct EditSheetView: View {
                 .accessibilityIdentifier(Identifier.DatePicker.finishDate.rawValue)
         }
     }
+    
     var timeIndicator: some View {
         ZStack {
             RingView(startPoint: .constant(0),endPoint: $viewModel.workTimeFraction, ringColor: .blue, ringWidth: 5,displayPointer: false)
@@ -168,10 +165,12 @@ struct EditSheetView: View {
         }  // END OF ZSTACK
         .frame(width: 250, height: 250)
     }
+    
     var title: some View {
         Text("Edit Entry")
             .font(.title)
     }
+    
     var background: some View {
         BackgroundFactory.buildSolidColor(.gray.opacity(0.1))
     }
