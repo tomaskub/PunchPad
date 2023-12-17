@@ -13,15 +13,19 @@ struct EditSheetView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) var dismiss
     @StateObject var viewModel: EditSheetViewModel
-    @State private var isShowingOverrideControls: Bool = true//false
+    @State private var isShowingOverrideControls: Bool = false
     let regularTimeText: String = "Regular time"
     let overtimeText: String = "Overtime"
     var body: some View {
         ZStack {
             background
-            //TODO: REPLACE WITH SCROLLING VIEW
-            VStack {
-                title
+            
+            ScrollView {
+                HStack {
+                    title
+                    Spacer()
+                }
+                .padding(.top)
                 timeIndicator
                 .padding(.bottom)
                 regularTimeLabel
@@ -46,12 +50,12 @@ struct EditSheetView: View {
     } // END OF BODY
     var overrideSettingsHeader: some View {
         HStack {
-            Text("Override settings")
-            Spacer()
             Image(systemName: "chevron.down")
                 .onTapGesture {
                     isShowingOverrideControls.toggle()
                 }
+            Text("Override settings")
+            Spacer()
         }
     }
     var overtimeLabel: some View {
@@ -126,6 +130,12 @@ struct EditSheetView: View {
             RingView(startPoint: .constant(0),endPoint: $viewModel.workTimeFraction, ringColor: .blue, ringWidth: 5,displayPointer: false)
             RingView(startPoint: .constant(0), endPoint: $viewModel.overTimeFraction, ringColor: .green, ringWidth: 5, displayPointer: false)
                 .padding(10)
+            VStack {
+                Text("work time".uppercased())
+                    .font(.caption)
+                Text("04:20")
+                    .font(.largeTitle)
+            }
         }  // END OF ZSTACK
         .frame(width: 250, height: 250)
     }
