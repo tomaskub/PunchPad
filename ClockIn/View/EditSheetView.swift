@@ -19,28 +19,24 @@ struct EditSheetView: View {
     var body: some View {
         ZStack {
             background
-            
-            ScrollView {
+            VStack {
                 HStack {
                     title
                     Spacer()
                 }
                 .padding(.top)
-                timeIndicator
-                .padding(.bottom)
-                regularTimeLabel
-                overtimeLabel
-                    .padding(.bottom)
-                dateControls
-                overrideSettingsHeader
-                    .padding(.top)
-                if isShowingOverrideControls {
-                    Rectangle()
-                        .foregroundColor(.accentColor)
-                        .frame(height: 250)
-                        .overlay {
-                            Text("Override placeholder")
-                        }
+                ScrollView {
+                    timeIndicator
+                        .padding(.bottom)
+                    regularTimeLabel
+                    overtimeLabel
+                        .padding(.bottom)
+                    dateControls
+                    overrideSettingsHeader
+                        .padding(.top)
+                    if isShowingOverrideControls {
+                        overrideControls
+                    }
                 }
                 editControls
                 .padding(.top)
@@ -48,6 +44,39 @@ struct EditSheetView: View {
             .padding(.horizontal, 32)
         } // END OF ZSTACK
     } // END OF BODY
+    
+    var overrideControls: some View {
+    //TODO: REPLACE PLACEHOLDERS WITH REAL VALUES
+        Grid(alignment: .leading) {
+            // row for overtime allowed in seconds
+            GridRow {
+                Text("Maximum overtime")
+                TextField("Hours",
+                          text: .constant("5 hours"))
+                .textFieldStyle(.roundedBorder)
+            }
+            // row for standard worktime
+            GridRow {
+                Text("Standard work time")
+                TextField("Hours",
+                          text: .constant("8 hours"))
+                .textFieldStyle(.roundedBorder)
+            }
+            // row for gross pay per mont
+            GridRow {
+                Text("Gross pay per month")
+                TextField("PLN",
+                          text: .constant("10900"))
+                .textFieldStyle(.roundedBorder)
+            }
+            // row for calculated net pay
+            Toggle(isOn: .constant(true)) {
+                Text("Calculate net pay")
+            }
+            .padding(.trailing)
+        }
+    }
+    
     var overrideSettingsHeader: some View {
         HStack {
             Image(systemName: "chevron.down")
