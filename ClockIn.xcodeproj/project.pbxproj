@@ -139,7 +139,7 @@
 		D684A3892AF6F54B00511E0D /* ButtonFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonFactory.swift; sourceTree = "<group>"; };
 		D68732012B2243C9008CB0D4 /* PaginationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationState.swift; sourceTree = "<group>"; };
 		D6AB736F29F562E600D5DE82 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
-		D6B2BDF12B27810700CB4FA7 /* DateFilterSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DateFilterSheetView.swift; path = ClockIn/View/DateFilterSheetView.swift; sourceTree = "<group>"; };
+		D6B2BDF12B27810700CB4FA7 /* DateFilterSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFilterSheetView.swift; sourceTree = "<group>"; };
 		D6B2BDF32B27C22400CB4FA7 /* EmptyPlaceholderModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyPlaceholderModifier.swift; sourceTree = "<group>"; };
 		D6B3B2652ABA237800101A1F /* SettingsViewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewUITests.swift; sourceTree = "<group>"; };
 		D6B7D1C72B0EB41A00E6F7A8 /* ContentViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewScreen.swift; sourceTree = "<group>"; };
@@ -252,7 +252,6 @@
 		D6C4588729D229200069D89B = {
 			isa = PBXGroup;
 			children = (
-				D6B2BDF12B27810700CB4FA7 /* DateFilterSheetView.swift */,
 				D6C4589229D229210069D89B /* ClockIn */,
 				D6C458A329D229230069D89B /* ClockInTests */,
 				D6C458AD29D229230069D89B /* ClockInUITests */,
@@ -332,6 +331,7 @@
 				D684A3862AF6F3C700511E0D /* OboardingViews */,
 				D6C4589529D229210069D89B /* ContentView.swift */,
 				D6C458C229D2DE2D0069D89B /* HomeView.swift */,
+				D6B2BDF12B27810700CB4FA7 /* DateFilterSheetView.swift */,
 				D66750E929D713C900757F17 /* HistoryView.swift */,
 				D66750EB29D71C8300757F17 /* HistoryRow.swift */,
 				D6C458C629D36C050069D89B /* RingView.swift */,
