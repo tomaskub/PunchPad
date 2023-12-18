@@ -45,6 +45,7 @@ final class EditSheetViewModel: ObservableObject {
         }
     }
     @Published var shouldDisplayFullDates: Bool = false
+    @Published var totalTimeWorked: String
     @Published var workTimeString: String
     @Published var overTimerString: String
     @Published var workTimeFraction: CGFloat
@@ -60,6 +61,7 @@ final class EditSheetViewModel: ObservableObject {
         self.workTimeInSeconds = entry.workTimeInSeconds
         self.overTimeInSeconds = entry.overTimeInSeconds
         
+        self.totalTimeWorked = String()
         self.workTimeString = String()
         self.overTimerString = String()
 
@@ -68,7 +70,7 @@ final class EditSheetViewModel: ObservableObject {
         
         self.workTimeString = generateHoursString(value: workTimeInSeconds)
         self.overTimerString = generateHoursString(value: overTimeInSeconds)
-        
+        self.totalTimeWorked = generateHoursString(value: workTimeInSeconds + overTimeInSeconds)
         
     }
     

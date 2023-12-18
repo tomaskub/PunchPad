@@ -197,6 +197,7 @@ struct EditSheetView: View {
             }
         }
     }
+    
     var timeIndicator: some View {
         ZStack {
             RingView(startPoint: .constant(0),endPoint: $viewModel.workTimeFraction, ringColor: .blue, ringWidth: 5,displayPointer: false)
@@ -205,7 +206,7 @@ struct EditSheetView: View {
             VStack {
                 Text(timeIndicatorText.uppercased())
                     .font(.caption)
-                Text("04:20")
+                Text(viewModel.totalTimeWorked)
                     .font(.largeTitle)
             }
         }  // END OF ZSTACK
@@ -229,11 +230,13 @@ struct EditSheetView_Previews: PreviewProvider {
         private let entry: Entry = {
             let startOfDay = Calendar.current.startOfDay(for: Date())
             let startDate = Calendar.current.date(byAdding: .hour, value: 6, to: startOfDay)!
-            let finishDate = Calendar.current.date(byAdding: .hour, value: 9, to: startDate)!
-            return Entry(startDate: startDate, 
+            let finishDate = Calendar.current.date(byAdding: .minute,
+                                                   value: 9 * 60 + 30,
+                                                   to: startDate)!
+            return Entry(startDate: startDate,
                          finishDate: finishDate,
                          workTimeInSec: 8*3600,
-                         overTimeInSec: 3600,
+                         overTimeInSec: 3600 + 1800,
                          maximumOvertimeAllowedInSeconds: 5*3600,
                          standardWorktimeInSeconds: 8*3600,
                          grossPayPerMonth: 10000,
