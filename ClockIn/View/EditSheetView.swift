@@ -19,8 +19,8 @@ struct EditSheetView: View {
     let titleText: String = "Edit entry"
     let timeIndicatorText: String = "work time"
     let overrideSettingsHeaderText: String = "Override settings"
-    let startDateText: String = "Start date"
-    let finishDateText: String = "Finish date"
+    let startDateText: String = "Start"
+    let finishDateText: String = "Finish"
     let saveButtonText: String = "save"
     let cancelButtonText: String = "cancel"
     var body: some View {
@@ -41,7 +41,7 @@ struct EditSheetView: View {
                         overtimeLabel
                     }
                     Divider()
-                    dateControls
+                    dateControls()
                     Divider()
                     overrideSettingsHeader
                         .padding(.top)
@@ -149,7 +149,16 @@ struct EditSheetView: View {
         } // END OF HSTACK
     }
     
-    var dateControls: some View {
+    @ViewBuilder
+    func dateControls() -> some View {
+        if !viewModel.shouldDisplayFullDates {
+            sameDayDateControls
+        } else {
+            diffDayDateControls
+        }
+    }
+    
+    var diffDayDateControls: some View {
         Group {
             DatePicker(startDateText, selection: $viewModel.startDate)
                 .accessibilityIdentifier(Identifier.DatePicker.startDate.rawValue)
@@ -158,6 +167,36 @@ struct EditSheetView: View {
         }
     }
     
+    var sameDayDateControls: some View {
+        Group {
+            DatePicker(selection: $viewModel.startDate,
+                       displayedComponents: .date) {
+                Image(systemName: "calendar")
+            }
+                       .fixedSize()
+            HStack {
+                VStack(alignment: .leading) {
+                    Text(startDateText)
+                        .font(.caption)
+                    
+                    DatePicker(selection: $viewModel.startDate,
+                               displayedComponents: .hourAndMinute) {
+                        Image(systemName: "clock")
+                    }
+                               .fixedSize()
+                }
+                VStack(alignment: .leading) {
+                    Text(finishDateText)
+                        .font(.caption)
+                    DatePicker(selection: $viewModel.finishDate,
+                               displayedComponents: .hourAndMinute) {
+                        Image(systemName: "clock")
+                    }
+                               .fixedSize()
+                }
+            }
+        }
+    }
     var timeIndicator: some View {
         ZStack {
             RingView(startPoint: .constant(0),endPoint: $viewModel.workTimeFraction, ringColor: .blue, ringWidth: 5,displayPointer: false)

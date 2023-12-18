@@ -44,7 +44,7 @@ final class EditSheetViewModel: ObservableObject {
             overTimeFraction = CGFloat(overTimeInSeconds) / CGFloat(overTimeAllowed)
         }
     }
-    
+    @Published var shouldDisplayFullDates: Bool = false
     @Published var workTimeString: String
     @Published var overTimerString: String
     @Published var workTimeFraction: CGFloat
