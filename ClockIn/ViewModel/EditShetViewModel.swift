@@ -18,6 +18,13 @@ final class EditSheetViewModel: ObservableObject {
     private var overTimeAllowed: Int {
         settingsStore.maximumOvertimeAllowedInSeconds
     }
+    let dateComponentFormatter = { 
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .positional
+        formatter.allowedUnits = [.hour, .minute]
+        formatter.zeroFormattingBehavior = [.pad]
+        return formatter
+    }()
     
     @Published var startDate: Date {
         didSet {
@@ -32,18 +39,18 @@ final class EditSheetViewModel: ObservableObject {
     
     private var workTimeInSeconds: Int {
         didSet {
-            workTimeString = generateHoursString(value: workTimeInSeconds)
+            workTimeString = generateTimeIntervalLabel(value: TimeInterval(workTimeInSeconds))
             workTimeFraction = CGFloat(workTimeInSeconds) / CGFloat(workTimeAllowed)
         }
     }
     
-    
     private var overTimeInSeconds: Int {
         didSet {
-            overTimerString = generateHoursString(value: overTimeInSeconds)
+            overTimerString = generateTimeIntervalLabel(value: TimeInterval(overTimeInSeconds))
             overTimeFraction = CGFloat(overTimeInSeconds) / CGFloat(overTimeAllowed)
         }
     }
+    
     @Published var shouldDisplayFullDates: Bool = false
     @Published var totalTimeWorked: String
     @Published var workTimeString: String
@@ -68,9 +75,9 @@ final class EditSheetViewModel: ObservableObject {
         self.workTimeFraction = CGFloat(workTimeInSeconds) / CGFloat(settingsStore.workTimeInSeconds)
         self.overTimeFraction = CGFloat(overTimeInSeconds) / CGFloat(settingsStore.maximumOvertimeAllowedInSeconds)
         
-        self.workTimeString = generateHoursString(value: workTimeInSeconds)
-        self.overTimerString = generateHoursString(value: overTimeInSeconds)
-        self.totalTimeWorked = generateHoursString(value: workTimeInSeconds + overTimeInSeconds)
+        self.workTimeString = generateTimeIntervalLabel(value: TimeInterval(workTimeInSeconds))
+        self.overTimerString = generateTimeIntervalLabel(value: TimeInterval(overTimeInSeconds))
+        self.totalTimeWorked = generateTimeIntervalLabel(value: TimeInterval(workTimeInSeconds + overTimeInSeconds))
         
     }
     
@@ -87,9 +94,8 @@ final class EditSheetViewModel: ObservableObject {
         }
     }
     
-    private func generateHoursString(value: Int) -> String {
-        let resultValue: Double = Double(value) / 3600
-        return String(format: "%.2f", resultValue)
+    private func generateTimeIntervalLabel(value: TimeInterval) -> String {
+        return dateComponentFormatter.string(from: value)!
     }
     
     func saveEntry() {
