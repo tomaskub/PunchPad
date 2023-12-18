@@ -8,12 +8,11 @@
 import SwiftUI
 
 struct EditSheetView: View {
-    
-    private typealias Identifier = ScreenIdentifier.EditSheetView
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) var dismiss
     @StateObject var viewModel: EditSheetViewModel
     @State private var isShowingOverrideControls: Bool = false
+    private typealias Identifier = ScreenIdentifier.EditSheetView
     let regularTimeText: String = "Regular time"
     let overtimeText: String = "Overtime"
     let titleText: String = "Edit entry"
@@ -23,6 +22,7 @@ struct EditSheetView: View {
     let finishDateText: String = "Finish"
     let saveButtonText: String = "save"
     let cancelButtonText: String = "cancel"
+    
     var body: some View {
         ZStack {
             background
@@ -55,7 +55,22 @@ struct EditSheetView: View {
             .padding(.horizontal, 32)
         } // END OF ZSTACK
     } // END OF BODY
-    
+} // END OF STRUCT
+
+// MARK: VIEW BUILDERS
+extension EditSheetView {
+    @ViewBuilder
+    func dateControls() -> some View {
+        if !viewModel.shouldDisplayFullDates {
+            sameDayDateControls
+        } else {
+            diffDayDateControls
+        }
+    }
+}
+
+//MARK: OVERRIDE SETTINGS CONTROLS
+extension EditSheetView {
     var overrideControls: some View {
     //TODO: REPLACE PLACEHOLDERS WITH REAL VALUES
         Grid(alignment: .leading) {
@@ -87,77 +102,10 @@ struct EditSheetView: View {
             .padding(.trailing)
         }
     }
-    
-    var overrideSettingsHeader: some View {
-        HStack {
-            Image(systemName: "chevron.down")
-                .onTapGesture {
-                    isShowingOverrideControls.toggle()
-                }
-            Text(overrideSettingsHeaderText)
-            Spacer()
-        }
-    }
-    
-    var overtimeLabel: some View {
-            HStack {
-                Text(String(viewModel.overTimerString))
-                    .font(.title)
-                Text(overtimeText)
-                    .font(.caption)
-            }
-    }
-    
-    var regularTimeLabel: some View {
-            HStack {
-                Text(String(viewModel.workTimeString))
-                    .font(.title)
-                Text(regularTimeText)
-                    .font(.caption)
-            }
-    }
-    
-    var editControls: some View {
-        HStack {
-            Button {
-                dismiss()
-            } label: {
-                Text(cancelButtonText.uppercased())
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(width: 140, height: 38)
-                    .background {
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(.gray)
-                    } // END OF BACKGROUND
-            } // END OF BUTTON
-            .accessibilityIdentifier(Identifier.Button.cancel.rawValue)
-            Button {
-                viewModel.saveEntry()
-                dismiss()
-            } label: {
-                Text(saveButtonText.uppercased())
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(width: 140, height: 38)
-                    .background {
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(.blue)
-                    } // END OF BACKGROUND
-            } // END OF BUTTON
-            .accessibilityIdentifier(Identifier.Button.save.rawValue)
-        } // END OF HSTACK
-    }
-    
-    @ViewBuilder
-    func dateControls() -> some View {
-        if !viewModel.shouldDisplayFullDates {
-            sameDayDateControls
-        } else {
-            diffDayDateControls
-        }
-    }
-    
+}
+
+//MARK: DATE CONTROLS
+extension EditSheetView {
     var diffDayDateControls: some View {
         Group {
             DatePicker(startDateText, selection: $viewModel.startDate)
@@ -197,7 +145,10 @@ struct EditSheetView: View {
             }
         }
     }
-    
+}
+
+//MARK: TIME INDICATOR & LABELS
+extension EditSheetView {
     var timeIndicator: some View {
         ZStack {
             RingView(startPoint: .constant(0),endPoint: $viewModel.workTimeFraction, ringColor: .blue, ringWidth: 5,displayPointer: false)
@@ -213,15 +164,82 @@ struct EditSheetView: View {
         .frame(width: 250, height: 250)
     }
     
+    var overtimeLabel: some View {
+            HStack {
+                Text(String(viewModel.overTimerString))
+                    .font(.title)
+                Text(overtimeText)
+                    .font(.caption)
+            }
+    }
+    
+    var regularTimeLabel: some View {
+            HStack {
+                Text(String(viewModel.workTimeString))
+                    .font(.title)
+                Text(regularTimeText)
+                    .font(.caption)
+            }
+    }
+}
+
+//MARK: STATIC VIEW VAR
+extension EditSheetView {
     var title: some View {
         Text(titleText)
             .font(.title)
     }
     
+    var overrideSettingsHeader: some View {
+        HStack {
+            Image(systemName: "chevron.down")
+                .onTapGesture {
+                    isShowingOverrideControls.toggle()
+                }
+            Text(overrideSettingsHeaderText)
+            Spacer()
+        }
+    }
+    
     var background: some View {
         BackgroundFactory.buildSolidColor(.gray.opacity(0.1))
     }
-} // END OF STRUCT
+}
+
+//MARK: SAVE CONTROLS
+extension EditSheetView {
+    var editControls: some View {
+        HStack {
+            Button {
+                dismiss()
+            } label: {
+                Text(cancelButtonText.uppercased())
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .frame(width: 140, height: 38)
+                    .background {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(.gray)
+                    } // END OF BACKGROUND
+            } // END OF BUTTON
+            .accessibilityIdentifier(Identifier.Button.cancel.rawValue)
+            Button {
+                viewModel.saveEntry()
+                dismiss()
+            } label: {
+                Text(saveButtonText.uppercased())
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .frame(width: 140, height: 38)
+                    .background {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(.blue)
+                    } // END OF BACKGROUND
+            } // END OF BUTTON
+            .accessibilityIdentifier(Identifier.Button.save.rawValue)
+        } // END OF HSTACK
+    }
+}
 
 struct EditSheetView_Previews: PreviewProvider {
     private struct ContainerView: View {
