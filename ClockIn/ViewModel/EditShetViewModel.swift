@@ -7,9 +7,8 @@
 
 import Foundation
 import Combine
-//TODO: CLEAN UP MESS
+
 final class EditSheetViewModel: ObservableObject {
-    
     private var dataManager: DataManager
     private var settingsStore: SettingsStore
     private var entry: Entry
@@ -28,31 +27,19 @@ final class EditSheetViewModel: ObservableObject {
             calculateTime()
         }
     }
-    // placeholder properties created with calculate time? - need to remove side effects or set up as combine pipeline
-    // this cant be get properties since they can be different from the start date&finish date diff
-    @Published var workTimeInSeconds: Int
-    @Published var overTimeInSeconds: Int
-    //think about joining the overtime properties or making it less spaghetti
+    
+    @Published var workTimeInSeconds: TimeInterval
+    @Published var overTimeInSeconds: TimeInterval
     @Published var currentMaximumOvertime: TimeInterval
     @Published var currentStandardWorkTime: TimeInterval
-    // stuff for overriding settings, it now overrides the actual time but let it live
-    @Published var maximumOvertime = (Int(), Int()) {
-        didSet {
-            overTimeInSeconds = maximumOvertime.0 * 3600 + maximumOvertime.1 * 60
-        }
-    }
-    @Published var standardWorkTime = (Int(), Int()) {
-        didSet {
-            workTimeInSeconds = standardWorkTime.0 * 3600 + standardWorkTime.1 * 60
-        }
-    }
+    //TODO: CHANGE TO INT PROPERTY WITH TEXTFIELD NUMBER ONLY
     @Published var grossPayPerMonth = String()
     @Published var calculateNetPay: Bool
     
-    //MARK: GET PROPERTIES USED TO DRAW VIEWS <- MIGHT WANT TO MOVE TO VIEW
     var totalTimeInSeconds: TimeInterval {
         TimeInterval(workTimeInSeconds + overTimeInSeconds)
     }
+    //MARK: GET PROPERTIES USED TO DRAW VIEWS <- MIGHT WANT TO MOVE TO VIEW
     var workTimeFraction: CGFloat {
         CGFloat(workTimeInSeconds) / CGFloat(entry.standardWorktimeInSeconds)
     }
@@ -64,11 +51,11 @@ final class EditSheetViewModel: ObservableObject {
         self.dataManager = dataManager
         self.settingsStore = settingsStore
         self.entry = entry
-        
+        //assign values to draft properties
         self.startDate = entry.startDate
         self.finishDate = entry.finishDate
-        self.workTimeInSeconds = entry.workTimeInSeconds
-        self.overTimeInSeconds = entry.overTimeInSeconds
+        self.workTimeInSeconds = TimeInterval(entry.workTimeInSeconds)
+        self.overTimeInSeconds = TimeInterval(entry.overTimeInSeconds)
         self.currentMaximumOvertime = TimeInterval(entry.maximumOvertimeAllowedInSeconds)
         self.currentStandardWorkTime = TimeInterval(entry.standardWorktimeInSeconds)
         self.grossPayPerMonth = String(entry.grossPayPerMonth)
@@ -81,15 +68,13 @@ final class EditSheetViewModel: ObservableObject {
     
     // calculating time intervals
     private func calculateTime() {
-        let timeInterval = Calendar.current.dateComponents([.second], from: startDate, to: finishDate)
-        if let seconds = timeInterval.second {
-            if seconds <= entry.standardWorktimeInSeconds {
-                workTimeInSeconds = seconds
-                overTimeInSeconds = 0
-            } else {
-                workTimeInSeconds = entry.standardWorktimeInSeconds
-                overTimeInSeconds = seconds - entry.standardWorktimeInSeconds
-            }
+        let interval = DateInterval(start: startDate, end: finishDate)
+        if interval.duration <= currentStandardWorkTime {
+            workTimeInSeconds = interval.duration
+            overTimeInSeconds = 0
+        } else {
+            workTimeInSeconds = currentStandardWorkTime
+            overTimeInSeconds = interval.duration - currentStandardWorkTime
         }
     }
     
@@ -98,8 +83,8 @@ final class EditSheetViewModel: ObservableObject {
         //TODO: ADD SAVING ADDITIONAL OVERRIDE PROPERTIES
         entry.startDate = startDate
         entry.finishDate = finishDate
-        entry.workTimeInSeconds = workTimeInSeconds
-        entry.overTimeInSeconds = overTimeInSeconds
+        entry.workTimeInSeconds = Int(workTimeInSeconds)
+        entry.overTimeInSeconds = Int(overTimeInSeconds)
         
         
         dataManager.updateAndSave(entry: entry)

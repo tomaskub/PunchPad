@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+//TODO: ADD CHECKING FOR BEFORE AND AFTER DATE IN THE PICKERS TO NOT LET CHOOSE A NEGATIVE INTERVAL <- THIS WILL CRASH THE APP
 struct EditSheetView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) var dismiss
@@ -194,7 +195,7 @@ extension EditSheetView {
     
     var overtimeLabel: some View {
             HStack {
-                Text(generateTimeIntervalLabel(value: TimeInterval(viewModel.overTimeInSeconds)))
+                Text(generateTimeIntervalLabel(value: viewModel.overTimeInSeconds))
                     .font(.title)
                 Text(overtimeText)
                     .font(.caption)
@@ -203,7 +204,7 @@ extension EditSheetView {
     
     var regularTimeLabel: some View {
             HStack {
-                Text(generateTimeIntervalLabel(value: TimeInterval(viewModel.workTimeInSeconds)))
+                Text(generateTimeIntervalLabel(value: viewModel.workTimeInSeconds))
                     .font(.title)
                 Text(regularTimeText)
                     .font(.caption)
