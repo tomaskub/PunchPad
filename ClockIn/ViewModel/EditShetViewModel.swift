@@ -6,23 +6,18 @@
 //
 
 import Foundation
+import Combine
 //TODO: CLEAN UP MESS
 final class EditSheetViewModel: ObservableObject {
     
     private var dataManager: DataManager
     private var settingsStore: SettingsStore
     private var entry: Entry
+    // should move to view?
+    @Published var shouldDisplayFullDates: Bool = false
     
-    // Data retrieved from the setting store - should be obsolete
-    private var workTimeAllowed: Int {
-        settingsStore.workTimeInSeconds
-    }
-    private var overTimeAllowed: Int {
-        settingsStore.maximumOvertimeAllowedInSeconds
-    }
-    
-    
-    // placeholder properties
+    //MARK: ENTRY PROPERTIES
+    //TODO: REMOVE DID SET
     @Published var startDate: Date {
         didSet {
             calculateTime()
@@ -34,39 +29,18 @@ final class EditSheetViewModel: ObservableObject {
         }
     }
     // placeholder properties created with calculate time? - need to remove side effects or set up as combine pipeline
-    @Published var workTimeInSeconds: Int {
-        didSet {
-            workTimeFraction = CGFloat(workTimeInSeconds) / CGFloat(workTimeAllowed)
-        }
-    }
-    
-    @Published var overTimeInSeconds: Int {
-        didSet {
-            overTimeFraction = CGFloat(overTimeInSeconds) / CGFloat(overTimeAllowed)
-        }
-    }
-    var totalTimeInSeconds: TimeInterval {
-        TimeInterval(workTimeInSeconds + overTimeInSeconds)
-    }
-    
-    // should move to view?
-    @Published var shouldDisplayFullDates: Bool = false
-    @Published var workTimeFraction: CGFloat = .init()
-    @Published var overTimeFraction: CGFloat = .init()
+    // this cant be get properties since they can be different from the start date&finish date diff
+    @Published var workTimeInSeconds: Int
+    @Published var overTimeInSeconds: Int
     //think about joining the overtime properties or making it less spaghetti
-    var currentMaximumOvertime: TimeInterval {
-        TimeInterval(overTimeInSeconds)
-    }
-    var currentStandardWorkTime: TimeInterval {
-        TimeInterval(workTimeInSeconds)
-    }
+    var currentMaximumOvertime: TimeInterval
+    var currentStandardWorkTime: TimeInterval
     // stuff for overriding settings, it now overrides the actual time but let it live
     @Published var maximumOvertime = (Int(), Int()) {
         didSet {
             overTimeInSeconds = maximumOvertime.0 * 3600 + maximumOvertime.1 * 60
         }
     }
-    
     @Published var standardWorkTime = (Int(), Int()) {
         didSet {
             workTimeInSeconds = standardWorkTime.0 * 3600 + standardWorkTime.1 * 60
@@ -74,7 +48,18 @@ final class EditSheetViewModel: ObservableObject {
     }
     @Published var grossPayPerMonth = String()
     @Published var calculateNetPay: Bool
-    // init
+    
+    //MARK: GET PROPERTIES USED TO DRAW VIEWS <- MIGHT WANT TO MOVE TO VIEW
+    var totalTimeInSeconds: TimeInterval {
+        TimeInterval(workTimeInSeconds + overTimeInSeconds)
+    }
+    var workTimeFraction: CGFloat {
+        CGFloat(workTimeInSeconds) / CGFloat(entry.standardWorktimeInSeconds)
+    }
+    var overTimeFraction: CGFloat {
+        CGFloat(overTimeInSeconds) / CGFloat(entry.maximumOvertimeAllowedInSeconds)
+    }
+    
     init(dataManager: DataManager,  settingsStore: SettingsStore, entry: Entry) {
         self.dataManager = dataManager
         self.settingsStore = settingsStore
@@ -84,38 +69,39 @@ final class EditSheetViewModel: ObservableObject {
         self.finishDate = entry.finishDate
         self.workTimeInSeconds = entry.workTimeInSeconds
         self.overTimeInSeconds = entry.overTimeInSeconds
-        
+        self.currentMaximumOvertime = TimeInterval(entry.maximumOvertimeAllowedInSeconds)
+        self.currentStandardWorkTime = TimeInterval(entry.standardWorktimeInSeconds)
         self.grossPayPerMonth = String(entry.grossPayPerMonth)
         if let _ = entry.calculatedNetPay {
             self.calculateNetPay = true
         } else {
             self.calculateNetPay = false
         }
-
-        self.workTimeFraction = CGFloat(workTimeInSeconds) / CGFloat(settingsStore.workTimeInSeconds)
-        self.overTimeFraction = CGFloat(overTimeInSeconds) / CGFloat(settingsStore.maximumOvertimeAllowedInSeconds)
     }
     
     // calculating time intervals
     private func calculateTime() {
         let timeInterval = Calendar.current.dateComponents([.second], from: startDate, to: finishDate)
         if let seconds = timeInterval.second {
-            if seconds <= workTimeAllowed {
+            if seconds <= entry.standardWorktimeInSeconds {
                 workTimeInSeconds = seconds
                 overTimeInSeconds = 0
             } else {
-                workTimeInSeconds = workTimeAllowed
-                overTimeInSeconds = seconds - workTimeAllowed
+                workTimeInSeconds = entry.standardWorktimeInSeconds
+                overTimeInSeconds = seconds - entry.standardWorktimeInSeconds
             }
         }
     }
     
-    // should stay but needs additional properties
+    
     func saveEntry() {
+        //TODO: ADD SAVING ADDITIONAL OVERRIDE PROPERTIES
         entry.startDate = startDate
         entry.finishDate = finishDate
         entry.workTimeInSeconds = workTimeInSeconds
         entry.overTimeInSeconds = overTimeInSeconds
+        
+        
         dataManager.updateAndSave(entry: entry)
         
     }
