@@ -12,22 +12,10 @@ final class EditSheetViewModel: ObservableObject {
     private var dataManager: DataManager
     private var settingsStore: SettingsStore
     private var entry: Entry
-    // should move to view?
-    @Published var shouldDisplayFullDates: Bool = false
-    
+    private var cancellables: Set<AnyCancellable> = .init()
     //MARK: ENTRY PROPERTIES
-    //TODO: REMOVE DID SET
-    @Published var startDate: Date {
-        didSet {
-            calculateTime()
-        }
-    }
-    @Published var finishDate: Date {
-        didSet {
-            calculateTime()
-        }
-    }
-    
+    @Published var startDate: Date
+    @Published var finishDate: Date
     @Published var workTimeInSeconds: TimeInterval
     @Published var overTimeInSeconds: TimeInterval
     @Published var currentMaximumOvertime: TimeInterval
@@ -40,11 +28,12 @@ final class EditSheetViewModel: ObservableObject {
         TimeInterval(workTimeInSeconds + overTimeInSeconds)
     }
     //MARK: GET PROPERTIES USED TO DRAW VIEWS <- MIGHT WANT TO MOVE TO VIEW
+    @Published var shouldDisplayFullDates: Bool = false
     var workTimeFraction: CGFloat {
-        CGFloat(workTimeInSeconds) / CGFloat(entry.standardWorktimeInSeconds)
+        CGFloat(workTimeInSeconds / currentStandardWorkTime)
     }
     var overTimeFraction: CGFloat {
-        CGFloat(overTimeInSeconds) / CGFloat(entry.maximumOvertimeAllowedInSeconds)
+        CGFloat(overTimeInSeconds / currentMaximumOvertime)
     }
     
     init(dataManager: DataManager,  settingsStore: SettingsStore, entry: Entry) {
@@ -59,11 +48,21 @@ final class EditSheetViewModel: ObservableObject {
         self.currentMaximumOvertime = TimeInterval(entry.maximumOvertimeAllowedInSeconds)
         self.currentStandardWorkTime = TimeInterval(entry.standardWorktimeInSeconds)
         self.grossPayPerMonth = String(entry.grossPayPerMonth)
-        if let _ = entry.calculatedNetPay {
-            self.calculateNetPay = true
-        } else {
-            self.calculateNetPay = false
-        }
+        self.calculateNetPay = entry.calculatedNetPay == nil ? false : true
+        
+        $finishDate
+            .removeDuplicates()
+            .sink { [weak self] date in
+                guard let self else { return }
+                self.calculateTime()
+            }.store(in: &cancellables)
+        
+        $startDate
+            .removeDuplicates()
+            .sink { [weak self] date in
+                guard let self else { return }
+                self.calculateTime()
+            }.store(in: &cancellables)
     }
     
     // calculating time intervals
@@ -77,7 +76,6 @@ final class EditSheetViewModel: ObservableObject {
             overTimeInSeconds = interval.duration - currentStandardWorkTime
         }
     }
-    
     
     func saveEntry() {
         //TODO: ADD SAVING ADDITIONAL OVERRIDE PROPERTIES
