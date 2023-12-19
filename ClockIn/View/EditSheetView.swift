@@ -169,8 +169,18 @@ extension EditSheetView {
 extension EditSheetView {
     var timeIndicator: some View {
         ZStack {
-            RingView(startPoint: .constant(0),endPoint: $viewModel.workTimeFraction, ringColor: .blue, ringWidth: 5,displayPointer: false)
-            RingView(startPoint: .constant(0), endPoint: $viewModel.overTimeFraction, ringColor: .green, ringWidth: 5, displayPointer: false)
+            RingView(startPoint: 0,
+                     endPoint: viewModel.workTimeFraction,
+                     ringColor: .blue,
+                     ringWidth: 5,
+                     displayPointer: false
+            )
+            RingView(startPoint: 0,
+                     endPoint: viewModel.overTimeFraction,
+                     ringColor: .green,
+                     ringWidth: 5,
+                     displayPointer: false
+            )
                 .padding(10)
             VStack {
                 Text(timeIndicatorText.uppercased())
