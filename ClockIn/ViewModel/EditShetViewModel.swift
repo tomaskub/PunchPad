@@ -33,8 +33,8 @@ final class EditSheetViewModel: ObservableObject {
     @Published var workTimeInSeconds: Int
     @Published var overTimeInSeconds: Int
     //think about joining the overtime properties or making it less spaghetti
-    var currentMaximumOvertime: TimeInterval
-    var currentStandardWorkTime: TimeInterval
+    @Published var currentMaximumOvertime: TimeInterval
+    @Published var currentStandardWorkTime: TimeInterval
     // stuff for overriding settings, it now overrides the actual time but let it live
     @Published var maximumOvertime = (Int(), Int()) {
         didSet {

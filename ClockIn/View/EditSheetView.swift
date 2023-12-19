@@ -92,18 +92,18 @@ extension EditSheetView {
 extension EditSheetView {
     var overrideControls: some View {
         Grid(alignment: .leading) {
+            
             GridRow {
                 Text(maximumOvertimeText)
-                TimeIntervalPicker(buttonLabelText: dateComponentFormatter.string(from: viewModel.currentMaximumOvertime) ?? "00:00",
-                                   hourComponent: $viewModel.maximumOvertime.0,
-                                   minuteComponent: $viewModel.maximumOvertime.1
+                TimeIntervalPicker(buttonLabelText: generateTimeIntervalLabel(value: viewModel.currentMaximumOvertime),
+                                   value: $viewModel.currentMaximumOvertime
                 )
             }
             
             GridRow {
                 Text(standardWorkTimeText)
-                TimeIntervalPicker(buttonLabelText: dateComponentFormatter.string(for: viewModel.currentStandardWorkTime) ?? "00:00",
-                                   hourComponent: $viewModel.standardWorkTime.0, minuteComponent: $viewModel.standardWorkTime.1
+                TimeIntervalPicker(buttonLabelText: generateTimeIntervalLabel(value: viewModel.currentStandardWorkTime),
+                                   value: $viewModel.currentStandardWorkTime
                 )
             }
             

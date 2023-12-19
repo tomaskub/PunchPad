@@ -9,9 +9,24 @@ import SwiftUI
 
 struct TimeIntervalPicker: View {
     let buttonLabelText: String
-    @Binding var hourComponent: Int
-    @Binding var minuteComponent: Int
     @State private var isShowingPickers: Bool = false
+    @Binding var value: TimeInterval
+    
+    var hourComponent: Binding<Int> {
+        Binding(get: {
+            Int(self.value) / 3600
+        }, set: { hours in
+            self.value = TimeInterval(hours * 3600 + self.minuteComponent.wrappedValue * 60)
+        })
+    }
+    
+    var minuteComponent: Binding<Int> {
+        Binding(get: {
+            Int(self.value) % 3600 / 60
+        }, set: { minutes in
+            self.value = TimeInterval(self.hourComponent.wrappedValue * 3600 + minutes * 60)
+        })
+    }
     
     var body: some View {
         Button {
@@ -26,7 +41,7 @@ struct TimeIntervalPicker: View {
         }
         .popover(isPresented: $isShowingPickers) {
             HStack {
-                Picker(selection: $hourComponent) {
+                Picker(selection: hourComponent) {
                     ForEach(0..<24, id: \.self) { i in
                         Text("\(i)").tag(i)
                     }
@@ -35,7 +50,7 @@ struct TimeIntervalPicker: View {
                 }
                 .frame(width: 100)
                 .pickerStyle(.wheel)
-                Picker(selection: $minuteComponent) {
+                Picker(selection: minuteComponent) {
                     ForEach(0..<60, id: \.self) { i in
                         Text("\(i)").tag(i)
                     }
@@ -53,7 +68,7 @@ struct TimeIntervalPicker: View {
 
 #Preview {
     TimeIntervalPicker(buttonLabelText: "01:30",
-                       hourComponent: .constant(1),
-                       minuteComponent: .constant(15)
+                       value: .constant(TimeInterval(integerLiteral: 1800 * 3)
+                                       )
     )
 }
