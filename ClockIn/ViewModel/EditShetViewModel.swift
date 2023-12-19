@@ -21,14 +21,6 @@ final class EditSheetViewModel: ObservableObject {
         settingsStore.maximumOvertimeAllowedInSeconds
     }
     
-    // formatter should move to view since its responsible for view
-    let dateComponentFormatter = {
-        let formatter = DateComponentsFormatter()
-        formatter.unitsStyle = .positional
-        formatter.allowedUnits = [.hour, .minute]
-        formatter.zeroFormattingBehavior = [.pad]
-        return formatter
-    }()
     
     // placeholder properties
     @Published var startDate: Date {
@@ -42,27 +34,25 @@ final class EditSheetViewModel: ObservableObject {
         }
     }
     // placeholder properties created with calculate time? - need to remove side effects or set up as combine pipeline
-    private var workTimeInSeconds: Int {
+    @Published var workTimeInSeconds: Int {
         didSet {
-            workTimeString = generateTimeIntervalLabel(value: TimeInterval(workTimeInSeconds))
             workTimeFraction = CGFloat(workTimeInSeconds) / CGFloat(workTimeAllowed)
         }
     }
     
-    private var overTimeInSeconds: Int {
+    @Published var overTimeInSeconds: Int {
         didSet {
-            overTimerString = generateTimeIntervalLabel(value: TimeInterval(overTimeInSeconds))
             overTimeFraction = CGFloat(overTimeInSeconds) / CGFloat(overTimeAllowed)
         }
+    }
+    var totalTimeInSeconds: TimeInterval {
+        TimeInterval(workTimeInSeconds + overTimeInSeconds)
     }
     
     // should move to view?
     @Published var shouldDisplayFullDates: Bool = false
-    @Published var totalTimeWorked: String
-    @Published var workTimeString: String
-    @Published var overTimerString: String
-    @Published var workTimeFraction: CGFloat
-    @Published var overTimeFraction: CGFloat
+    @Published var workTimeFraction: CGFloat = .init()
+    @Published var overTimeFraction: CGFloat = .init()
     //think about joining the overtime properties or making it less spaghetti
     var currentMaximumOvertime: TimeInterval {
         TimeInterval(overTimeInSeconds)
@@ -101,17 +91,9 @@ final class EditSheetViewModel: ObservableObject {
         } else {
             self.calculateNetPay = false
         }
-        self.totalTimeWorked = String()
-        self.workTimeString = String()
-        self.overTimerString = String()
 
         self.workTimeFraction = CGFloat(workTimeInSeconds) / CGFloat(settingsStore.workTimeInSeconds)
         self.overTimeFraction = CGFloat(overTimeInSeconds) / CGFloat(settingsStore.maximumOvertimeAllowedInSeconds)
-        
-        self.workTimeString = generateTimeIntervalLabel(value: TimeInterval(workTimeInSeconds))
-        self.overTimerString = generateTimeIntervalLabel(value: TimeInterval(overTimeInSeconds))
-        self.totalTimeWorked = generateTimeIntervalLabel(value: TimeInterval(workTimeInSeconds + overTimeInSeconds))
-        
     }
     
     // calculating time intervals
@@ -126,10 +108,6 @@ final class EditSheetViewModel: ObservableObject {
                 overTimeInSeconds = seconds - workTimeAllowed
             }
         }
-    }
-    // move to view
-    private func generateTimeIntervalLabel(value: TimeInterval) -> String {
-        return dateComponentFormatter.string(from: value)!
     }
     
     // should stay but needs additional properties

@@ -26,7 +26,22 @@ struct EditSheetView: View {
     let standardWorkTimeText = "Standard work time"
     let grossPayPerMonthText = "Gross pay per month"
     let calculateNetPayText = "Calculate net pay"
+    //MARK: DATE FORMATTER
+    let dateComponentFormatter = {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .positional
+        formatter.allowedUnits = [.hour, .minute]
+        formatter.zeroFormattingBehavior = [.pad]
+        return formatter
+    }()
     
+    private func generateTimeIntervalLabel(value: TimeInterval) -> String {
+        return dateComponentFormatter.string(from: value) ?? "00:00"
+    }
+} // END OF STRUCT
+
+//MARK: BODY
+extension EditSheetView {
     var body: some View {
         ZStack {
             background
@@ -59,7 +74,7 @@ struct EditSheetView: View {
             .padding(.horizontal, 32)
         } // END OF ZSTACK
     } // END OF BODY
-} // END OF STRUCT
+}
 
 // MARK: VIEW BUILDERS
 extension EditSheetView {
@@ -79,7 +94,7 @@ extension EditSheetView {
         Grid(alignment: .leading) {
             GridRow {
                 Text(maximumOvertimeText)
-                TimeIntervalPicker(buttonLabelText: viewModel.dateComponentFormatter.string(from: viewModel.currentMaximumOvertime) ?? "00:00",
+                TimeIntervalPicker(buttonLabelText: dateComponentFormatter.string(from: viewModel.currentMaximumOvertime) ?? "00:00",
                                    hourComponent: $viewModel.maximumOvertime.0,
                                    minuteComponent: $viewModel.maximumOvertime.1
                 )
@@ -87,7 +102,7 @@ extension EditSheetView {
             
             GridRow {
                 Text(standardWorkTimeText)
-                TimeIntervalPicker(buttonLabelText: viewModel.dateComponentFormatter.string(for: viewModel.currentStandardWorkTime) ?? "00:00",
+                TimeIntervalPicker(buttonLabelText: dateComponentFormatter.string(for: viewModel.currentStandardWorkTime) ?? "00:00",
                                    hourComponent: $viewModel.standardWorkTime.0, minuteComponent: $viewModel.standardWorkTime.1
                 )
             }
@@ -160,7 +175,7 @@ extension EditSheetView {
             VStack {
                 Text(timeIndicatorText.uppercased())
                     .font(.caption)
-                Text(viewModel.totalTimeWorked)
+                Text(generateTimeIntervalLabel(value: viewModel.totalTimeInSeconds))
                     .font(.largeTitle)
             }
         }  // END OF ZSTACK
@@ -169,7 +184,7 @@ extension EditSheetView {
     
     var overtimeLabel: some View {
             HStack {
-                Text(String(viewModel.overTimerString))
+                Text(generateTimeIntervalLabel(value: TimeInterval(viewModel.overTimeInSeconds)))
                     .font(.title)
                 Text(overtimeText)
                     .font(.caption)
@@ -178,7 +193,7 @@ extension EditSheetView {
     
     var regularTimeLabel: some View {
             HStack {
-                Text(String(viewModel.workTimeString))
+                Text(generateTimeIntervalLabel(value: TimeInterval(viewModel.workTimeInSeconds)))
                     .font(.title)
                 Text(regularTimeText)
                     .font(.caption)
