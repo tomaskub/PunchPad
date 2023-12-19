@@ -54,19 +54,19 @@ final class EditSheetViewModel: ObservableObject {
             .removeDuplicates()
             .sink { [weak self] date in
                 guard let self else { return }
-                self.calculateTime()
+                self.calculateTime(self.startDate, date)
             }.store(in: &cancellables)
         
         $startDate
             .removeDuplicates()
             .sink { [weak self] date in
                 guard let self else { return }
-                self.calculateTime()
+                self.calculateTime(date, self.finishDate)
             }.store(in: &cancellables)
     }
     
     // calculating time intervals
-    private func calculateTime() {
+    private func calculateTime(_ startDate: Date, _ finishDate: Date) {
         let interval = DateInterval(start: startDate, end: finishDate)
         if interval.duration <= currentStandardWorkTime {
             workTimeInSeconds = interval.duration
@@ -78,15 +78,16 @@ final class EditSheetViewModel: ObservableObject {
     }
     
     func saveEntry() {
-        //TODO: ADD SAVING ADDITIONAL OVERRIDE PROPERTIES
+        //TODO: ADD PAY SERVICE TO SAVE THE NET PAY
         entry.startDate = startDate
         entry.finishDate = finishDate
         entry.workTimeInSeconds = Int(workTimeInSeconds)
         entry.overTimeInSeconds = Int(overTimeInSeconds)
-        
-        
+        entry.maximumOvertimeAllowedInSeconds = Int(currentMaximumOvertime)
+        entry.standardWorktimeInSeconds = Int(currentMaximumOvertime)
+        entry.grossPayPerMonth = Int(grossPayPerMonth) ?? 0
+        entry.calculatedNetPay = calculateNetPay ? 0.0 : nil
         dataManager.updateAndSave(entry: entry)
-        
     }
     
 }
