@@ -22,6 +22,10 @@ struct EditSheetView: View {
     let finishDateText: String = "Finish"
     let saveButtonText: String = "save"
     let cancelButtonText: String = "cancel"
+    let maximumOvertimeText = "Maximum overtime"
+    let standardWorkTimeText = "Standard work time"
+    let grossPayPerMonthText = "Gross pay per month"
+    let calculateNetPayText = "Calculate net pay"
     
     var body: some View {
         ZStack {
@@ -72,32 +76,31 @@ extension EditSheetView {
 //MARK: OVERRIDE SETTINGS CONTROLS
 extension EditSheetView {
     var overrideControls: some View {
-    //TODO: REPLACE PLACEHOLDERS WITH REAL VALUES
         Grid(alignment: .leading) {
-            // row for overtime allowed in seconds
             GridRow {
-                Text("Maximum overtime")
-                TextField("Hours",
-                          text: .constant("5 hours"))
-                .textFieldStyle(.roundedBorder)
+                Text(maximumOvertimeText)
+                TimeIntervalPicker(buttonLabelText: viewModel.dateComponentFormatter.string(from: viewModel.currentMaximumOvertime) ?? "00:00",
+                                   hourComponent: $viewModel.maximumOvertime.0,
+                                   minuteComponent: $viewModel.maximumOvertime.1
+                )
             }
-            // row for standard worktime
+            
             GridRow {
-                Text("Standard work time")
-                TextField("Hours",
-                          text: .constant("8 hours"))
-                .textFieldStyle(.roundedBorder)
+                Text(standardWorkTimeText)
+                TimeIntervalPicker(buttonLabelText: viewModel.dateComponentFormatter.string(for: viewModel.currentStandardWorkTime) ?? "00:00",
+                                   hourComponent: $viewModel.standardWorkTime.0, minuteComponent: $viewModel.standardWorkTime.1
+                )
             }
-            // row for gross pay per mont
+            
             GridRow {
-                Text("Gross pay per month")
+                Text(grossPayPerMonthText)
                 TextField("PLN",
-                          text: .constant("10900"))
+                          text: $viewModel.grossPayPerMonth)
                 .textFieldStyle(.roundedBorder)
             }
-            // row for calculated net pay
+            
             Toggle(isOn: .constant(true)) {
-                Text("Calculate net pay")
+                Text(calculateNetPayText)
             }
             .padding(.trailing)
         }
