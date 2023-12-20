@@ -27,8 +27,16 @@ final class EditSheetViewModel: ObservableObject {
     var totalTimeInSeconds: TimeInterval {
         TimeInterval(workTimeInSeconds + overTimeInSeconds)
     }
-    //MARK: GET PROPERTIES USED TO DRAW VIEWS <- MIGHT WANT TO MOVE TO VIEW
-    @Published var shouldDisplayFullDates: Bool = false
+    
+    var shouldDisplayFullDates: Bool {
+        if let hours = Calendar.current.dateComponents([.hour], from: startDate).hour {
+            if hours >= 16 {
+                return true
+            }
+        }
+        return false
+    }
+    
     var workTimeFraction: CGFloat {
         CGFloat(workTimeInSeconds / currentStandardWorkTime)
     }
