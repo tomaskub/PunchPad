@@ -36,9 +36,7 @@ struct EditSheetView: View {
         return formatter
     }()
     
-    private func generateTimeIntervalLabel(value: TimeInterval) -> String {
-        return dateComponentFormatter.string(from: value) ?? "00:00"
-    }
+    
 } // END OF STRUCT
 
 //MARK: BODY
@@ -77,15 +75,19 @@ extension EditSheetView {
     } // END OF BODY
 }
 
-// MARK: VIEW BUILDERS
+// MARK: VIEW BUILDERS & FUNCTIONS
 extension EditSheetView {
     @ViewBuilder
-    func dateControls() -> some View {
+    private func dateControls() -> some View {
         if !viewModel.shouldDisplayFullDates {
             sameDayDateControls
         } else {
             diffDayDateControls
         }
+    }
+    
+    private func generateTimeIntervalLabel(value: TimeInterval) -> String {
+        return dateComponentFormatter.string(from: value) ?? "00:00"
     }
 }
 
@@ -147,6 +149,7 @@ extension EditSheetView {
                         .font(.caption)
                     
                     DatePicker(selection: $viewModel.startDate,
+                               in: PartialRangeThrough(viewModel.finishDate),
                                displayedComponents: .hourAndMinute) {
                         Image(systemName: "clock")
                     }
@@ -156,6 +159,7 @@ extension EditSheetView {
                     Text(finishDateText)
                         .font(.caption)
                     DatePicker(selection: $viewModel.finishDate,
+                               in: PartialRangeFrom(viewModel.startDate),
                                displayedComponents: .hourAndMinute) {
                         Image(systemName: "clock")
                     }
@@ -305,4 +309,4 @@ struct EditSheetView_Previews: PreviewProvider {
     static var previews: some View {
         ContainerView()
     } // END OF PREVIEWS
-} // END OF STRUCT
+} // END OF PREVIEW
