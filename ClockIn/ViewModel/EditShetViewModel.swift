@@ -12,6 +12,7 @@ final class EditSheetViewModel: ObservableObject {
     private var dataManager: DataManager
     private var settingsStore: SettingsStore
     private var entry: Entry
+    private let calendar: Calendar
     private var cancellables: Set<AnyCancellable> = .init()
     //MARK: ENTRY PROPERTIES
     @Published var startDate: Date
@@ -44,10 +45,11 @@ final class EditSheetViewModel: ObservableObject {
         CGFloat(overTimeInSeconds / currentMaximumOvertime)
     }
     
-    init(dataManager: DataManager,  settingsStore: SettingsStore, entry: Entry) {
+    init(dataManager: DataManager,  settingsStore: SettingsStore, entry: Entry, calendar: Calendar = .current) {
         self.dataManager = dataManager
         self.settingsStore = settingsStore
         self.entry = entry
+        self.calendar = calendar
         //assign values to draft properties
         self.startDate = entry.startDate
         self.finishDate = entry.finishDate
@@ -57,7 +59,7 @@ final class EditSheetViewModel: ObservableObject {
         self.currentStandardWorkTime = TimeInterval(entry.standardWorktimeInSeconds)
         self.grossPayPerMonth = String(entry.grossPayPerMonth)
         self.calculateNetPay = entry.calculatedNetPay == nil ? false : true
-        
+        // set up combine subscribers
         $finishDate
             .removeDuplicates()
             .sink { [weak self] date in
@@ -71,10 +73,41 @@ final class EditSheetViewModel: ObservableObject {
                 guard let self else { return }
                 self.calculateTime(date, self.finishDate)
             }.store(in: &cancellables)
+        
+        $startDate
+            .removeDuplicates()
+            .filter({ [weak self] date in
+                guard let self else { return false }
+                return !self.shouldDisplayFullDates
+            })
+            .map({ date in
+                self.adjustToEqualDateComponents([.year, .month, .day], from: date, to: self.finishDate, using: self.calendar)
+            })
+            .assign(to: &$finishDate)
+    }
+
+    
+    private func adjustToEqualDateComponents(_ calendarComponents: Set<Calendar.Component>, from source: Date, to target: Date, using calendar: Calendar) -> Date {
+        let allowedCalendarComponents: Set<Calendar.Component> = [.year, .month, .day, .hour, .minute, .second]
+        let changedDateComponents = calendar.dateComponents(calendarComponents, from: source)
+        let unchangedDateComponents = calendar.dateComponents(allowedCalendarComponents.subtracting(calendarComponents), from: target)
+        
+        var resultDateComponents = DateComponents()
+        for calendarComponent in allowedCalendarComponents {
+            guard let keyPath = calendarComponent.dateComponentKeyPath else { continue }
+            if calendarComponents.contains(calendarComponent) {
+                resultDateComponents[keyPath: keyPath] = changedDateComponents[keyPath: keyPath]
+            } else {
+                resultDateComponents[keyPath: keyPath] = unchangedDateComponents[keyPath: keyPath]
+            }
+        }
+        
+        return calendar.date(from: resultDateComponents) ?? target
     }
     
     // calculating time intervals
     private func calculateTime(_ startDate: Date, _ finishDate: Date) {
+        guard startDate < finishDate else { return }
         let interval = DateInterval(start: startDate, end: finishDate)
         if interval.duration <= currentStandardWorkTime {
             workTimeInSeconds = interval.duration
