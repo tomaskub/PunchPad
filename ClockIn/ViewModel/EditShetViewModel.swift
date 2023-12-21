@@ -21,8 +21,7 @@ final class EditSheetViewModel: ObservableObject {
     @Published var overTimeInSeconds: TimeInterval
     @Published var currentMaximumOvertime: TimeInterval
     @Published var currentStandardWorkTime: TimeInterval
-    //TODO: CHANGE TO INT PROPERTY WITH TEXTFIELD NUMBER ONLY
-    @Published var grossPayPerMonth = String()
+    @Published var grossPayPerMonth: Int
     @Published var calculateNetPay: Bool
     
     var totalTimeInSeconds: TimeInterval {
@@ -57,7 +56,7 @@ final class EditSheetViewModel: ObservableObject {
         self.overTimeInSeconds = TimeInterval(entry.overTimeInSeconds)
         self.currentMaximumOvertime = TimeInterval(entry.maximumOvertimeAllowedInSeconds)
         self.currentStandardWorkTime = TimeInterval(entry.standardWorktimeInSeconds)
-        self.grossPayPerMonth = String(entry.grossPayPerMonth)
+        self.grossPayPerMonth = entry.grossPayPerMonth
         self.calculateNetPay = entry.calculatedNetPay == nil ? false : true
         // set up combine subscribers
         $finishDate
@@ -126,7 +125,7 @@ final class EditSheetViewModel: ObservableObject {
         entry.overTimeInSeconds = Int(overTimeInSeconds)
         entry.maximumOvertimeAllowedInSeconds = Int(currentMaximumOvertime)
         entry.standardWorktimeInSeconds = Int(currentMaximumOvertime)
-        entry.grossPayPerMonth = Int(grossPayPerMonth) ?? 0
+        entry.grossPayPerMonth = grossPayPerMonth
         entry.calculatedNetPay = calculateNetPay ? 0.0 : nil
         dataManager.updateAndSave(entry: entry)
     }

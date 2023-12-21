@@ -113,7 +113,8 @@ extension EditSheetView {
             GridRow {
                 Text(grossPayPerMonthText)
                 TextField("PLN",
-                          text: $viewModel.grossPayPerMonth)
+                          value: $viewModel.grossPayPerMonth,
+                          format: .currency(code: "PLN"))
                 .textFieldStyle(.roundedBorder)
             }
             
