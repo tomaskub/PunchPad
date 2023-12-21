@@ -67,6 +67,7 @@
 		D6CB2A7C2B05629200F3030C /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CB2A7B2B05629200F3030C /* View+Extension.swift */; };
 		D6CBB8662B3443360074CE8B /* EditSheetViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CBB8652B3443360074CE8B /* EditSheetViewModelTests.swift */; };
 		D6CBB8682B34ACF20074CE8B /* Calendar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CBB8672B34ACF20074CE8B /* Calendar+Extension.swift */; };
+		D6CBB86A2B34C7150074CE8B /* FormatterFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CBB8692B34C7150074CE8B /* FormatterFactory.swift */; };
 		D6D02FAE29EF0B13006CD0B2 /* EditSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D02FAD29EF0B13006CD0B2 /* EditSheetView.swift */; };
 		D6D02FB029EF0B7F006CD0B2 /* EditShetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D02FAF29EF0B7F006CD0B2 /* EditShetViewModel.swift */; };
 		D6D906AE2AA0BEDE004E09C9 /* ScreenIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */; };
@@ -165,6 +166,7 @@
 		D6CB2A7B2B05629200F3030C /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		D6CBB8652B3443360074CE8B /* EditSheetViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSheetViewModelTests.swift; sourceTree = "<group>"; };
 		D6CBB8672B34ACF20074CE8B /* Calendar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Extension.swift"; sourceTree = "<group>"; };
+		D6CBB8692B34C7150074CE8B /* FormatterFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterFactory.swift; sourceTree = "<group>"; };
 		D6D02FAD29EF0B13006CD0B2 /* EditSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSheetView.swift; sourceTree = "<group>"; };
 		D6D02FAF29EF0B7F006CD0B2 /* EditShetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditShetViewModel.swift; sourceTree = "<group>"; };
 		D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenIdentifier.swift; sourceTree = "<group>"; };
@@ -375,6 +377,7 @@
 				D684A3892AF6F54B00511E0D /* ButtonFactory.swift */,
 				D6EA695B2AF8452A00D8F6C3 /* TextFactory.swift */,
 				D6FA94FE2B0145FE0034B16A /* ChartFactory.swift */,
+				D6CBB8692B34C7150074CE8B /* FormatterFactory.swift */,
 			);
 			path = Factory;
 			sourceTree = "<group>";
@@ -563,6 +566,7 @@
 				D67332E62AADB8B1005FFE7F /* LaunchArgument.swift in Sources */,
 				D68384F929DB25DD00228491 /* SettingViewModel.swift in Sources */,
 				D6C458C329D2DE2D0069D89B /* HomeView.swift in Sources */,
+				D6CBB86A2B34C7150074CE8B /* FormatterFactory.swift in Sources */,
 				D61F11312AB38F8700902D6D /* SettingsStore.swift in Sources */,
 				D6842EC029EC178000731E84 /* StatisticsView.swift in Sources */,
 				D66750EC29D71C8300757F17 /* HistoryRow.swift in Sources */,

@@ -27,13 +27,7 @@ struct EditSheetView: View {
     let grossPayPerMonthText = "Gross pay per month"
     let calculateNetPayText = "Calculate net pay"
     //MARK: DATE FORMATTER
-    let dateComponentFormatter = {
-        let formatter = DateComponentsFormatter()
-        formatter.unitsStyle = .positional
-        formatter.allowedUnits = [.hour, .minute]
-        formatter.zeroFormattingBehavior = [.pad]
-        return formatter
-    }()
+    let dateComponentFormatter = FormatterFactory.makeDateComponentFormatter()
     
     
 } // END OF STRUCT
