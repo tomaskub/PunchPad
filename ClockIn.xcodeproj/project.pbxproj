@@ -66,6 +66,7 @@
 		D6C458C729D36C050069D89B /* RingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C458C629D36C050069D89B /* RingView.swift */; };
 		D6CB2A7C2B05629200F3030C /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CB2A7B2B05629200F3030C /* View+Extension.swift */; };
 		D6CBB8662B3443360074CE8B /* EditSheetViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CBB8652B3443360074CE8B /* EditSheetViewModelTests.swift */; };
+		D6CBB8682B34ACF20074CE8B /* Calendar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CBB8672B34ACF20074CE8B /* Calendar+Extension.swift */; };
 		D6D02FAE29EF0B13006CD0B2 /* EditSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D02FAD29EF0B13006CD0B2 /* EditSheetView.swift */; };
 		D6D02FB029EF0B7F006CD0B2 /* EditShetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D02FAF29EF0B7F006CD0B2 /* EditShetViewModel.swift */; };
 		D6D906AE2AA0BEDE004E09C9 /* ScreenIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */; };
@@ -163,6 +164,7 @@
 		D6C458C629D36C050069D89B /* RingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingView.swift; sourceTree = "<group>"; };
 		D6CB2A7B2B05629200F3030C /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		D6CBB8652B3443360074CE8B /* EditSheetViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSheetViewModelTests.swift; sourceTree = "<group>"; };
+		D6CBB8672B34ACF20074CE8B /* Calendar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Extension.swift"; sourceTree = "<group>"; };
 		D6D02FAD29EF0B13006CD0B2 /* EditSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSheetView.swift; sourceTree = "<group>"; };
 		D6D02FAF29EF0B7F006CD0B2 /* EditShetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditShetViewModel.swift; sourceTree = "<group>"; };
 		D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenIdentifier.swift; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 				D6CB2A7B2B05629200F3030C /* View+Extension.swift */,
 				D666ADCB2AC05A0500B74663 /* CaseIterable+Extension.swift */,
 				D6BC457D2AFAE0640030820C /* ColorTheme.swift */,
+				D6CBB8672B34ACF20074CE8B /* Calendar+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -529,6 +532,7 @@
 				D64766C52AFEBD9D0013AC9A /* ChartLegendView.swift in Sources */,
 				D64574B629D9F37400207168 /* Entry.swift in Sources */,
 				D6C458C729D36C050069D89B /* RingView.swift in Sources */,
+				D6CBB8682B34ACF20074CE8B /* Calendar+Extension.swift in Sources */,
 				D6EA695E2AF8498D00D8F6C3 /* OnboardingOvertimeView.swift in Sources */,
 				D6E6B8772AF992F90073D911 /* OnboardingFinishView.swift in Sources */,
 				D6CB2A7C2B05629200F3030C /* View+Extension.swift in Sources */,
