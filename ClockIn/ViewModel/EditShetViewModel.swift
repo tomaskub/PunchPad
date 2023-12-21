@@ -6,97 +6,129 @@
 //
 
 import Foundation
+import Combine
 
 final class EditSheetViewModel: ObservableObject {
-    
     private var dataManager: DataManager
     private var settingsStore: SettingsStore
+    private var payService: PayManager
     private var entry: Entry
-    private var workTimeAllowed: Int {
-        settingsStore.workTimeInSeconds
-    }
-    private var overTimeAllowed: Int {
-        settingsStore.maximumOvertimeAllowedInSeconds
-    }
+    private let calendar: Calendar
+    private var cancellables: Set<AnyCancellable> = .init()
+    //MARK: ENTRY PROPERTIES
+    @Published var startDate: Date
+    @Published var finishDate: Date
+    @Published var workTimeInSeconds: TimeInterval
+    @Published var overTimeInSeconds: TimeInterval
+    @Published var currentMaximumOvertime: TimeInterval
+    @Published var currentStandardWorkTime: TimeInterval
+    @Published var grossPayPerMonth: Int
+    @Published var calculateNetPay: Bool
     
-    @Published var startDate: Date {
-        didSet {
-            calculateTime()
-        }
-    }
-    @Published var finishDate: Date {
-        didSet {
-            calculateTime()
-        }
+    var totalTimeInSeconds: TimeInterval {
+        TimeInterval(workTimeInSeconds + overTimeInSeconds)
     }
     
-    private var workTimeInSeconds: Int {
-        didSet {
-            workTimeString = generateHoursString(value: workTimeInSeconds)
-            workTimeFraction = CGFloat(workTimeInSeconds) / CGFloat(workTimeAllowed)
-        }
-    }
-    
-    
-    private var overTimeInSeconds: Int {
-        didSet {
-            overTimerString = generateHoursString(value: overTimeInSeconds)
-            overTimeFraction = CGFloat(overTimeInSeconds) / CGFloat(overTimeAllowed)
-        }
-    }
-    
-    @Published var workTimeString: String
-    @Published var overTimerString: String
-    @Published var workTimeFraction: CGFloat
-    @Published var overTimeFraction: CGFloat
-    
-    init(dataManager: DataManager,  settingsStore: SettingsStore, entry: Entry) {
-        self.dataManager = dataManager
-        self.settingsStore = settingsStore
-        self.entry = entry
-        
-        self.startDate = entry.startDate
-        self.finishDate = entry.finishDate
-        self.workTimeInSeconds = entry.workTimeInSeconds
-        self.overTimeInSeconds = entry.overTimeInSeconds
-        
-        self.workTimeString = String()
-        self.overTimerString = String()
-
-        self.workTimeFraction = CGFloat(workTimeInSeconds) / CGFloat(settingsStore.workTimeInSeconds)
-        self.overTimeFraction = CGFloat(overTimeInSeconds) / CGFloat(settingsStore.maximumOvertimeAllowedInSeconds)
-        
-        self.workTimeString = generateHoursString(value: workTimeInSeconds)
-        self.overTimerString = generateHoursString(value: overTimeInSeconds)
-        
-        
-    }
-    
-    private func calculateTime() {
-        let timeInterval = Calendar.current.dateComponents([.second], from: startDate, to: finishDate)
-        if let seconds = timeInterval.second {
-            if seconds <= workTimeAllowed {
-                workTimeInSeconds = seconds
-                overTimeInSeconds = 0
-            } else {
-                workTimeInSeconds = workTimeAllowed
-                overTimeInSeconds = seconds - workTimeAllowed
+    var shouldDisplayFullDates: Bool {
+        if let hours = Calendar.current.dateComponents([.hour], from: startDate).hour {
+            if hours >= 16 {
+                return true
             }
         }
+        return false
     }
     
-    private func generateHoursString(value: Int) -> String {
-        let resultValue: Double = Double(value) / 3600
-        return String(format: "%.2f", resultValue)
+    var workTimeFraction: CGFloat {
+        CGFloat(workTimeInSeconds / currentStandardWorkTime)
+    }
+    var overTimeFraction: CGFloat {
+        CGFloat(overTimeInSeconds / currentMaximumOvertime)
+    }
+    
+    init(dataManager: DataManager,  settingsStore: SettingsStore, payService: PayManager, calendar: Calendar = .current, entry: Entry) {
+        self.dataManager = dataManager
+        self.settingsStore = settingsStore
+        self.payService = payService
+        self.entry = entry
+        self.calendar = calendar
+        //assign values to draft properties
+        self.startDate = entry.startDate
+        self.finishDate = entry.finishDate
+        self.workTimeInSeconds = TimeInterval(entry.workTimeInSeconds)
+        self.overTimeInSeconds = TimeInterval(entry.overTimeInSeconds)
+        self.currentMaximumOvertime = TimeInterval(entry.maximumOvertimeAllowedInSeconds)
+        self.currentStandardWorkTime = TimeInterval(entry.standardWorktimeInSeconds)
+        self.grossPayPerMonth = entry.grossPayPerMonth
+        self.calculateNetPay = entry.calculatedNetPay == nil ? false : true
+        // set up combine subscribers
+        $finishDate
+            .removeDuplicates()
+            .sink { [weak self] date in
+                guard let self else { return }
+                self.calculateTime(self.startDate, date)
+            }.store(in: &cancellables)
+        
+        $startDate
+            .removeDuplicates()
+            .sink { [weak self] date in
+                guard let self else { return }
+                self.calculateTime(date, self.finishDate)
+            }.store(in: &cancellables)
+        
+        $startDate
+            .removeDuplicates()
+            .filter({ [weak self] date in
+                guard let self else { return false }
+                return !self.shouldDisplayFullDates
+            })
+            .map({ date in
+                self.adjustToEqualDateComponents([.year, .month, .day], from: date, to: self.finishDate, using: self.calendar)
+            })
+            .assign(to: &$finishDate)
+    }
+
+    
+    private func adjustToEqualDateComponents(_ calendarComponents: Set<Calendar.Component>, from source: Date, to target: Date, using calendar: Calendar) -> Date {
+        let allowedCalendarComponents: Set<Calendar.Component> = [.year, .month, .day, .hour, .minute, .second]
+        let changedDateComponents = calendar.dateComponents(calendarComponents, from: source)
+        let unchangedDateComponents = calendar.dateComponents(allowedCalendarComponents.subtracting(calendarComponents), from: target)
+        
+        var resultDateComponents = DateComponents()
+        for calendarComponent in allowedCalendarComponents {
+            guard let keyPath = calendarComponent.dateComponentKeyPath else { continue }
+            if calendarComponents.contains(calendarComponent) {
+                resultDateComponents[keyPath: keyPath] = changedDateComponents[keyPath: keyPath]
+            } else {
+                resultDateComponents[keyPath: keyPath] = unchangedDateComponents[keyPath: keyPath]
+            }
+        }
+        
+        return calendar.date(from: resultDateComponents) ?? target
+    }
+    
+    // calculating time intervals
+    private func calculateTime(_ startDate: Date, _ finishDate: Date) {
+        guard startDate < finishDate else { return }
+        let interval = DateInterval(start: startDate, end: finishDate)
+        if interval.duration <= currentStandardWorkTime {
+            workTimeInSeconds = interval.duration
+            overTimeInSeconds = 0
+        } else {
+            workTimeInSeconds = currentStandardWorkTime
+            overTimeInSeconds = interval.duration - currentStandardWorkTime
+        }
     }
     
     func saveEntry() {
         entry.startDate = startDate
         entry.finishDate = finishDate
-        entry.workTimeInSeconds = workTimeInSeconds
-        entry.overTimeInSeconds = overTimeInSeconds
+        entry.workTimeInSeconds = Int(workTimeInSeconds)
+        entry.overTimeInSeconds = Int(overTimeInSeconds)
+        entry.maximumOvertimeAllowedInSeconds = Int(currentMaximumOvertime)
+        entry.standardWorktimeInSeconds = Int(currentMaximumOvertime)
+        entry.grossPayPerMonth = grossPayPerMonth
+        entry.calculatedNetPay = calculateNetPay ? payService.calculateNetPay(gross: Double(grossPayPerMonth)) : nil
         dataManager.updateAndSave(entry: entry)
-        
     }
     
 }

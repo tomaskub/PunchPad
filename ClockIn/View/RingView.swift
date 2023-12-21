@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct RingView: View {
-    @Binding var startPoint: CGFloat
-    @Binding var endPoint: CGFloat
+    var startPoint: CGFloat
+    var endPoint: CGFloat
     
     var ringColor: Color
     var pointColor: Color?
@@ -69,8 +69,8 @@ struct RingView: View {
 struct RingView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            RingView(startPoint: .constant(0), 
-                     endPoint: .constant(0.4),
+            RingView(startPoint: 0, 
+                     endPoint: 0.4,
                      ringColor: .black)
                 .padding(.horizontal, 50)
         }

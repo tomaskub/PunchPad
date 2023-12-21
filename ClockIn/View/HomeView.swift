@@ -105,8 +105,8 @@ extension HomeView {
     }
     
     var worktimeProgressRing: some View {
-        return RingView(startPoint: $viewModel.progress,
-                        endPoint: .constant(1),
+        return RingView(startPoint: viewModel.progress,
+                        endPoint: 1,
                         ringColor: .primary,
                         ringWidth: 5,
                         displayPointer: false)
@@ -115,8 +115,8 @@ extension HomeView {
     }
     
     var overtimeProgressRing: some View {
-            RingView(startPoint: .constant(0),
-                     endPoint: $viewModel.overtimeProgress,
+            RingView(startPoint: 0,
+                     endPoint: viewModel.overtimeProgress,
                      ringColor: .secondary,
                      ringWidth: 5,
                      displayPointer: false)

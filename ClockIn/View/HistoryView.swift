@@ -47,6 +47,7 @@ struct HistoryView: View {
                 EditSheetView(viewModel: 
                                 EditSheetViewModel(dataManager: container.dataManager,
                                                    settingsStore: container.settingsStore,
+                                                   payService: container.payManager,
                                                    entry: entry))
             } // END OF SHEET
             .sheet(isPresented: $isShowingFiltering) {
