@@ -11,6 +11,7 @@ import Combine
 final class EditSheetViewModel: ObservableObject {
     private var dataManager: DataManager
     private var settingsStore: SettingsStore
+    private var payService: PayManager
     private var entry: Entry
     private let calendar: Calendar
     private var cancellables: Set<AnyCancellable> = .init()
@@ -44,9 +45,10 @@ final class EditSheetViewModel: ObservableObject {
         CGFloat(overTimeInSeconds / currentMaximumOvertime)
     }
     
-    init(dataManager: DataManager,  settingsStore: SettingsStore, entry: Entry, calendar: Calendar = .current) {
+    init(dataManager: DataManager,  settingsStore: SettingsStore, payService: PayManager, calendar: Calendar = .current, entry: Entry) {
         self.dataManager = dataManager
         self.settingsStore = settingsStore
+        self.payService = payService
         self.entry = entry
         self.calendar = calendar
         //assign values to draft properties
@@ -118,7 +120,6 @@ final class EditSheetViewModel: ObservableObject {
     }
     
     func saveEntry() {
-        //TODO: ADD PAY SERVICE TO SAVE THE NET PAY
         entry.startDate = startDate
         entry.finishDate = finishDate
         entry.workTimeInSeconds = Int(workTimeInSeconds)
@@ -126,7 +127,7 @@ final class EditSheetViewModel: ObservableObject {
         entry.maximumOvertimeAllowedInSeconds = Int(currentMaximumOvertime)
         entry.standardWorktimeInSeconds = Int(currentMaximumOvertime)
         entry.grossPayPerMonth = grossPayPerMonth
-        entry.calculatedNetPay = calculateNetPay ? 0.0 : nil
+        entry.calculatedNetPay = calculateNetPay ? payService.calculateNetPay(gross: Double(grossPayPerMonth)) : nil
         dataManager.updateAndSave(entry: entry)
     }
     

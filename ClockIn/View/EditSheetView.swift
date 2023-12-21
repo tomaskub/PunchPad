@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-//TODO: ADD CHECKING FOR BEFORE AND AFTER DATE IN THE PICKERS TO NOT LET CHOOSE A NEGATIVE INTERVAL <- THIS WILL CRASH THE APP
 struct EditSheetView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) var dismiss
@@ -302,6 +301,7 @@ struct EditSheetView_Previews: PreviewProvider {
                 EditSheetView(viewModel:
                                 EditSheetViewModel(dataManager: container.dataManager,
                                                    settingsStore: container.settingsStore,
+                                                   payService: container.payManager,
                                                    entry: entry)
                 )
             }
