@@ -29,10 +29,10 @@ class TimerService: ObservableObject {
     
     //MARK: COUNTDOWN TIMER PROPERTIES - PRIVATE
     // this is set at the begining to the limit and the counted down
-    private var firstCounter: TimeInterval = 0
+    private(set) var firstCounter: TimeInterval = 0
     //MARK: OVERTIME TIME PROPERTIES - PRIVATE
     // this is set at the begining to 0 and then added to
-    private var secondCounter: TimeInterval  = 0
+    private(set) var secondCounter: TimeInterval  = 0
     
     init(timerProvider: Timer.Type, timerLimit: TimeInterval, timerSecondLimit: TimeInterval, progressAfterLimit: Bool) {
         self.timerLimit = timerLimit

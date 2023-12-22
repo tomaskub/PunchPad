@@ -22,6 +22,7 @@
 		D61F11312AB38F8700902D6D /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61F11302AB38F8700902D6D /* SettingsStore.swift */; };
 		D61F11342AB3A6FF00902D6D /* ColorScheme+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61F11332AB3A6FF00902D6D /* ColorScheme+Extension.swift */; };
 		D629CEF92B3613660036579D /* TimerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D629CEF82B3613660036579D /* TimerService.swift */; };
+		D629CEFB2B363B500036579D /* TimerServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D629CEFA2B363B500036579D /* TimerServiceTests.swift */; };
 		D64313B82B1E606B003B5DBC /* PreviewDataFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64313B72B1E606B003B5DBC /* PreviewDataFactory.swift */; };
 		D64574B029D9E6A000207168 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64574AF29D9E6A000207168 /* DataManager.swift */; };
 		D64574B329D9F16900207168 /* EntryMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64574B129D9F16900207168 /* EntryMO+CoreDataClass.swift */; };
@@ -120,6 +121,7 @@
 		D61F11302AB38F8700902D6D /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
 		D61F11332AB3A6FF00902D6D /* ColorScheme+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ColorScheme+Extension.swift"; sourceTree = "<group>"; };
 		D629CEF82B3613660036579D /* TimerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerService.swift; sourceTree = "<group>"; };
+		D629CEFA2B363B500036579D /* TimerServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TimerServiceTests.swift; path = ClockInTests/TimerServiceTests.swift; sourceTree = "<group>"; };
 		D64313B72B1E606B003B5DBC /* PreviewDataFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewDataFactory.swift; sourceTree = "<group>"; };
 		D64574AF29D9E6A000207168 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		D64574B129D9F16900207168 /* EntryMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EntryMO+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -263,6 +265,7 @@
 		D6C4588729D229200069D89B = {
 			isa = PBXGroup;
 			children = (
+				D629CEFA2B363B500036579D /* TimerServiceTests.swift */,
 				D6C4589229D229210069D89B /* ClockIn */,
 				D6C458A329D229230069D89B /* ClockInTests */,
 				D6C458AD29D229230069D89B /* ClockInUITests */,
@@ -598,6 +601,7 @@
 				D65A976B29F2E6B800462D8C /* StatisticsViewModelTests.swift in Sources */,
 				D61945EC29E7306B0046DE1F /* HomeViewModelTests.swift in Sources */,
 				D60480D82B122CDA00D6D70D /* ChartPeriodServiceTests.swift in Sources */,
+				D629CEFB2B363B500036579D /* TimerServiceTests.swift in Sources */,
 				D61945F029E735D80046DE1F /* MockTimer.swift in Sources */,
 				D6C458A529D229230069D89B /* ClockInTests.swift in Sources */,
 				D6CBB8662B3443360074CE8B /* EditSheetViewModelTests.swift in Sources */,

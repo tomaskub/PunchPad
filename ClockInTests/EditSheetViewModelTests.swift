@@ -32,7 +32,11 @@ final class EditSheetViewModelTests: XCTestCase {
         SettingsStore.setTestUserDefaults()
         let settingStore = SettingsStore()
         
-        sut = .init(dataManager: .testing, settingsStore: settingStore, entry: entry, calendar: .current)
+        sut = .init(dataManager: .testing,
+                    settingsStore: settingStore,
+                    payService: PayManager(dataManager: .testing, settingsStore: settingStore),
+                    calendar: .current,
+                    entry: entry)
     }
 
     override func tearDown() {
