@@ -218,7 +218,7 @@ extension HomeViewModel {
     
 }
 
-    //MARK: DATA OPERATIONS
+//MARK: DATA OPERATIONS
 extension HomeViewModel {
     
     func saveEntry() {
