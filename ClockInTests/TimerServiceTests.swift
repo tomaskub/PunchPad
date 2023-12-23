@@ -26,7 +26,7 @@ final class TimerServiceTests: XCTestCase {
         super.tearDown()
         sut = nil
     }
-
+    
     func testUpdateTimer_firstCounter() {
         // Given
         let numberOfFires = 10
@@ -50,5 +50,31 @@ final class TimerServiceTests: XCTestCase {
         }
         //Then
         XCTAssertEqual(expectedSecondCounterValue, sut.secondCounter, "Counter value should be equal to predicted value")
+    }
+    
+    func testProgressToFirstLimit() {
+        // Given
+        let numberOfFires: Int = timerLimit / 2
+        let expectedProgressValue: CGFloat = 0.5
+        //When
+        sut.startTimer()
+        for _ in 0...numberOfFires - 1 {
+            MockTimer.currentTimer.fire()
+        }
+        //Then
+        XCTAssertEqual(sut.progressToFirstLimit, expectedProgressValue, "Value value should be equal to predicted value (\(expectedProgressValue))")
+    }
+    
+    func testProgressToSecondLimit_whenFirstLimitNotReached() {
+        // Given
+        let numberOfFires: Int = timerLimit / 2
+        let expectedProgressValue: CGFloat = 0
+        //When
+        sut.startTimer()
+        for _ in 0...numberOfFires - 1 {
+            MockTimer.currentTimer.fire()
+        }
+        //Then
+        XCTAssertEqual(sut.progressToSecondLimit, expectedProgressValue, "Value value should be equal to predicted value (\(expectedProgressValue))")
     }
 }
