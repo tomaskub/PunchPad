@@ -9,82 +9,80 @@ import Foundation
 import SwiftUI
 
 class TimerService: ObservableObject {
-    private enum TimerServiceState {
-        case running, paused, stopped
+    enum TimerServiceState {
+        case running, paused, notStarted, finished
     }
-    private var timerProvider: Timer.Type
+    enum TimerServiceEvent {
+        case start, stop, pause, resumeWith(TimeInterval?)
+    }
+    
+    private let timerProvider: Timer.Type
     private var timer: Timer?
     private let timerLimit: TimeInterval
-    private let timerSecondLimit: TimeInterval
-    private let progressAfterFinish: Bool
     
     //Published progress properties for UI
     @Published var progressToFirstLimit: CGFloat = 0.0
-    @Published var progressToSecondLimit: CGFloat = 0.0
-
-    //Timer state properties
-    @Published var isStarted: Bool = false
-    @Published var isRunning: Bool = false
-    private var serviceState: TimerServiceState = .stopped
+    @Published private(set) var serviceState: TimerServiceState = .notStarted
+    private(set) var counter: TimeInterval = 0
     
-    private(set) var firstCounter: TimeInterval = 0
-    private(set) var secondCounter: TimeInterval  = 0
-    
-    init(timerProvider: Timer.Type, timerLimit: TimeInterval, timerSecondLimit: TimeInterval, progressAfterLimit: Bool) {
+    init(timerProvider: Timer.Type, timerLimit: TimeInterval) {
         self.timerLimit = timerLimit
-        self.timerSecondLimit = timerSecondLimit
         self.timerProvider = timerProvider
-        self.progressAfterFinish = progressAfterLimit
     }
     
-    // start & stop
-    func startTimer()  {
-        if serviceState == .stopped {
-            firstCounter = 0
-            secondCounter = 0
+    func send(event: TimerServiceEvent) {
+        switch event {
+        case .start:
+            if serviceState == .notStarted {
+                self.startTimer()
+            } else if serviceState == .paused {
+                serviceState = .running
+            }
             
-            progressToFirstLimit = 0
-            progressToSecondLimit = 0
-            // this still does not work in the background
-            timer = timerProvider.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] _ in
-                guard let self else { return }
-                self.updateTimer(byAdding: 1)
-            })
-            isStarted = true
-            isRunning = true
-            serviceState = .running
-        }
-        if serviceState == .paused {
-            serviceState = .running
+        case .pause:
+            if serviceState == .running {
+                serviceState = .paused
+            } // else do nothing
+            
+        case .stop:
+            if !(serviceState == .notStarted) {
+                if let timer = timer {
+                    timer.invalidate()
+                }
+                serviceState = .finished
+            }
+        case let .resumeWith(timePassed):
+            if serviceState == .paused || serviceState == .running {
+                self.serviceState = .running
+                if let timePassed {
+                    self.updateTimer(byAdding: timePassed)
+                }
+            }
         }
     }
     
-    func stopTimer() {
-        if let timer = timer {
-            timer.invalidate()
-        }
-        isStarted = false
-        isRunning = false
-        serviceState = .stopped
+    private func startTimer()  {
+        counter = 0
+        progressToFirstLimit = 0
+        timer = timerProvider.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] _ in
+            guard let self else { return }
+            self.updateTimer()
+        })
+        serviceState = .running
     }
     
-    func pauseTimer() {
-        serviceState = .paused
-    }
-    
-    func updateTimer(byAdding addValue: TimeInterval = 1) {
+    private func updateTimer(byAdding addValue: TimeInterval = 1) {
         guard self.serviceState == .running else { return }
-        firstCounter += addValue
-        if firstCounter >= timerLimit {
-            secondCounter = firstCounter - timerLimit
-        }
+        counter += addValue
         withAnimation(.easeInOut) {
-            updateProgressCounters()
+            updateProgressCounter()
+        }
+        if counter == timerLimit {
+            self.serviceState = .finished
         }
     }
     
-    private func updateProgressCounters() {
-        progressToFirstLimit = CGFloat(firstCounter / timerLimit)
-        progressToSecondLimit = CGFloat(secondCounter / timerSecondLimit)
+    private func updateProgressCounter() {
+        progressToFirstLimit = CGFloat(counter / timerLimit)
     }
 }
