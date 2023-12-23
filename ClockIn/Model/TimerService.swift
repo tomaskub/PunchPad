@@ -21,7 +21,7 @@ class TimerService: ObservableObject {
     private let timerLimit: TimeInterval
     
     //Published progress properties for UI
-    @Published var progressToFirstLimit: CGFloat = 0.0
+    @Published var progress: CGFloat = 0.0
     @Published private(set) var serviceState: TimerServiceState = .notStarted
     private(set) var counter: TimeInterval = 0
     
@@ -63,7 +63,7 @@ class TimerService: ObservableObject {
     
     private func startTimer()  {
         counter = 0
-        progressToFirstLimit = 0
+        progress = 0
         timer = timerProvider.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] _ in
             guard let self else { return }
             self.updateTimer()
@@ -83,6 +83,6 @@ class TimerService: ObservableObject {
     }
     
     private func updateProgressCounter() {
-        progressToFirstLimit = CGFloat(counter / timerLimit)
+        progress = CGFloat(counter / timerLimit)
     }
 }

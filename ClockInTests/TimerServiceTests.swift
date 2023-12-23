@@ -24,6 +24,12 @@ final class TimerServiceTests: XCTestCase {
         super.tearDown()
         sut = nil
     }
+    
+    private func fireTimer(_ numberOfFires: Int) {
+        for _ in 0...numberOfFires - 1 {
+            MockTimer.currentTimer.fire()
+        }
+    }
 }
 
 //MARK: TEST STATE CHANGES
@@ -157,16 +163,29 @@ extension TimerServiceTests {
         sut.send(event: .start)
         fireTimer(numberOfFires)
         //Then
-        XCTAssertEqual(sut.progressToFirstLimit, expectedProgressValue, "Value value should be equal to predicted value (\(expectedProgressValue))")
+        XCTAssertEqual(sut.progress, expectedProgressValue, "Progress value should be equal to predicted value (\(expectedProgressValue))")
     }
     
-//    func test_counter_notUpdating_whenPaused() {
-//        
-//    }
+    func test_counter_notUpdating_whenPaused() {
+        //Given
+        let numberOfFires: Int = timerLimit / 4
+        //When
+        sut.send(event: .start)
+        sut.send(event: .pause)
+        fireTimer(numberOfFires)
+        //Then
+        XCTAssertEqual(sut.counter, 0, "Counter value should be 0")
+        XCTAssertEqual(sut.progress, 0, "Progress value should be 0")
+    }
     
-    private func fireTimer(_ numberOfFires: Int) {
-        for _ in 0...numberOfFires - 1 {
-            MockTimer.currentTimer.fire()
-        }
+    func test_counterAndProgress_updated_whenResumeWithValueSent() {
+        //Given
+        let numberOfFires: Int = timerLimit / 4
+        //When
+        sut.send(event: .start)
+        sut.send(event: .pause)
+        sut.send(event: .resumeWith(TimeInterval(numberOfFires)))
+        XCTAssertEqual(sut.counter, TimeInterval(timerLimit / 4), "Counter value should be \(timerLimit/4)")
+        XCTAssertEqual(sut.progress, 0.25, "Progress value should be 0.25")
     }
 }
