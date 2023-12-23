@@ -30,7 +30,7 @@ final class TimerServiceTests: XCTestCase {
     func testUpdateTimer_firstCounter() {
         // Given
         let numberOfFires = 10
-        let expectedCounterValue: TimeInterval = TimeInterval(timerLimit - numberOfFires)
+        let expectedCounterValue: TimeInterval = TimeInterval(numberOfFires)
         //When
         sut.startTimer()
         for _ in 0...numberOfFires - 1 {
@@ -54,8 +54,8 @@ final class TimerServiceTests: XCTestCase {
     
     func testProgressToFirstLimit() {
         // Given
-        let numberOfFires: Int = timerLimit / 2
-        let expectedProgressValue: CGFloat = 0.5
+        let numberOfFires: Int = timerLimit / 4
+        let expectedProgressValue: CGFloat = 0.25
         //When
         sut.startTimer()
         for _ in 0...numberOfFires - 1 {

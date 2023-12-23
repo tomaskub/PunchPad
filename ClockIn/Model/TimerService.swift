@@ -17,21 +17,17 @@ class TimerService: ObservableObject {
     private let timerLimit: TimeInterval
     private let timerSecondLimit: TimeInterval
     private let progressAfterFinish: Bool
-    private var serviceState: TimerServiceState = .stopped
+    
     //Published progress properties for UI
-    //Value for display, maybe these can be get properties
     @Published var progressToFirstLimit: CGFloat = 0.0
     @Published var progressToSecondLimit: CGFloat = 0.0
 
     //Timer state properties
     @Published var isStarted: Bool = false
     @Published var isRunning: Bool = false
+    private var serviceState: TimerServiceState = .stopped
     
-    //MARK: COUNTDOWN TIMER PROPERTIES - PRIVATE
-    // this is set at the begining to the limit and the counted down
     private(set) var firstCounter: TimeInterval = 0
-    //MARK: OVERTIME TIME PROPERTIES - PRIVATE
-    // this is set at the begining to 0 and then added to
     private(set) var secondCounter: TimeInterval  = 0
     
     init(timerProvider: Timer.Type, timerLimit: TimeInterval, timerSecondLimit: TimeInterval, progressAfterLimit: Bool) {
@@ -44,7 +40,7 @@ class TimerService: ObservableObject {
     // start & stop
     func startTimer()  {
         if serviceState == .stopped {
-            firstCounter = timerLimit
+            firstCounter = 0
             secondCounter = 0
             
             progressToFirstLimit = 0
@@ -52,7 +48,7 @@ class TimerService: ObservableObject {
             // this still does not work in the background
             timer = timerProvider.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] _ in
                 guard let self else { return }
-                self.updateTimer()
+                self.updateTimer(byAdding: 1)
             })
             isStarted = true
             isRunning = true
@@ -75,43 +71,20 @@ class TimerService: ObservableObject {
     func pauseTimer() {
         serviceState = .paused
     }
-    // timer updates
-    /**
-     Updates the timer countdown value
-     - Parameter subtrahend: The value to be substracted from the countdown (default is 1)
-     */
-    func updateTimer(subtract subtrahend: TimeInterval = 1) {
-        if isStarted && isRunning {
-            
-            //This is the situation when the timer is still in current state after the update, including 0
-            if firstCounter >= subtrahend {
-                firstCounter -= subtrahend
-                withAnimation(.easeInOut) {
-                    progressToFirstLimit = 1 - CGFloat(firstCounter) / CGFloat(timerLimit)
-                }
-                
-                return
-            }
-            //this is the situation when timer value moves it into overtime
-            if firstCounter < subtrahend {
-                if progressAfterFinish {
-                    firstCounter = 0
-                    secondCounter += subtrahend - firstCounter
-                    //update the progress rings
-                    withAnimation(.easeInOut) {
-                        progressToFirstLimit = 1 - CGFloat(firstCounter) / CGFloat(timerLimit)
-                        progressToSecondLimit = CGFloat(secondCounter) / CGFloat(timerSecondLimit)
-                    }
-                    
-                } else {
-                    firstCounter = 0
-                    withAnimation(.easeInOut) {
-                        progressToFirstLimit = 1 - CGFloat(firstCounter) / CGFloat(timerLimit)
-                    }
-                    
-                    stopTimer()
-                }
-            }
+    
+    func updateTimer(byAdding addValue: TimeInterval = 1) {
+        guard self.serviceState == .running else { return }
+        firstCounter += addValue
+        if firstCounter >= timerLimit {
+            secondCounter = firstCounter - timerLimit
         }
+        withAnimation(.easeInOut) {
+            updateProgressCounters()
+        }
+    }
+    
+    private func updateProgressCounters() {
+        progressToFirstLimit = CGFloat(firstCounter / timerLimit)
+        progressToSecondLimit = CGFloat(secondCounter / timerSecondLimit)
     }
 }
