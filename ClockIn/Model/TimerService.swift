@@ -23,7 +23,10 @@ class TimerService: ObservableObject {
     //Published progress properties for UI
     @Published var progress: CGFloat = 0.0
     @Published private(set) var serviceState: TimerServiceState = .notStarted
-    private(set) var counter: TimeInterval = 0
+    @Published private(set) var counter: TimeInterval = 0
+    var remainingTime: TimeInterval {
+        timerLimit - counter
+    }
     
     init(timerProvider: Timer.Type, timerLimit: TimeInterval) {
         self.timerLimit = timerLimit
@@ -64,11 +67,11 @@ class TimerService: ObservableObject {
     private func startTimer()  {
         counter = 0
         progress = 0
-        timer = timerProvider.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] _ in
+        serviceState = .running
+        timer = timerProvider.scheduledTimer(withTimeInterval: 0.01, repeats: true, block: { [weak self] _ in
             guard let self else { return }
             self.updateTimer()
         })
-        serviceState = .running
     }
     
     private func updateTimer(byAdding addValue: TimeInterval = 1) {
