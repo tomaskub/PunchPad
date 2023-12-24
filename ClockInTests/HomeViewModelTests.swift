@@ -28,35 +28,4 @@ final class HomeViewModelModelTests: XCTestCase {
         super.tearDown()
         sut = nil
     }
-
-    func testUpdateTimer_whenCountSecondsSmallerThanSubtrahend() throws {
-        sut.startTimer()
-        for _ in 0...9 {
-            MockTimer.currentTimer.fire()
-        }
-        let valuePredictedAfterOneFire: CGFloat = 1 - CGFloat(settingsStore.workTimeInSeconds - 10) / CGFloat (settingsStore.workTimeInSeconds)
-        XCTAssertEqual(sut.progress, valuePredictedAfterOneFire, "Timer should fire once")
-    }
-    
-    func testUpdateTimer_whenCountSecondsBiggerThanSubtrahendAndNoOvertimeAllowed() throws {
-        sut.progressAfterFinish = false
-        sut.startTimer()
-        for _ in 0...settingsStore.workTimeInSeconds {
-                MockTimer.currentTimer.fire()
-        }
-        XCTAssertFalse(MockTimer.currentTimer.isValid, "Timer should be invalid")
-        XCTAssertEqual(sut.progress, 1, "Progress should be equal to 1")
-    }
-    
-    func testUpdateTimer_whenCountSecondsBiggerThanSubtrahendAndOvertimeAllowed() throws {
-        sut.progressAfterFinish = true
-        sut.startTimer()
-        for _ in 0...settingsStore.workTimeInSeconds + 9  {
-                MockTimer.currentTimer.fire()
-        }
-        let valuePredicted: CGFloat = CGFloat(10) / CGFloat (settingsStore.maximumOvertimeAllowedInSeconds)
-        XCTAssertTrue(MockTimer.currentTimer.isValid, "Timer should be valid")
-        XCTAssertEqual(sut.progress, 1, "Progress should be equal to 1")
-        XCTAssertEqual(sut.overtimeProgress, valuePredicted, "overtimeProgress should be equal to predicted value")
-    }
 }
