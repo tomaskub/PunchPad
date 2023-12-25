@@ -7,8 +7,6 @@
 
 import XCTest
 @testable import ClockIn
-//TODO: Add test for starting service when first service finished
-//TODO: write a test for resume from background when time in background exeeds timer limit
 
 final class HomeViewModelModelTests: XCTestCase {
     
@@ -36,13 +34,32 @@ final class HomeViewModelModelTests: XCTestCase {
     
     func test_startTimerService_when_noOvertime_firstRun() {
         //Given
+        let expectedState: TimerService.TimerServiceState = .running
         setUpWithOneTimer()
         //When
         sut.startTimerService()
         //Then
-        XCTAssertEqual(sut.state, .running, "State should be equal to `running`")
+        XCTAssertEqual(sut.state, expectedState, "State should be equal to \(expectedState)")
     }
-
+    
+    func test_startTimerService_when_noOvertime_secondRun() {
+        //Given
+        let expectedState: TimerService.TimerServiceState = .running
+        let expectedProgress = CGFloat(0.2)
+        let expectedDisplayValue = TimeInterval(integerLiteral: 20)
+        setUpWithOneTimer()
+        //When
+        sut.startTimerService()
+        fireTimer(10)
+        sut.stopTimerService()
+        sut.startTimerService()
+        fireTimer(20)
+        //Then
+        XCTAssertEqual(sut.state, expectedState, "State should be equal to \(expectedState)")
+        XCTAssertEqual(sut.normalProgress, expectedProgress)
+        XCTAssertEqual(sut.timerDisplayValue, expectedDisplayValue)
+    }
+    
     func test_timerProperties_updateWhenRunning_noOvertime() {
         //Given
         let numberOfFires = 10
@@ -137,11 +154,24 @@ final class HomeViewModelModelTests: XCTestCase {
         fireTimer(numberOfFires)
         sut.stopTimerService()
         //Then
-        XCTAssertEqual(sut.state, .notStarted, "Service state should be not started")
+        XCTAssertEqual(sut.state, .finished, "Service state should be finished")
         XCTAssertEqual(DataManager.testing.entryArray.count, numberOfExistingEntries + 1, "Additional entry should be saved")
     }
     
-    func test_startSecondTimer_whenFirstIsFinished() {
+    func test_timerFinished_stopsServiceAndSavesEntry_noOvertime() {
+        //Given
+        let expectedNumberOfEntries = DataManager.testing.entryArray.count + 1
+        let numberOfFires = workTimerLimit + 1
+        setUpWithOneTimer()
+        //When
+        sut.startTimerService()
+        fireTimer(numberOfFires)
+        //Then
+        XCTAssertEqual(sut.state, .finished, "Service state should be finished")
+        XCTAssertEqual(DataManager.testing.entryArray.count, expectedNumberOfEntries, "Additional entry should be saved")
+    }
+    
+    func test_startSecondTimer_whenFirstIsFinished_firstRun() {
         //Given
         let numberOfFires = workTimerLimit + 1
         let expectedNormalProgress = CGFloat(1)
@@ -154,7 +184,23 @@ final class HomeViewModelModelTests: XCTestCase {
         XCTAssert(sut.overtimeProgress > 0, "Overtime progress should be bigger than 0")
         XCTAssertEqual(sut.state, .running, "SUT state should be running")
     }
-    
+    func test_startSecondTimer_whenFirstIsFinished_secondRun() {
+        //Given
+        let expectedState: TimerService.TimerServiceState = .running
+        let expectedProgress = CGFloat(0.2)
+        let expectedDisplayValue = TimeInterval(integerLiteral: 20)
+        setUpWithTwoTimers()
+        //When
+        sut.startTimerService()
+        fireTimer(workTimerLimit + 10)
+        sut.stopTimerService()
+        sut.startTimerService()
+        fireTimer(workTimerLimit + 20)
+        //Then
+        XCTAssertEqual(sut.state, expectedState, "State should be equal to \(expectedState)")
+        XCTAssertEqual(sut.overtimeProgress, expectedProgress)
+        XCTAssertEqual(sut.timerDisplayValue, expectedDisplayValue)
+    }
     func test_displayedValue_whenFirstTimerFinished_whenSecondTimerStarts() {
         //Given
         let expectedDisplayValueFromFirstTimer: CGFloat = 100
@@ -263,7 +309,27 @@ final class HomeViewModelModelTests: XCTestCase {
         XCTAssertEqual(sut.normalProgress, expectedNormalProgressValue, "Normal progress should be equal to \(expectedNormalProgressValue)")
         XCTAssertEqual(sut.overtimeProgress, expectedOvertimeProgressValue, accuracy: 0.01, "Overtime progress should be equal to \(expectedOvertimeProgressValue)")
     }
-
+    
+    func test_resumeFromBackground_whenTimeInBackgroundExceedsSumOfTimeLimits() {
+        //Given
+        let numberOfSecondsPassedInBackground = workTimerLimit + overtimeTimerLimit
+        let expectedDisplayValue = TimeInterval(numberOfSecondsPassedInBackground - workTimerLimit)
+        let expectedNormalProgressValue = CGFloat(1)
+        let expectedOvertimeProgressValue = CGFloat(1)
+        var enterBackgroundDate: Date {
+            Calendar.current.date(byAdding: .second, value: -numberOfSecondsPassedInBackground - 20, to: Date())!
+        }
+        setUpWithTwoTimers()
+        //When
+        sut.startTimerService()
+        
+        sut.resumeFromBackground(enterBackgroundDate)
+        //Then
+        XCTAssertEqual(sut.timerDisplayValue, expectedDisplayValue, accuracy: 0.01, "Timer display value should be equal to \(expectedDisplayValue)")
+        XCTAssertEqual(sut.normalProgress, expectedNormalProgressValue, "Normal progress should be equal to \(expectedNormalProgressValue)")
+        XCTAssertEqual(sut.overtimeProgress, expectedOvertimeProgressValue, accuracy: 0.01, "Overtime progress should be equal to \(expectedOvertimeProgressValue)")
+    }
+    
     func test_stopTimerService_stopsSecondTimerAndSavesEntry() {
         let numberOfFires = workTimerLimit + overtimeTimerLimit
         let expectedDisplayValue = TimeInterval(overtimeTimerLimit)
@@ -280,6 +346,19 @@ final class HomeViewModelModelTests: XCTestCase {
         XCTAssertEqual(sut.timerDisplayValue, expectedDisplayValue, accuracy: 0.01, "Timer display value should be equal to \(expectedDisplayValue)")
         XCTAssertEqual(sut.normalProgress, expectedNormalProgressValue, "Normal progress should be equal to \(expectedNormalProgressValue)")
         XCTAssertEqual(sut.overtimeProgress, expectedOvertimeProgressValue, accuracy: 0.01, "Overtime progress should be equal to \(expectedOvertimeProgressValue)")
+    }
+    
+    func test_secondTimerFinished_stopsServiceAndSavesEntry() {
+        //Given
+        let expectedNumberOfEntries = DataManager.testing.entryArray.count + 1
+        let numberOfFires = workTimerLimit + overtimeTimerLimit + 1
+        setUpWithTwoTimers()
+        //When
+        sut.startTimerService()
+        fireTimer(numberOfFires)
+        //Then
+        XCTAssertEqual(sut.state, .finished, "Service state should be finished")
+        XCTAssertEqual(DataManager.testing.entryArray.count, expectedNumberOfEntries, "Additional entry should be saved")
     }
     
     private func setUpWithOneTimer() {
