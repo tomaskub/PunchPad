@@ -13,6 +13,8 @@ struct HomeView: View {
     @StateObject private var viewModel: HomeViewModel
     @EnvironmentObject private var container: Container
     let timerIndicatorFormatter = FormatterFactory.makeDateComponentFormatter()
+    let titleText: String = "ClockIn"
+    let settingText: String = "Settings"
     init(viewModel: HomeViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
@@ -22,10 +24,10 @@ struct HomeView: View {
             background
             VStack(spacing: 64) {
                 timerIndicator
-                controlButtons
+                makeControls(viewModel.state)
             } // END OF VSTACK
         } // END OF ZSTACK
-        .navigationTitle("ClockIn")
+        .navigationTitle(titleText)
         .toolbar { toolbar }
     } // END OF BODY
     
@@ -39,9 +41,10 @@ struct HomeView: View {
                 SettingsView(viewModel:
                                 SettingsViewModel(
                                     dataManger: container.dataManager,
-                                    settingsStore: container.settingsStore))
+                                    settingsStore: container.settingsStore
+                                ))
             } label: {
-                Label("Settings", systemImage: "gearshape.fill")
+                Label(settingText, systemImage: "gearshape.fill")
             } // END OF NAV LINK
             .tint(.primary)
             .accessibilityIdentifier(Identifier.settingNavigationButton.rawValue)
@@ -51,12 +54,21 @@ struct HomeView: View {
 
 //MARK: - TIMER CONTROLS
 extension HomeView {
-    var controlButtons: some View {
-        HStack(spacing: 50) {
-            if viewModel.state == .running {
+    @ViewBuilder
+    func makeControls(_ state: TimerService.TimerServiceState) -> some View {
+        switch state {
+        case .running:
+            HStack(spacing: 50) {
+                pauseButton
                 finishButton
-            } // END OF IF
-            startPauseButton
+            }
+        case .paused:
+            HStack(spacing: 50) {
+                resumeButton
+                finishButton
+            }
+        case .notStarted, .finished:
+            startButton
         }
     }
     
@@ -72,21 +84,38 @@ extension HomeView {
         .accessibilityIdentifier(Identifier.finishButton.rawValue)
     }
     
-    var startPauseButton: some View {
+    var startButton: some View {
         Button {
-            switch viewModel.state {
-            case .running:
-                viewModel.pauseTimerService()
-            case .notStarted, .paused, .finished:
-                viewModel.startTimerService()
-            }
-             // resume signal
-            
+            viewModel.startTimerService()
         } label: {
             Image(systemName: viewModel.state  == .running ? "pause.fill" : "play.fill")
                 .resizable()
         } // END OF BUTTON
-        .accessibilityIdentifier(Identifier.startPauseButton.rawValue)
+        .accessibilityIdentifier(Identifier.startButton.rawValue)
+        .accentColor(.primary)
+        .frame(width: 50, height: 50)
+    }
+    
+    var resumeButton: some View {
+        Button {
+            viewModel.resumeTimerService()
+        } label: {
+            Image(systemName: "play.fill")
+                .resizable()
+        } // END OF BUTTON
+        .accessibilityIdentifier(Identifier.resumeButton.rawValue)
+        .accentColor(.primary)
+        .frame(width: 50, height: 50)
+    }
+    
+    var pauseButton: some View {
+        Button {
+            viewModel.pauseTimerService()
+        } label: {
+            Image(systemName: "pause.fill")
+                .resizable()
+        } // END OF BUTTON
+        .accessibilityIdentifier(Identifier.pauseButton.rawValue)
         .accentColor(.primary)
         .frame(width: 50, height: 50)
     }
@@ -98,9 +127,9 @@ extension HomeView {
         ZStack {
             timerLabel
             worktimeProgressRing
-//            if viewModel.overtimeProgress > 0 {
-//                overtimeProgressRing
-//            }
+            if viewModel.overtimeProgress > 0 {
+                overtimeProgressRing
+            }
         }
     }
     
@@ -116,19 +145,22 @@ extension HomeView {
                         endPoint: viewModel.normalProgress,
                         ringColor: .primary,
                         ringWidth: 5,
-                        displayPointer: false)
+                        displayPointer: false
+        )
             .frame(width: UIScreen.main.bounds.size.width-120,
                    height: UIScreen.main.bounds.size.width-120)
     }
     
-//    var overtimeProgressRing: some View {
-//            RingView(startPoint: 0,
-//                     endPoint: viewModel.overtimeProgress,
-//                     ringColor: .secondary,
-//                     ringWidth: 5,
-//                     displayPointer: false)
-//                .frame(width: UIScreen.main.bounds.size.width-120, height: UIScreen.main.bounds.size.width-120)
-//    }
+    var overtimeProgressRing: some View {
+            RingView(startPoint: 0,
+                     endPoint: viewModel.overtimeProgress,
+                     ringColor: .red,
+                     ringWidth: 5,
+                     displayPointer: false
+            )
+                .frame(width: UIScreen.main.bounds.size.width-120,
+                       height: UIScreen.main.bounds.size.width-120)
+    }
     func formatTimeInterval(_ value: TimeInterval) -> String {
         return timerIndicatorFormatter.string(from: value) ?? "\(value)"
     }
