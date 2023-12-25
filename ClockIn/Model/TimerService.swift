@@ -68,7 +68,7 @@ class TimerService: ObservableObject {
         counter = 0
         progress = 0
         serviceState = .running
-        timer = timerProvider.scheduledTimer(withTimeInterval: 0.01, repeats: true, block: { [weak self] _ in
+        timer = timerProvider.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] _ in
             guard let self else { return }
             self.updateTimer()
         })
@@ -80,7 +80,7 @@ class TimerService: ObservableObject {
         withAnimation(.easeInOut) {
             updateProgressCounter()
         }
-        if counter == timerLimit {
+        if counter >= timerLimit {
             self.serviceState = .finished
         }
     }
