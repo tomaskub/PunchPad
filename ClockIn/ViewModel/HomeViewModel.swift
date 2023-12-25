@@ -46,7 +46,6 @@ class HomeViewModel: NSObject, ObservableObject {
         self.settingsStore = settingsStore
         self.timerProvider = timerProvider
         self.payManager = payManager
-        // register new timer service
         self.workTimerService = .init(
             timerProvider: timerProvider,
             timerLimit: TimeInterval(settingsStore.workTimeInSeconds)
@@ -57,8 +56,49 @@ class HomeViewModel: NSObject, ObservableObject {
                 timerLimit: TimeInterval(settingsStore.maximumOvertimeAllowedInSeconds))
         }
         super.init()
+        
+        setUpStoreSubscribers()
         setAppStateObservers()
         setUpTimerSubscribers()
+    }
+    
+    private func setUpStoreSubscribers() {
+        settingsStore.$isLoggingOvertime
+            .filter { [weak self] _ in
+                self?.state == .notStarted
+            }.sink { [weak self] value in
+                guard let self else { return }
+                if value {
+                    self.overtimeTimerService = .init(
+                        timerProvider: timerProvider,
+                        timerLimit: TimeInterval(settingsStore.maximumOvertimeAllowedInSeconds)
+                    )
+                } else {
+                    self.overtimeTimerService = nil
+                }
+            }.store(in: &subscriptions)
+        
+        settingsStore.$workTimeInSeconds
+            .filter { [weak self] _ in
+                self?.state == .notStarted
+            }.sink { [weak self] value in
+                guard let self else { return }
+                self.workTimerService = .init(
+                        timerProvider: timerProvider,
+                        timerLimit: TimeInterval(self.settingsStore.workTimeInSeconds)
+                        )
+            }.store(in: &subscriptions)
+        
+        settingsStore.$maximumOvertimeAllowedInSeconds
+            .filter { [weak self] _ in
+                self?.state == .notStarted && (self?.settingsStore.isLoggingOvertime ?? false)
+            }.sink { [weak self] value in
+                guard let self else { return }
+                self.overtimeTimerService = .init(
+                        timerProvider: timerProvider,
+                        timerLimit: TimeInterval(self.settingsStore.maximumOvertimeAllowedInSeconds)
+                        )
+            }.store(in: &subscriptions)
     }
     
     private func setUpTimerSubscribers() {
