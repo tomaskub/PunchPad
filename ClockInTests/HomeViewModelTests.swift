@@ -96,9 +96,9 @@ final class HomeViewModelModelTests: XCTestCase {
         let expectedDisplayValue = TimeInterval(numberOfSecondsPassedInBackground)
         let expectedNormalProgressValue = CGFloat(numberOfSecondsPassedInBackground) / CGFloat(workTimerLimit)
         let expectedOvertimeProgressValue = CGFloat(0)
-        var enterBackgroundDate: Date = {
+        var enterBackgroundDate: Date {
             Calendar.current.date(byAdding: .second, value: -numberOfSecondsPassedInBackground, to: Date())!
-        }()
+        }
         setUpWithOneTimer()
         //When
         sut.startTimerService()
@@ -115,9 +115,9 @@ final class HomeViewModelModelTests: XCTestCase {
         let expectedDisplayValue = TimeInterval(0)
         let expectedNormalProgressValue = CGFloat(0)
         let expectedOvertimeProgressValue = CGFloat(0)
-        var enterBackgroundDate: Date = {
+        var enterBackgroundDate: Date {
             Calendar.current.date(byAdding: .second, value: -numberOfSecondsPassedInBackground, to: Date())!
-        }()
+        }
         setUpWithOneTimer()
         //When
         sut.resumeFromBackground(enterBackgroundDate)
@@ -230,9 +230,9 @@ final class HomeViewModelModelTests: XCTestCase {
         let expectedDisplayValue = TimeInterval(numberOfSecondsPassedInBackground)
         let expectedNormalProgressValue = CGFloat(1)
         let expectedOvertimeProgressValue = CGFloat(numberOfSecondsPassedInBackground) / CGFloat(overtimeTimerLimit)
-        var enterBackgroundDate: Date = {
+        var enterBackgroundDate: Date {
             Calendar.current.date(byAdding: .second, value: -numberOfSecondsPassedInBackground, to: Date())!
-        }()
+        }
         setUpWithTwoTimers()
         //When
         sut.startTimerService()
@@ -250,9 +250,9 @@ final class HomeViewModelModelTests: XCTestCase {
         let expectedDisplayValue = TimeInterval(numberOfSecondsPassedInBackground - workTimerLimit)
         let expectedNormalProgressValue = CGFloat(1)
         let expectedOvertimeProgressValue = CGFloat(numberOfSecondsPassedInBackground - workTimerLimit) / CGFloat(overtimeTimerLimit)
-        var enterBackgroundDate: Date = {
+        var enterBackgroundDate: Date {
             Calendar.current.date(byAdding: .second, value: -numberOfSecondsPassedInBackground, to: Date())!
-        }()
+        }
         setUpWithTwoTimers()
         //When
         sut.startTimerService()
