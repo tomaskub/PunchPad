@@ -7,8 +7,6 @@
 
 import SwiftUI
 import Combine
-//TODO: Resume from background does not work on second timer - move to VM
-//TODO: fix bug when time in background is bigger than timer limit - first timer never emits finish - move to VM
 //TODO: Remove bug when timer is not saving entry when not stopped with button - move to VM
 
 class HomeViewModel: NSObject, ObservableObject {
@@ -89,7 +87,6 @@ class HomeViewModel: NSObject, ObservableObject {
             self.workTimerService.$serviceState.filter { state in
                 return state == .finished
             }.sink { [weak self] _ in
-                
                 self?.saveEntry()
             }.store(in: &subscriptions)
         }
@@ -130,14 +127,26 @@ extension HomeViewModel {
         workTimerService.send(event: .stop)
         overtimeTimerService?.send(event: .stop)
     }
-    func resumeFromBackground(_ appDidEnterBackgroundDate: Date) {
-        let timePassedInBackground = DateInterval(start: appDidEnterBackgroundDate, end: Date()).duration
-        workTimerService.send(event: .resumeWith(timePassedInBackground))
-    }
 }
 
 //MARK: HANDLING BACKGROUND TIMER UPDATE FUNC
 extension HomeViewModel {
+    
+    func resumeFromBackground(_ appDidEnterBackgroundDate: Date) {
+        let timePassedInBackground = DateInterval(start: appDidEnterBackgroundDate, end: Date()).duration
+        guard let overtimeTimerService else {
+            workTimerService.send(event: .resumeWith(timePassedInBackground))
+            return
+        }
+        if workTimerService.remainingTime < timePassedInBackground {
+            let remainingTime = workTimerService.remainingTime
+            workTimerService.send(event: .resumeWith(remainingTime))
+            overtimeTimerService.send(event: .start)
+            overtimeTimerService.send(event: .resumeWith(timePassedInBackground - remainingTime))
+        } else {
+            workTimerService.send(event: .resumeWith(workTimerService.remainingTime))
+        }
+    }
     
     private func setAppStateObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
