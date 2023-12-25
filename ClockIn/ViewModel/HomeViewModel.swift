@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Combine
-//TODO: Remove bug when timer is not saving entry when not stopped with button - move to VM
 
 class HomeViewModel: NSObject, ObservableObject {
     private var dataManager: DataManager
@@ -81,13 +80,19 @@ class HomeViewModel: NSObject, ObservableObject {
             overtimeTimerService.$serviceState.filter { state in
                 return state == .finished
             }.sink { [weak self] _ in
-                self?.saveEntry()
+                guard let self else { return }
+                self.state = .finished
+                self.finishDate = Date()
+                self.saveEntry()
             }.store(in: &subscriptions)
         } else {
             self.workTimerService.$serviceState.filter { state in
                 return state == .finished
             }.sink { [weak self] _ in
-                self?.saveEntry()
+                guard let self else { return }
+                self.state = .finished
+                self.finishDate = Date()
+                self.saveEntry()
             }.store(in: &subscriptions)
         }
     }
@@ -95,34 +100,42 @@ class HomeViewModel: NSObject, ObservableObject {
 
 //MARK: TIMER INTERFACE
 extension HomeViewModel {
-    // should start a new timer
+    
     func startTimerService() {
-        if workTimerService.serviceState == .finished {
+        guard state != .running else { return }
+        if state == .finished {
             workTimerService = .init(
                 timerProvider: timerProvider,
                 timerLimit: TimeInterval(settingsStore.workTimeInSeconds)
             )
+            if settingsStore.isLoggingOvertime {
+                overtimeTimerService = .init(
+                    timerProvider: timerProvider,
+                    timerLimit: TimeInterval(settingsStore.maximumOvertimeAllowedInSeconds)
+                )
+            }
             setUpTimerSubscribers()
         }
-        if workTimerService.serviceState == .notStarted {
-            startDate = Date()
-        }
+        startDate = Date()
         self.state = .running
         workTimerService.send(event: .start)
     }
     
     func pauseTimerService() {
+        guard state != .paused else { return }
         self.state = .paused
         workTimerService.send(event: .pause)
         overtimeTimerService?.send(event: .pause)
     }
     func resumeTimerService() {
+        guard state != .running else { return }
         self.state = .running
         workTimerService.send(event: .resumeWith(nil))
         overtimeTimerService?.send(event: .resumeWith(nil))
     }
     func stopTimerService() {
-        self.state = .notStarted
+        guard state != .finished else { return }
+        self.state = .finished
         finishDate = Date()
         workTimerService.send(event: .stop)
         overtimeTimerService?.send(event: .stop)
@@ -142,7 +155,11 @@ extension HomeViewModel {
             let remainingTime = workTimerService.remainingTime
             workTimerService.send(event: .resumeWith(remainingTime))
             overtimeTimerService.send(event: .start)
-            overtimeTimerService.send(event: .resumeWith(timePassedInBackground - remainingTime))
+            if overtimeTimerService.remainingTime >= timePassedInBackground - remainingTime {
+                overtimeTimerService.send(event: .resumeWith(timePassedInBackground - remainingTime))
+            } else {
+                overtimeTimerService.send(event: .resumeWith(overtimeTimerService.remainingTime))
+            }
         } else {
             workTimerService.send(event: .resumeWith(workTimerService.remainingTime))
         }
@@ -186,7 +203,7 @@ extension HomeViewModel {
         let entryToSave = Entry(startDate: startDate,
                                 finishDate: finishDate,
                                 workTimeInSec: Int(workTimerService.counter),
-                                overTimeInSec: 0,
+                                overTimeInSec: Int(overtimeTimerService?.counter ?? 0),
                                 maximumOvertimeAllowedInSeconds: settingsStore.maximumOvertimeAllowedInSeconds,
                                 standardWorktimeInSeconds: settingsStore.workTimeInSeconds,
                                 grossPayPerMonth: settingsStore.grossPayPerMonth, 
