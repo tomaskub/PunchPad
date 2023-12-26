@@ -47,9 +47,9 @@ struct HomeView: View {
                                     settingsStore: container.settingsStore
                                 ))
             } label: {
-                Label(settingText, systemImage: "gearshape.fill")
+                Label(settingText, systemImage: "gearshape")
             } // END OF NAV LINK
-            .tint(.primary)
+            .tint(.theme.primary)
             .accessibilityIdentifier(Identifier.settingNavigationButton.rawValue)
         } // END OF TOOLBAR ITEM
     }
@@ -61,12 +61,12 @@ extension HomeView {
     func makeControls(_ state: TimerService.TimerServiceState) -> some View {
         switch state {
         case .running:
-            HStack(spacing: 50) {
+            HStack {
                 pauseButton
                 finishButton
             }
         case .paused:
-            HStack(spacing: 50) {
+            HStack {
                 resumeButton
                 finishButton
             }
@@ -81,9 +81,10 @@ extension HomeView {
         } label: {
             Image(systemName: "stop.fill")
                 .resizable()
-                .foregroundColor(.primary)
-                .frame(width: 50, height: 50)
+                .frame(width: 30, height: 30)
+                .frame(width: 60, height: 60)
         }
+        .buttonStyle(CircleButton())
         .accessibilityIdentifier(Identifier.finishButton.rawValue)
     }
     
@@ -91,12 +92,15 @@ extension HomeView {
         Button {
             viewModel.startTimerService()
         } label: {
-            Image(systemName: viewModel.state  == .running ? "pause.fill" : "play.fill")
+            Image(systemName: "play.fill")
                 .resizable()
+                .frame(width: 50, height: 50)
+                .offset(x: 5)
+                .frame(width: 100, height: 100)
         } // END OF BUTTON
+        .buttonStyle(CircleButton())
         .accessibilityIdentifier(Identifier.startButton.rawValue)
-        .accentColor(.primary)
-        .frame(width: 50, height: 50)
+        
     }
     
     var resumeButton: some View {
@@ -105,10 +109,11 @@ extension HomeView {
         } label: {
             Image(systemName: "play.fill")
                 .resizable()
+                .frame(width: 50, height: 50)
+                .frame(width: 100, height: 100)
         } // END OF BUTTON
+        .buttonStyle(CircleButton())
         .accessibilityIdentifier(Identifier.resumeButton.rawValue)
-        .accentColor(.primary)
-        .frame(width: 50, height: 50)
     }
     
     var pauseButton: some View {
@@ -117,10 +122,11 @@ extension HomeView {
         } label: {
             Image(systemName: "pause.fill")
                 .resizable()
+                .frame(width: 50, height: 50)
+                .frame(width: 100, height: 100)
         } // END OF BUTTON
+        .buttonStyle(CircleButton())
         .accessibilityIdentifier(Identifier.pauseButton.rawValue)
-        .accentColor(.primary)
-        .frame(width: 50, height: 50)
     }
 }
 
@@ -174,13 +180,19 @@ struct Home_Previews: PreviewProvider {
     private struct ContainerView: View {
         @StateObject private var container: Container = .init()
         var body: some View {
-            NavigationView {
-                HomeView(viewModel: HomeViewModel(dataManager: container.dataManager,
-                                                  settingsStore: container.settingsStore,
-                                                  payManager: container.payManager,
-                                                  timerProvider: container.timerProvider))
+            TabView {
+                NavigationView {
+                    HomeView(viewModel: HomeViewModel(dataManager: container.dataManager,
+                                                      settingsStore: container.settingsStore,
+                                                      payManager: container.payManager,
+                                                      timerProvider: container.timerProvider))
+                }
+                .tabItem { Label(
+                    title: { Text("Home") },
+                    icon: { Image(systemName: "house.fill") }
+                ) }
+                .environmentObject(Container())
             }
-            .environmentObject(Container())
         }
     }
     static var previews: some View {
