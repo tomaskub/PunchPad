@@ -21,6 +21,7 @@
 		D61945F029E735D80046DE1F /* MockTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61945EF29E735D80046DE1F /* MockTimer.swift */; };
 		D61F11312AB38F8700902D6D /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61F11302AB38F8700902D6D /* SettingsStore.swift */; };
 		D61F11342AB3A6FF00902D6D /* ColorScheme+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61F11332AB3A6FF00902D6D /* ColorScheme+Extension.swift */; };
+		D621C0CA2B3B79850065DF8C /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D621C0C92B3B79850065DF8C /* CircleButton.swift */; };
 		D629CEF92B3613660036579D /* TimerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D629CEF82B3613660036579D /* TimerService.swift */; };
 		D629CEFB2B363B500036579D /* TimerServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D629CEFA2B363B500036579D /* TimerServiceTests.swift */; };
 		D64313B82B1E606B003B5DBC /* PreviewDataFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64313B72B1E606B003B5DBC /* PreviewDataFactory.swift */; };
@@ -120,6 +121,7 @@
 		D61945EF29E735D80046DE1F /* MockTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTimer.swift; sourceTree = "<group>"; };
 		D61F11302AB38F8700902D6D /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
 		D61F11332AB3A6FF00902D6D /* ColorScheme+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ColorScheme+Extension.swift"; sourceTree = "<group>"; };
+		D621C0C92B3B79850065DF8C /* CircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButton.swift; sourceTree = "<group>"; };
 		D629CEF82B3613660036579D /* TimerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerService.swift; sourceTree = "<group>"; };
 		D629CEFA2B363B500036579D /* TimerServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TimerServiceTests.swift; path = ClockInTests/TimerServiceTests.swift; sourceTree = "<group>"; };
 		D64313B72B1E606B003B5DBC /* PreviewDataFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewDataFactory.swift; sourceTree = "<group>"; };
@@ -225,6 +227,14 @@
 				D6CBB8672B34ACF20074CE8B /* Calendar+Extension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		D621C0C82B3B794A0065DF8C /* ViewComponent */ = {
+			isa = PBXGroup;
+			children = (
+				D621C0C92B3B79850065DF8C /* CircleButton.swift */,
+			);
+			path = ViewComponent;
 			sourceTree = "<group>";
 		};
 		D67332E82AAE3C1A005FFE7F /* ScreenHelpers */ = {
@@ -343,6 +353,7 @@
 		D6C458BE29D2D3E50069D89B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D621C0C82B3B794A0065DF8C /* ViewComponent */,
 				D684A3862AF6F3C700511E0D /* OboardingViews */,
 				D6C4589529D229210069D89B /* ContentView.swift */,
 				D6C458C229D2DE2D0069D89B /* HomeView.swift */,
@@ -555,6 +566,7 @@
 				D64574B329D9F16900207168 /* EntryMO+CoreDataClass.swift in Sources */,
 				D64574B429D9F16900207168 /* EntryMO+CoreDataProperties.swift in Sources */,
 				D653FEEC2B320E1600ECFCF2 /* TimeIntervalPicker.swift in Sources */,
+				D621C0CA2B3B79850065DF8C /* CircleButton.swift in Sources */,
 				D6D906AE2AA0BEDE004E09C9 /* ScreenIdentifier.swift in Sources */,
 				D61F11342AB3A6FF00902D6D /* ColorScheme+Extension.swift in Sources */,
 				D684A38A2AF6F54B00511E0D /* ButtonFactory.swift in Sources */,
