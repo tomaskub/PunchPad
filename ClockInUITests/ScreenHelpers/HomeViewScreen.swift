@@ -15,7 +15,14 @@ class HomeViewScreen {
     }
     
     var timerStartPauseButton: XCUIElement {
-        app.buttons[ScreenIdentifier.HomeView.startPauseButton.rawValue]
+        app.buttons[ScreenIdentifier.HomeView.startButton.rawValue]
+    }
+    
+    var timerPauseButton: XCUIElement {
+        app.buttons[ScreenIdentifier.HomeView.pauseButton.rawValue]
+    }
+    var timerResumeButton: XCUIElement {
+        app.buttons[ScreenIdentifier.HomeView.resumeButton.rawValue]
     }
     
     var timerFinishButton: XCUIElement {

@@ -15,7 +15,9 @@ enum ScreenIdentifier {
         case history
     }
     enum HomeView: String {
-        case startPauseButton
+        case startButton
+        case pauseButton
+        case resumeButton
         case finishButton
         case timerLabel
         case settingNavigationButton
