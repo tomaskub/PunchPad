@@ -34,12 +34,14 @@ struct TimerIndicator: View {
                     .font(.largeTitle)
                     .foregroundColor(.theme.black)
             }
-            RingView(startPoint: 0,
-                     endPoint: firstProgress,
-                     ringColor: .theme.ringGreen,
-                     ringWidth: 20,
-                     displayPointer: false
-            )
+            if firstProgress > 0 {
+                RingView(startPoint: 0,
+                         endPoint: firstProgress,
+                         ringColor: .theme.ringGreen,
+                         ringWidth: 20,
+                         displayPointer: false
+                )
+            }
             if secondProgress > 0 {
                 RingView(startPoint: 0,
                          endPoint: secondProgress,
@@ -49,15 +51,28 @@ struct TimerIndicator: View {
                 )
             }
         }
+        .compositingGroup()
+        .shadow(color: /*@START_MENU_TOKEN@*/.black/*@END_MENU_TOKEN@*/.opacity(0.3), radius: 6, x: 0, y: 4)
+        
     }
 }
 
+#Preview("State 0 - not started") {
+    ZStack {
+        BackgroundFactory.buildSolidColor()
+        TimerIndicator(
+            timerLabel: "00:00",
+            firstProgress: 0,
+            secondProgress: 0)
+        .frame(width: 260, height: 260)
+    }
+}
 #Preview("State 1 - some time passed") {
     ZStack {
         BackgroundFactory.buildSolidColor()
         TimerIndicator(
             timerLabel: "04:20",
-            firstProgress: 260/480,
+            firstProgress: 0.6,
             secondProgress: 0)
         .frame(width: 260, height: 260)
     }
