@@ -11,7 +11,7 @@ import Charts
 struct ChartFactory {
     // TODO: ADD FLEXIBILITY WITH KEY PATHS
     @ViewBuilder
-    static func buildBarChart(entries: [Entry], includeRuleMark: Bool) -> some View {
+    static func buildBarChart(entries: [Entry], firstColor: Color, secondColor: Color, includeRuleMark: Bool = false) -> some View {
             Chart(entries) {
                 // ruler
                 if includeRuleMark {
@@ -23,19 +23,21 @@ struct ChartFactory {
                 BarMark(
                     x: .value("Date", $0.startDate, unit: .day),
                     y: .value("Hours worked", $0.workTimeInSeconds / 3600))
-                .foregroundStyle(.blue)
+                .foregroundStyle(firstColor)
                 
                 BarMark(x: .value("Date", $0.startDate,unit: .day),
                         y: .value("Hours worked", $0.overTimeInSeconds / 3600))
-                .foregroundStyle(.green)
+                .foregroundStyle(secondColor)
             }
-            
-            //Additional chart properties x-axis and y-scale
             .chartYScale(domain: 0...15)
-            ChartLegendView(chartLegendItems: [
-                ChartLegendItem(itemName: "Hours worked", itemShape: Rectangle(), itemShapeColor: .blue),
-                ChartLegendItem(itemName: "Overtime", itemShape: Rectangle(), itemShapeColor: .green)])
-            .font(.caption)
+    }
+    
+    @ViewBuilder
+    static func buildChartLegend() -> some View {
+        ChartLegendView(chartLegendItems: [
+            ChartLegendItem(itemName: "Hours worked", itemShape: Rectangle(), itemShapeColor: .blue),
+            ChartLegendItem(itemName: "Overtime", itemShape: Circle(), itemShapeColor: .green)])
+        .font(.caption)
     }
     
     @ViewBuilder

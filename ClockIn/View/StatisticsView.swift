@@ -40,8 +40,9 @@ struct StatisticsView: View {
                         displayedChartRange
                     }
                     chart
+                        .frame(height: 260)
                         .gesture(DragGesture()
-                            .onEnded({ value in
+                            .onEnded { value in
                                 switch detectDirection(value: value) {
                                 case .left:
                                     viewModel.loadPreviousPeriod()
@@ -50,7 +51,8 @@ struct StatisticsView: View {
                                 default:
                                     break
                                 }
-                            }))
+                            }
+                        )
                 }//END OF SECTION
                 .listRowSeparator(.hidden)
                 
@@ -152,7 +154,10 @@ extension StatisticsView {
     
     @ViewBuilder
     var chart: some View {
-            ChartFactory.buildBarChart(entries: viewModel.entriesForChart, includeRuleMark: false)
+            ChartFactory.buildBarChart(entries: viewModel.entriesForChart,
+                                       firstColor: .theme.primary,
+                                       secondColor: .theme.redChart
+            )
     } // END OF VAR
     
     func makeChartRangeString(for period: Period) -> String {
