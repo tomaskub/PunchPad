@@ -143,6 +143,7 @@ extension StatisticsView {
     var chart: some View {
             ChartFactory.buildBarChart(entries: viewModel.entriesForChart, includeRuleMark: false)
     } // END OF VAR
+    
     func makeChartRangeString(for period: Period) -> String {
         let periodEndMonth = Calendar.current.dateComponents([.month], from: period.1)
         let periodEndYear = Calendar.current.dateComponents([.year], from: period.1)
@@ -222,15 +223,22 @@ struct StatisticsView_Previews: PreviewProvider {
     private struct ContainerView: View {
         @StateObject private var container = Container()
         var body: some View {
-            NavigationView {
-                StatisticsView(viewModel:
-                                StatisticsViewModel(
-                                    dataManager: container.dataManager,
-                                    payManager: container.payManager,
-                                    settingsStore: container.settingsStore)
-                               )
+            TabView {
+                NavigationView {
+                    StatisticsView(viewModel:
+                                    StatisticsViewModel(
+                                        dataManager: container.dataManager,
+                                        payManager: container.payManager,
+                                        settingsStore: container.settingsStore)
+                    )
+                }
+                .environmentObject(container)
+                
+                .tabItem {
+                    Label("Statistics", systemImage: "chart.bar.xaxis")
+                        .accessibilityIdentifier(ScreenIdentifier.TabBar.statistics.rawValue)
+                }
             }
-            .environmentObject(container)
         }
     }
     static var previews: some View {
