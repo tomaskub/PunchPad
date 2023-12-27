@@ -15,6 +15,7 @@ struct HomeView: View {
     let timerIndicatorFormatter = FormatterFactory.makeDateComponentFormatter()
     let titleText: String = "ClockIn"
     let settingText: String = "Settings"
+    let bottomMessageText: String = "Start your work day!".capitalized
     init(viewModel: HomeViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
@@ -22,10 +23,25 @@ struct HomeView: View {
     var body: some View {
         ZStack {
             background
-            VStack(spacing: 64) {
-                timerIndicator
-                makeControls(viewModel.state)
-            } // END OF VSTACK
+            VStack{
+                VStack(spacing: 60) {
+                    TimerIndicator(
+                        timerLabel: formatTimeInterval(viewModel.timerDisplayValue),
+                        firstProgress: viewModel.normalProgress,
+                        secondProgress: viewModel.overtimeProgress
+                    )
+                    .frame(width: 260, height: 260)
+                    makeControls(viewModel.state)
+                } // END OF VSTACK
+                .frame(height: 480, alignment: .top)
+                
+                Text(bottomMessageText)
+                    .foregroundColor(.theme.white)
+                    .opacity(viewModel.state == .notStarted ? 1 : 0)
+                    .font(.system(size: 24))
+                    .frame(height: 50)
+                    .padding(.bottom, 34)
+            }
         } // END OF ZSTACK
         .navigationTitle(titleText)
         .toolbar { toolbar }
@@ -53,6 +69,9 @@ struct HomeView: View {
             .accessibilityIdentifier(Identifier.settingNavigationButton.rawValue)
         } // END OF TOOLBAR ITEM
     }
+    func formatTimeInterval(_ value: TimeInterval) -> String {
+        return timerIndicatorFormatter.string(from: value) ?? "\(value)"
+    }
 } // END OF VIEW
 
 //MARK: - TIMER CONTROLS
@@ -79,10 +98,7 @@ extension HomeView {
         Button {
             viewModel.stopTimerService()
         } label: {
-            Image(systemName: "stop.fill")
-                .resizable()
-                .frame(width: 30, height: 30)
-                .frame(width: 60, height: 60)
+            makeSmallButtonLabel(systemName: "stop.fill")
         }
         .buttonStyle(CircleButton())
         .accessibilityIdentifier(Identifier.finishButton.rawValue)
@@ -92,11 +108,9 @@ extension HomeView {
         Button {
             viewModel.startTimerService()
         } label: {
-            Image(systemName: "play.fill")
-                .resizable()
-                .frame(width: 50, height: 50)
-                .offset(x: 5)
-                .frame(width: 100, height: 100)
+            makeLargeButtonLabel(systemName: "play.fill",
+                                 offset: CGSize(width: 5, height: 0)
+            )
         } // END OF BUTTON
         .buttonStyle(CircleButton())
         .accessibilityIdentifier(Identifier.startButton.rawValue)
@@ -107,10 +121,7 @@ extension HomeView {
         Button {
             viewModel.resumeTimerService()
         } label: {
-            Image(systemName: "play.fill")
-                .resizable()
-                .frame(width: 50, height: 50)
-                .frame(width: 100, height: 100)
+            makeLargeButtonLabel(systemName: "play.fill")
         } // END OF BUTTON
         .buttonStyle(CircleButton())
         .accessibilityIdentifier(Identifier.resumeButton.rawValue)
@@ -120,58 +131,32 @@ extension HomeView {
         Button {
             viewModel.pauseTimerService()
         } label: {
-            Image(systemName: "pause.fill")
-                .resizable()
-                .frame(width: 50, height: 50)
-                .frame(width: 100, height: 100)
+            makeLargeButtonLabel(systemName: "pause.fill")
         } // END OF BUTTON
         .buttonStyle(CircleButton())
         .accessibilityIdentifier(Identifier.pauseButton.rawValue)
     }
-}
-
-// MARK: - TIMER INDICATORS
-extension HomeView {
-    var timerIndicator: some View {
-        ZStack {
-            timerLabel
-            worktimeProgressRing
-            if viewModel.overtimeProgress > 0 {
-                overtimeProgressRing
-            }
-        }
+    
+    @ViewBuilder
+    func makeSmallButtonLabel(systemName: String, offset: CGSize? = nil) -> some View {
+        Image(systemName: systemName)
+            .resizable()
+            .frame(width: 55, height: 55)
+            .ifLet(offset, transform: { image, offset in
+                image.offset(offset)
+            })
+            .frame(width: 110, height: 110)
     }
     
-    var timerLabel: some View {
-        Text(formatTimeInterval(viewModel.timerDisplayValue))
-            .accessibilityIdentifier(Identifier.timerLabel.rawValue)
-            .foregroundColor(.primary)
-            .font(.largeTitle)
-    }
-    
-    var worktimeProgressRing: some View {
-        return RingView(startPoint: 0,
-                        endPoint: viewModel.normalProgress,
-                        ringColor: .primary,
-                        ringWidth: 5,
-                        displayPointer: false
-        )
-            .frame(width: UIScreen.main.bounds.size.width-120,
-                   height: UIScreen.main.bounds.size.width-120)
-    }
-    
-    var overtimeProgressRing: some View {
-            RingView(startPoint: 0,
-                     endPoint: viewModel.overtimeProgress,
-                     ringColor: .red,
-                     ringWidth: 5,
-                     displayPointer: false
-            )
-                .frame(width: UIScreen.main.bounds.size.width-120,
-                       height: UIScreen.main.bounds.size.width-120)
-    }
-    func formatTimeInterval(_ value: TimeInterval) -> String {
-        return timerIndicatorFormatter.string(from: value) ?? "\(value)"
+    @ViewBuilder
+    func makeLargeButtonLabel(systemName: String, offset: CGSize? = nil) -> some View {
+        Image(systemName: systemName)
+            .resizable()
+            .frame(width: 80, height: 80)
+            .ifLet(offset, transform: { image, offset in
+                image.offset(offset)
+            })
+            .frame(width: 160, height: 160)
     }
 }
 
