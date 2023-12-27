@@ -11,7 +11,6 @@ struct CircleButton: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .foregroundColor(.theme.white)
-            .padding()
             .background(
                     Circle()
                         .foregroundColor(.theme.buttonColor)
