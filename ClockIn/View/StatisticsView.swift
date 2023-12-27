@@ -7,10 +7,6 @@
 
 import SwiftUI
 import Charts
-enum ChartTimeRange: String, Identifiable, CaseIterable {
-    var id: ChartTimeRange { self }
-    case week, month, year, all
-}
 
 struct StatisticsView: View {
     private typealias Identifier = ScreenIdentifier.StatisticsView
