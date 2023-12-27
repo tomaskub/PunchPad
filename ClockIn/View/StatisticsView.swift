@@ -66,6 +66,7 @@ struct StatisticsView: View {
                         .accessibilityIdentifier(Identifier.SectionHeaders.salaryCalculation.rawValue)
                 }// END OF SECTION
             } //END OF LIST
+            .shadow(color: .black.opacity(0.1), radius: 10, y: 4)
             .scrollContentBackground(.hidden)
             .navigationTitle(navTitleText)
             .toolbar { toolbar }
@@ -99,7 +100,7 @@ extension StatisticsView {
 //MARK: AUX. UI ELEMENTS
 extension StatisticsView {
     var background: some View {
-        BackgroundFactory.buildSolidColor()
+        BackgroundFactory.buildSolidWithStrip(solid: .theme.background, strip: .theme.white)
     }
 //TODO: FIX THE ISSUE WITH NAV LINK NOT WORKING
     var toolbar: some ToolbarContent {
@@ -109,9 +110,9 @@ extension StatisticsView {
                                 dataManger: container.dataManager,
                                 settingsStore: container.settingsStore))
             } label: {
-                Label("Settings", systemImage: "gearshape.fill")
+                Label("Settings", systemImage: "gearshape")
             } // END OF NAV LINK
-            .tint(.primary)
+            .tint(.theme.primary)
         } // END OF TOOLBAR ITEM
     }
     
