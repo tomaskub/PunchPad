@@ -109,7 +109,7 @@ extension HomeView {
             viewModel.startTimerService()
         } label: {
             makeLargeButtonLabel(systemName: "play.fill",
-                                 offset: CGSize(width: 5, height: 0)
+                                 offset: CGSize(width: 6, height: 0)
             )
         } // END OF BUTTON
         .buttonStyle(CircleButton())
@@ -141,18 +141,18 @@ extension HomeView {
     func makeSmallButtonLabel(systemName: String, offset: CGSize? = nil) -> some View {
         Image(systemName: systemName)
             .resizable()
-            .frame(width: 55, height: 55)
+            .frame(width: 40, height: 40)
             .ifLet(offset, transform: { image, offset in
                 image.offset(offset)
             })
-            .frame(width: 110, height: 110)
+            .frame(width: 98, height: 98)
     }
     
     @ViewBuilder
     func makeLargeButtonLabel(systemName: String, offset: CGSize? = nil) -> some View {
         Image(systemName: systemName)
             .resizable()
-            .frame(width: 80, height: 80)
+            .frame(width: 60, height: 60)
             .ifLet(offset, transform: { image, offset in
                 image.offset(offset)
             })
