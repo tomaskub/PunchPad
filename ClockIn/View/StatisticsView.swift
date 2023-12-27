@@ -119,8 +119,8 @@ extension StatisticsView {
     @ViewBuilder
     func sectionHeader(_ text: String) -> some View {
         Text(text)
-            .bold()
-            .foregroundColor(.primary)
+            .foregroundColor(.theme.primary)
+            .font(.system(size: 24, weight: .medium))
     }
 }
 
@@ -213,22 +213,32 @@ extension StatisticsView {
 extension StatisticsView {
     var netSalaryData: some View {
         ForEach(viewModel.salaryListDataNetPay, id: \.0) { data in
-            generateRow(label: data.0, value: data.1)
+            SalaryListRowView(propertyName: data.0,
+                              propertyValue: data.1)
         } // END OF FOR EACH
     }
     var grossSalaryData: some View {
         ForEach(viewModel.salaryListDataGrossPay, id: \.0) { data in
-            generateRow(label: data.0, value: data.1)
+            SalaryListRowView(propertyName: data.0,
+                              propertyValue: data.1)
         }
     }
-    @ViewBuilder
-    func generateRow(label: String, value: String) -> some View {
-        VStack(alignment: .leading) {
-            Text(label)
-                .foregroundStyle(.secondary)
-                .font(.caption)
-            Text(value)
-        } // END OF HSTACK
+    
+    private struct SalaryListRowView: View {
+        let propertyName: String
+        let propertyValue: String
+        
+        var body: some View {
+            HStack {
+                Text(propertyName)
+                    .foregroundColor(.theme.blackLabel)
+                    .font(.system(size: 16))
+                Spacer()
+                Text(propertyValue)
+                    .foregroundColor(.theme.primary)
+                    .font(.system(size: 20))
+            }
+        }
     }
 }
 
