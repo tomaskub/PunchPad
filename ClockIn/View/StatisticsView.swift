@@ -29,9 +29,12 @@ struct StatisticsView: View {
             background
             // CONTENT LAYER
             List {
+                
+                ChartTimeRangePicker(pickerSelection: $viewModel.chartTimeRange)
+                    .padding(.horizontal, -20)
+                    .listRowBackground(Color.clear)
+                
                 Section {
-                    ChartTimeRangePicker(pickerSelection: $viewModel.chartTimeRange)
-                    
                     VStack(alignment: .leading) {
                         hoursCount
                         displayedChartRange
@@ -48,10 +51,6 @@ struct StatisticsView: View {
                                     break
                                 }
                             }))
-                        
-                } header: {
-                    sectionHeader(chartTitleText)
-                        .accessibilityIdentifier(Identifier.SectionHeaders.chart.rawValue)
                 }//END OF SECTION
                 .listRowSeparator(.hidden)
                 
@@ -126,6 +125,22 @@ extension StatisticsView {
 extension StatisticsView {
     private struct ChartTimeRangePicker: View {
         @Binding var pickerSelection: ChartTimeRange
+        
+        init(pickerSelection: Binding<ChartTimeRange>) {
+            self._pickerSelection = pickerSelection
+            UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(Color.theme.white)
+            
+            UISegmentedControl.appearance().setTitleTextAttributes(
+                [.foregroundColor: UIColor(Color.theme.primary)],
+                for: .selected
+            )
+            
+            UISegmentedControl.appearance().setTitleTextAttributes(
+                [.foregroundColor: UIColor(Color.theme.white)], 
+                for: .normal
+            )
+        }
+        
         var body: some View {
             Picker(String(), selection: $pickerSelection) {
                 ForEach(ChartTimeRange.allCases) { range in
