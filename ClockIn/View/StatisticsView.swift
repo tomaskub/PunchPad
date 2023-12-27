@@ -165,43 +165,40 @@ extension StatisticsView {
         }
         let isSameYear = Calendar.current.date(period.0, matchesComponents: periodEndYear)
         if isSameYear {
-            let startDate = Calendar.current.dateComponents([.day, .month], from: period.0)
             let startString = String(period.0.formatted(date: .abbreviated, time: .omitted).dropLast(5))
             return startString + " - " + period.1.formatted(date: .abbreviated, time: .omitted)
         }
         return period.0.formatted(date: .abbreviated, time: .omitted) + " - " + period.1.formatted(date: .abbreviated, time: .omitted)
     }
+    
     var displayedChartRange: some View {
         Text(makeChartRangeString(for: viewModel.periodDisplayed))
             .foregroundStyle(.secondary)
             .font(.caption)
     }
+    
     var hoursCount: some View {
-        HStack(alignment: .bottom, spacing: 16) {
-            VStack(alignment: .leading ) {
-                Text("worked".uppercased())
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                HStack(alignment: .bottom, spacing: 0) {
+        HStack {
+                HStack(spacing: 8) {
                     Text(String(viewModel.workedHoursInPeriod))
                         .font(.title)
-                    Text("hours")
+                    Text("hours worked")
                         .foregroundColor(.secondary)
                         .font(.caption)
                 }
-            }
-            VStack(alignment: .leading ) {
-                Text("overtime".uppercased())
+            Spacer()
+            HStack(spacing: 8) {
+                Text(String(viewModel.overtimeHoursInPeriod))
+                    .font(.title)
+                Text("hours overtime")
+                    .foregroundColor(.secondary)
                     .font(.caption)
-                    .foregroundStyle(.secondary)
-                HStack(alignment: .bottom, spacing: 0) {
-                    Text(String(viewModel.overtimeHoursInPeriod))
-                        .font(.title)
-                    Text("hours")
-                        .foregroundColor(.secondary)
-                        .font(.caption)
-                }
             }
+            Spacer()
+            Image(systemName: "calendar")
+                .opacity(0)
+                .foregroundColor(.theme.primary)
+                .font(.title)
         }
     }
 }
