@@ -25,13 +25,15 @@ struct TimerIndicator: View {
             VStack {
                 if secondProgress == 0 {
                     Text(firstProgressLabel)
+                        .font(.system(size: 20))
                         .foregroundColor(.theme.secondaryLabel)
                 } else {
                     Text(secondProgressLabel)
+                        .font(.system(size: 20))
                         .foregroundColor(.theme.redLabel)
                 }
                 Text(timerLabel)
-                    .font(.largeTitle)
+                    .font(.system(size: 57))
                     .foregroundColor(.theme.black)
             }
             if firstProgress > 0 {
