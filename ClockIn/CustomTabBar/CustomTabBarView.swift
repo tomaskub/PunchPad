@@ -9,7 +9,15 @@ import SwiftUI
 
 struct CustomTabBarView: View {
     @Binding var selection: TabBarItem
+    @State private var localSelection: TabBarItem
+    @Namespace private var namespance
     let tabs: [TabBarItem]
+    
+    init(selection: Binding<TabBarItem>, tabs: [TabBarItem]) {
+        self._selection = selection
+        self._localSelection = State(initialValue: selection.wrappedValue)
+        self.tabs = tabs
+    }
     
     var body: some View {
         HStack {
@@ -19,12 +27,13 @@ struct CustomTabBarView: View {
                         switchTabs(tab: tab)
                     }
             }
-            .frame(height: 36)
-            .padding(6)
         }
+        .padding(.horizontal)
+        .padding(.bottom)
         .background(
             Rectangle()
-                .offset(CGSize(width: 0, height: 18))
+                .padding(.horizontal)
+                .offset(CGSize(width: 0, height: 12))
                 .foregroundColor(Color.theme.secondaryLabel)
                 .frame(width: .infinity, height: 1)
         )
@@ -34,6 +43,13 @@ struct CustomTabBarView: View {
                 .cornerRadius(24)
                 .ignoresSafeArea(edges: .bottom)
         )
+        .compositingGroup()
+        .shadow(color: .theme.black.opacity(0.3), radius: 6, y: 4)
+        .onChange(of: selection, perform: { value in
+            withAnimation(.easeInOut) {
+                localSelection = selection
+            }
+        })
     }
     
     private func tabView(_ tab: TabBarItem) -> some View {
@@ -44,14 +60,18 @@ struct CustomTabBarView: View {
                 .font(.system(size: 20))
                 .accessibilityIdentifier(tab.identifier)
         }
-        .foregroundColor(selection == tab ? Color.theme.primary : Color.theme.secondaryLabel)
-        .padding(.vertical, 8)
+        .foregroundColor(localSelection == tab ? Color.theme.primary : Color.theme.secondaryLabel)
         .frame(maxWidth: .infinity)
         .background(
-            Rectangle()
-                .offset(CGSize(width: 0, height: 18))
-                .foregroundColor(selection == tab ? .theme.primary : Color.clear)
-                .frame(width: .infinity, height: 3)
+            ZStack{
+                if localSelection == tab {
+                    Rectangle()
+                        .offset(CGSize(width: 0, height: 18))
+                        .foregroundColor(Color.theme.primary)
+                        .frame(width: .infinity, height: 3)
+                        .matchedGeometryEffect(id: "tab_marker", in: namespance)
+                }
+            }
         )
         
     }
@@ -62,13 +82,19 @@ struct CustomTabBarView: View {
 }
 
 #Preview("CustomTabBar") {
-    ZStack {
-        BackgroundFactory.buildSolidColor()
-        VStack{
-            Spacer()
-            CustomTabBarView(selection: .constant( .home),
-                             tabs: [.home, .history, .statistics]
-            )
+    struct Preview: View {
+        @State private var tabSection: TabBarItem = .home
+        var body: some View {
+            ZStack {
+                BackgroundFactory.buildSolidColor()
+                VStack{
+                    Spacer()
+                    CustomTabBarView(selection: $tabSection,
+                                     tabs: [.home, .history, .statistics]
+                    )
+                }
+            }
         }
     }
+    return Preview()
 }
