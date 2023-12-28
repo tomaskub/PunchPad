@@ -137,6 +137,40 @@ class StatisticsViewModel: ObservableObject {
         }
         return result
     }
+    
+    func createMonthlySummary(entries: [Entry]) -> [MonthEntrySummary] {
+        let groupedEntries = groupEntriesByYearMonth(entries)
+        var result = [MonthEntrySummary]()
+        for group in groupedEntries {
+            let summary = MonthEntrySummary(fromEntries: group)
+            result.append(summary)
+        }
+        return result
+    }
+    
+    private func groupEntriesByYearMonth(_ entries: [Entry]) -> [[Entry]] {
+        var result: [[Entry]] = .init()
+        
+        var currentYearMonth: DateComponents?
+        var currentEntries: [Entry] = .init()
+        
+        for entry in entries {
+            let entryDateComponents = Calendar.current.dateComponents([.month,.year], from: entry.startDate)
+            if entryDateComponents != currentYearMonth {
+                if !currentEntries.isEmpty {
+                    result.append(currentEntries)
+                }
+                currentEntries = [entry]
+                currentYearMonth = entryDateComponents
+            } else {
+                currentEntries.append(entry)
+            }
+        }
+        if !currentEntries.isEmpty {
+            result.append(currentEntries)
+        }
+        return result
+    }
 }
 
 //MARK: CHART DATA FUNCTIONS

@@ -155,10 +155,19 @@ extension StatisticsView {
     
     @ViewBuilder
     var chart: some View {
+        switch viewModel.chartTimeRange {
+        case .week, .month:
             ChartFactory.buildBarChart(entries: viewModel.entriesForChart,
                                        firstColor: .theme.primary,
                                        secondColor: .theme.redChart
             )
+        case .year, .all:
+            ChartFactory.buildBarChartForYear(
+                data: viewModel.createMonthlySummary(entries: viewModel.entriesForChart),
+                firstColor: .theme.primary,
+                secondColor: .theme.redChart
+            )
+        }
     } // END OF VAR
     
     func makeChartRangeString(for period: Period) -> String {

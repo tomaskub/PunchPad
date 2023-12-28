@@ -33,6 +33,21 @@ struct ChartFactory {
     }
     
     @ViewBuilder
+    static func buildBarChartForYear(data: [MonthEntrySummary], firstColor: Color, secondColor: Color) -> some View {
+        Chart(data) { summary in
+            BarMark(x: .value("Date", summary.startDate, unit: .month),
+                    y: .value("Hours worked", summary.workTimeInSeconds / 3600)
+            )
+            .foregroundStyle(firstColor)
+            
+            BarMark(x: .value("Date", summary.startDate, unit: .month),
+                    y: .value("Hours overtime", summary.overtimeInSecond / 3600)
+            )
+            .foregroundStyle(secondColor)
+        }
+    }
+    
+    @ViewBuilder
     static func buildChartLegend() -> some View {
         ChartLegendView(chartLegendItems: [
             ChartLegendItem(itemName: "Hours worked", itemShape: Rectangle(), itemShapeColor: .blue),
