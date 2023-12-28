@@ -50,6 +50,11 @@
 		D682AF9B2B3DF43A004EE208 /* TabBarItemViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AF9A2B3DF43A004EE208 /* TabBarItemViewModifier.swift */; };
 		D682AF9E2B3DF470004EE208 /* TabBarItemsPreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AF9D2B3DF470004EE208 /* TabBarItemsPreferenceKey.swift */; };
 		D682AFA02B3DF4BE004EE208 /* CustomTabBarContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AF9F2B3DF4BE004EE208 /* CustomTabBarContainerView.swift */; };
+		D682AFA32B3E02B9004EE208 /* CustomNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AFA22B3E02B9004EE208 /* CustomNavigationView.swift */; };
+		D682AFA52B3E283C004EE208 /* CustomNavigationBarTitlePreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AFA42B3E283C004EE208 /* CustomNavigationBarTitlePreferenceKey.swift */; };
+		D682AFA72B3E2888004EE208 /* CustomNavigationBarSubtitlePreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AFA62B3E2888004EE208 /* CustomNavigationBarSubtitlePreferenceKey.swift */; };
+		D682AFA92B3E28AD004EE208 /* CustomNavigationBarBackButtonHiddenPreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AFA82B3E28AD004EE208 /* CustomNavigationBarBackButtonHiddenPreferenceKey.swift */; };
+		D682AFAB2B3E28C5004EE208 /* CustomNavigationDisplayTypePreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AFAA2B3E28C5004EE208 /* CustomNavigationDisplayTypePreferenceKey.swift */; };
 		D68384F929DB25DD00228491 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68384F829DB25DD00228491 /* SettingViewModel.swift */; };
 		D6842EC029EC178000731E84 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6842EBF29EC178000731E84 /* StatisticsView.swift */; };
 		D6842EC229EC179200731E84 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6842EC129EC179200731E84 /* StatisticsViewModel.swift */; };
@@ -157,6 +162,11 @@
 		D682AF9A2B3DF43A004EE208 /* TabBarItemViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItemViewModifier.swift; sourceTree = "<group>"; };
 		D682AF9D2B3DF470004EE208 /* TabBarItemsPreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItemsPreferenceKey.swift; sourceTree = "<group>"; };
 		D682AF9F2B3DF4BE004EE208 /* CustomTabBarContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarContainerView.swift; sourceTree = "<group>"; };
+		D682AFA22B3E02B9004EE208 /* CustomNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationView.swift; sourceTree = "<group>"; };
+		D682AFA42B3E283C004EE208 /* CustomNavigationBarTitlePreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBarTitlePreferenceKey.swift; sourceTree = "<group>"; };
+		D682AFA62B3E2888004EE208 /* CustomNavigationBarSubtitlePreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBarSubtitlePreferenceKey.swift; sourceTree = "<group>"; };
+		D682AFA82B3E28AD004EE208 /* CustomNavigationBarBackButtonHiddenPreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBarBackButtonHiddenPreferenceKey.swift; sourceTree = "<group>"; };
+		D682AFAA2B3E28C5004EE208 /* CustomNavigationDisplayTypePreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationDisplayTypePreferenceKey.swift; sourceTree = "<group>"; };
 		D68384F829DB25DD00228491 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		D6842EBF29EC178000731E84 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		D6842EC129EC179200731E84 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
@@ -282,8 +292,20 @@
 			isa = PBXGroup;
 			children = (
 				D682AF9D2B3DF470004EE208 /* TabBarItemsPreferenceKey.swift */,
+				D682AFA42B3E283C004EE208 /* CustomNavigationBarTitlePreferenceKey.swift */,
+				D682AFA62B3E2888004EE208 /* CustomNavigationBarSubtitlePreferenceKey.swift */,
+				D682AFA82B3E28AD004EE208 /* CustomNavigationBarBackButtonHiddenPreferenceKey.swift */,
+				D682AFAA2B3E28C5004EE208 /* CustomNavigationDisplayTypePreferenceKey.swift */,
 			);
 			path = PreferenceKey;
+			sourceTree = "<group>";
+		};
+		D682AFA12B3E02A4004EE208 /* CustomNavigationView */ = {
+			isa = PBXGroup;
+			children = (
+				D682AFA22B3E02B9004EE208 /* CustomNavigationView.swift */,
+			);
+			path = CustomNavigationView;
 			sourceTree = "<group>";
 		};
 		D684A3862AF6F3C700511E0D /* OboardingViews */ = {
@@ -332,6 +354,7 @@
 		D6C4589229D229210069D89B /* ClockIn */ = {
 			isa = PBXGroup;
 			children = (
+				D682AFA12B3E02A4004EE208 /* CustomNavigationView */,
 				D682AF9C2B3DF45E004EE208 /* PreferenceKey */,
 				D6B2BDF52B27C42800CB4FA7 /* ViewModifiers */,
 				D61F11322AB3A6E700902D6D /* Extensions */,
@@ -606,6 +629,7 @@
 				D6E2C15B29D6C31800229286 /* HistoryViewModel.swift in Sources */,
 				D6EA695C2AF8452A00D8F6C3 /* TextFactory.swift in Sources */,
 				D64574B329D9F16900207168 /* EntryMO+CoreDataClass.swift in Sources */,
+				D682AFA92B3E28AD004EE208 /* CustomNavigationBarBackButtonHiddenPreferenceKey.swift in Sources */,
 				D64574B429D9F16900207168 /* EntryMO+CoreDataProperties.swift in Sources */,
 				D653FEEC2B320E1600ECFCF2 /* TimeIntervalPicker.swift in Sources */,
 				D682AF942B3D83A2004EE208 /* MonthEntrySummary.swift in Sources */,
@@ -614,6 +638,7 @@
 				D61F11342AB3A6FF00902D6D /* ColorScheme+Extension.swift in Sources */,
 				D684A38A2AF6F54B00511E0D /* ButtonFactory.swift in Sources */,
 				D6C458C529D35EAA0069D89B /* SettingsView.swift in Sources */,
+				D682AFA32B3E02B9004EE208 /* CustomNavigationView.swift in Sources */,
 				D6FA94FB2B013C770034B16A /* ChartLegendItem.swift in Sources */,
 				D666ADCC2AC05A0500B74663 /* CaseIterable+Extension.swift in Sources */,
 				D682AF972B3DA435004EE208 /* CustomTabBarView.swift in Sources */,
@@ -639,7 +664,9 @@
 				D682AF9B2B3DF43A004EE208 /* TabBarItemViewModifier.swift in Sources */,
 				D65A976D29F323A900462D8C /* K.swift in Sources */,
 				D6E6B8732AF98A4B0073D911 /* OnboardingNotificationView.swift in Sources */,
+				D682AFA52B3E283C004EE208 /* CustomNavigationBarTitlePreferenceKey.swift in Sources */,
 				D6D02FAE29EF0B13006CD0B2 /* EditSheetView.swift in Sources */,
+				D682AFAB2B3E28C5004EE208 /* CustomNavigationDisplayTypePreferenceKey.swift in Sources */,
 				D6AB737029F562E600D5DE82 /* OnboardingViewModel.swift in Sources */,
 				D6C4589429D229210069D89B /* ClockInApp.swift in Sources */,
 				D6E2C15929D6C20E00229286 /* WorkHistory.xcdatamodeld in Sources */,
@@ -650,6 +677,7 @@
 				D65A976F29F3BBDD00462D8C /* OnboardingView.swift in Sources */,
 				D6842EC229EC179200731E84 /* StatisticsViewModel.swift in Sources */,
 				D6FA94FF2B0145FF0034B16A /* ChartFactory.swift in Sources */,
+				D682AFA72B3E2888004EE208 /* CustomNavigationBarSubtitlePreferenceKey.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
