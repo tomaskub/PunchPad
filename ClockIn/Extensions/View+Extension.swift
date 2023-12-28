@@ -45,8 +45,48 @@ extension View {
     /// A modifier used to register a tabBarItem in CustomTabBarContainerView
     /// - Parameters:
     ///     - tab: A tab bar item used to represent the tab
-    ///     - selection: Reference to binding value for container view 
+    ///     - selection: Reference to binding value for container view
     func tabBarItem(tab: TabBarItem, selection: Binding<TabBarItem>) -> some View {
         self.modifier(TabBarItemViewModifier(selection: selection, tab: tab))
     }
+    /// Add a preference for CustomNavigationBar title property
+    /// - Parameter title: title value to set
+    func customNavigationTitle(_ title: String) -> some View {
+        self.preference(key: CustomNavigationBarTitlePreferenceKey.self,
+                        value: title)
+    }
+    /// Add preference for CustomNavigationBar subtitle
+    /// - Parameter subtitle: subtitle value to set
+    func customNavigationSubtitle(_ subtitle: String?) -> some View {
+        self.preference(key: CustomNavigationBarSubtitlePreferenceKey.self,
+                        value: subtitle)
+    }
+    /// Add preference for CustomNavigationBar back button presence
+    /// - Parameter hidden: Bool value controling presence of back button
+    func customNavigationBarBackButtonHidden(_ hidden: Bool) -> some View {
+        self.preference(key: CustomNavigationBarBackButtonHiddenPreferenceKey.self,
+                        value: hidden)
+    }
+    /// Add preference for CustomNavigationBar display mode
+    /// - Parameter displayMode: display mode for the Bar when view is presented
+    func customNavigationBarDisplayType(_ displayMode: NavigationBarItem.TitleDisplayMode) -> some View {
+        self.preference(key: CustomNavigationDisplayTypePreferenceKey.self, value: displayMode)
+    }
+    
+    /// Add preference keys used by CustomNavigationBar for view
+    /// - Parameters:
+    ///   - title: title value displayed by CustomNavigationBa
+    ///   - subtitle: subtitle value displayed by CustomNavigationBa
+    ///   - backButtonHidden: value controling present of back button by CustomNavigationBa
+    ///   - displayType: display mode for CustomNavigationBa
+    func customNavigationBarItems(title: String,
+                                  subtitle: String? = nil,
+                                  backButtonHidden: Bool = false,
+                                  displayType: NavigationBarItem.TitleDisplayMode = .automatic) -> some View {
+        self.customNavigationTitle(title)
+            .customNavigationSubtitle(subtitle)
+            .customNavigationBarBackButtonHidden(backButtonHidden)
+            .customNavigationBarDisplayType(displayType)
+    }
 }
+
