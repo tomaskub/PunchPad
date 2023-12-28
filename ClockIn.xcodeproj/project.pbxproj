@@ -45,6 +45,11 @@
 		D6799EFC29E1BC0F0080E32A /* HistoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6799EFB29E1BC0F0080E32A /* HistoryViewModelTests.swift */; };
 		D682AF922B3C77F5004EE208 /* ChartTimeRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AF912B3C77F5004EE208 /* ChartTimeRange.swift */; };
 		D682AF942B3D83A2004EE208 /* MonthEntrySummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AF932B3D83A2004EE208 /* MonthEntrySummary.swift */; };
+		D682AF972B3DA435004EE208 /* CustomTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AF962B3DA435004EE208 /* CustomTabBarView.swift */; };
+		D682AF992B3DF35E004EE208 /* TabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AF982B3DF35E004EE208 /* TabBarItem.swift */; };
+		D682AF9B2B3DF43A004EE208 /* TabBarItemViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AF9A2B3DF43A004EE208 /* TabBarItemViewModifier.swift */; };
+		D682AF9E2B3DF470004EE208 /* TabBarItemsPreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AF9D2B3DF470004EE208 /* TabBarItemsPreferenceKey.swift */; };
+		D682AFA02B3DF4BE004EE208 /* CustomTabBarContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AF9F2B3DF4BE004EE208 /* CustomTabBarContainerView.swift */; };
 		D68384F929DB25DD00228491 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68384F829DB25DD00228491 /* SettingViewModel.swift */; };
 		D6842EC029EC178000731E84 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6842EBF29EC178000731E84 /* StatisticsView.swift */; };
 		D6842EC229EC179200731E84 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6842EC129EC179200731E84 /* StatisticsViewModel.swift */; };
@@ -147,6 +152,11 @@
 		D6799EFB29E1BC0F0080E32A /* HistoryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModelTests.swift; sourceTree = "<group>"; };
 		D682AF912B3C77F5004EE208 /* ChartTimeRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartTimeRange.swift; sourceTree = "<group>"; };
 		D682AF932B3D83A2004EE208 /* MonthEntrySummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthEntrySummary.swift; sourceTree = "<group>"; };
+		D682AF962B3DA435004EE208 /* CustomTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarView.swift; sourceTree = "<group>"; };
+		D682AF982B3DF35E004EE208 /* TabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItem.swift; sourceTree = "<group>"; };
+		D682AF9A2B3DF43A004EE208 /* TabBarItemViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItemViewModifier.swift; sourceTree = "<group>"; };
+		D682AF9D2B3DF470004EE208 /* TabBarItemsPreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItemsPreferenceKey.swift; sourceTree = "<group>"; };
+		D682AF9F2B3DF4BE004EE208 /* CustomTabBarContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarContainerView.swift; sourceTree = "<group>"; };
 		D68384F829DB25DD00228491 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		D6842EBF29EC178000731E84 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		D6842EC129EC179200731E84 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
@@ -258,6 +268,24 @@
 			path = ScreenHelpers;
 			sourceTree = "<group>";
 		};
+		D682AF952B3DA414004EE208 /* CustomTabBar */ = {
+			isa = PBXGroup;
+			children = (
+				D682AF962B3DA435004EE208 /* CustomTabBarView.swift */,
+				D682AF982B3DF35E004EE208 /* TabBarItem.swift */,
+				D682AF9F2B3DF4BE004EE208 /* CustomTabBarContainerView.swift */,
+			);
+			path = CustomTabBar;
+			sourceTree = "<group>";
+		};
+		D682AF9C2B3DF45E004EE208 /* PreferenceKey */ = {
+			isa = PBXGroup;
+			children = (
+				D682AF9D2B3DF470004EE208 /* TabBarItemsPreferenceKey.swift */,
+			);
+			path = PreferenceKey;
+			sourceTree = "<group>";
+		};
 		D684A3862AF6F3C700511E0D /* OboardingViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -275,6 +303,7 @@
 			isa = PBXGroup;
 			children = (
 				D6B2BDF32B27C22400CB4FA7 /* EmptyPlaceholderModifier.swift */,
+				D682AF9A2B3DF43A004EE208 /* TabBarItemViewModifier.swift */,
 			);
 			path = ViewModifiers;
 			sourceTree = "<group>";
@@ -303,14 +332,16 @@
 		D6C4589229D229210069D89B /* ClockIn */ = {
 			isa = PBXGroup;
 			children = (
+				D682AF9C2B3DF45E004EE208 /* PreferenceKey */,
 				D6B2BDF52B27C42800CB4FA7 /* ViewModifiers */,
 				D61F11322AB3A6E700902D6D /* Extensions */,
 				D6D906AF2AA12BBD004E09C9 /* Factory */,
 				D6E2C15629D6BF9F00229286 /* Model */,
 				D6C458BF29D2DD3C0069D89B /* ViewModel */,
 				D6C458BE29D2D3E50069D89B /* View */,
-				D6C4589329D229210069D89B /* ClockInApp.swift */,
+				D682AF952B3DA414004EE208 /* CustomTabBar */,
 				D67332E52AADB8B1005FFE7F /* LaunchArgument.swift */,
+				D6C4589329D229210069D89B /* ClockInApp.swift */,
 				D65A976C29F323A900462D8C /* K.swift */,
 				D60480D92B122D3F00D6D70D /* ChartPeriodService.swift */,
 				D6C4589729D229230069D89B /* Assets.xcassets */,
@@ -569,6 +600,7 @@
 				D64574B029D9E6A000207168 /* DataManager.swift in Sources */,
 				D6D906B12AA12BDB004E09C9 /* BackgroundFactory.swift in Sources */,
 				D6D02FB029EF0B7F006CD0B2 /* EditShetViewModel.swift in Sources */,
+				D682AFA02B3DF4BE004EE208 /* CustomTabBarContainerView.swift in Sources */,
 				D68732022B2243C9008CB0D4 /* PaginationState.swift in Sources */,
 				D6FA94FD2B013F060034B16A /* ChartLegendItemView.swift in Sources */,
 				D6E2C15B29D6C31800229286 /* HistoryViewModel.swift in Sources */,
@@ -584,6 +616,7 @@
 				D6C458C529D35EAA0069D89B /* SettingsView.swift in Sources */,
 				D6FA94FB2B013C770034B16A /* ChartLegendItem.swift in Sources */,
 				D666ADCC2AC05A0500B74663 /* CaseIterable+Extension.swift in Sources */,
+				D682AF972B3DA435004EE208 /* CustomTabBarView.swift in Sources */,
 				D65FD53D29D8B259006CC34F /* PersistanceController.swift in Sources */,
 				D6B2BDF42B27C22400CB4FA7 /* EmptyPlaceholderModifier.swift in Sources */,
 				D60480DA2B122D3F00D6D70D /* ChartPeriodService.swift in Sources */,
@@ -597,17 +630,20 @@
 				D6C458C329D2DE2D0069D89B /* HomeView.swift in Sources */,
 				D621C0CC2B3B8BE40065DF8C /* TimerIndicator.swift in Sources */,
 				D6CBB86A2B34C7150074CE8B /* FormatterFactory.swift in Sources */,
+				D682AF992B3DF35E004EE208 /* TabBarItem.swift in Sources */,
 				D61F11312AB38F8700902D6D /* SettingsStore.swift in Sources */,
 				D6842EC029EC178000731E84 /* StatisticsView.swift in Sources */,
 				D629CEF92B3613660036579D /* TimerService.swift in Sources */,
 				D66750EC29D71C8300757F17 /* HistoryRow.swift in Sources */,
 				D6EA695A2AF83E7800D8F6C3 /* OnboardingWorktimeView.swift in Sources */,
+				D682AF9B2B3DF43A004EE208 /* TabBarItemViewModifier.swift in Sources */,
 				D65A976D29F323A900462D8C /* K.swift in Sources */,
 				D6E6B8732AF98A4B0073D911 /* OnboardingNotificationView.swift in Sources */,
 				D6D02FAE29EF0B13006CD0B2 /* EditSheetView.swift in Sources */,
 				D6AB737029F562E600D5DE82 /* OnboardingViewModel.swift in Sources */,
 				D6C4589429D229210069D89B /* ClockInApp.swift in Sources */,
 				D6E2C15929D6C20E00229286 /* WorkHistory.xcdatamodeld in Sources */,
+				D682AF9E2B3DF470004EE208 /* TabBarItemsPreferenceKey.swift in Sources */,
 				D60EB9B62AB0D7000053136A /* Container.swift in Sources */,
 				D6B2BDF22B27810700CB4FA7 /* DateFilterSheetView.swift in Sources */,
 				D6E6B8752AF98EB40073D911 /* OnboardingSalaryView.swift in Sources */,
