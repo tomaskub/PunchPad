@@ -38,9 +38,6 @@ struct BackgroundFactory {
                     .frame(width: .infinity, height: 120)
                     .shadow(color: color.opacity(0.3), radius: 12, x: 0, y: 4)
                 Spacer()
-                RoundedRectangle(cornerRadius: 24)
-                    .foregroundColor(stripColor)
-                    .frame(width: .infinity, height: 120)
             }
         }
         .ignoresSafeArea()
