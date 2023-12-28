@@ -58,6 +58,7 @@
 		D682AFAD2B3E2D9A004EE208 /* CustomNavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AFAC2B3E2D9A004EE208 /* CustomNavigationLink.swift */; };
 		D682AFB02B3E2FAD004EE208 /* CustomNavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AFAE2B3E2F88004EE208 /* CustomNavigationBarView.swift */; };
 		D682AFB22B3E3090004EE208 /* CustomNavigationContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AFB12B3E3090004EE208 /* CustomNavigationContainerView.swift */; };
+		D682AFB42B3E320A004EE208 /* UINavigationController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AFB32B3E320A004EE208 /* UINavigationController+Extension.swift */; };
 		D68384F929DB25DD00228491 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68384F829DB25DD00228491 /* SettingViewModel.swift */; };
 		D6842EC029EC178000731E84 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6842EBF29EC178000731E84 /* StatisticsView.swift */; };
 		D6842EC229EC179200731E84 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6842EC129EC179200731E84 /* StatisticsViewModel.swift */; };
@@ -172,7 +173,8 @@
 		D682AFAA2B3E28C5004EE208 /* CustomNavigationDisplayTypePreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationDisplayTypePreferenceKey.swift; sourceTree = "<group>"; };
 		D682AFAC2B3E2D9A004EE208 /* CustomNavigationLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationLink.swift; sourceTree = "<group>"; };
 		D682AFAE2B3E2F88004EE208 /* CustomNavigationBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBarView.swift; sourceTree = "<group>"; };
-		D682AFB12B3E3090004EE208 /* CustomNavigationContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomNavigationContainerView.swift; path = ClockIn/CustomNavigationView/CustomNavigationContainerView.swift; sourceTree = "<group>"; };
+		D682AFB12B3E3090004EE208 /* CustomNavigationContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationContainerView.swift; sourceTree = "<group>"; };
+		D682AFB32B3E320A004EE208 /* UINavigationController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extension.swift"; sourceTree = "<group>"; };
 		D68384F829DB25DD00228491 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		D6842EBF29EC178000731E84 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		D6842EC129EC179200731E84 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
@@ -254,6 +256,7 @@
 			children = (
 				D61F11332AB3A6FF00902D6D /* ColorScheme+Extension.swift */,
 				D6CB2A7B2B05629200F3030C /* View+Extension.swift */,
+				D682AFB32B3E320A004EE208 /* UINavigationController+Extension.swift */,
 				D666ADCB2AC05A0500B74663 /* CaseIterable+Extension.swift */,
 				D6BC457D2AFAE0640030820C /* ColorTheme.swift */,
 				D6CBB8672B34ACF20074CE8B /* Calendar+Extension.swift */,
@@ -309,6 +312,7 @@
 		D682AFA12B3E02A4004EE208 /* CustomNavigationView */ = {
 			isa = PBXGroup;
 			children = (
+				D682AFB12B3E3090004EE208 /* CustomNavigationContainerView.swift */,
 				D682AFAE2B3E2F88004EE208 /* CustomNavigationBarView.swift */,
 				D682AFA22B3E02B9004EE208 /* CustomNavigationView.swift */,
 				D682AFAC2B3E2D9A004EE208 /* CustomNavigationLink.swift */,
@@ -341,7 +345,6 @@
 		D6C4588729D229200069D89B = {
 			isa = PBXGroup;
 			children = (
-				D682AFB12B3E3090004EE208 /* CustomNavigationContainerView.swift */,
 				D629CEFA2B363B500036579D /* TimerServiceTests.swift */,
 				D6C4589229D229210069D89B /* ClockIn */,
 				D6C458A329D229230069D89B /* ClockInTests */,
@@ -654,6 +657,7 @@
 				D682AF972B3DA435004EE208 /* CustomTabBarView.swift in Sources */,
 				D65FD53D29D8B259006CC34F /* PersistanceController.swift in Sources */,
 				D6B2BDF42B27C22400CB4FA7 /* EmptyPlaceholderModifier.swift in Sources */,
+				D682AFB42B3E320A004EE208 /* UINavigationController+Extension.swift in Sources */,
 				D60480DA2B122D3F00D6D70D /* ChartPeriodService.swift in Sources */,
 				D66750EA29D713C900757F17 /* HistoryView.swift in Sources */,
 				D64313B82B1E606B003B5DBC /* PreviewDataFactory.swift in Sources */,
