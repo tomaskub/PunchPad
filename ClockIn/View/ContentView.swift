@@ -8,45 +8,33 @@
 import SwiftUI
 
 struct ContentView: View {
-    
+    @State private var tabSelection: TabBarItem = .home
     @EnvironmentObject var container: Container
     @AppStorage(SettingsStore.SettingKey.isRunFirstTime.rawValue) var isRunFirstTime: Bool = true 
     
     var body: some View {
-        TabView {
+        CustomTabBarContainerView(selection: $tabSelection) {
             NavigationView {
                 HomeView(viewModel:
                             HomeViewModel(dataManager: container.dataManager,
-                                          settingsStore: container.settingsStore, 
+                                          settingsStore: container.settingsStore,
                                           payManager: container.payManager,
                                           timerProvider: container.timerProvider)
                 )
-            }
-            .tabItem {
-                Label("Home", systemImage: "house")
-                    .accessibilityIdentifier(ScreenIdentifier.TabBar.home.rawValue)
-            }
+            }.tabBarItem(tab: .home, selection: $tabSelection)
             NavigationView {
                 StatisticsView(viewModel:
                                 StatisticsViewModel(dataManager: container.dataManager,
                                                     payManager: container.payManager,
                                                     settingsStore: container.settingsStore)
                 )
-            }
-            .tabItem {
-                Label("Statistics", systemImage: "chart.bar.xaxis")
-                    .accessibilityIdentifier(ScreenIdentifier.TabBar.statistics.rawValue)
-            }
+            }.tabBarItem(tab: .statistics, selection: $tabSelection)
             NavigationView {
                 HistoryView(viewModel:
                                 HistoryViewModel(dataManager: container.dataManager,
                                                  settingsStore: container.settingsStore)
                 )
-            }
-            .tabItem {
-                Label("History", systemImage: "rectangle.grid.1x2.fill")
-                    .accessibilityIdentifier(ScreenIdentifier.TabBar.history.rawValue)
-            }
+            }.tabBarItem(tab: .history, selection: $tabSelection)
         }
         .fullScreenCover(isPresented: $isRunFirstTime, onDismiss: {
             isRunFirstTime = false
