@@ -35,6 +35,3 @@ struct _SwiftUIView: View {
     }
 }
 
-#Preview {
-    _SwiftUIView()
-}
