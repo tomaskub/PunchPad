@@ -7,16 +7,16 @@
 
 import SwiftUI
 
-struct EquatableView: Equatable {
+public struct EquatableView: Equatable {
     
-    static func == (lhs: EquatableView, rhs: EquatableView) -> Bool {
+    public static func == (lhs: EquatableView, rhs: EquatableView) -> Bool {
         return lhs.id == rhs.id
     }
     
     let id = UUID().uuidString
     let view: AnyView
     
-    init(view: AnyView = AnyView(EmptyView())) {
+    public init(view: AnyView = AnyView(EmptyView())) {
         self.view = view
     }
 }

@@ -10,8 +10,16 @@
 		D62651062B3F130A0089A84B /* NavigationKit.h in Headers */ = {isa = PBXBuildFile; fileRef = D62651052B3F130A0089A84B /* NavigationKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D626510D2B3F135D0089A84B /* NavBarTitleConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D626510C2B3F135D0089A84B /* NavBarTitleConfiguration.swift */; };
 		D626510F2B3F13DC0089A84B /* EquatableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D626510E2B3F13DC0089A84B /* EquatableView.swift */; };
-		D62651112B3F15570089A84B /* CustomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651102B3F15570089A84B /* CustomNavigationBar.swift */; };
+		D62651112B3F15570089A84B /* CustomNavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651102B3F15570089A84B /* CustomNavigationBarView.swift */; };
 		D62651132B3F175F0089A84B /* NavigationBarWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651122B3F175F0089A84B /* NavigationBarWrapper.swift */; };
+		D62651152B3F1A3A0089A84B /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651142B3F1A3A0089A84B /* View+Extension.swift */; };
+		D62651182B3F465C0089A84B /* NavBarScrollingPrefKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651172B3F465C0089A84B /* NavBarScrollingPrefKey.swift */; };
+		D626511A2B3F470F0089A84B /* CustomNavBarPrefKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651192B3F470F0089A84B /* CustomNavBarPrefKey.swift */; };
+		D626511C2B3F47260089A84B /* NavBarTrailingPrefKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D626511B2B3F47260089A84B /* NavBarTrailingPrefKey.swift */; };
+		D626511E2B3F47400089A84B /* NavBarLeadingPrefKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D626511D2B3F47400089A84B /* NavBarLeadingPrefKey.swift */; };
+		D62651202B3F47560089A84B /* NavBarBackgroundPrefKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D626511F2B3F47560089A84B /* NavBarBackgroundPrefKey.swift */; };
+		D62651222B3F476C0089A84B /* NavBarConfigPrefKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651212B3F476C0089A84B /* NavBarConfigPrefKey.swift */; };
+		D62651242B3F477C0089A84B /* NavBarHiddenPrefKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651232B3F477C0089A84B /* NavBarHiddenPrefKey.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,8 +27,16 @@
 		D62651052B3F130A0089A84B /* NavigationKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NavigationKit.h; sourceTree = "<group>"; };
 		D626510C2B3F135D0089A84B /* NavBarTitleConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBarTitleConfiguration.swift; sourceTree = "<group>"; };
 		D626510E2B3F13DC0089A84B /* EquatableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquatableView.swift; sourceTree = "<group>"; };
-		D62651102B3F15570089A84B /* CustomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBar.swift; sourceTree = "<group>"; };
+		D62651102B3F15570089A84B /* CustomNavigationBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBarView.swift; sourceTree = "<group>"; };
 		D62651122B3F175F0089A84B /* NavigationBarWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarWrapper.swift; sourceTree = "<group>"; };
+		D62651142B3F1A3A0089A84B /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
+		D62651172B3F465C0089A84B /* NavBarScrollingPrefKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBarScrollingPrefKey.swift; sourceTree = "<group>"; };
+		D62651192B3F470F0089A84B /* CustomNavBarPrefKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavBarPrefKey.swift; sourceTree = "<group>"; };
+		D626511B2B3F47260089A84B /* NavBarTrailingPrefKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBarTrailingPrefKey.swift; sourceTree = "<group>"; };
+		D626511D2B3F47400089A84B /* NavBarLeadingPrefKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBarLeadingPrefKey.swift; sourceTree = "<group>"; };
+		D626511F2B3F47560089A84B /* NavBarBackgroundPrefKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBarBackgroundPrefKey.swift; sourceTree = "<group>"; };
+		D62651212B3F476C0089A84B /* NavBarConfigPrefKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBarConfigPrefKey.swift; sourceTree = "<group>"; };
+		D62651232B3F477C0089A84B /* NavBarHiddenPrefKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBarHiddenPrefKey.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,13 +69,37 @@
 		D62651042B3F130A0089A84B /* NavigationKit */ = {
 			isa = PBXGroup;
 			children = (
+				D62651252B3F47930089A84B /* Extension */,
+				D62651162B3F463D0089A84B /* PreferenceKey */,
 				D62651052B3F130A0089A84B /* NavigationKit.h */,
 				D626510C2B3F135D0089A84B /* NavBarTitleConfiguration.swift */,
-				D62651102B3F15570089A84B /* CustomNavigationBar.swift */,
+				D62651102B3F15570089A84B /* CustomNavigationBarView.swift */,
 				D62651122B3F175F0089A84B /* NavigationBarWrapper.swift */,
 				D626510E2B3F13DC0089A84B /* EquatableView.swift */,
 			);
 			path = NavigationKit;
+			sourceTree = "<group>";
+		};
+		D62651162B3F463D0089A84B /* PreferenceKey */ = {
+			isa = PBXGroup;
+			children = (
+				D62651172B3F465C0089A84B /* NavBarScrollingPrefKey.swift */,
+				D62651192B3F470F0089A84B /* CustomNavBarPrefKey.swift */,
+				D626511B2B3F47260089A84B /* NavBarTrailingPrefKey.swift */,
+				D626511D2B3F47400089A84B /* NavBarLeadingPrefKey.swift */,
+				D626511F2B3F47560089A84B /* NavBarBackgroundPrefKey.swift */,
+				D62651212B3F476C0089A84B /* NavBarConfigPrefKey.swift */,
+				D62651232B3F477C0089A84B /* NavBarHiddenPrefKey.swift */,
+			);
+			path = PreferenceKey;
+			sourceTree = "<group>";
+		};
+		D62651252B3F47930089A84B /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				D62651142B3F1A3A0089A84B /* View+Extension.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -142,10 +182,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D62651112B3F15570089A84B /* CustomNavigationBar.swift in Sources */,
+				D626511C2B3F47260089A84B /* NavBarTrailingPrefKey.swift in Sources */,
+				D62651112B3F15570089A84B /* CustomNavigationBarView.swift in Sources */,
 				D626510D2B3F135D0089A84B /* NavBarTitleConfiguration.swift in Sources */,
+				D62651152B3F1A3A0089A84B /* View+Extension.swift in Sources */,
+				D62651242B3F477C0089A84B /* NavBarHiddenPrefKey.swift in Sources */,
+				D626511A2B3F470F0089A84B /* CustomNavBarPrefKey.swift in Sources */,
 				D626510F2B3F13DC0089A84B /* EquatableView.swift in Sources */,
+				D62651202B3F47560089A84B /* NavBarBackgroundPrefKey.swift in Sources */,
+				D62651182B3F465C0089A84B /* NavBarScrollingPrefKey.swift in Sources */,
+				D626511E2B3F47400089A84B /* NavBarLeadingPrefKey.swift in Sources */,
 				D62651132B3F175F0089A84B /* NavigationBarWrapper.swift in Sources */,
+				D62651222B3F476C0089A84B /* NavBarConfigPrefKey.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

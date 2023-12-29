@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CustomNavigationBar: View {
+struct CustomNavigationBarView: View {
     let config: NavBarTitleConfiguration
     let shouldShowBackButton: Bool
     let background: EquatableView
@@ -30,7 +30,7 @@ struct CustomNavigationBar: View {
 }
 
 #Preview {
-    CustomNavigationBar(config: NavBarTitleConfiguration(title: "Preview",
+    CustomNavigationBarView(config: NavBarTitleConfiguration(title: "Preview",
                                                          textColor: .black,
                                                          alignment: .center),
                         shouldShowBackButton: true,

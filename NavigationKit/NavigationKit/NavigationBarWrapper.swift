@@ -47,7 +47,7 @@ struct NavigationBarWrapper<Content: View>: View {
                 customNavBar?.view
             } else {
                 // Custom navigation bar component with configurable elements
-                CustomNavigationBar(
+                CustomNavigationBarView(
                     config: navConfig,
                     shouldShowBackButton: showBackButton,
                     background: backgroundView,
