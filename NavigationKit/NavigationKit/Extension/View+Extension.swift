@@ -8,13 +8,16 @@
 import SwiftUI
 
 public extension View {
-     /// Hides the navigation bar.
+    /// Hides the navigation bar.
     /// - Returns: A modified view with the navigation bar hidden.
     func hideNavigationBar() -> some View {
         self
             .preference(key: NavBarHiddenPrefKey.self, value: true)
     }
-    
+}
+
+//MARK: NAVIGATION BAR TITLE
+public extension View {
     /// Sets the title, alignment, text color, and typography for the navigation bar.
     /// - Parameters:
     ///   - title: The title of the navigation bar.
@@ -27,6 +30,13 @@ public extension View {
             .preference(key: NavBarConfigPrefKey.self, value: .init(title: title, textColor: textColor, alignment: alignmet))
     }
     
+    func navigationBarTitle(config: NavBarTitleConfiguration) -> some View {
+        self.preference(key: NavBarConfigPrefKey.self, value: config)
+    }
+}
+
+//MARK: NAVIGATION BAR BACKGROUND
+public extension View {
     /// Sets the background view for the navigation bar.
     /// - Parameter bg: A closure returning the background view.
     /// - Returns: A modified view with the specified navigation bar background.
@@ -35,6 +45,14 @@ public extension View {
             .preference(key: NavBarBackgroundPrefKey.self, value: .init(view: AnyView(bg())))
     }
     
+    func navigationBarBackground(bg: AnyView) -> some View {
+        self
+            .preference(key: NavBarBackgroundPrefKey.self, value: .init(view: bg))
+    }
+}
+
+//MARK: NAVIGATION BAR LEADING & TRAILING ITEM
+public extension View {
     /// Sets the leading item view for the navigation bar.
     /// - Parameter content: A closure returning the leading item view.
     /// - Returns: A modified view with the specified navigation bar leading item.
@@ -43,12 +61,22 @@ public extension View {
             .preference(key: NavBarLeadingPrefKey.self, value: .init(view: AnyView(content())))
     }
     
+    func navigationBarLeadingItem(content: AnyView) -> some View {
+        self
+            .preference(key: NavBarLeadingPrefKey.self, value: .init(view: content))
+    }
+    
     /// Sets the trailing item view for the navigation bar.
     /// - Parameter content: A closure returning the trailing item view.
     /// - Returns: A modified view with the specified navigation bar trailing item.
     func navigationBarTrailingItem<L: View>(@ViewBuilder content:  @escaping () -> L) -> some View {
         self
             .preference(key: NavBarTrailingPrefKey.self, value: .init(view: AnyView(content())))
+    }
+    
+    func navigationBarTrailingItem(content: AnyView) -> some View {
+        self
+            .preference(key: NavBarTrailingPrefKey.self, value: .init(view: content))
     }
     
     /// Sets both leading and trailing item views for the navigation bar.
@@ -61,7 +89,10 @@ public extension View {
             .preference(key: NavBarTrailingPrefKey.self, value: .init(view: AnyView(trailing())))
             .preference(key: NavBarLeadingPrefKey.self, value: .init(view: AnyView(leading())))
     }
-    
+}
+
+//MARK: NAVIGATION BAR CONTENT
+public extension View {
     /// Sets a custom content view for the navigation bar.
     /// - Parameter content: A closure returning the custom content view.
     /// - Returns: A modified view with the specified custom navigation bar content.
@@ -70,6 +101,14 @@ public extension View {
             .hideNavigationBar()
             .preference(key: CustomNavBarPrefKey.self, value: .init(view: AnyView(content())))
     }
+    /// Sets a custom content view for the navigation bar.
+    /// - Parameter content: An AnyView wrapped content view.
+    /// - Returns: A modified view with the specified custom navigation bar content.
+    func navigationBar(_ content: AnyView) -> some View {
+        self
+            .hideNavigationBar()
+            .preference(key: CustomNavBarPrefKey.self, value: .init(view: content))
+    }
     
     /// Sets the scrolling status for the navigation bar.
     /// - Parameter hasScrolled: A boolean indicating whether the view is currently scrolling.
@@ -77,5 +116,23 @@ public extension View {
     func _hasScrolledDownward(_ hasScrolled: Bool) -> some View {
         self
             .preference(key: NavBarScrollingPrefKey.self, value: hasScrolled)
+    }
+    
+    func isNavigationBarHidden(_ value: Bool) -> some View {
+        self.preference(key: NavBarHiddenPrefKey.self, value: value)
+    }
+    
+    /// Applies given transform if the given condition evaluates to `true`.
+    /// - Parameters:
+    ///     - condition: The condition to evaluate.
+    ///     - transform: The transform to apply to the source `View`.
+    /// - Returns: Modified `View` or original `View`
+    @ViewBuilder
+    func `if`<Content: View>(_ condition: @autoclosure () -> Bool, transform: (Self) -> Content) -> some View {
+        if condition() {
+            transform(self)
+        } else {
+            self
+        }
     }
 }

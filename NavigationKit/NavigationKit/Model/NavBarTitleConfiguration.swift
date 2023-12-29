@@ -11,4 +11,10 @@ public struct NavBarTitleConfiguration: Equatable {
     public var title: String
     public var textColor: Color
     public var alignment: Alignment
+    
+    public init(title: String, textColor: Color = .primary, alignment: Alignment = .leading) {
+        self.title = title
+        self.textColor = textColor
+        self.alignment = alignment
+    }
 }
