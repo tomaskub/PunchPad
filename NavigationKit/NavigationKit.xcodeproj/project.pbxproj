@@ -20,6 +20,7 @@
 		D62651202B3F47560089A84B /* NavBarBackgroundPrefKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D626511F2B3F47560089A84B /* NavBarBackgroundPrefKey.swift */; };
 		D62651222B3F476C0089A84B /* NavBarConfigPrefKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651212B3F476C0089A84B /* NavBarConfigPrefKey.swift */; };
 		D62651242B3F477C0089A84B /* NavBarHiddenPrefKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651232B3F477C0089A84B /* NavBarHiddenPrefKey.swift */; };
+		D62651272B3F482B0089A84B /* ViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651262B3F482B0089A84B /* ViewControllerRepresentable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		D626511F2B3F47560089A84B /* NavBarBackgroundPrefKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBarBackgroundPrefKey.swift; sourceTree = "<group>"; };
 		D62651212B3F476C0089A84B /* NavBarConfigPrefKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBarConfigPrefKey.swift; sourceTree = "<group>"; };
 		D62651232B3F477C0089A84B /* NavBarHiddenPrefKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBarHiddenPrefKey.swift; sourceTree = "<group>"; };
+		D62651262B3F482B0089A84B /* ViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerRepresentable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,7 @@
 				D62651252B3F47930089A84B /* Extension */,
 				D62651162B3F463D0089A84B /* PreferenceKey */,
 				D62651052B3F130A0089A84B /* NavigationKit.h */,
+				D62651262B3F482B0089A84B /* ViewControllerRepresentable.swift */,
 				D626510C2B3F135D0089A84B /* NavBarTitleConfiguration.swift */,
 				D62651102B3F15570089A84B /* CustomNavigationBarView.swift */,
 				D62651122B3F175F0089A84B /* NavigationBarWrapper.swift */,
@@ -186,6 +189,7 @@
 				D62651112B3F15570089A84B /* CustomNavigationBarView.swift in Sources */,
 				D626510D2B3F135D0089A84B /* NavBarTitleConfiguration.swift in Sources */,
 				D62651152B3F1A3A0089A84B /* View+Extension.swift in Sources */,
+				D62651272B3F482B0089A84B /* ViewControllerRepresentable.swift in Sources */,
 				D62651242B3F477C0089A84B /* NavBarHiddenPrefKey.swift in Sources */,
 				D626511A2B3F470F0089A84B /* CustomNavBarPrefKey.swift in Sources */,
 				D626510F2B3F13DC0089A84B /* EquatableView.swift in Sources */,
