@@ -9,12 +9,14 @@
 /* Begin PBXBuildFile section */
 		D62651062B3F130A0089A84B /* NavigationKit.h in Headers */ = {isa = PBXBuildFile; fileRef = D62651052B3F130A0089A84B /* NavigationKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D626510D2B3F135D0089A84B /* NavBarTitleConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D626510C2B3F135D0089A84B /* NavBarTitleConfiguration.swift */; };
+		D626510F2B3F13DC0089A84B /* EquatableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D626510E2B3F13DC0089A84B /* EquatableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		D62651022B3F130A0089A84B /* NavigationKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NavigationKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D62651052B3F130A0089A84B /* NavigationKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NavigationKit.h; sourceTree = "<group>"; };
 		D626510C2B3F135D0089A84B /* NavBarTitleConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBarTitleConfiguration.swift; sourceTree = "<group>"; };
+		D626510E2B3F13DC0089A84B /* EquatableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquatableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +51,7 @@
 			children = (
 				D62651052B3F130A0089A84B /* NavigationKit.h */,
 				D626510C2B3F135D0089A84B /* NavBarTitleConfiguration.swift */,
+				D626510E2B3F13DC0089A84B /* EquatableView.swift */,
 			);
 			path = NavigationKit;
 			sourceTree = "<group>";
@@ -134,6 +137,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D626510D2B3F135D0089A84B /* NavBarTitleConfiguration.swift in Sources */,
+				D626510F2B3F13DC0089A84B /* EquatableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
