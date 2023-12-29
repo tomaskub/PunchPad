@@ -11,6 +11,7 @@
 		D626510D2B3F135D0089A84B /* NavBarTitleConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D626510C2B3F135D0089A84B /* NavBarTitleConfiguration.swift */; };
 		D626510F2B3F13DC0089A84B /* EquatableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D626510E2B3F13DC0089A84B /* EquatableView.swift */; };
 		D62651112B3F15570089A84B /* CustomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651102B3F15570089A84B /* CustomNavigationBar.swift */; };
+		D62651132B3F175F0089A84B /* NavigationBarWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651122B3F175F0089A84B /* NavigationBarWrapper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +20,7 @@
 		D626510C2B3F135D0089A84B /* NavBarTitleConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBarTitleConfiguration.swift; sourceTree = "<group>"; };
 		D626510E2B3F13DC0089A84B /* EquatableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquatableView.swift; sourceTree = "<group>"; };
 		D62651102B3F15570089A84B /* CustomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBar.swift; sourceTree = "<group>"; };
+		D62651122B3F175F0089A84B /* NavigationBarWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarWrapper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +56,7 @@
 				D62651052B3F130A0089A84B /* NavigationKit.h */,
 				D626510C2B3F135D0089A84B /* NavBarTitleConfiguration.swift */,
 				D62651102B3F15570089A84B /* CustomNavigationBar.swift */,
+				D62651122B3F175F0089A84B /* NavigationBarWrapper.swift */,
 				D626510E2B3F13DC0089A84B /* EquatableView.swift */,
 			);
 			path = NavigationKit;
@@ -142,6 +145,7 @@
 				D62651112B3F15570089A84B /* CustomNavigationBar.swift in Sources */,
 				D626510D2B3F135D0089A84B /* NavBarTitleConfiguration.swift in Sources */,
 				D626510F2B3F13DC0089A84B /* EquatableView.swift in Sources */,
+				D62651132B3F175F0089A84B /* NavigationBarWrapper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
