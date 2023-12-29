@@ -8,11 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		D62651062B3F130A0089A84B /* NavigationKit.h in Headers */ = {isa = PBXBuildFile; fileRef = D62651052B3F130A0089A84B /* NavigationKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D626510D2B3F135D0089A84B /* NavBarTitleConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D626510C2B3F135D0089A84B /* NavBarTitleConfiguration.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		D62651022B3F130A0089A84B /* NavigationKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NavigationKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D62651052B3F130A0089A84B /* NavigationKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NavigationKit.h; sourceTree = "<group>"; };
+		D626510C2B3F135D0089A84B /* NavBarTitleConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBarTitleConfiguration.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +48,7 @@
 			isa = PBXGroup;
 			children = (
 				D62651052B3F130A0089A84B /* NavigationKit.h */,
+				D626510C2B3F135D0089A84B /* NavBarTitleConfiguration.swift */,
 			);
 			path = NavigationKit;
 			sourceTree = "<group>";
@@ -93,6 +96,7 @@
 				TargetAttributes = {
 					D62651012B3F130A0089A84B = {
 						CreatedOnToolsVersion = 15.0.1;
+						LastSwiftMigration = 1500;
 					};
 				};
 			};
@@ -129,6 +133,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D626510D2B3F135D0089A84B /* NavBarTitleConfiguration.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,6 +268,7 @@
 		D626510A2B3F130A0089A84B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -287,6 +293,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -295,6 +302,7 @@
 		D626510B2B3F130A0089A84B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
