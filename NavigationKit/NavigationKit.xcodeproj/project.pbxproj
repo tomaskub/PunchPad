@@ -25,6 +25,7 @@
 		D626512B2B3F48EC0089A84B /* NavBarConfigurationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D626512A2B3F48EC0089A84B /* NavBarConfigurationState.swift */; };
 		D626512D2B3F494D0089A84B /* NavigationBarConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D626512C2B3F494D0089A84B /* NavigationBarConfiguration.swift */; };
 		D626512F2B3F569F0089A84B /* _SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D626512E2B3F569F0089A84B /* _SwiftUIView.swift */; };
+		D62651342B3F5A950089A84B /* _NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651332B3F5A950089A84B /* _NavigationController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		D626512A2B3F48EC0089A84B /* NavBarConfigurationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBarConfigurationState.swift; sourceTree = "<group>"; };
 		D626512C2B3F494D0089A84B /* NavigationBarConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarConfiguration.swift; sourceTree = "<group>"; };
 		D626512E2B3F569F0089A84B /* _SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _SwiftUIView.swift; sourceTree = "<group>"; };
+		D62651332B3F5A950089A84B /* _NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _NavigationController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +130,7 @@
 			children = (
 				D62651262B3F482B0089A84B /* ViewControllerRepresentable.swift */,
 				D62651282B3F48900089A84B /* ViewController.swift */,
+				D62651332B3F5A950089A84B /* _NavigationController.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -226,6 +229,7 @@
 				D626511C2B3F47260089A84B /* NavBarTrailingPrefKey.swift in Sources */,
 				D62651112B3F15570089A84B /* CustomNavigationBarView.swift in Sources */,
 				D626510D2B3F135D0089A84B /* NavBarTitleConfiguration.swift in Sources */,
+				D62651342B3F5A950089A84B /* _NavigationController.swift in Sources */,
 				D62651152B3F1A3A0089A84B /* View+Extension.swift in Sources */,
 				D62651292B3F48900089A84B /* ViewController.swift in Sources */,
 				D62651272B3F482B0089A84B /* ViewControllerRepresentable.swift in Sources */,
