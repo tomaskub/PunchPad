@@ -26,6 +26,10 @@
 		D626512D2B3F494D0089A84B /* NavigationBarConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D626512C2B3F494D0089A84B /* NavigationBarConfiguration.swift */; };
 		D626512F2B3F569F0089A84B /* _SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D626512E2B3F569F0089A84B /* _SwiftUIView.swift */; };
 		D62651342B3F5A950089A84B /* _NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651332B3F5A950089A84B /* _NavigationController.swift */; };
+		D62651362B3F5C9D0089A84B /* _NavigationControllerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651352B3F5C9D0089A84B /* _NavigationControllerWrapper.swift */; };
+		D62651382B3F5D410089A84B /* NavigatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651372B3F5D410089A84B /* NavigatorDelegate.swift */; };
+		D626513A2B3F5DD70089A84B /* NavHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651392B3F5DD70089A84B /* NavHost.swift */; };
+		D626513C2B3F5E020089A84B /* Navigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D626513B2B3F5E020089A84B /* Navigator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +53,10 @@
 		D626512C2B3F494D0089A84B /* NavigationBarConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarConfiguration.swift; sourceTree = "<group>"; };
 		D626512E2B3F569F0089A84B /* _SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _SwiftUIView.swift; sourceTree = "<group>"; };
 		D62651332B3F5A950089A84B /* _NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _NavigationController.swift; sourceTree = "<group>"; };
+		D62651352B3F5C9D0089A84B /* _NavigationControllerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _NavigationControllerWrapper.swift; sourceTree = "<group>"; };
+		D62651372B3F5D410089A84B /* NavigatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatorDelegate.swift; sourceTree = "<group>"; };
+		D62651392B3F5DD70089A84B /* NavHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavHost.swift; sourceTree = "<group>"; };
+		D626513B2B3F5E020089A84B /* Navigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +95,9 @@
 				D62651312B3F56F40089A84B /* UIKit */,
 				D62651302B3F56E60089A84B /* View */,
 				D626512C2B3F494D0089A84B /* NavigationBarConfiguration.swift */,
+				D62651372B3F5D410089A84B /* NavigatorDelegate.swift */,
+				D62651392B3F5DD70089A84B /* NavHost.swift */,
+				D626513B2B3F5E020089A84B /* Navigator.swift */,
 				D62651322B3F57130089A84B /* Model */,
 			);
 			path = NavigationKit;
@@ -131,6 +142,7 @@
 				D62651262B3F482B0089A84B /* ViewControllerRepresentable.swift */,
 				D62651282B3F48900089A84B /* ViewController.swift */,
 				D62651332B3F5A950089A84B /* _NavigationController.swift */,
+				D62651352B3F5C9D0089A84B /* _NavigationControllerWrapper.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -225,8 +237,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				D626512F2B3F569F0089A84B /* _SwiftUIView.swift in Sources */,
+				D626513A2B3F5DD70089A84B /* NavHost.swift in Sources */,
 				D626512D2B3F494D0089A84B /* NavigationBarConfiguration.swift in Sources */,
 				D626511C2B3F47260089A84B /* NavBarTrailingPrefKey.swift in Sources */,
+				D62651362B3F5C9D0089A84B /* _NavigationControllerWrapper.swift in Sources */,
+				D626513C2B3F5E020089A84B /* Navigator.swift in Sources */,
 				D62651112B3F15570089A84B /* CustomNavigationBarView.swift in Sources */,
 				D626510D2B3F135D0089A84B /* NavBarTitleConfiguration.swift in Sources */,
 				D62651342B3F5A950089A84B /* _NavigationController.swift in Sources */,
@@ -239,6 +254,7 @@
 				D62651202B3F47560089A84B /* NavBarBackgroundPrefKey.swift in Sources */,
 				D62651182B3F465C0089A84B /* NavBarScrollingPrefKey.swift in Sources */,
 				D626512B2B3F48EC0089A84B /* NavBarConfigurationState.swift in Sources */,
+				D62651382B3F5D410089A84B /* NavigatorDelegate.swift in Sources */,
 				D626511E2B3F47400089A84B /* NavBarLeadingPrefKey.swift in Sources */,
 				D62651132B3F175F0089A84B /* NavigationBarWrapper.swift in Sources */,
 				D62651222B3F476C0089A84B /* NavBarConfigPrefKey.swift in Sources */,
