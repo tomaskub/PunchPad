@@ -22,6 +22,13 @@ struct CustomNavigationBarView: View {
     
     var body: some View {
         HStack {
+            if shouldShowBackButton {
+                backButton
+                    .onTapGesture {
+                        onBackTapped()
+                    }
+            }
+            
             leadingElements.view
                 .background(
                     GeometryReader { proxy in
@@ -60,6 +67,13 @@ struct CustomNavigationBarView: View {
             background.view
         }
     }
+    
+    var backButton: some View {
+        HStack {
+            Image(systemName: "chevron.left")
+            Text("Back")
+        }
+    }
 }
 
 private extension CustomNavigationBarView {
@@ -95,15 +109,6 @@ struct NavigationBarTitleView: View {
                 .shadow(color: .black.opacity(0.2), radius: 12, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 4)
         }
         
-        var leadingElements: some View {
-            HStack{
-                Label("Back", systemImage: "chevron.left")
-                    .fixedSize()
-                    .foregroundColor(.blue)
-                Image(systemName: "plus")
-            }
-        }
-        
         var trailingElements: some View {
             Image(systemName:"gearshape.fill")
                 .foregroundColor(.green.opacity(0.5))
@@ -118,7 +123,7 @@ struct NavigationBarTitleView: View {
                 CustomNavigationBarView(config: navBarTitleConfiguration,
                                         shouldShowBackButton: true,
                                         background: .init(view: AnyView(navBarBackground)),
-                                        leadingElements: .init(view: AnyView(leadingElements)),
+                                        leadingElements: .init(),
                                         trailingElements: .init(view: AnyView(trailingElements)),
                                         shouldElevate: true) { print("back tapped") }
                 Spacer()
