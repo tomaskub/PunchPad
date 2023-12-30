@@ -8,7 +8,7 @@
 public enum TabBarItem: Hashable {
     case home, history, statistics
     
-    var iconName: String {
+    public var iconName: String {
         switch  self {
         case .home:
             "house.fill"
@@ -18,7 +18,8 @@ public enum TabBarItem: Hashable {
             "chart.bar.xaxis"
         }
     }
-    var title: String {
+    
+    public var title: String {
         switch  self {
         case .home:
             "Home"
@@ -29,7 +30,7 @@ public enum TabBarItem: Hashable {
         }
     }
     
-    var identifier: String {
+    public var identifier: String {
         switch self {
         case .home:
             TabBarIdentifier.home.rawValue
