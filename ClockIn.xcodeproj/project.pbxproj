@@ -43,6 +43,7 @@
 		D67332E72AADB8B1005FFE7F /* LaunchArgument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67332E52AADB8B1005FFE7F /* LaunchArgument.swift */; };
 		D67332EA2AAE3D3D005FFE7F /* StatisticsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67332E92AAE3D3D005FFE7F /* StatisticsUITests.swift */; };
 		D6799EFC29E1BC0F0080E32A /* HistoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6799EFB29E1BC0F0080E32A /* HistoryViewModelTests.swift */; };
+		D6801A152B404F61003F54F9 /* NavigationKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6801A142B404F61003F54F9 /* NavigationKit.framework */; };
 		D682AF922B3C77F5004EE208 /* ChartTimeRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AF912B3C77F5004EE208 /* ChartTimeRange.swift */; };
 		D682AF942B3D83A2004EE208 /* MonthEntrySummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AF932B3D83A2004EE208 /* MonthEntrySummary.swift */; };
 		D682AF972B3DA435004EE208 /* CustomTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AF962B3DA435004EE208 /* CustomTabBarView.swift */; };
@@ -141,7 +142,7 @@
 		D621C0C92B3B79850065DF8C /* CircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButton.swift; sourceTree = "<group>"; };
 		D621C0CB2B3B8BE40065DF8C /* TimerIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerIndicator.swift; sourceTree = "<group>"; };
 		D629CEF82B3613660036579D /* TimerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerService.swift; sourceTree = "<group>"; };
-		D629CEFA2B363B500036579D /* TimerServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TimerServiceTests.swift; path = ClockInTests/TimerServiceTests.swift; sourceTree = "<group>"; };
+		D629CEFA2B363B500036579D /* TimerServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerServiceTests.swift; sourceTree = "<group>"; };
 		D64313B72B1E606B003B5DBC /* PreviewDataFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewDataFactory.swift; sourceTree = "<group>"; };
 		D64574AF29D9E6A000207168 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		D64574B129D9F16900207168 /* EntryMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EntryMO+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -159,6 +160,7 @@
 		D67332E52AADB8B1005FFE7F /* LaunchArgument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchArgument.swift; sourceTree = "<group>"; };
 		D67332E92AAE3D3D005FFE7F /* StatisticsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsUITests.swift; sourceTree = "<group>"; };
 		D6799EFB29E1BC0F0080E32A /* HistoryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModelTests.swift; sourceTree = "<group>"; };
+		D6801A142B404F61003F54F9 /* NavigationKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NavigationKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D682AF912B3C77F5004EE208 /* ChartTimeRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartTimeRange.swift; sourceTree = "<group>"; };
 		D682AF932B3D83A2004EE208 /* MonthEntrySummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthEntrySummary.swift; sourceTree = "<group>"; };
 		D682AF962B3DA435004EE208 /* CustomTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarView.swift; sourceTree = "<group>"; };
@@ -231,6 +233,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6801A152B404F61003F54F9 /* NavigationKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,6 +288,14 @@
 				D6B7D1C72B0EB41A00E6F7A8 /* ContentViewScreen.swift */,
 			);
 			path = ScreenHelpers;
+			sourceTree = "<group>";
+		};
+		D6801A132B404F61003F54F9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D6801A142B404F61003F54F9 /* NavigationKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		D682AF952B3DA414004EE208 /* CustomTabBar */ = {
@@ -345,11 +356,11 @@
 		D6C4588729D229200069D89B = {
 			isa = PBXGroup;
 			children = (
-				D629CEFA2B363B500036579D /* TimerServiceTests.swift */,
 				D6C4589229D229210069D89B /* ClockIn */,
 				D6C458A329D229230069D89B /* ClockInTests */,
 				D6C458AD29D229230069D89B /* ClockInUITests */,
 				D6C4589129D229210069D89B /* Products */,
+				D6801A132B404F61003F54F9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -399,6 +410,7 @@
 			children = (
 				D61945EB29E7306B0046DE1F /* HomeViewModelTests.swift */,
 				D6799EFB29E1BC0F0080E32A /* HistoryViewModelTests.swift */,
+				D629CEFA2B363B500036579D /* TimerServiceTests.swift */,
 				D65A976A29F2E6B800462D8C /* StatisticsViewModelTests.swift */,
 				D60480D72B122CDA00D6D70D /* ChartPeriodServiceTests.swift */,
 				D61945EF29E735D80046DE1F /* MockTimer.swift */,
