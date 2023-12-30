@@ -13,7 +13,8 @@ struct ContentView: View {
     @AppStorage(SettingsStore.SettingKey.isRunFirstTime.rawValue) var isRunFirstTime: Bool = true 
     
     var body: some View {
-        CustomTabBarContainerView(selection: $tabSelection) {
+//        CustomTabBarContainerView(selection: $tabSelection) {
+        TabView {
             NavigationView {
                 HomeView(viewModel:
                             HomeViewModel(dataManager: container.dataManager,
@@ -21,20 +22,26 @@ struct ContentView: View {
                                           payManager: container.payManager,
                                           timerProvider: container.timerProvider)
                 )
-            }.tabBarItem(tab: .home, selection: $tabSelection)
+            }
+//            .tabBarItem(tab: .home, selection: $tabSelection)
+            .tabItem { Label( TabBarItem.home.title, systemImage: TabBarItem.home.iconName) }
             NavigationView {
                 StatisticsView(viewModel:
                                 StatisticsViewModel(dataManager: container.dataManager,
                                                     payManager: container.payManager,
                                                     settingsStore: container.settingsStore)
                 )
-            }.tabBarItem(tab: .statistics, selection: $tabSelection)
+            }
+//            .tabBarItem(tab: .statistics, selection: $tabSelection)
+            .tabItem { Label( TabBarItem.statistics.title, systemImage: TabBarItem.statistics.iconName) }
             NavigationView {
                 HistoryView(viewModel:
                                 HistoryViewModel(dataManager: container.dataManager,
                                                  settingsStore: container.settingsStore)
                 )
-            }.tabBarItem(tab: .history, selection: $tabSelection)
+            }
+//            .tabBarItem(tab: .history, selection: $tabSelection)
+            .tabItem { Label( TabBarItem.history.title, systemImage: TabBarItem.history.iconName) }
         }
         .fullScreenCover(isPresented: $isRunFirstTime, onDismiss: {
             isRunFirstTime = false
