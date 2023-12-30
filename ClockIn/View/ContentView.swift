@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var tabSelection: TabBarItem = .home
+//    @State private var tabSelection: TabBarItem = .home
     @EnvironmentObject var container: Container
     @AppStorage(SettingsStore.SettingKey.isRunFirstTime.rawValue) var isRunFirstTime: Bool = true 
     
@@ -24,7 +24,7 @@ struct ContentView: View {
                 )
             }
 //            .tabBarItem(tab: .home, selection: $tabSelection)
-            .tabItem { Label( TabBarItem.home.title, systemImage: TabBarItem.home.iconName) }
+            .tabItem { Label( "Home", systemImage: "house.fill") }
             NavigationView {
                 StatisticsView(viewModel:
                                 StatisticsViewModel(dataManager: container.dataManager,
@@ -33,7 +33,7 @@ struct ContentView: View {
                 )
             }
 //            .tabBarItem(tab: .statistics, selection: $tabSelection)
-            .tabItem { Label( TabBarItem.statistics.title, systemImage: TabBarItem.statistics.iconName) }
+            .tabItem { Label( "Statistics", systemImage: "chart.bar.xaxis") }
             NavigationView {
                 HistoryView(viewModel:
                                 HistoryViewModel(dataManager: container.dataManager,
@@ -41,7 +41,7 @@ struct ContentView: View {
                 )
             }
 //            .tabBarItem(tab: .history, selection: $tabSelection)
-            .tabItem { Label( TabBarItem.history.title, systemImage: TabBarItem.history.iconName) }
+            .tabItem { Label( "History", systemImage:    "rectangle.grid.1x2.fill") }
         }
         .fullScreenCover(isPresented: $isRunFirstTime, onDismiss: {
             isRunFirstTime = false
