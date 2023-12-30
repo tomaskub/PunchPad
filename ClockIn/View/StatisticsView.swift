@@ -100,8 +100,9 @@ extension StatisticsView {
 //MARK: AUX. UI ELEMENTS
 extension StatisticsView {
     var background: some View {
-        BackgroundFactory.buildSolidWithStrip(solid: .theme.background, strip: .theme.white)
+        BackgroundFactory.buildSolidColor()
     }
+    
 //TODO: FIX THE ISSUE WITH NAV LINK NOT WORKING
     var toolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
@@ -251,30 +252,18 @@ extension StatisticsView {
     }
 }
 
-//MARK: PREVIEW
-struct StatisticsView_Previews: PreviewProvider {
-    private struct ContainerView: View {
-        @StateObject private var container = Container()
+#Preview {
+    struct Preview: View {
+        @State private var container = Container()
         var body: some View {
-            TabView {
-                NavigationView {
-                    StatisticsView(viewModel:
-                                    StatisticsViewModel(
-                                        dataManager: container.dataManager,
-                                        payManager: container.payManager,
-                                        settingsStore: container.settingsStore)
-                    )
-                }
-                .environmentObject(container)
-                
-                .tabItem {
-                    Label("Statistics", systemImage: "chart.bar.xaxis")
-                        .accessibilityIdentifier(ScreenIdentifier.TabBar.statistics.rawValue)
-                }
-            }
+            StatisticsView(viewModel:
+                            StatisticsViewModel(
+                                dataManager: container.dataManager,
+                                payManager: container.payManager,
+                                settingsStore: container.settingsStore)
+            )
+            .environmentObject(container)
         }
     }
-    static var previews: some View {
-        ContainerView()
-    }
+    return Preview()
 }
