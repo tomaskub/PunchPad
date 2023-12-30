@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TabBarItemsPreferenceKey: PreferenceKey {
+struct TabBarItemsPrefKey: PreferenceKey {
     static var defaultValue: [TabBarItem] = []
     
     static func reduce(value: inout [TabBarItem], nextValue: () -> [TabBarItem]) {
