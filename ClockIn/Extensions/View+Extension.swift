@@ -42,13 +42,7 @@ extension View {
                                     )
         )
     }
-    /// A modifier used to register a tabBarItem in CustomTabBarContainerView
-    /// - Parameters:
-    ///     - tab: A tab bar item used to represent the tab
-    ///     - selection: Reference to binding value for container view
-    func tabBarItem(tab: TabBarItem, selection: Binding<TabBarItem>) -> some View {
-        self.modifier(TabBarItemViewModifier(selection: selection, tab: tab))
-    }
+    
     /// Add a preference for CustomNavigationBar title property
     /// - Parameter title: title value to set
     func customNavigationTitle(_ title: String) -> some View {

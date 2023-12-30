@@ -5,7 +5,7 @@
 //  Created by Tomasz Kubiak on 28/12/2023.
 //
 
-enum TabBarItem: Hashable {
+public enum TabBarItem: Hashable {
     case home, history, statistics
     
     var iconName: String {
@@ -29,14 +29,16 @@ enum TabBarItem: Hashable {
         }
     }
     
-    var identifier: String {
-        switch self {
-        case .home:
-            ScreenIdentifier.TabBar.home.rawValue
-        case .history:
-            ScreenIdentifier.TabBar.history.rawValue
-        case .statistics:
-            ScreenIdentifier.TabBar.statistics.rawValue
-        }
-    }
+//    var identifier: String {
+//        switch self {
+//        case .home:
+//            ScreenIdentifier.TabBar.home.rawValue
+//        case .history:
+//            ScreenIdentifier.TabBar.history.rawValue
+//        case .statistics:
+//            ScreenIdentifier.TabBar.statistics.rawValue
+//        }
+//    }
 }
+
+
