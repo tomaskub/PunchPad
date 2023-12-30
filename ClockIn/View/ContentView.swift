@@ -6,15 +6,15 @@
 //
 
 import SwiftUI
+import TabViewKit
 
 struct ContentView: View {
-//    @State private var tabSelection: TabBarItem = .home
+    @State private var tabSelection: TabBarItem = .home
     @EnvironmentObject var container: Container
     @AppStorage(SettingsStore.SettingKey.isRunFirstTime.rawValue) var isRunFirstTime: Bool = true 
     
     var body: some View {
-//        CustomTabBarContainerView(selection: $tabSelection) {
-        TabView {
+        CustomTabView(selection: $tabSelection) {
             NavigationView {
                 HomeView(viewModel:
                             HomeViewModel(dataManager: container.dataManager,
@@ -23,8 +23,7 @@ struct ContentView: View {
                                           timerProvider: container.timerProvider)
                 )
             }
-//            .tabBarItem(tab: .home, selection: $tabSelection)
-            .tabItem { Label( "Home", systemImage: "house.fill") }
+            .tabBarItem(tab: .home, selection: $tabSelection)
             NavigationView {
                 StatisticsView(viewModel:
                                 StatisticsViewModel(dataManager: container.dataManager,
@@ -32,16 +31,14 @@ struct ContentView: View {
                                                     settingsStore: container.settingsStore)
                 )
             }
-//            .tabBarItem(tab: .statistics, selection: $tabSelection)
-            .tabItem { Label( "Statistics", systemImage: "chart.bar.xaxis") }
+            .tabBarItem(tab: .statistics, selection: $tabSelection)
             NavigationView {
                 HistoryView(viewModel:
                                 HistoryViewModel(dataManager: container.dataManager,
                                                  settingsStore: container.settingsStore)
                 )
             }
-//            .tabBarItem(tab: .history, selection: $tabSelection)
-            .tabItem { Label( "History", systemImage:    "rectangle.grid.1x2.fill") }
+            .tabBarItem(tab: .history, selection: $tabSelection)
         }
         .fullScreenCover(isPresented: $isRunFirstTime, onDismiss: {
             isRunFirstTime = false

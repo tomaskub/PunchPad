@@ -23,6 +23,7 @@
 		D61F11342AB3A6FF00902D6D /* ColorScheme+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61F11332AB3A6FF00902D6D /* ColorScheme+Extension.swift */; };
 		D621C0CA2B3B79850065DF8C /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D621C0C92B3B79850065DF8C /* CircleButton.swift */; };
 		D621C0CC2B3B8BE40065DF8C /* TimerIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D621C0CB2B3B8BE40065DF8C /* TimerIndicator.swift */; };
+		D62286742B40A04B00B41004 /* TabViewKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D62286732B40A04B00B41004 /* TabViewKit.framework */; };
 		D629CEF92B3613660036579D /* TimerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D629CEF82B3613660036579D /* TimerService.swift */; };
 		D629CEFB2B363B500036579D /* TimerServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D629CEFA2B363B500036579D /* TimerServiceTests.swift */; };
 		D64313B82B1E606B003B5DBC /* PreviewDataFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64313B72B1E606B003B5DBC /* PreviewDataFactory.swift */; };
@@ -136,6 +137,7 @@
 		D61F11332AB3A6FF00902D6D /* ColorScheme+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ColorScheme+Extension.swift"; sourceTree = "<group>"; };
 		D621C0C92B3B79850065DF8C /* CircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButton.swift; sourceTree = "<group>"; };
 		D621C0CB2B3B8BE40065DF8C /* TimerIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerIndicator.swift; sourceTree = "<group>"; };
+		D62286732B40A04B00B41004 /* TabViewKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TabViewKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D629CEF82B3613660036579D /* TimerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerService.swift; sourceTree = "<group>"; };
 		D629CEFA2B363B500036579D /* TimerServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerServiceTests.swift; sourceTree = "<group>"; };
 		D64313B72B1E606B003B5DBC /* PreviewDataFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewDataFactory.swift; sourceTree = "<group>"; };
@@ -223,6 +225,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D62286742B40A04B00B41004 /* TabViewKit.framework in Frameworks */,
 				D6801A152B404F61003F54F9 /* NavigationKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -283,6 +286,7 @@
 		D6801A132B404F61003F54F9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D62286732B40A04B00B41004 /* TabViewKit.framework */,
 				D6801A142B404F61003F54F9 /* NavigationKit.framework */,
 			);
 			name = Frameworks;
