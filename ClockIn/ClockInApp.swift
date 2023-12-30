@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import NavigationKit
 
 @main
 struct ClockInApp: App {
-    
+    let appNavigator: Navigator = Navigator(Route.main)
     @StateObject private var container = Container()
     @AppStorage(SettingsStore.SettingKey.savedColorScheme.rawValue) var preferredColorScheme: String?
     
@@ -24,7 +25,7 @@ struct ClockInApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(navigator: appNavigator)
                 .environmentObject(container)
                 .preferredColorScheme(colorScheme)
         }

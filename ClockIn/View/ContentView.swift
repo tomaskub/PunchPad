@@ -7,38 +7,29 @@
 
 import SwiftUI
 import TabViewKit
+import NavigationKit
 
 struct ContentView: View {
+    let navigator: Navigator<Route>
     @State private var tabSelection: TabBarItem = .home
     @EnvironmentObject var container: Container
     @AppStorage(SettingsStore.SettingKey.isRunFirstTime.rawValue) var isRunFirstTime: Bool = true 
     
     var body: some View {
-        CustomTabView(selection: $tabSelection) {
-            NavigationView {
-                HomeView(viewModel:
-                            HomeViewModel(dataManager: container.dataManager,
-                                          settingsStore: container.settingsStore,
-                                          payManager: container.payManager,
-                                          timerProvider: container.timerProvider)
+        NavHost(navigator: navigator) { route in
+            switch route {
+            case .main:
+                MainView(navigator: navigator,
+                         tabSelection: $tabSelection)
+            case .settings:
+                SettingsView(viewModel:
+                                SettingsViewModel(
+                                    dataManger: container.dataManager,
+                                    settingsStore: container.settingsStore
+                                )
                 )
+                .navigationBarTitle("Settings")
             }
-            .tabBarItem(tab: .home, selection: $tabSelection)
-            NavigationView {
-                StatisticsView(viewModel:
-                                StatisticsViewModel(dataManager: container.dataManager,
-                                                    payManager: container.payManager,
-                                                    settingsStore: container.settingsStore)
-                )
-            }
-            .tabBarItem(tab: .statistics, selection: $tabSelection)
-            NavigationView {
-                HistoryView(viewModel:
-                                HistoryViewModel(dataManager: container.dataManager,
-                                                 settingsStore: container.settingsStore)
-                )
-            }
-            .tabBarItem(tab: .history, selection: $tabSelection)
         }
         .fullScreenCover(isPresented: $isRunFirstTime, onDismiss: {
             isRunFirstTime = false
@@ -51,7 +42,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(navigator: Navigator(Route.main))
             .environmentObject(Container())
     }
 }

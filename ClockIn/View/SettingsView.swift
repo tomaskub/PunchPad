@@ -155,7 +155,7 @@ struct SettingsView: View {
             .scrollContentBackground(.hidden)
             
         } // END OF ZSTACK
-        .navigationTitle(navigationTitleText)
+        .navigationBarTitle(navigationTitleText)
     } // END OF BODY
     var background: some View {
         BackgroundFactory.buildSolidColor()

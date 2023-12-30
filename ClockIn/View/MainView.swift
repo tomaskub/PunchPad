@@ -7,8 +7,10 @@
 
 import SwiftUI
 import TabViewKit
+import NavigationKit
 
 struct MainView: View {
+    let navigator: Navigator<Route>
     @Binding var tabSelection: TabBarItem
     @EnvironmentObject var container: Container
     
@@ -35,10 +37,41 @@ struct MainView: View {
             )
             .tabBarItem(tab: .history, selection: $tabSelection)
         }
+        .navigationBarTitle("PunchPad")
+        .navigationBarBackground(bg: {
+            RoundedRectangle(cornerRadius: 24)
+                .foregroundColor(.theme.white)
+                .ignoresSafeArea(edges: .top)
+                .background(Color.theme.background)
+        })
+        .navigationBarTrailingItem {
+            Text("Settings")
+                .font(.body)
+                .fixedSize()
+                .onTapGesture {
+                    navigator.push(.settings)
+                }
+        }
     }
 }
 
-#Preview {
-    MainView(tabSelection: .constant(.home))
-        .environmentObject(Container())
+//TODO: FIGURE OUT WHY NAV HOST GENERATES BLANK SCREEN WHEN NAV BAR BACKGROUND IS ADDED
+#Preview("No navigation bar") {
+    MainView(navigator: Navigator(Route.main),
+             tabSelection: .constant(.home)
+    )
+    .environmentObject(Container())
 }
+
+#Preview("With navHost") {
+    struct Preview: View {
+        var body: some View {
+            NavHost(navigator: Navigator(Route.main)){ _ in
+                MainView(navigator: Navigator(Route.main),tabSelection: .constant(.home))
+                    .environmentObject(Container())
+            }
+        }
+    }
+    return Preview()
+    }
+
