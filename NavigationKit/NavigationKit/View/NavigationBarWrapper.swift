@@ -56,10 +56,32 @@ struct NavigationBarWrapper<Content: View>: View {
                     shouldElevate: isScrolling,
                     onBackTapped: onBackTapped)
             }
-            
             // Main content view
             destination()
                 .frame(maxHeight: .infinity)
+        }
+        .onPreferenceChange(NavBarConfigPrefKey.self) { config in
+            self.navConfig = config
+        }
+        .onPreferenceChange(NavBarBackgroundPrefKey.self) { bg in
+            self.backgroundView = bg
+        }
+        .onPreferenceChange(NavBarLeadingPrefKey.self) { leadingView in
+            self.leadingView = leadingView
+        }
+        .onPreferenceChange(NavBarTrailingPrefKey.self) { trailingView in
+            self.trailingView = trailingView
+        }
+        .onPreferenceChange(NavBarScrollingPrefKey.self) { isScrolling in
+            withAnimation {
+                self.isScrolling = isScrolling
+            }
+        }
+        .onPreferenceChange(NavBarHiddenPrefKey.self) { isNavBarHidden in
+            self.isNavBarHidden = isNavBarHidden
+        }
+        .onPreferenceChange(CustomNavBarPrefKey.self) { navBar in
+            self.customNavBar = navBar
         }
     }
 }
@@ -72,6 +94,7 @@ struct NavigationBarWrapper<Content: View>: View {
                 Text("Destination")
                     .foregroundColor(.white)
             }
+            .navigationBarTitle("Sample wrapper view")
     } onBackTapped: {
         print("Back tapped")
     }
