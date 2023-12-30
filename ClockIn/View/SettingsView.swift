@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import NavigationKit
 
 struct SettingsView: View {
     private typealias Identifier = ScreenIdentifier.SettingsView
@@ -155,7 +156,7 @@ struct SettingsView: View {
             .scrollContentBackground(.hidden)
             
         } // END OF ZSTACK
-        .navigationBarTitle(navigationTitleText)
+        .navigationBarTitle("Settings")
     } // END OF BODY
     var background: some View {
         BackgroundFactory.buildSolidColor()

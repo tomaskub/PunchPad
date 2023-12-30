@@ -28,7 +28,7 @@ struct ContentView: View {
                                     settingsStore: container.settingsStore
                                 )
                 )
-                .navigationBarTitle("Settings")
+                
             }
         }
         .fullScreenCover(isPresented: $isRunFirstTime, onDismiss: {
