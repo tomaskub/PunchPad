@@ -29,16 +29,14 @@ public enum TabBarItem: Hashable {
         }
     }
     
-//    var identifier: String {
-//        switch self {
-//        case .home:
-//            ScreenIdentifier.TabBar.home.rawValue
-//        case .history:
-//            ScreenIdentifier.TabBar.history.rawValue
-//        case .statistics:
-//            ScreenIdentifier.TabBar.statistics.rawValue
-//        }
-//    }
+    var identifier: String {
+        switch self {
+        case .home:
+            TabBarIdentifier.home.rawValue
+        case .history:
+            TabBarIdentifier.history.rawValue
+        case .statistics:
+            TabBarIdentifier.statistics.rawValue
+        }
+    }
 }
-
-

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ThemeKit
 
 struct CustomTabBarView: View {
     @Binding var selection: TabBarItem
@@ -34,7 +35,7 @@ struct CustomTabBarView: View {
             Rectangle()
                 .padding(.horizontal)
                 .offset(CGSize(width: 0, height: 12))
-                .foregroundColor(.red)//Color.theme.secondaryLabel)
+                .foregroundColor(Color.theme.secondaryLabel)
                 .frame(width: .infinity, height: 1)
         )
         .background(
@@ -44,7 +45,7 @@ struct CustomTabBarView: View {
                 .ignoresSafeArea(edges: .bottom)
         )
         .compositingGroup()
-        .shadow(color: .black, radius: 6)//.theme.black.opacity(0.3), radius: 6, y: 4)
+        .shadow(color: .theme.black.opacity(0.3), radius: 6, y: 4)
         .onChange(of: selection, perform: { value in
             withAnimation(.easeInOut) {
                 localSelection = selection
@@ -58,17 +59,16 @@ struct CustomTabBarView: View {
                 .font(.subheadline)
             Text(tab.title)
                 .font(.system(size: 20))
-//                .accessibilityIdentifier(tab.identifier)
+                .accessibilityIdentifier(tab.identifier)
         }
-        .foregroundColor(.orange)
-//        (localSelection == tab ? Color.theme.primary : Color.theme.secondaryLabel)
+        .foregroundColor(localSelection == tab ? Color.theme.primary : Color.theme.secondaryLabel)
         .frame(maxWidth: .infinity)
         .background(
             ZStack{
                 if localSelection == tab {
                     Rectangle()
                         .offset(CGSize(width: 0, height: 18))
-                        .foregroundColor(.red)//Color.theme.primary)
+                        .foregroundColor(Color.theme.primary)
                         .frame(width: .infinity, height: 3)
                         .matchedGeometryEffect(id: "tab_marker", in: namespance)
                 }
@@ -87,8 +87,7 @@ struct CustomTabBarView: View {
         @State private var tabSection: TabBarItem = .home
         var body: some View {
             ZStack {
-//                BackgroundFactory.buildSolidColor()
-                Color.teal.opacity(0.4).ignoresSafeArea()
+                Color.theme.background.ignoresSafeArea()
                 VStack{
                     Spacer()
                     CustomTabBarView(selection: $tabSection,
