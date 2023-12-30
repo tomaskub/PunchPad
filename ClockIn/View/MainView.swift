@@ -37,12 +37,9 @@ struct MainView: View {
             )
             .tabBarItem(tab: .history, selection: $tabSelection)
         }
-        .navigationBarTitle("PunchPad")
+        .navigationBarTitle(generateNavTitle(tabSelection))
         .navigationBarBackground(bg: {
-            RoundedRectangle(cornerRadius: 24)
-                .foregroundColor(.theme.white)
-                .ignoresSafeArea(edges: .top)
-                .background(Color.theme.background)
+            BackgroundFactory.buildNavBarBackground()
         })
         .navigationBarTrailingItem {
             Text("Settings")
@@ -52,6 +49,9 @@ struct MainView: View {
                     navigator.push(.settings)
                 }
         }
+    }
+    func generateNavTitle(_ tabSelection: TabBarItem) -> String {
+        tabSelection == .home ? "PunchPad" : tabSelection.title
     }
 }
 
