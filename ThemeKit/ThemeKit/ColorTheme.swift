@@ -7,33 +7,42 @@
 
 import SwiftUI
 
-struct ColorTheme {
+public struct ColorTheme {
     /// Green background color
-    let background = Color("GreenColorScheme/BackgroundColor")
+    public let background = MyBundle.getColor("BackgroundColor")
     /// Semi-black color used for text in headings
-    let black = Color("GreenColorScheme/Black")
+    public let black = MyBundle.getColor("Black")
     /// Semi-black color used for text in labels
-    let blackLabel = Color("GreenColorScheme/BlackText")
+    public let blackLabel = MyBundle.getColor("BlackText")
     /// Timer button fill green color
-    let buttonColor = Color("GreenColorScheme/ButtonColor")
+    public let buttonColor = MyBundle.getColor("ButtonColor")
     /// Green color used for filling ring
-    let ringGreen = Color("GreenColorScheme/CircleRingGreen")
+    public let ringGreen = MyBundle.getColor("CircleRingGreen")
     /// White-gray color used for unfilled ring
-    let ringWhite = Color("GreenColorScheme/CircleRingUnfilled")
+    public let ringWhite = MyBundle.getColor("CircleRingUnfilled")
     /// Primary color used for buttons, labels and icons
-    let primary = Color("GreenColorScheme/Primary")
+    public let primary = MyBundle.getColor("Primary")
     /// Red color for chart  bars
-    let redChart = Color("GreenColorScheme/RedChart")
+    public let redChart = MyBundle.getColor("RedChart")
     /// Start color for ring red gradient
-    let redGradientStart = Color("GreenColorScheme/RedGradientStart")
+    public let redGradientStart = MyBundle.getColor("RedGradientStart")
     /// End color for ring red gradient
-    let redGradientEnd = Color("GreenColorScheme/RedGradientEnd")
+    public let redGradientEnd = MyBundle.getColor("RedGradientEnd")
     /// Red color used for timer label in overtime
-    let redLabel = Color("GreenColorScheme/RedLabel")
+    public let redLabel = MyBundle.getColor("RedLabel")
     /// Gray color used for timer label in worktime
-    let secondaryLabel = Color("GreenColorScheme/SecondaryWorktimeLabel")
+    public let secondaryLabel = MyBundle.getColor("SecondaryWorktimeLabel")
     /// Gray opaque color used for background in segmented pickers
-    let tertiary = Color("GreenColorScheme/Tertiary")
+    public let tertiary = MyBundle.getColor("Tertiary")
     /// White color used for background elements of tab bars, list rows and navigation bars
-    let white = Color("GreenColorScheme/White")
+    public let white = MyBundle.getColor("White")
+    
+    class MyBundle {
+        static func generateBundleForSelf() -> Bundle {
+            Bundle(for: self)
+        }
+        static func getColor(_ name: String) -> Color {
+            Color(name, bundle: generateBundleForSelf())
+        }
+    }
 }
