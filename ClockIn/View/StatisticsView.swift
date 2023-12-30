@@ -10,15 +10,14 @@ import Charts
 
 struct StatisticsView: View {
     private typealias Identifier = ScreenIdentifier.StatisticsView
-    
     //MARK: PROPERTIES
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var container: Container
     @StateObject private var viewModel: StatisticsViewModel
     
-    let navTitleText: String = "Statistics"
     let salaryCalculationHeaderText: String = "Salary calculation"
     let chartTitleText: String = "time worked"
+    
     init(viewModel: StatisticsViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
@@ -68,8 +67,6 @@ struct StatisticsView: View {
             } //END OF LIST
             .shadow(color: .black.opacity(0.1), radius: 10, y: 4)
             .scrollContentBackground(.hidden)
-            .navigationTitle(navTitleText)
-            .toolbar { toolbar }
         } // END OF ZSTACK
     } //END OF VIEW
 }
@@ -101,20 +98,6 @@ extension StatisticsView {
 extension StatisticsView {
     var background: some View {
         BackgroundFactory.buildSolidColor()
-    }
-    
-//TODO: FIX THE ISSUE WITH NAV LINK NOT WORKING
-    var toolbar: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            NavigationLink {
-                            SettingsView(viewModel: SettingsViewModel(
-                                dataManger: container.dataManager,
-                                settingsStore: container.settingsStore))
-            } label: {
-                Label("Settings", systemImage: "gearshape")
-            } // END OF NAV LINK
-            .tint(.theme.primary)
-        } // END OF TOOLBAR ITEM
     }
     
     @ViewBuilder
