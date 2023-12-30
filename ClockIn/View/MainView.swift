@@ -42,16 +42,18 @@ struct MainView: View {
             BackgroundFactory.buildNavBarBackground()
         })
         .navigationBarTrailingItem {
-            Text("Settings")
-                .font(.body)
-                .fixedSize()
-                .onTapGesture {
-                    navigator.push(.settings)
-                }
+            toolbar
         }
     }
     func generateNavTitle(_ tabSelection: TabBarItem) -> String {
         tabSelection == .home ? "PunchPad" : tabSelection.title
+    }
+    var toolbar: some View {
+        Label("Settings", systemImage: "gearshape")
+            .fixedSize()
+            .onTapGesture {
+                navigator.push(.settings)
+            }
     }
 }
 
