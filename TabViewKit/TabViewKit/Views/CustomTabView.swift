@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CustomTabBarContainerView<Content: View>: View  {
+public struct CustomTabView<Content: View>: View  {
     let content: Content
     @Binding var selection: TabBarItem
     @State private var tabs: [TabBarItem] = []
@@ -17,7 +17,7 @@ struct CustomTabBarContainerView<Content: View>: View  {
         self.content = content()
     }
     
-    var body: some View {
+    public var body: some View {
         ZStack(alignment: .bottom) {
             content
             CustomTabBarView(selection: $selection,
@@ -30,7 +30,7 @@ struct CustomTabBarContainerView<Content: View>: View  {
 }
 
 #Preview {
-    CustomTabBarContainerView(selection: .constant(.home)) {
+    CustomTabView(selection: .constant(.home)) {
         Color.red
     }
 }

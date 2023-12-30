@@ -8,19 +8,19 @@
 import SwiftUI
 import ThemeKit
 
-struct CustomTabBarView: View {
+public struct CustomTabBarView: View {
     @Binding var selection: TabBarItem
     @State private var localSelection: TabBarItem
     @Namespace private var namespance
     let tabs: [TabBarItem]
     
-    init(selection: Binding<TabBarItem>, tabs: [TabBarItem]) {
+    public init(selection: Binding<TabBarItem>, tabs: [TabBarItem]) {
         self._selection = selection
         self._localSelection = State(initialValue: selection.wrappedValue)
         self.tabs = tabs
     }
     
-    var body: some View {
+    public var body: some View {
         HStack {
             ForEach(tabs, id: \.self) { tab in
                 tabView(tab)

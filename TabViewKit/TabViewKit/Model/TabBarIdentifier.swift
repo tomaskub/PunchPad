@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum TabBarIdentifier: String {
+public enum TabBarIdentifier: String {
     case home
     case statistics
     case history
