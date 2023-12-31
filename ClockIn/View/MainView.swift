@@ -49,7 +49,9 @@ struct MainView: View {
         tabSelection == .home ? "PunchPad" : tabSelection.title
     }
     var toolbar: some View {
-        Label("Settings", systemImage: "gearshape")
+        Image(systemName: "gearshape")
+            .font(.title)
+            .foregroundColor(.theme.primary)
             .fixedSize()
             .onTapGesture {
                 navigator.push(.settings)

@@ -28,7 +28,6 @@ struct ContentView: View {
                                     settingsStore: container.settingsStore
                                 )
                 )
-                
             }
         }
         .fullScreenCover(isPresented: $isRunFirstTime, onDismiss: {
