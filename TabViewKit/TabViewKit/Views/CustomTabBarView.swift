@@ -36,7 +36,8 @@ public struct CustomTabBarView: View {
                 .padding(.horizontal)
                 .offset(CGSize(width: 0, height: 12))
                 .foregroundColor(Color.theme.secondaryLabel)
-                .frame(width: .infinity, height: 1)
+                .frame(maxWidth: .infinity)
+                .frame(height: 2)
         )
         .background(
             Color.white
@@ -69,7 +70,8 @@ public struct CustomTabBarView: View {
                     Rectangle()
                         .offset(CGSize(width: 0, height: 18))
                         .foregroundColor(Color.theme.primary)
-                        .frame(width: .infinity, height: 3)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 3)
                         .matchedGeometryEffect(id: "tab_marker", in: namespance)
                 }
             }
