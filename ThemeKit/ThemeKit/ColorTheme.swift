@@ -36,7 +36,7 @@ public struct ColorTheme {
     public let tertiary = MyBundle.getColor("Tertiary")
     /// White color used for background elements of tab bars, list rows and navigation bars
     public let white = MyBundle.getColor("White")
-    
+}
     class MyBundle {
         static func generateBundleForSelf() -> Bundle {
             Bundle(for: self)
@@ -44,5 +44,10 @@ public struct ColorTheme {
         static func getColor(_ name: String) -> Color {
             Color(name, bundle: generateBundleForSelf())
         }
+    }
+
+public struct Logo {
+    public static func logo() -> Image {
+        return Image("Logo", bundle: MyBundle.generateBundleForSelf())
     }
 }
