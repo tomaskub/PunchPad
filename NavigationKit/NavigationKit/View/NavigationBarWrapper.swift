@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// NavigationBarWrapperView is a wrapper around CustomNavigationBarView. It provides default configuration for CustomNavigationBar, listens to preference changes, and updates the CustomNavigationBarView with registered changes.
 struct NavigationBarWrapper<Content: View>: View {
     
     // Determines if a back button should be shown in the navigation bar.
@@ -19,7 +20,7 @@ struct NavigationBarWrapper<Content: View>: View {
     let onBackTapped: () -> Void
     
     // Configuration for the navigation bar title.
-    @State private var navConfig = NavBarTitleConfiguration(title: "", textColor: .primary, alignment: .center)
+    @State private var navConfig = NavBarTitleConfiguration(title: "")
     
     // Custom background view for the navigation bar.
     @State private var backgroundView = EquatableView()
@@ -98,5 +99,4 @@ struct NavigationBarWrapper<Content: View>: View {
     } onBackTapped: {
         print("Back tapped")
     }
-
 }
