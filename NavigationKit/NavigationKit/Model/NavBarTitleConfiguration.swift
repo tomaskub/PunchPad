@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ThemeKit
 
 public struct NavBarTitleConfiguration: Equatable {
     public var title: String
@@ -14,7 +15,7 @@ public struct NavBarTitleConfiguration: Equatable {
     public var alignment: Alignment
     
     
-    public init(title: String, textColor: Color = .primary, font: Font = .title, alignment: Alignment = .leading) {
+    public init(title: String, textColor: Color = .theme.black, font: Font = .title, alignment: Alignment = .leading) {
         self.title = title
         self.textColor = textColor
         self.alignment = alignment

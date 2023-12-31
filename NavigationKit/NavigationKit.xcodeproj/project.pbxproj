@@ -30,6 +30,7 @@
 		D62651382B3F5D410089A84B /* NavigatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651372B3F5D410089A84B /* NavigatorDelegate.swift */; };
 		D626513A2B3F5DD70089A84B /* NavHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651392B3F5DD70089A84B /* NavHost.swift */; };
 		D626513C2B3F5E020089A84B /* Navigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D626513B2B3F5E020089A84B /* Navigator.swift */; };
+		D6CA77422B4171D700C98AF3 /* ThemeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6CA77412B4171D700C98AF3 /* ThemeKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +58,7 @@
 		D62651372B3F5D410089A84B /* NavigatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatorDelegate.swift; sourceTree = "<group>"; };
 		D62651392B3F5DD70089A84B /* NavHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavHost.swift; sourceTree = "<group>"; };
 		D626513B2B3F5E020089A84B /* Navigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigator.swift; sourceTree = "<group>"; };
+		D6CA77412B4171D700C98AF3 /* ThemeKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ThemeKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6CA77422B4171D700C98AF3 /* ThemeKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,6 +78,7 @@
 			children = (
 				D62651042B3F130A0089A84B /* NavigationKit */,
 				D62651032B3F130A0089A84B /* Products */,
+				D6CA77402B4171D700C98AF3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -154,6 +158,14 @@
 				D626510C2B3F135D0089A84B /* NavBarTitleConfiguration.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		D6CA77402B4171D700C98AF3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D6CA77412B4171D700C98AF3 /* ThemeKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
