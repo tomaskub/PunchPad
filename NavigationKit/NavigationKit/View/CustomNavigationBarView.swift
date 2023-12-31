@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ThemeKit
 
 struct CustomNavigationBarView: View {
     @State private var barItemsWidth: CGFloat = 0
@@ -17,52 +18,81 @@ struct CustomNavigationBarView: View {
     let shouldElevate: Bool
     let onBackTapped: () -> Void
     
-    let size: CGFloat = 80
-    let inlineSize: CGFloat = 40
-    
     var body: some View {
+        switch shouldElevate {
+        case true:
+            reducedSizeBar
+        case false:
+            fullSizeBar
+        }
+    }
+    
+    var reducedSizeBar: some View {
         HStack {
-            if shouldShowBackButton {
-                backButton
-                    .onTapGesture {
-                        onBackTapped()
-                    }
+            Group {
+                if shouldShowBackButton {
+                    backButton
+                } else {
+                    backButton.opacity(0)
+                }
+                leadingElements.view
+                    .font(.headline)
             }
-            
-            leadingElements.view
-                .background(
-                    GeometryReader { proxy in
-                        Color.clear
-                            .preference(key: BarItemPrefKey.self, value: proxy.size.width)
-                    }
-                )
-                .frame(width: barItemsWidth,
-                       alignment: .leading
-                )
+            .frame(width: barItemsWidth)
+            .background(makeWidthReader())
             
             NavigationBarTitleView(title: config.title,
                                    color: config.textColor,
-                                   font: config.font
-            )
-            .frame(maxWidth: .infinity, 
-                   maxHeight: shouldElevate ? inlineSize : size,
-                   alignment: config.alignment
-            )
+                                   font: .headline.weight(.semibold))
+            .frame(maxWidth: .infinity)
             
             trailingElements.view
-                .background(
-                    GeometryReader { proxy in
-                    Color.clear
-                            .preference(key: BarItemPrefKey.self, value: proxy.size.width)
-                }
-                )
-                .frame(width: barItemsWidth, alignment: .trailing)
+                .font(.headline)
+                .frame(width: barItemsWidth)
+                .background(makeWidthReader())
         }
-        .onPreferenceChange(BarItemPrefKey.self) { value in
+        .frame(height: 20)
+        .padding(.bottom, 14)
+        .onPreferenceChange(BarItemWidthPrefKey.self) { value in
             barItemsWidth = value
         }
         .frame(maxWidth: .infinity)
-        .padding(.horizontal, shouldElevate ? 24 : 16)
+        .padding(.horizontal, 30)
+        .background {
+            background.view
+        }
+    }
+    
+    var fullSizeBar: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            if shouldShowBackButton {
+                backButton
+            } else {
+                backButton.opacity(0) // this hides back button but it still is tappable? do not know if it will create a problem?
+            }
+            HStack {
+                leadingElements.view
+                    .font(.title)
+                    .background(makeWidthReader())
+                
+                NavigationBarTitleView(title: config.title,
+                                       color: config.textColor,
+                                       font: config.font)
+
+                Spacer()
+                
+                trailingElements.view
+                    .font(.title)
+                    .background(makeWidthReader())
+            }
+            .frame(height: 40)
+            .padding(.bottom, 8)
+            .onPreferenceChange(BarItemWidthPrefKey.self) { value in
+                barItemsWidth = value
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 30)
         .background {
             background.view
         }
@@ -73,17 +103,47 @@ struct CustomNavigationBarView: View {
             Image(systemName: "chevron.left")
             Text("Back")
         }
+        .font(.system(size: 16))
+        .foregroundColor(Color.theme.primary)
+        .onTapGesture {
+            onBackTapped()
+        }
     }
 }
 
+//MARK: WIDTH AND HEIGHT ADJUSTMENTS
 private extension CustomNavigationBarView {
-    struct BarItemPrefKey: PreferenceKey {
+    struct BarItemWidthPrefKey: PreferenceKey {
         static let defaultValue: CGFloat = 0
         static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
             value = max(value, nextValue())
         }
     }
+    
+    struct BarHeightPrefKey: PreferenceKey {
+        static let defaultValue: CGFloat = 0
+        static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+            value = max(value, nextValue())
+        }
+    }
+    
+    @ViewBuilder
+    private func makeWidthReader() -> some View {
+        GeometryReader { proxy in
+            Color.clear
+                .preference(key: BarItemWidthPrefKey.self, value: proxy.size.width)
+        }
+    }
+    
+    @ViewBuilder
+    private func makeHeightReader() -> some View {
+        GeometryReader { proxy in
+            Color.clear
+                .preference(key: BarHeightPrefKey.self, value: proxy.size.height)
+        }
+    }
 }
+
 struct NavigationBarTitleView: View {
     let title: String
     let color: Color
@@ -96,39 +156,147 @@ struct NavigationBarTitleView: View {
     }
     
 }
-#Preview {
+
+//MARK: PREVIEWS
+#Preview("Home configuration") {
     struct Preview: View {
-        let navBarTitleConfiguration = NavBarTitleConfiguration(title: "Preview",
-                                                                textColor: .black,
-                                                                font: .body,
-                                                                alignment: .center)
+        let navBarTitleConfiguration = NavBarTitleConfiguration(title: "PunchPad", font: .system(size: 32))
         var navBarBackground: some View {
             RoundedRectangle(cornerRadius: 24)
                 .foregroundColor(.white)
                 .ignoresSafeArea(edges: .top)
+                .background(Color.theme.background)
                 .shadow(color: .black.opacity(0.2), radius: 12, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 4)
         }
-        
+        var leadingElements: some View {
+            Logo.logo()
+                .resizable()
+                .frame(width: 26, height: 26)
+        }
         var trailingElements: some View {
             Image(systemName:"gearshape.fill")
-                .foregroundColor(.green.opacity(0.5))
+                .foregroundColor(.theme.primary)
         }
         
         var background: some View {
-            Color.green.opacity(0.2)
+            Color.theme.background
                 .ignoresSafeArea()
         }
         var body: some View {
-            VStack{
+            VStack(spacing: 0){
+                CustomNavigationBarView(config: navBarTitleConfiguration,
+                                        shouldShowBackButton: false,
+                                        background: .init(view: AnyView(navBarBackground)),
+                                        leadingElements: .init(view: AnyView(leadingElements)),
+                                        trailingElements: .init(view: AnyView(trailingElements)),
+                                        shouldElevate: false) { print("back tapped") }
+                background
+            }
+            
+        }
+    }
+    return Preview()
+}
+
+#Preview("History configuration") {
+    struct Preview: View {
+        let navBarTitleConfiguration = NavBarTitleConfiguration(title: "History", font: .system(size: 32,weight: .semibold))
+        var navBarBackground: some View {
+            RoundedRectangle(cornerRadius: 24)
+                .foregroundColor(.white)
+                .ignoresSafeArea(edges: .top)
+                .background(Color.theme.background)
+                .shadow(color: .black.opacity(0.2), radius: 12, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 4)
+        }
+        var leadingElements: some View {
+            Image(systemName: "plus")
+                .font(.title)
+                .foregroundColor(.theme.primary)
+        }
+        var trailingElements: some View {
+            Image(systemName:"gearshape.fill")
+                .foregroundColor(.theme.primary)
+        }
+        
+        var background: some View {
+            Color.theme.background
+                .ignoresSafeArea()
+        }
+        var body: some View {
+            VStack(spacing: 0){
+                CustomNavigationBarView(config: navBarTitleConfiguration,
+                                        shouldShowBackButton: false,
+                                        background: .init(view: AnyView(navBarBackground)),
+                                        leadingElements: .init(view: AnyView(leadingElements)),
+                                        trailingElements: .init(view: AnyView(trailingElements)),
+                                        shouldElevate: true) { print("back tapped") }
+                background
+            }
+            
+        }
+    }
+    return Preview()
+}
+
+#Preview("Statistics configuration") {
+    struct Preview: View {
+        let navBarTitleConfiguration = NavBarTitleConfiguration(title: "Statistics", font: .system(size: 32))
+        var navBarBackground: some View {
+            RoundedRectangle(cornerRadius: 24)
+                .foregroundColor(.white)
+                .ignoresSafeArea(edges: .top)
+                .background(Color.theme.background)
+                .shadow(color: .black.opacity(0.2), radius: 12, x: 0, y: 4)
+        }
+        var trailingElements: some View {
+            Image(systemName:"gearshape.fill")
+                .foregroundColor(.theme.primary)
+        }
+        var background: some View {
+            Color.theme.background
+                .ignoresSafeArea()
+        }
+        var body: some View {
+            VStack(spacing: 0){
+                CustomNavigationBarView(config: navBarTitleConfiguration,
+                                        shouldShowBackButton: false,
+                                        background: .init(view: AnyView(navBarBackground)),
+                                        leadingElements: .init(),
+                                        trailingElements: .init(view: AnyView(trailingElements)),
+                                        shouldElevate: false) { print("back tapped") }
+                background
+            }
+            
+        }
+    }
+    return Preview()
+}
+
+#Preview("Settings configuration") {
+    struct Preview: View {
+        let navBarTitleConfiguration = NavBarTitleConfiguration(title: "Settings", font: .system(size: 32))
+        var navBarBackground: some View {
+            RoundedRectangle(cornerRadius: 24)
+                .foregroundColor(.white)
+                .ignoresSafeArea(edges: .top)
+                .background(Color.theme.background)
+                .shadow(color: .black.opacity(0.2), radius: 12, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 4)
+        }
+        var background: some View {
+            Color.theme.background
+                .ignoresSafeArea()
+        }
+        var body: some View {
+            VStack(spacing: 0){
                 CustomNavigationBarView(config: navBarTitleConfiguration,
                                         shouldShowBackButton: true,
                                         background: .init(view: AnyView(navBarBackground)),
                                         leadingElements: .init(),
-                                        trailingElements: .init(view: AnyView(trailingElements)),
+                                        trailingElements: .init(),
                                         shouldElevate: true) { print("back tapped") }
-                Spacer()
+                background
             }
-            .background { background }
+            
         }
     }
     return Preview()
