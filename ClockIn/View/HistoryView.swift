@@ -35,6 +35,7 @@ struct HistoryView: View {
             List {
                 makeListConent(viewModel.groupedEntries)
             } // END OF LIST
+            .listStyle(.insetGrouped)
             .emptyPlaceholder(viewModel.groupedEntries) {
                 emptyPlaceholderView
             }
@@ -60,18 +61,7 @@ struct HistoryView: View {
             return String()
         }
     }
-    
-    func makeTimeWorkedLabel(_ entry: Entry) -> String {
-        let sumWorkedInSec = entry.workTimeInSeconds + entry.overTimeInSeconds
-        let hours = sumWorkedInSec / 3600
-        let minutes = (sumWorkedInSec % 3600) / 60
-        
-        let hoursString = hours > 9 ? "\(hours)" : "0\(hours)"
-        let minutesString = minutes > 9 ? "\(minutes)" : "0\(minutes)"
-        
-        return "\(hoursString) hours \(minutesString) minutes"
-    }
-    
+
     func isLastEntry(_ entry: Entry) -> Bool {
         guard let lastEntry = viewModel.groupedEntries.last?.last else { return true }
         return lastEntry == entry
@@ -90,24 +80,21 @@ extension HistoryView {
     func makeListSection(_ entries: [Entry]) -> some View {
         Section(makeSectionHeader(entries.first)) {
             ForEach(entries) { entry in
-                VStack {
-                    HistoryRowViewPrototype(startDate: entry.startDate,
-                                            finishDate: entry.finishDate,
-                                            workTime: entry.worktimeFraction,
-                                            overTime: entry.overtimeFraction,
-                                            timeWorked: makeTimeWorkedLabel(entry))
-                    .accessibilityIdentifier(Identifier.entryRow.rawValue)
-                    .onLongPressGesture(perform: {
-                        selectedEntry = entry
-                    })
-                    .swipeActions {
-                        makeDeleteButton(entry)
-                        makeEditButton(entry)
-                    } // END OF SWIPE ACTIONS
+                    HistoryRowView(withEntry: entry)
+                        .accessibilityIdentifier(Identifier.entryRow.rawValue)
+                        .onTapGesture {
+                            //required to scroll list and have long press gesture
+                        }
+                        .onLongPressGesture {
+                            selectedEntry = entry
+                        }
+                        .swipeActions {
+                            makeDeleteButton(entry)
+                            makeEditButton(entry)
+                        } // END OF SWIPE ACTIONS
                     if isLastEntry(entry) && viewModel.isMoreEntriesAvaliable {
                         lastRow
                     }
-                }
             }
         }
     }
@@ -167,7 +154,9 @@ extension HistoryView {
             case .error:
                 Text("Something went wrong")
             }
+                
         }
+        .listRowBackground(Color.clear)
         .onAppear {
             viewModel.loadMoreItems()
         }
@@ -178,23 +167,29 @@ extension HistoryView {
     }
 }
 
-struct HistoryView_Previews: PreviewProvider {
-    private struct ContainerView: View {
+#Preview {
+    struct ContainerView: View {
         @StateObject private var container: Container = .init()
+        @State private var selectedEntry: Entry? = nil
+        @State private var filter: Bool = false
         var body: some View {
-            NavigationView {
                 HistoryView(viewModel:
                                 HistoryViewModel(
                                     dataManager: container.dataManager,
                                     settingsStore: container.settingsStore),
-                            selectedEntry: .constant(nil),
-                            isShowingFiltering: .constant(false)
+                            selectedEntry: $selectedEntry,
+                            isShowingFiltering: $filter
                 )
-            }
+                .overlay(alignment: .topTrailing) {
+                        Image(systemName: "line.3.horizontal.decrease.circle")
+                            .font(.title)
+                            .padding(.trailing)
+                            .onTapGesture {
+                                filter.toggle()
+                            }
+                }
             .environmentObject(container)
         }
     }
-    static var previews: some View {
-        ContainerView()
-    }
+    return ContainerView()
 }
