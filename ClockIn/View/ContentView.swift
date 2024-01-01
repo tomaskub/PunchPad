@@ -20,7 +20,9 @@ struct ContentView: View {
             switch route {
             case .main:
                 MainView(navigator: navigator,
-                         tabSelection: $tabSelection)
+                         tabSelection: $tabSelection,
+                         container: container
+                )
             case .settings:
                 SettingsView(viewModel:
                                 SettingsViewModel(
