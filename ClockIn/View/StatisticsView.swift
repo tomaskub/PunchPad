@@ -18,10 +18,6 @@ struct StatisticsView: View {
     let salaryCalculationHeaderText: String = "Salary calculation"
     let chartTitleText: String = "time worked"
     
-//    init(viewModel: StatisticsViewModel) {
-//        self._viewModel = StateObject(wrappedValue: viewModel)
-//    }
-    
     //MARK: VIEW BODY
     var body: some View {
         ZStack {
