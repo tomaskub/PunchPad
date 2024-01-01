@@ -13,6 +13,14 @@ struct TimerIndicator: View {
     let timerLabel: String
     let firstProgress: CGFloat
     let secondProgress: CGFloat
+    let useOnlyWorkLabel: Bool
+    
+    init(timerLabel: String, firstProgress: CGFloat, secondProgress: CGFloat, useOnlyWorkLabel: Bool = false) {
+        self.timerLabel = timerLabel
+        self.firstProgress = firstProgress
+        self.secondProgress = secondProgress
+        self.useOnlyWorkLabel = useOnlyWorkLabel
+    }
     
     var body: some View {
         ZStack {
@@ -23,7 +31,7 @@ struct TimerIndicator: View {
                 .padding(10)
                 .foregroundColor(.theme.ringWhite)
             VStack {
-                if secondProgress == 0 {
+                if secondProgress == 0 || useOnlyWorkLabel {
                     Text(firstProgressLabel)
                         .font(.system(size: 20))
                         .foregroundColor(.theme.secondaryLabel)

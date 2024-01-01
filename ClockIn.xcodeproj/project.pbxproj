@@ -55,6 +55,7 @@
 		D684A3882AF6F3E700511E0D /* OnboardingWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D684A3872AF6F3E700511E0D /* OnboardingWelcomeView.swift */; };
 		D684A38A2AF6F54B00511E0D /* ButtonFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D684A3892AF6F54B00511E0D /* ButtonFactory.swift */; };
 		D68732022B2243C9008CB0D4 /* PaginationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68732012B2243C9008CB0D4 /* PaginationState.swift */; };
+		D69C8CD72B43687700146EFA /* CustomDatePickerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C8CD62B43687700146EFA /* CustomDatePickerContainer.swift */; };
 		D6AB737029F562E600D5DE82 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AB736F29F562E600D5DE82 /* OnboardingViewModel.swift */; };
 		D6B2BDF22B27810700CB4FA7 /* DateFilterSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B2BDF12B27810700CB4FA7 /* DateFilterSheetView.swift */; };
 		D6B2BDF42B27C22400CB4FA7 /* EmptyPlaceholderModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B2BDF32B27C22400CB4FA7 /* EmptyPlaceholderModifier.swift */; };
@@ -160,6 +161,7 @@
 		D684A3872AF6F3E700511E0D /* OnboardingWelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingWelcomeView.swift; sourceTree = "<group>"; };
 		D684A3892AF6F54B00511E0D /* ButtonFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonFactory.swift; sourceTree = "<group>"; };
 		D68732012B2243C9008CB0D4 /* PaginationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationState.swift; sourceTree = "<group>"; };
+		D69C8CD62B43687700146EFA /* CustomDatePickerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePickerContainer.swift; sourceTree = "<group>"; };
 		D6AB736F29F562E600D5DE82 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		D6B2BDF12B27810700CB4FA7 /* DateFilterSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFilterSheetView.swift; sourceTree = "<group>"; };
 		D6B2BDF32B27C22400CB4FA7 /* EmptyPlaceholderModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyPlaceholderModifier.swift; sourceTree = "<group>"; };
@@ -247,6 +249,7 @@
 			children = (
 				D621C0C92B3B79850065DF8C /* CircleButton.swift */,
 				D621C0CB2B3B8BE40065DF8C /* TimerIndicator.swift */,
+				D69C8CD62B43687700146EFA /* CustomDatePickerContainer.swift */,
 			);
 			path = ViewComponent;
 			sourceTree = "<group>";
@@ -583,6 +586,7 @@
 				D6CBB8682B34ACF20074CE8B /* Calendar+Extension.swift in Sources */,
 				D6EA695E2AF8498D00D8F6C3 /* OnboardingOvertimeView.swift in Sources */,
 				D682AF922B3C77F5004EE208 /* ChartTimeRange.swift in Sources */,
+				D69C8CD72B43687700146EFA /* CustomDatePickerContainer.swift in Sources */,
 				D6E6B8772AF992F90073D911 /* OnboardingFinishView.swift in Sources */,
 				D6CA773F2B40BB4D00C98AF3 /* Route.swift in Sources */,
 				D6CB2A7C2B05629200F3030C /* View+Extension.swift in Sources */,
