@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ThemeKit
 
 struct EditSheetView: View {
     @Environment(\.colorScheme) var colorScheme
@@ -132,32 +133,43 @@ extension EditSheetView {
     
     var sameDayDateControls: some View {
         Group {
-            DatePicker(selection: $viewModel.startDate,
-                       displayedComponents: .date) {
+            CustomDatePickerContainer(labelText: nil) {
+                DatePicker(selection: $viewModel.startDate,
+                           displayedComponents: .date) {
+                    EmptyView()
+                }
+                           .labelsHidden()
+            } trailing: {
                 Image(systemName: "calendar")
+                    .font(.title)
+                    .foregroundColor(.theme.primary)
             }
-                       .fixedSize()
+            
             HStack {
-                VStack(alignment: .leading) {
-                    Text(startDateText)
-                        .font(.caption)
-                    
+                CustomDatePickerContainer(labelText: startDateText) {
                     DatePicker(selection: $viewModel.startDate,
                                in: PartialRangeThrough(viewModel.finishDate),
                                displayedComponents: .hourAndMinute) {
-                        Image(systemName: "clock")
+                        EmptyView()
                     }
-                               .fixedSize()
+                               .labelsHidden()
+                } trailing: {
+                    Image(systemName: "clock")
+                        .font(.title)
+                        .foregroundColor(.theme.primary)
                 }
-                VStack(alignment: .leading) {
-                    Text(finishDateText)
-                        .font(.caption)
+                
+                CustomDatePickerContainer(labelText: finishDateText) {
                     DatePicker(selection: $viewModel.finishDate,
                                in: PartialRangeFrom(viewModel.startDate),
                                displayedComponents: .hourAndMinute) {
-                        Image(systemName: "clock")
+                        EmptyView()
                     }
-                               .fixedSize()
+                               .labelsHidden()
+                } trailing: {
+                    Image(systemName: "clock")
+                        .font(.title)
+                        .foregroundColor(.theme.primary)
                 }
             }
         }
@@ -167,27 +179,11 @@ extension EditSheetView {
 //MARK: TIME INDICATOR & LABELS
 extension EditSheetView {
     var timeIndicator: some View {
-        ZStack {
-            RingView(startPoint: 0,
-                     endPoint: viewModel.workTimeFraction,
-                     ringColor: .blue,
-                     ringWidth: 5,
-                     displayPointer: false
-            )
-            RingView(startPoint: 0,
-                     endPoint: viewModel.overTimeFraction,
-                     ringColor: .green,
-                     ringWidth: 5,
-                     displayPointer: false
-            )
-                .padding(10)
-            VStack {
-                Text(timeIndicatorText.uppercased())
-                    .font(.caption)
-                Text(generateTimeIntervalLabel(value: viewModel.totalTimeInSeconds))
-                    .font(.largeTitle)
-            }
-        }  // END OF ZSTACK
+        TimerIndicator(
+            timerLabel: generateTimeIntervalLabel(value: viewModel.totalTimeInSeconds),
+            firstProgress: viewModel.workTimeFraction,
+            secondProgress: viewModel.overTimeFraction,
+            useOnlyWorkLabel: true)
         .frame(width: 250, height: 250)
     }
     
@@ -215,21 +211,27 @@ extension EditSheetView {
     var title: some View {
         Text(titleText)
             .font(.title)
+            .foregroundColor(.theme.black)
     }
     
     var overrideSettingsHeader: some View {
         HStack {
-            Image(systemName: "chevron.down")
+            Image(systemName: isShowingOverrideControls ? "chevron.up" : "chevron.down")
+                .foregroundColor(.theme.primary)
+                .fontWeight(.bold)
                 .onTapGesture {
-                    isShowingOverrideControls.toggle()
+                    withAnimation(.spring) {
+                        isShowingOverrideControls.toggle()
+                    }
                 }
+            
             Text(overrideSettingsHeaderText)
             Spacer()
         }
     }
     
     var background: some View {
-        BackgroundFactory.buildSolidColor(.gray.opacity(0.1))
+        BackgroundFactory.buildSolidColor(.theme.white)
     }
 }
 
@@ -268,9 +270,8 @@ extension EditSheetView {
     }
 }
 
-struct EditSheetView_Previews: PreviewProvider {
-    private struct ContainerView: View {
-        
+#Preview("EditSheetPreview") {
+    struct ContainerView: View {
         @StateObject private var container: Container = .init()
         private let entry: Entry = {
             let startOfDay = Calendar.current.startOfDay(for: Date())
@@ -280,8 +281,8 @@ struct EditSheetView_Previews: PreviewProvider {
                                                    to: startDate)!
             return Entry(startDate: startDate,
                          finishDate: finishDate,
-                         workTimeInSec: 8*3600,
-                         overTimeInSec: 3600 + 1800,
+                         workTimeInSec: 4*3600,
+                         overTimeInSec: 0,//3600 + 1800,
                          maximumOvertimeAllowedInSeconds: 5*3600,
                          standardWorktimeInSeconds: 8*3600,
                          grossPayPerMonth: 10000,
@@ -301,7 +302,7 @@ struct EditSheetView_Previews: PreviewProvider {
             }
         }
     }
-    static var previews: some View {
-        ContainerView()
-    } // END OF PREVIEWS
+    
+    return ContainerView()
+    
 } // END OF PREVIEW
