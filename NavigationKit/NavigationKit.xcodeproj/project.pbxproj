@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		D62651062B3F130A0089A84B /* NavigationKit.h in Headers */ = {isa = PBXBuildFile; fileRef = D62651052B3F130A0089A84B /* NavigationKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D626510D2B3F135D0089A84B /* NavBarTitleConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D626510C2B3F135D0089A84B /* NavBarTitleConfiguration.swift */; };
-		D626510F2B3F13DC0089A84B /* EquatableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D626510E2B3F13DC0089A84B /* EquatableView.swift */; };
+		D626510F2B3F13DC0089A84B /* _EquatableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D626510E2B3F13DC0089A84B /* _EquatableView.swift */; };
 		D62651112B3F15570089A84B /* CustomNavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651102B3F15570089A84B /* CustomNavigationBarView.swift */; };
 		D62651132B3F175F0089A84B /* NavigationBarWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651122B3F175F0089A84B /* NavigationBarWrapper.swift */; };
 		D62651152B3F1A3A0089A84B /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651142B3F1A3A0089A84B /* View+Extension.swift */; };
@@ -37,7 +37,7 @@
 		D62651022B3F130A0089A84B /* NavigationKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NavigationKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D62651052B3F130A0089A84B /* NavigationKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NavigationKit.h; sourceTree = "<group>"; };
 		D626510C2B3F135D0089A84B /* NavBarTitleConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBarTitleConfiguration.swift; sourceTree = "<group>"; };
-		D626510E2B3F13DC0089A84B /* EquatableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquatableView.swift; sourceTree = "<group>"; };
+		D626510E2B3F13DC0089A84B /* _EquatableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _EquatableView.swift; sourceTree = "<group>"; };
 		D62651102B3F15570089A84B /* CustomNavigationBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBarView.swift; sourceTree = "<group>"; };
 		D62651122B3F175F0089A84B /* NavigationBarWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarWrapper.swift; sourceTree = "<group>"; };
 		D62651142B3F1A3A0089A84B /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
@@ -135,7 +135,7 @@
 				D626512E2B3F569F0089A84B /* _SwiftUIView.swift */,
 				D62651122B3F175F0089A84B /* NavigationBarWrapper.swift */,
 				D62651102B3F15570089A84B /* CustomNavigationBarView.swift */,
-				D626510E2B3F13DC0089A84B /* EquatableView.swift */,
+				D626510E2B3F13DC0089A84B /* _EquatableView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -262,7 +262,7 @@
 				D62651272B3F482B0089A84B /* ViewControllerRepresentable.swift in Sources */,
 				D62651242B3F477C0089A84B /* NavBarHiddenPrefKey.swift in Sources */,
 				D626511A2B3F470F0089A84B /* CustomNavBarPrefKey.swift in Sources */,
-				D626510F2B3F13DC0089A84B /* EquatableView.swift in Sources */,
+				D626510F2B3F13DC0089A84B /* _EquatableView.swift in Sources */,
 				D62651202B3F47560089A84B /* NavBarBackgroundPrefKey.swift in Sources */,
 				D62651182B3F465C0089A84B /* NavBarScrollingPrefKey.swift in Sources */,
 				D626512B2B3F48EC0089A84B /* NavBarConfigurationState.swift in Sources */,

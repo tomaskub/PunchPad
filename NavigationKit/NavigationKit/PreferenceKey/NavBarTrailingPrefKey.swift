@@ -8,9 +8,9 @@
 import SwiftUI
 
 public struct NavBarTrailingPrefKey: PreferenceKey {
-    static public var defaultValue: EquatableView = .init()
+    static public var defaultValue: _EquatableView = .init()
     
-    public static func reduce(value: inout EquatableView, nextValue: () -> EquatableView) {
+    public static func reduce(value: inout _EquatableView, nextValue: () -> _EquatableView) {
         value = nextValue()
     }
 }

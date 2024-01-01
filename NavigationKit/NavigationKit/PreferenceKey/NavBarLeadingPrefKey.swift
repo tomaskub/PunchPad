@@ -8,9 +8,9 @@
 import SwiftUI
 
 public struct NavBarLeadingPrefKey: PreferenceKey {
-    static public var defaultValue: EquatableView = .init()
+    static public var defaultValue: _EquatableView = _EquatableView.defaultView
     
-    public static func reduce(value: inout EquatableView, nextValue: () -> EquatableView) {
-        value = nextValue()
+    public static func reduce(value: inout _EquatableView, nextValue: () -> _EquatableView) {
+        value = nextValue() == defaultValue ? value : nextValue()
     }
 }

@@ -23,16 +23,16 @@ struct NavigationBarWrapper<Content: View>: View {
     @State private var navConfig = NavBarTitleConfiguration(title: "")
     
     // Custom background view for the navigation bar.
-    @State private var backgroundView = EquatableView()
+    @State private var backgroundView = _EquatableView()
     
     // Custom leading elements (e.g., buttons, icons) in the navigation bar.
-    @State private var leadingView = EquatableView()
+    @State private var leadingView = _EquatableView()
     
     // Custom trailing elements in the navigation bar.
-    @State private var trailingView = EquatableView()
+    @State private var trailingView = _EquatableView()
     
     // Allows for a custom navigation bar to be set.
-    @State private var customNavBar: EquatableView?
+    @State private var customNavBar: _EquatableView?
     
     // Indicates whether the content is being scrolled.
     @State private var isScrolling = false

@@ -12,9 +12,9 @@ struct CustomNavigationBarView: View {
     @State private var barItemsWidth: CGFloat = 0
     let config: NavBarTitleConfiguration
     let shouldShowBackButton: Bool
-    let background: EquatableView
-    let leadingElements: EquatableView
-    let trailingElements: EquatableView
+    let background: _EquatableView
+    let leadingElements: _EquatableView
+    let trailingElements: _EquatableView
     let shouldElevate: Bool
     let onBackTapped: () -> Void
     
