@@ -62,6 +62,7 @@ final class EditSheetViewModel: ObservableObject {
         self.calculateNetPay = entry.calculatedNetPay == nil ? false : true
         // set up combine subscribers
         $finishDate
+            .dropFirst()
             .removeDuplicates()
             .sink { [weak self] date in
                 guard let self else { return }
@@ -69,6 +70,7 @@ final class EditSheetViewModel: ObservableObject {
             }.store(in: &cancellables)
         
         $startDate
+            .dropFirst()
             .removeDuplicates()
             .sink { [weak self] date in
                 guard let self else { return }
@@ -76,6 +78,7 @@ final class EditSheetViewModel: ObservableObject {
             }.store(in: &cancellables)
         
         $startDate
+            .dropFirst()
             .removeDuplicates()
             .filter({ [weak self] date in
                 guard let self else { return false }
