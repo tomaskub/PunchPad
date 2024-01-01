@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-public struct EquatableView: Equatable {
-    
-    public static func == (lhs: EquatableView, rhs: EquatableView) -> Bool {
+public struct _EquatableView: Equatable {
+    static let defaultView: _EquatableView = .init()
+    public static func == (lhs: _EquatableView, rhs: _EquatableView) -> Bool {
         return lhs.id == rhs.id
     }
     
@@ -20,3 +20,4 @@ public struct EquatableView: Equatable {
         self.view = view
     }
 }
+

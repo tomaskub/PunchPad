@@ -13,14 +13,14 @@ struct StatisticsView: View {
     //MARK: PROPERTIES
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var container: Container
-    @StateObject private var viewModel: StatisticsViewModel
+    @ObservedObject var viewModel: StatisticsViewModel
     
     let salaryCalculationHeaderText: String = "Salary calculation"
     let chartTitleText: String = "time worked"
     
-    init(viewModel: StatisticsViewModel) {
-        self._viewModel = StateObject(wrappedValue: viewModel)
-    }
+//    init(viewModel: StatisticsViewModel) {
+//        self._viewModel = StateObject(wrappedValue: viewModel)
+//    }
     
     //MARK: VIEW BODY
     var body: some View {

@@ -6,19 +6,20 @@
 //
 
 import SwiftUI
+import NavigationKit
+import ThemeKit
+import TabViewKit
+
+
 
 struct HomeView: View {
     private typealias Identifier = ScreenIdentifier.HomeView
     @Environment(\.colorScheme) var colorScheme
-    @StateObject private var viewModel: HomeViewModel
+    @ObservedObject var viewModel: HomeViewModel
     @EnvironmentObject private var container: Container
     let timerIndicatorFormatter = FormatterFactory.makeDateComponentFormatter()
-    let titleText: String = "ClockIn"
     let settingText: String = "Settings"
     let bottomMessageText: String = "Start your work day!".capitalized
-    init(viewModel: HomeViewModel) {
-        self._viewModel = StateObject(wrappedValue: viewModel)
-    }
     
     var body: some View {
         ZStack {
@@ -43,29 +44,12 @@ struct HomeView: View {
                     .padding(.bottom, 34)
             }
         } // END OF ZSTACK
-        .navigationTitle(titleText)
-        .toolbar { toolbar }
     } // END OF BODY
     
     var background: some View {
         BackgroundFactory.buildSolidColor()
     }
     
-    var toolbar: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            NavigationLink {
-                SettingsView(viewModel:
-                                SettingsViewModel(
-                                    dataManger: container.dataManager,
-                                    settingsStore: container.settingsStore
-                                ))
-            } label: {
-                Label(settingText, systemImage: "gearshape")
-            } // END OF NAV LINK
-            .tint(.theme.primary)
-            .accessibilityIdentifier(Identifier.settingNavigationButton.rawValue)
-        } // END OF TOOLBAR ITEM
-    }
     func formatTimeInterval(_ value: TimeInterval) -> String {
         return timerIndicatorFormatter.string(from: value) ?? "\(value)"
     }
@@ -161,22 +145,20 @@ extension HomeView {
 struct Home_Previews: PreviewProvider {
     private struct ContainerView: View {
         @StateObject private var container: Container = .init()
+        
         var body: some View {
-            TabView {
-                NavigationView {
-                    HomeView(viewModel: HomeViewModel(dataManager: container.dataManager,
-                                                      settingsStore: container.settingsStore,
-                                                      payManager: container.payManager,
-                                                      timerProvider: container.timerProvider))
-                }
-                .tabItem { Label(
-                    title: { Text("Home") },
-                    icon: { Image(systemName: "house.fill") }
-                ) }
-                .environmentObject(Container())
-            }
+            HomeView(viewModel:
+                        HomeViewModel(
+                            dataManager: container.dataManager,
+                            settingsStore: container.settingsStore,
+                            payManager: container.payManager,
+                            timerProvider: container.timerProvider
+                        )
+            )
+            .environmentObject(Container())
         }
     }
+    
     static var previews: some View {
         ContainerView()
     }

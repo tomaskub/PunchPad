@@ -23,13 +23,9 @@ struct HistoryView: View {
     
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject private var container: Container
-    @StateObject private var viewModel: HistoryViewModel
-    @State private var selectedEntry: Entry? = nil
-    @State private var isShowingFiltering: Bool = false
-    
-    init(viewModel: HistoryViewModel) {
-        self._viewModel = StateObject.init(wrappedValue: viewModel)        
-    }
+    @ObservedObject var viewModel: HistoryViewModel
+    @Binding var selectedEntry: Entry?
+    @Binding var isShowingFiltering: Bool
     
     var body: some View {
         ZStack {
@@ -55,13 +51,6 @@ struct HistoryView: View {
                     .presentationDetents([.fraction(0.4)])
             }
         } // END OF ZSTACK
-        .toolbar {
-            addEntryToolbar
-            filterToolbar
-            navigationToolbar
-        } // END OF TOOLBAR
-        .navigationTitle(navigationTitleText)
-        .navigationBarTitleDisplayMode(.inline)
     } // END OF BODY
 
     func makeSectionHeader(_ entry: Entry?) -> String {
@@ -129,7 +118,6 @@ extension HistoryView {
             viewModel.deleteEntry(entry: entry)
         } label: {
             Image(systemName: "xmark")
-//                .foregroundColor(.red)
         } // END OF BUTTON
         .accessibilityIdentifier(Identifier.deleteEntryButton.rawValue)
         .tint(.red)
@@ -141,7 +129,6 @@ extension HistoryView {
             selectedEntry = entry
         } label: {
             Image(systemName: "pencil")
-//                .foregroundColor(.gray)
         } // END OF BUTTON
         .accessibilityIdentifier(Identifier.editEntryButton.rawValue)
     }
@@ -165,41 +152,6 @@ extension HistoryView {
             viewModel.resetFilters()
         } confirmAction: {
             viewModel.applyFilters()
-        }
-    }
-    
-    var addEntryToolbar: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            Button {
-                selectedEntry = Entry()
-            } label: {
-                Image(systemName: "plus.circle")
-            } // END OF BUTTON
-            .tint(.primary)
-            .accessibilityIdentifier(Identifier.addEntryButton.rawValue)
-        } // END OF TOOBAR ITEM
-    }
-    
-    var filterToolbar: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            Image(systemName: "line.3.horizontal.decrease.circle")
-                .onTapGesture {
-                    isShowingFiltering.toggle()
-                }
-        }
-    }
-    
-    var navigationToolbar: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            NavigationLink{
-                SettingsView(viewModel: SettingsViewModel(
-                    dataManger: container.dataManager,
-                    settingsStore: container.settingsStore)
-                )
-            } label: {
-                Label("Settings", systemImage: "gearshape.fill")
-            }
-            .tint(.primary)
         }
     }
     
@@ -234,8 +186,9 @@ struct HistoryView_Previews: PreviewProvider {
                 HistoryView(viewModel:
                                 HistoryViewModel(
                                     dataManager: container.dataManager,
-                                    settingsStore: container.settingsStore
-                                )
+                                    settingsStore: container.settingsStore),
+                            selectedEntry: .constant(nil),
+                            isShowingFiltering: .constant(false)
                 )
             }
             .environmentObject(container)
