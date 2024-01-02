@@ -132,11 +132,8 @@ fileprivate struct PrefKey: PreferenceKey {
 
 #Preview("Date picker container") {
     CustomDatePickerContainer(labelText: "Label text") {
-        DatePicker(selection: .constant(Date())) {
-            Image(systemName: "calendar")
-                .font(.title)
-        }
-        .labelsHidden()
+        DatePicker(selection: .constant(Date())) { EmptyView() }
+            .labelsHidden()
     } trailing: {
         Image(systemName: "calendar")
             .font(.title)

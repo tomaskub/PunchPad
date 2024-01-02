@@ -56,6 +56,8 @@
 		D684A38A2AF6F54B00511E0D /* ButtonFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D684A3892AF6F54B00511E0D /* ButtonFactory.swift */; };
 		D68732022B2243C9008CB0D4 /* PaginationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68732012B2243C9008CB0D4 /* PaginationState.swift */; };
 		D69C8CD72B43687700146EFA /* CustomDatePickerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C8CD62B43687700146EFA /* CustomDatePickerContainer.swift */; };
+		D69C8CD92B44208C00146EFA /* ConfirmButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C8CD82B44208C00146EFA /* ConfirmButtonStyle.swift */; };
+		D69C8CDB2B4420D600146EFA /* CancelButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C8CDA2B4420D600146EFA /* CancelButtonStyle.swift */; };
 		D6AB737029F562E600D5DE82 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AB736F29F562E600D5DE82 /* OnboardingViewModel.swift */; };
 		D6B2BDF22B27810700CB4FA7 /* DateFilterSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B2BDF12B27810700CB4FA7 /* DateFilterSheetView.swift */; };
 		D6B2BDF42B27C22400CB4FA7 /* EmptyPlaceholderModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B2BDF32B27C22400CB4FA7 /* EmptyPlaceholderModifier.swift */; };
@@ -162,6 +164,8 @@
 		D684A3892AF6F54B00511E0D /* ButtonFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonFactory.swift; sourceTree = "<group>"; };
 		D68732012B2243C9008CB0D4 /* PaginationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationState.swift; sourceTree = "<group>"; };
 		D69C8CD62B43687700146EFA /* CustomDatePickerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePickerContainer.swift; sourceTree = "<group>"; };
+		D69C8CD82B44208C00146EFA /* ConfirmButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmButtonStyle.swift; sourceTree = "<group>"; };
+		D69C8CDA2B4420D600146EFA /* CancelButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelButtonStyle.swift; sourceTree = "<group>"; };
 		D6AB736F29F562E600D5DE82 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		D6B2BDF12B27810700CB4FA7 /* DateFilterSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFilterSheetView.swift; sourceTree = "<group>"; };
 		D6B2BDF32B27C22400CB4FA7 /* EmptyPlaceholderModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyPlaceholderModifier.swift; sourceTree = "<group>"; };
@@ -335,6 +339,8 @@
 				D6C4589729D229230069D89B /* Assets.xcassets */,
 				D6E2C15729D6C20E00229286 /* WorkHistory.xcdatamodeld */,
 				D6C4589929D229230069D89B /* Preview Content */,
+				D69C8CD82B44208C00146EFA /* ConfirmButtonStyle.swift */,
+				D69C8CDA2B4420D600146EFA /* CancelButtonStyle.swift */,
 			);
 			path = ClockIn;
 			sourceTree = "<group>";
@@ -621,6 +627,7 @@
 				D6CA773D2B40B68900C98AF3 /* MainView.swift in Sources */,
 				D621C0CC2B3B8BE40065DF8C /* TimerIndicator.swift in Sources */,
 				D6CBB86A2B34C7150074CE8B /* FormatterFactory.swift in Sources */,
+				D69C8CDB2B4420D600146EFA /* CancelButtonStyle.swift in Sources */,
 				D61F11312AB38F8700902D6D /* SettingsStore.swift in Sources */,
 				D6842EC029EC178000731E84 /* StatisticsView.swift in Sources */,
 				D629CEF92B3613660036579D /* TimerService.swift in Sources */,
@@ -637,6 +644,7 @@
 				D6E6B8752AF98EB40073D911 /* OnboardingSalaryView.swift in Sources */,
 				D65A976F29F3BBDD00462D8C /* OnboardingView.swift in Sources */,
 				D6842EC229EC179200731E84 /* StatisticsViewModel.swift in Sources */,
+				D69C8CD92B44208C00146EFA /* ConfirmButtonStyle.swift in Sources */,
 				D6FA94FF2B0145FF0034B16A /* ChartFactory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
