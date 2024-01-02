@@ -38,27 +38,23 @@ extension EditSheetView {
         ZStack {
             background
             GeometryReader { proxy in
-                ScrollView {
-                    VStack {
-                        title
-                        timeIndicator
-                            .padding(.bottom)
-                        HStack {
-                            regularTimeLabel
+                ScrollViewReader { scrollProxy in
+                    
+                    ScrollView {
+                        VStack {
+                            title
+                            infoSection
+                            divider
+                            dateControls
+                            divider
+                            overrideControls(scrollProxy)
                             Spacer()
-                            overtimeLabel
+                            editControls
                         }
-                        divider
-                        dateControls
-                        divider
-                        overrideControls
-                        Spacer()
-                        editControls
+                        .padding(.horizontal, 32)
+                        .frame(minHeight: proxy.size.height)
                     }
-                    .padding(.horizontal, 32)
-                    .frame(minHeight: proxy.size.height)
                 }
-                
             }
             .padding(.top)
         } // END OF ZSTACK
@@ -67,6 +63,17 @@ extension EditSheetView {
 
 //MARK: TIME INDICATOR & LABELS
 extension EditSheetView {
+    var infoSection: some View {
+        Group {
+            timeIndicator
+                .padding(.bottom)
+            HStack {
+                regularTimeLabel
+                Spacer()
+                overtimeLabel
+            }
+        }
+    }
     var timeIndicator: some View {
         TimerIndicator(
             timerLabel: generateTimeIntervalLabel(value: viewModel.totalTimeInSeconds),
@@ -180,22 +187,29 @@ extension EditSheetView {
 //MARK: OVERRIDE SETTINGS CONTROLS
 extension EditSheetView {
     @ViewBuilder
-    var overrideControls: some View {
-        overrideSettingsHeader
+    func overrideControls(_ proxy: ScrollViewProxy) -> some View {
+        overrideSettingsHeader(proxy)
         if isShowingOverrideControls {
             overrideContent
         }
+         
     }
     
-    
-    var overrideSettingsHeader: some View {
+    @ViewBuilder func overrideSettingsHeader(_ proxy: ScrollViewProxy) -> some View {
         HStack {
             Image(systemName: isShowingOverrideControls ? "chevron.up" : "chevron.down")
                 .foregroundColor(.theme.primary)
                 .fontWeight(.bold)
                 .onTapGesture {
-                    withAnimation(.spring) {
-                        isShowingOverrideControls.toggle()
+                    Task {
+                        let duration: TimeInterval = 0.1
+                        await animate(duration: duration, animation: .spring(duration: duration)) {
+                            isShowingOverrideControls.toggle()
+                        }
+                        
+                        await animate(duration: duration, animation: .spring(duration: duration)) {
+                            proxy.scrollTo("editControls", anchor: .top)
+                        }
                     }
                 }
             Text(overrideSettingsHeaderText)
@@ -207,34 +221,39 @@ extension EditSheetView {
     
     var overrideContent: some View {
         Grid(alignment: .leading) {
-            
+            divider
             GridRow {
                 Text(maximumOvertimeText)
                 TimeIntervalPicker(buttonLabelText: generateTimeIntervalLabel(value: viewModel.currentMaximumOvertime),
                                    value: $viewModel.currentMaximumOvertime
                 )
             }
-            
+            divider
             GridRow {
                 Text(standardWorkTimeText)
                 TimeIntervalPicker(buttonLabelText: generateTimeIntervalLabel(value: viewModel.currentStandardWorkTime),
                                    value: $viewModel.currentStandardWorkTime
                 )
             }
-            
+            divider
             GridRow {
                 Text(grossPayPerMonthText)
                 TextField("PLN",
                           value: $viewModel.grossPayPerMonth,
                           format: .currency(code: "PLN"))
                 .textFieldStyle(.roundedBorder)
+                .foregroundColor(.black)
             }
-            
+            divider
             Toggle(isOn: .constant(true)) {
                 Text(calculateNetPayText)
+             
             }
+            .tint(.theme.primary)
             .padding(.trailing)
+            divider
         }
+        .foregroundStyle(Color.theme.blackLabel)
     }
 }
 
@@ -256,6 +275,7 @@ extension EditSheetView {
                 .buttonStyle(ConfirmButtonStyle())
                 .accessibilityIdentifier(Identifier.Button.save.rawValue)
             } // END OF HSTACK
+            .id("editControls")
         }
     }
 }
