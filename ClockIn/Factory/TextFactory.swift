@@ -35,4 +35,11 @@ struct TextFactory {
             .foregroundColor(.primary)
             .multilineTextAlignment(.center)
     }
+    
+    @ViewBuilder
+    static func buildSectionHeader(_ text: String) -> some View {
+        Text(text)
+            .foregroundColor(.theme.primary)
+            .font(.system(size: 24, weight: .medium))
+    }
 }
