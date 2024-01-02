@@ -104,6 +104,7 @@ struct CustomDatePickerContainer<Content: View, Leading: View, Trailing: View>: 
                 .padding(.vertical, 8)
                 .padding(.horizontal, 16)
         }
+        .padding(.top, labelSize.height/2)
     }
     
     @ViewBuilder

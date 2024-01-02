@@ -39,7 +39,7 @@ extension EditSheetView {
             background
             GeometryReader { proxy in
                 ScrollView {
-                    VStack/*(spacing: 0)*/ {
+                    VStack {
                         title
                         timeIndicator
                             .padding(.bottom)
