@@ -36,6 +36,8 @@ public struct ColorTheme {
     public let tertiary = MyBundle.getColor("Tertiary")
     /// White color used for background elements of tab bars, list rows and navigation bars
     public let white = MyBundle.getColor("White")
+    /// Dark gray color used for dismissive button label
+    public let buttonLabelGray = MyBundle.getColor("ButtonLabelGray")
 }
     class MyBundle {
         static func generateBundleForSelf() -> Bundle {
