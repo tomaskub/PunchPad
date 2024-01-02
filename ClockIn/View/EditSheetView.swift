@@ -37,161 +37,32 @@ extension EditSheetView {
     var body: some View {
         ZStack {
             background
-            VStack {
-                HStack {
-                    title
-                    Spacer()
-                }
-                .padding(.top)
+            GeometryReader { proxy in
                 ScrollView {
-                    timeIndicator
-                        .padding(.bottom)
-                    HStack {
-                        regularTimeLabel
+                    VStack/*(spacing: 0)*/ {
+                        title
+                        timeIndicator
+                            .padding(.bottom)
+                        HStack {
+                            regularTimeLabel
+                            Spacer()
+                            overtimeLabel
+                        }
+                        divider
+                        dateControls
+                        divider
+                        overrideControls
                         Spacer()
-                        overtimeLabel
+                        editControls
                     }
-                    divider
-                    dateControls
-                    divider
-                    overrideControls
+                    .padding(.horizontal, 32)
+                    .frame(minHeight: proxy.size.height)
                 }
-                editControls
-                .padding(.top)
-            } // END OF VSTACK
-            .padding(.horizontal, 32)
+                
+            }
+            .padding(.top)
         } // END OF ZSTACK
     } // END OF BODY
-}
-
-//MARK: OVERRIDE SETTINGS CONTROLS
-extension EditSheetView {
-    @ViewBuilder
-    var overrideControls: some View {
-        overrideSettingsHeader
-            .padding(.top)
-        if isShowingOverrideControls {
-            overrideContent
-        }
-    }
-    
-    
-    var overrideSettingsHeader: some View {
-        HStack {
-            Image(systemName: isShowingOverrideControls ? "chevron.up" : "chevron.down")
-                .foregroundColor(.theme.primary)
-                .fontWeight(.bold)
-                .onTapGesture {
-                    withAnimation(.spring) {
-                        isShowingOverrideControls.toggle()
-                    }
-                }
-            Text(overrideSettingsHeaderText)
-            Spacer()
-        }
-    }
-    
-    var overrideContent: some View {
-        Grid(alignment: .leading) {
-            
-            GridRow {
-                Text(maximumOvertimeText)
-                TimeIntervalPicker(buttonLabelText: generateTimeIntervalLabel(value: viewModel.currentMaximumOvertime),
-                                   value: $viewModel.currentMaximumOvertime
-                )
-            }
-            
-            GridRow {
-                Text(standardWorkTimeText)
-                TimeIntervalPicker(buttonLabelText: generateTimeIntervalLabel(value: viewModel.currentStandardWorkTime),
-                                   value: $viewModel.currentStandardWorkTime
-                )
-            }
-            
-            GridRow {
-                Text(grossPayPerMonthText)
-                TextField("PLN",
-                          value: $viewModel.grossPayPerMonth,
-                          format: .currency(code: "PLN"))
-                .textFieldStyle(.roundedBorder)
-            }
-            
-            Toggle(isOn: .constant(true)) {
-                Text(calculateNetPayText)
-            }
-            .padding(.trailing)
-        }
-    }
-}
-
-//MARK: DATE CONTROLS
-extension EditSheetView {
-    @ViewBuilder
-    var dateControls: some View {
-        if !viewModel.shouldDisplayFullDates {
-            sameDayDateControls
-        } else {
-            diffDayDateControls
-        }
-    }
-    
-    var diffDayDateControls: some View {
-        Group {
-            CustomDatePickerContainer(labelText: startDateText) {
-                DatePicker(startDateText, selection: $viewModel.startDate)
-                    .labelsHidden()
-                    .accessibilityIdentifier(Identifier.DatePicker.startDate.rawValue)
-            } trailing: {
-                imageCalendar
-            }
-            
-            CustomDatePickerContainer(labelText: startDateText) {
-                DatePicker(finishDateText, selection: $viewModel.finishDate)
-                    .labelsHidden()
-                    .accessibilityIdentifier(Identifier.DatePicker.finishDate.rawValue)
-            } trailing: {
-                imageCalendar
-            }
-        }
-    }
-    
-    var sameDayDateControls: some View {
-        Group {
-            CustomDatePickerContainer(labelText: nil) {
-                DatePicker(selection: $viewModel.startDate,
-                           displayedComponents: .date) {
-                    EmptyView()
-                }
-                           .labelsHidden()
-            } trailing: {
-                imageCalendar
-            }
-            
-            HStack {
-                CustomDatePickerContainer(labelText: startDateText) {
-                    DatePicker(selection: $viewModel.startDate,
-                               in: PartialRangeThrough(viewModel.finishDate),
-                               displayedComponents: .hourAndMinute) {
-                        EmptyView()
-                    }
-                               .labelsHidden()
-                } trailing: {
-                    imageClock
-                }
-                .frame(height: 50)
-                CustomDatePickerContainer(labelText: finishDateText) {
-                    DatePicker(selection: $viewModel.finishDate,
-                               in: PartialRangeFrom(viewModel.startDate),
-                               displayedComponents: .hourAndMinute) {
-                        EmptyView()
-                    }
-                               .labelsHidden()
-                } trailing: {
-                    imageClock
-                }
-            }
-        }
-    }
 }
 
 //MARK: TIME INDICATOR & LABELS
@@ -225,6 +96,145 @@ extension EditSheetView {
     
     private func generateTimeIntervalLabel(value: TimeInterval) -> String {
         return dateComponentFormatter.string(from: value) ?? "00:00"
+    }
+}
+
+//MARK: DATE CONTROLS
+extension EditSheetView {
+    @ViewBuilder
+    var dateControls: some View {
+        if !viewModel.shouldDisplayFullDates {
+            sameDayDateControls
+        } else {
+            diffDayDateControls
+        }
+    }
+    
+    var diffDayDateControls: some View {
+        Group {
+            CustomDatePickerContainer(labelText: startDateText) {
+                DatePicker(startDateText, selection: $viewModel.startDate)
+                    .labelsHidden()
+                    .accessibilityIdentifier(Identifier.DatePicker.startDate.rawValue)
+            } trailing: {
+                imageCalendar
+            }
+            .frame(height: 50)
+            .padding(.top)
+            
+            CustomDatePickerContainer(labelText: startDateText) {
+                DatePicker(finishDateText, selection: $viewModel.finishDate)
+                    .labelsHidden()
+                    .accessibilityIdentifier(Identifier.DatePicker.finishDate.rawValue)
+            } trailing: {
+                imageCalendar
+            }
+            .frame(height: 50)
+            .padding(.bottom)
+        }
+        
+    }
+    
+    var sameDayDateControls: some View {
+        Group {
+            CustomDatePickerContainer(labelText: nil) {
+                DatePicker(selection: $viewModel.startDate,
+                           displayedComponents: .date) {
+                    EmptyView()
+                }
+                           .labelsHidden()
+            } trailing: {
+                imageCalendar
+            }
+            .frame(height: 50)
+            .padding(.top)
+            HStack {
+                CustomDatePickerContainer(labelText: startDateText) {
+                    DatePicker(selection: $viewModel.startDate,
+                               in: PartialRangeThrough(viewModel.finishDate),
+                               displayedComponents: .hourAndMinute) {
+                        EmptyView()
+                    }
+                               .labelsHidden()
+                } trailing: {
+                    imageClock
+                }
+                .frame(height: 50)
+                CustomDatePickerContainer(labelText: finishDateText) {
+                    DatePicker(selection: $viewModel.finishDate,
+                               in: PartialRangeFrom(viewModel.startDate),
+                               displayedComponents: .hourAndMinute) {
+                        EmptyView()
+                    }
+                               .labelsHidden()
+                } trailing: {
+                    imageClock
+                }
+                .frame(height: 50)
+            }
+            .padding(.bottom)
+        }
+    }
+}
+
+//MARK: OVERRIDE SETTINGS CONTROLS
+extension EditSheetView {
+    @ViewBuilder
+    var overrideControls: some View {
+        overrideSettingsHeader
+        if isShowingOverrideControls {
+            overrideContent
+        }
+    }
+    
+    
+    var overrideSettingsHeader: some View {
+        HStack {
+            Image(systemName: isShowingOverrideControls ? "chevron.up" : "chevron.down")
+                .foregroundColor(.theme.primary)
+                .fontWeight(.bold)
+                .onTapGesture {
+                    withAnimation(.spring) {
+                        isShowingOverrideControls.toggle()
+                    }
+                }
+            Text(overrideSettingsHeaderText)
+                .font(.system(size: 24))
+            Spacer()
+        }
+        .frame(height: 50)
+    }
+    
+    var overrideContent: some View {
+        Grid(alignment: .leading) {
+            
+            GridRow {
+                Text(maximumOvertimeText)
+                TimeIntervalPicker(buttonLabelText: generateTimeIntervalLabel(value: viewModel.currentMaximumOvertime),
+                                   value: $viewModel.currentMaximumOvertime
+                )
+            }
+            
+            GridRow {
+                Text(standardWorkTimeText)
+                TimeIntervalPicker(buttonLabelText: generateTimeIntervalLabel(value: viewModel.currentStandardWorkTime),
+                                   value: $viewModel.currentStandardWorkTime
+                )
+            }
+            
+            GridRow {
+                Text(grossPayPerMonthText)
+                TextField("PLN",
+                          value: $viewModel.grossPayPerMonth,
+                          format: .currency(code: "PLN"))
+                .textFieldStyle(.roundedBorder)
+            }
+            
+            Toggle(isOn: .constant(true)) {
+                Text(calculateNetPayText)
+            }
+            .padding(.trailing)
+        }
     }
 }
 
@@ -267,7 +277,7 @@ extension EditSheetView {
         VerticalDivider()
             .stroke(style: .init(lineWidth: 1, dash: [2]))
             .foregroundColor(.theme.primary)
-            .fixedSize(horizontal: false, vertical: true)
+            .frame(height: 1)
     }
     
     var imageClock: some View {
