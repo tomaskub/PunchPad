@@ -64,6 +64,7 @@
 		D6B2BDF42B27C22400CB4FA7 /* EmptyPlaceholderModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B2BDF32B27C22400CB4FA7 /* EmptyPlaceholderModifier.swift */; };
 		D6B3B2662ABA237800101A1F /* SettingsViewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B3B2652ABA237800101A1F /* SettingsViewUITests.swift */; };
 		D6B7D1C82B0EB41A00E6F7A8 /* ContentViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B7D1C72B0EB41A00E6F7A8 /* ContentViewScreen.swift */; };
+		D6C3567B2B44AAB4007C23A3 /* ButtonStyle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C3567A2B44AAB4007C23A3 /* ButtonStyle+Extension.swift */; };
 		D6C4589429D229210069D89B /* ClockInApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4589329D229210069D89B /* ClockInApp.swift */; };
 		D6C4589629D229210069D89B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4589529D229210069D89B /* ContentView.swift */; };
 		D6C4589829D229230069D89B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6C4589729D229230069D89B /* Assets.xcassets */; };
@@ -173,6 +174,7 @@
 		D6B2BDF32B27C22400CB4FA7 /* EmptyPlaceholderModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyPlaceholderModifier.swift; sourceTree = "<group>"; };
 		D6B3B2652ABA237800101A1F /* SettingsViewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewUITests.swift; sourceTree = "<group>"; };
 		D6B7D1C72B0EB41A00E6F7A8 /* ContentViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewScreen.swift; sourceTree = "<group>"; };
+		D6C3567A2B44AAB4007C23A3 /* ButtonStyle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ButtonStyle+Extension.swift"; sourceTree = "<group>"; };
 		D6C4589029D229210069D89B /* ClockIn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClockIn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6C4589329D229210069D89B /* ClockInApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockInApp.swift; sourceTree = "<group>"; };
 		D6C4589529D229210069D89B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -246,6 +248,7 @@
 				D6CB2A7B2B05629200F3030C /* View+Extension.swift */,
 				D666ADCB2AC05A0500B74663 /* CaseIterable+Extension.swift */,
 				D6CBB8672B34ACF20074CE8B /* Calendar+Extension.swift */,
+				D6C3567A2B44AAB4007C23A3 /* ButtonStyle+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -598,6 +601,7 @@
 				D69C8CD72B43687700146EFA /* CustomDatePickerContainer.swift in Sources */,
 				D6E6B8772AF992F90073D911 /* OnboardingFinishView.swift in Sources */,
 				D6CA773F2B40BB4D00C98AF3 /* Route.swift in Sources */,
+				D6C3567B2B44AAB4007C23A3 /* ButtonStyle+Extension.swift in Sources */,
 				D6CB2A7C2B05629200F3030C /* View+Extension.swift in Sources */,
 				D64574B029D9E6A000207168 /* DataManager.swift in Sources */,
 				D6D906B12AA12BDB004E09C9 /* BackgroundFactory.swift in Sources */,
