@@ -27,7 +27,6 @@ struct EditSheetView: View {
     let standardWorkTimeText = "Standard work time"
     let grossPayPerMonthText = "Gross pay per month"
     let calculateNetPayText = "Calculate net pay"
-    //MARK: DATE FORMATTER
     let dateComponentFormatter = FormatterFactory.makeDateComponentFormatter()
     
     
@@ -52,14 +51,10 @@ extension EditSheetView {
                         Spacer()
                         overtimeLabel
                     }
-                    Divider()
-                    dateControls()
-                    Divider()
-                    overrideSettingsHeader
-                        .padding(.top)
-                    if isShowingOverrideControls {
-                        overrideControls
-                    }
+                    divider
+                    dateControls
+                    divider
+                    overrideControls
                 }
                 editControls
                 .padding(.top)
@@ -69,25 +64,34 @@ extension EditSheetView {
     } // END OF BODY
 }
 
-// MARK: VIEW BUILDERS & FUNCTIONS
+//MARK: OVERRIDE SETTINGS CONTROLS
 extension EditSheetView {
     @ViewBuilder
-    private func dateControls() -> some View {
-        if !viewModel.shouldDisplayFullDates {
-            sameDayDateControls
-        } else {
-            diffDayDateControls
+    var overrideControls: some View {
+        overrideSettingsHeader
+            .padding(.top)
+        if isShowingOverrideControls {
+            overrideContent
         }
     }
     
-    private func generateTimeIntervalLabel(value: TimeInterval) -> String {
-        return dateComponentFormatter.string(from: value) ?? "00:00"
+    
+    var overrideSettingsHeader: some View {
+        HStack {
+            Image(systemName: isShowingOverrideControls ? "chevron.up" : "chevron.down")
+                .foregroundColor(.theme.primary)
+                .fontWeight(.bold)
+                .onTapGesture {
+                    withAnimation(.spring) {
+                        isShowingOverrideControls.toggle()
+                    }
+                }
+            Text(overrideSettingsHeaderText)
+            Spacer()
+        }
     }
-}
-
-//MARK: OVERRIDE SETTINGS CONTROLS
-extension EditSheetView {
-    var overrideControls: some View {
+    
+    var overrideContent: some View {
         Grid(alignment: .leading) {
             
             GridRow {
@@ -122,12 +126,32 @@ extension EditSheetView {
 
 //MARK: DATE CONTROLS
 extension EditSheetView {
+    @ViewBuilder
+    var dateControls: some View {
+        if !viewModel.shouldDisplayFullDates {
+            sameDayDateControls
+        } else {
+            diffDayDateControls
+        }
+    }
+    
     var diffDayDateControls: some View {
         Group {
-            DatePicker(startDateText, selection: $viewModel.startDate)
-                .accessibilityIdentifier(Identifier.DatePicker.startDate.rawValue)
-            DatePicker(finishDateText, selection: $viewModel.finishDate)
-                .accessibilityIdentifier(Identifier.DatePicker.finishDate.rawValue)
+            CustomDatePickerContainer(labelText: startDateText) {
+                DatePicker(startDateText, selection: $viewModel.startDate)
+                    .labelsHidden()
+                    .accessibilityIdentifier(Identifier.DatePicker.startDate.rawValue)
+            } trailing: {
+                imageCalendar
+            }
+            
+            CustomDatePickerContainer(labelText: startDateText) {
+                DatePicker(finishDateText, selection: $viewModel.finishDate)
+                    .labelsHidden()
+                    .accessibilityIdentifier(Identifier.DatePicker.finishDate.rawValue)
+            } trailing: {
+                imageCalendar
+            }
         }
     }
     
@@ -140,9 +164,7 @@ extension EditSheetView {
                 }
                            .labelsHidden()
             } trailing: {
-                Image(systemName: "calendar")
-                    .font(.title)
-                    .foregroundColor(.theme.primary)
+                imageCalendar
             }
             
             HStack {
@@ -154,11 +176,9 @@ extension EditSheetView {
                     }
                                .labelsHidden()
                 } trailing: {
-                    Image(systemName: "clock")
-                        .font(.title)
-                        .foregroundColor(.theme.primary)
+                    imageClock
                 }
-                
+                .frame(height: 50)
                 CustomDatePickerContainer(labelText: finishDateText) {
                     DatePicker(selection: $viewModel.finishDate,
                                in: PartialRangeFrom(viewModel.startDate),
@@ -167,9 +187,7 @@ extension EditSheetView {
                     }
                                .labelsHidden()
                 } trailing: {
-                    Image(systemName: "clock")
-                        .font(.title)
-                        .foregroundColor(.theme.primary)
+                    imageClock
                 }
             }
         }
@@ -204,30 +222,64 @@ extension EditSheetView {
                     .font(.caption)
             }
     }
+    
+    private func generateTimeIntervalLabel(value: TimeInterval) -> String {
+        return dateComponentFormatter.string(from: value) ?? "00:00"
+    }
 }
 
-//MARK: STATIC VIEW VAR
+//MARK: SAVE CONTROLS
+extension EditSheetView {
+    var editControls: some View {
+        Group {
+            HStack {
+                Button(cancelButtonText.uppercased()) {
+                    dismiss()
+                }
+                .buttonStyle(CancelButtonStyle())
+                .accessibilityIdentifier(Identifier.Button.cancel.rawValue)
+                
+                Button(saveButtonText.uppercased()) {
+                    viewModel.saveEntry()
+                    dismiss()
+                }
+                .buttonStyle(ConfirmButtonStyle())
+                .accessibilityIdentifier(Identifier.Button.save.rawValue)
+            } // END OF HSTACK
+        }
+    }
+}
+
+//MARK: VIEW COMPONENTS
 extension EditSheetView {
     var title: some View {
-        Text(titleText)
-            .font(.title)
-            .foregroundColor(.theme.black)
-    }
-    
-    var overrideSettingsHeader: some View {
         HStack {
-            Image(systemName: isShowingOverrideControls ? "chevron.up" : "chevron.down")
-                .foregroundColor(.theme.primary)
-                .fontWeight(.bold)
-                .onTapGesture {
-                    withAnimation(.spring) {
-                        isShowingOverrideControls.toggle()
-                    }
-                }
-            
-            Text(overrideSettingsHeaderText)
+            Text(titleText)
+                .font(.title)
+                .foregroundColor(.theme.black)
             Spacer()
         }
+        .padding(.top)
+        
+    }
+    
+    var divider: some View {
+        VerticalDivider()
+            .stroke(style: .init(lineWidth: 1, dash: [2]))
+            .foregroundColor(.theme.primary)
+            .fixedSize(horizontal: false, vertical: true)
+    }
+    
+    var imageClock: some View {
+        Image(systemName: "clock")
+            .font(.title)
+            .foregroundColor(.theme.primary)
+    }
+    
+    var imageCalendar: some View {
+        Image(systemName: "calendar")
+            .font(.title)
+            .foregroundColor(.theme.primary)
     }
     
     var background: some View {
@@ -235,47 +287,49 @@ extension EditSheetView {
     }
 }
 
-//MARK: SAVE CONTROLS
-extension EditSheetView {
-    var editControls: some View {
-        HStack {
-            Button {
-                dismiss()
-            } label: {
-                Text(cancelButtonText.uppercased())
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(width: 140, height: 38)
-                    .background {
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(.gray)
-                    } // END OF BACKGROUND
-            } // END OF BUTTON
-            .accessibilityIdentifier(Identifier.Button.cancel.rawValue)
-            Button {
-                viewModel.saveEntry()
-                dismiss()
-            } label: {
-                Text(saveButtonText.uppercased())
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(width: 140, height: 38)
-                    .background {
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(.blue)
-                    } // END OF BACKGROUND
-            } // END OF BUTTON
-            .accessibilityIdentifier(Identifier.Button.save.rawValue)
-        } // END OF HSTACK
-    }
-}
-
-#Preview("EditSheetPreview") {
+#Preview("Signle date controls") {
     struct ContainerView: View {
         @StateObject private var container: Container = .init()
         private let entry: Entry = {
             let startOfDay = Calendar.current.startOfDay(for: Date())
             let startDate = Calendar.current.date(byAdding: .hour, value: 6, to: startOfDay)!
+            let finishDate = Calendar.current.date(byAdding: .minute,
+                                                   value: 9 * 60 + 30,
+                                                   to: startDate)!
+            return Entry(startDate: startDate,
+                         finishDate: finishDate,
+                         workTimeInSec: 4*3600 + 20 * 60,
+                         overTimeInSec: 0,
+                         maximumOvertimeAllowedInSeconds: 5*3600,
+                         standardWorktimeInSeconds: 8*3600,
+                         grossPayPerMonth: 10000,
+                         calculatedNetPay: nil)
+        }()
+        var body: some View {
+            ZStack {
+                BackgroundFactory.buildSolidColor()
+            }
+            .sheet(isPresented: .constant(true)){
+                EditSheetView(viewModel:
+                                EditSheetViewModel(dataManager: container.dataManager,
+                                                   settingsStore: container.settingsStore,
+                                                   payService: container.payManager,
+                                                   entry: entry)
+                )
+            }
+        }
+    }
+    
+    return ContainerView()
+    
+} // END OF PREVIEW
+
+#Preview("Two date controls") {
+    struct ContainerView: View {
+        @StateObject private var container: Container = .init()
+        private let entry: Entry = {
+            let startOfDay = Calendar.current.startOfDay(for: Date())
+            let startDate = Calendar.current.date(byAdding: .hour, value: 16, to: startOfDay)!
             let finishDate = Calendar.current.date(byAdding: .minute,
                                                    value: 9 * 60 + 30,
                                                    to: startDate)!
