@@ -130,7 +130,7 @@ struct MainView: View {
     func generateNavTitle(_ tabSelection: TabBarItem) -> AttributedString {
         guard !(tabSelection == .home) else { return mainTitle }
         var result = AttributedString(tabSelection.title)
-        result.font = .title
+        result.font = .title.weight(.medium)
         result.foregroundColor = .theme.black
         return result
     }
