@@ -19,6 +19,15 @@ struct MainView: View {
     @State private var selectedEntry: Entry? = nil
     @Binding var tabSelection: TabBarItem
     @EnvironmentObject var container: Container
+    let mainTitle: AttributedString = {
+        var result = AttributedString("PunchPad")
+        result.font = .title
+        result.foregroundColor = .theme.black
+        if let range = result.range(of: "Punch") {
+            result[range].font = .title.weight(.heavy)
+        }
+        return result
+    }()
     
     init(navigator: Navigator<Route>, tabSelection: Binding<TabBarItem>, container: Container) {
         self.navigator = navigator
@@ -117,8 +126,13 @@ struct MainView: View {
             .frame(width: 28, height: 28)
             .foregroundColor(.theme.primary)
     }
-    func generateNavTitle(_ tabSelection: TabBarItem) -> String {
-        tabSelection == .home ? "PunchPad" : tabSelection.title
+    
+    func generateNavTitle(_ tabSelection: TabBarItem) -> AttributedString {
+        guard !(tabSelection == .home) else { return mainTitle }
+        var result = AttributedString(tabSelection.title)
+        result.font = .title
+        result.foregroundColor = .theme.black
+        return result
     }
 }
 
