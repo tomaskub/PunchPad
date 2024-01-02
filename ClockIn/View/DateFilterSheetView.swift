@@ -31,6 +31,7 @@ struct DateFilterSheetView: View {
                        selection: $toDate,
                        displayedComponents: .date)
             Toggle(sortLabel, isOn: $sortAscending)
+                .tint(.theme.primary)
                 .padding(.vertical)
             buttonPanel
                 .frame(maxWidth: .infinity)
@@ -45,18 +46,17 @@ struct DateFilterSheetView: View {
                 dismiss()
             } label: {
                 Text("Cancel")
-                    .frame(maxWidth: .infinity)
+                    
             }
-            .buttonStyle(.bordered)
+            .buttonStyle(CancelButtonStyle())
             
             Button {
                 confirmAction()
                 dismiss()
             } label: {
                 Text("Apply")
-                    .frame(maxWidth: .infinity)
             }
-            .buttonStyle(.borderedProminent)
+            .buttonStyle(ConfirmButtonStyle())
         }
     }
 }
