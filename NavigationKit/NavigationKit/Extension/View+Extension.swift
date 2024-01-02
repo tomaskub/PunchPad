@@ -22,16 +22,29 @@ public extension View {
     /// - Parameters:
     ///   - title: The title of the navigation bar.
     ///   - alignment: The alignment of the title (default is `.leading`).
-    ///   - textColor: The text color of the title (default is `.Brand.N900`).
-    ///   - typography: The typography style of the title (default is `.heading_4`).
+    ///   - textColor: The text color of the title (default is `.primary`).
     /// - Returns: A modified view with the specified navigation bar title configuration.
     func navigationBarTitle(_ title: String, alignmet: Alignment = .leading, textColor: Color = .primary) -> some View {
         self
             .preference(key: NavBarConfigPrefKey.self, value: .init(title: title, textColor: textColor, alignment: alignmet))
     }
     
+    /// Sets the title and alignment for the navigation bar
+    /// - Parameters:
+    ///   - title: Attributed title of the navigation bar
+    ///   - alignment: The alignment of the title (default is `.leading`)
+    /// - Returns: A modified view with the specified navigation bar title configuration
+    func navigationBarTitle(_ title: AttributedString, alignment: Alignment = .leading) -> some View {
+        self
+            .preference(key: NavBarConfigPrefKey.self, value: .init(title: title, alignment: alignment))
+    }
+    
+    /// Set the configuration for the navigation bar
+    /// - Parameter config: Config of the navigation bar
+    /// - Returns: A modified view with the specified navigation bar title configuration
     func navigationBarTitle(config: NavBarTitleConfiguration) -> some View {
-        self.preference(key: NavBarConfigPrefKey.self, value: config)
+        self
+            .preference(key: NavBarConfigPrefKey.self, value: config)
     }
 }
 

@@ -9,16 +9,21 @@ import SwiftUI
 import ThemeKit
 
 public struct NavBarTitleConfiguration: Equatable {
-    public var title: String
-    public var textColor: Color
-    public var font: Font
+    public var title: AttributedString
     public var alignment: Alignment
     
-    
     public init(title: String, textColor: Color = .theme.black, font: Font = .title, alignment: Alignment = .leading) {
-        self.title = title
-        self.textColor = textColor
+        self.title = {
+            var attributedString = AttributedString(title)
+            attributedString.font = font
+            attributedString.foregroundColor = textColor
+            return attributedString
+        }()
         self.alignment = alignment
-        self.font = font
+    }
+    
+    public init(title: AttributedString, alignment: Alignment = .leading) {
+        self.title = title
+        self.alignment = alignment
     }
 }

@@ -41,9 +41,9 @@ struct CustomNavigationBarView: View {
             .frame(width: barItemsWidth)
             .background(makeWidthReader())
             
-            NavigationBarTitleView(title: config.title,
-                                   color: config.textColor,
-                                   font: .headline.weight(.semibold))
+            Text(config.title)
+                .font(.headline)
+                .fontWeight(.semibold)
             .frame(maxWidth: .infinity)
             
             trailingElements.view
@@ -75,10 +75,8 @@ struct CustomNavigationBarView: View {
                     .font(.title)
                     .background(makeWidthReader())
                 
-                NavigationBarTitleView(title: config.title,
-                                       color: config.textColor,
-                                       font: config.font)
-
+                Text(config.title)
+                
                 Spacer()
                 
                 trailingElements.view
@@ -144,23 +142,19 @@ private extension CustomNavigationBarView {
     }
 }
 
-struct NavigationBarTitleView: View {
-    let title: String
-    let color: Color
-    let font: Font
-    
-    var body: some View {
-            Text(title)
-                .foregroundColor(color)
-                .font(font)
-    }
-    
-}
-
 //MARK: PREVIEWS
 #Preview("Home configuration") {
     struct Preview: View {
-        let navBarTitleConfiguration = NavBarTitleConfiguration(title: "PunchPad", font: .system(size: 32))
+        let navBarTitleConfiguration = {
+            var title = AttributedString("PunchPad")
+            title.font = .system(size: 32)
+            if let range = title.range(of: "Punch") {
+                title[range].font = .system(size: 32, weight: .bold)
+            }
+            return NavBarTitleConfiguration(title: title)
+        }()
+//        NavBarTitleConfiguration(title: "PunchPad", font: .system(size: 32))
+        
         var navBarBackground: some View {
             RoundedRectangle(cornerRadius: 24)
                 .foregroundColor(.white)
