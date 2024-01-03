@@ -41,6 +41,11 @@ struct SettingsView: View {
     let paycheckSettingsText: String = "Paycheck calculation"
     let userDataSettingsText: String = "User data"
     let appearanceText: String = "Appearance"
+    
+    var currencyCode: String {
+        let locale = Locale.current
+        return locale.currencySymbol ?? "PLN"
+    }
 }
 
 // MARK: BODY
@@ -143,12 +148,11 @@ extension SettingsView {
         HStack {
             Text(grossPaycheckText)
                 .foregroundStyle(Color.theme.blackLabel)
-            TextField(String(), text: $viewModel.grossPayPerMonthText)
-                .accessibilityIdentifier(Identifier.TextFields.grossPay.rawValue)
-                .textFieldStyle(.roundedBorder)
-                .keyboardType(.numberPad)
-            Text(currencyText)
-                .foregroundStyle(Color.theme.blackLabel)
+            TextField(String(),
+                      value: $viewModel.grossPayPerMonth,
+                      format: .currency(code: currencyCode)
+            )
+            .textFieldStyle(.greenBordered)
         }
     }
     
@@ -302,6 +306,3 @@ struct SettingsView_Previews: PreviewProvider {
     }
         
 }
-
-
-
