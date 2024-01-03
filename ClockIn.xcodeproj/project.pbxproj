@@ -26,6 +26,8 @@
 		D62286742B40A04B00B41004 /* TabViewKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D62286732B40A04B00B41004 /* TabViewKit.framework */; };
 		D629CEF92B3613660036579D /* TimerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D629CEF82B3613660036579D /* TimerService.swift */; };
 		D629CEFB2B363B500036579D /* TimerServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D629CEFA2B363B500036579D /* TimerServiceTests.swift */; };
+		D63753AE2B45DA2000386482 /* TextFieldStyle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63753AD2B45DA2000386482 /* TextFieldStyle+Extension.swift */; };
+		D63753B02B45DA5000386482 /* GreenBorderTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63753AF2B45DA5000386482 /* GreenBorderTextFieldStyle.swift */; };
 		D64313B82B1E606B003B5DBC /* PreviewDataFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64313B72B1E606B003B5DBC /* PreviewDataFactory.swift */; };
 		D64574B029D9E6A000207168 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64574AF29D9E6A000207168 /* DataManager.swift */; };
 		D64574B329D9F16900207168 /* EntryMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64574B129D9F16900207168 /* EntryMO+CoreDataClass.swift */; };
@@ -137,6 +139,8 @@
 		D62286732B40A04B00B41004 /* TabViewKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TabViewKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D629CEF82B3613660036579D /* TimerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerService.swift; sourceTree = "<group>"; };
 		D629CEFA2B363B500036579D /* TimerServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerServiceTests.swift; sourceTree = "<group>"; };
+		D63753AD2B45DA2000386482 /* TextFieldStyle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextFieldStyle+Extension.swift"; sourceTree = "<group>"; };
+		D63753AF2B45DA5000386482 /* GreenBorderTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreenBorderTextFieldStyle.swift; sourceTree = "<group>"; };
 		D64313B72B1E606B003B5DBC /* PreviewDataFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewDataFactory.swift; sourceTree = "<group>"; };
 		D64574AF29D9E6A000207168 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		D64574B129D9F16900207168 /* EntryMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EntryMO+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -249,6 +253,7 @@
 				D666ADCB2AC05A0500B74663 /* CaseIterable+Extension.swift */,
 				D6CBB8672B34ACF20074CE8B /* Calendar+Extension.swift */,
 				D6C3567A2B44AAB4007C23A3 /* ButtonStyle+Extension.swift */,
+				D63753AD2B45DA2000386482 /* TextFieldStyle+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -262,6 +267,16 @@
 				D69C8CD62B43687700146EFA /* CustomDatePickerContainer.swift */,
 			);
 			path = ViewComponent;
+			sourceTree = "<group>";
+		};
+		D63753B12B45E05700386482 /* Style */ = {
+			isa = PBXGroup;
+			children = (
+				D69C8CD82B44208C00146EFA /* ConfirmButtonStyle.swift */,
+				D69C8CDA2B4420D600146EFA /* CancelButtonStyle.swift */,
+				D63753AF2B45DA5000386482 /* GreenBorderTextFieldStyle.swift */,
+			);
+			path = Style;
 			sourceTree = "<group>";
 		};
 		D67332E82AAE3C1A005FFE7F /* ScreenHelpers */ = {
@@ -333,6 +348,7 @@
 			isa = PBXGroup;
 			children = (
 				D6B2BDF52B27C42800CB4FA7 /* ViewModifiers */,
+				D63753B12B45E05700386482 /* Style */,
 				D61F11322AB3A6E700902D6D /* Extensions */,
 				D6D906AF2AA12BBD004E09C9 /* Factory */,
 				D6E2C15629D6BF9F00229286 /* Model */,
@@ -345,8 +361,6 @@
 				D6C4589729D229230069D89B /* Assets.xcassets */,
 				D6E2C15729D6C20E00229286 /* WorkHistory.xcdatamodeld */,
 				D6C4589929D229230069D89B /* Preview Content */,
-				D69C8CD82B44208C00146EFA /* ConfirmButtonStyle.swift */,
-				D69C8CDA2B4420D600146EFA /* CancelButtonStyle.swift */,
 			);
 			path = ClockIn;
 			sourceTree = "<group>";
@@ -599,6 +613,7 @@
 				D6EA695E2AF8498D00D8F6C3 /* OnboardingOvertimeView.swift in Sources */,
 				D682AF922B3C77F5004EE208 /* ChartTimeRange.swift in Sources */,
 				D69C8CD72B43687700146EFA /* CustomDatePickerContainer.swift in Sources */,
+				D63753B02B45DA5000386482 /* GreenBorderTextFieldStyle.swift in Sources */,
 				D6E6B8772AF992F90073D911 /* OnboardingFinishView.swift in Sources */,
 				D6CA773F2B40BB4D00C98AF3 /* Route.swift in Sources */,
 				D6C3567B2B44AAB4007C23A3 /* ButtonStyle+Extension.swift in Sources */,
@@ -628,6 +643,7 @@
 				D64313B82B1E606B003B5DBC /* PreviewDataFactory.swift in Sources */,
 				D6C458C129D2DD4F0069D89B /* HomeViewModel.swift in Sources */,
 				D6C4589629D229210069D89B /* ContentView.swift in Sources */,
+				D63753AE2B45DA2000386482 /* TextFieldStyle+Extension.swift in Sources */,
 				D67332E62AADB8B1005FFE7F /* LaunchArgument.swift in Sources */,
 				D68384F929DB25DD00228491 /* SettingViewModel.swift in Sources */,
 				D6C458C329D2DE2D0069D89B /* HomeView.swift in Sources */,
