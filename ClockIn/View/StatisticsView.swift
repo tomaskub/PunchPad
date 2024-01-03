@@ -57,7 +57,7 @@ struct StatisticsView: View {
                     } // END OF IF
                      grossSalaryData
                 } header: {
-                    sectionHeader(salaryCalculationHeaderText)
+                    TextFactory.buildSectionHeader(salaryCalculationHeaderText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.salaryCalculation.rawValue)
                 }// END OF SECTION
             } //END OF LIST
@@ -94,13 +94,6 @@ extension StatisticsView {
 extension StatisticsView {
     var background: some View {
         BackgroundFactory.buildSolidColor()
-    }
-    
-    @ViewBuilder
-    func sectionHeader(_ text: String) -> some View {
-        Text(text)
-            .foregroundColor(.theme.primary)
-            .font(.system(size: 24, weight: .medium))
     }
 }
 
