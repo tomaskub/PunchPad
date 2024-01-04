@@ -59,15 +59,11 @@ struct HistoryRowView: View {
                 indicator()
             }
         }
-        .padding(16)
         .frame(maxWidth: .infinity)
         .background(
             Color.theme.white
                 .cornerRadius(10)
         )
-        .listRowBackground(Color.clear)
-        .listRowSeparator(.hidden)
-        .listRowInsets(EdgeInsets(top: 12, leading: 0, bottom: 12, trailing: 0))
         .contentShape(Rectangle())
     }
     
