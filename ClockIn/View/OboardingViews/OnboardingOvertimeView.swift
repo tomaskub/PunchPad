@@ -6,17 +6,18 @@
 //
 
 import SwiftUI
+import ThemeKit
 
 struct OnboardingOvertimeView: View {
     let titleText: String = "Overtime"
-    let toggleDescriptionText: String = "Let ClockIn know wheter you want to measure overtime"
-    let pickerDescriptionText: String = "Let the app know what is the maximum overtime you can work for."
+    let toggleDescriptionText: String = "Let PunchPad know wheter you want to measure overtime"
+    let pickerDescriptionText: String = "Let the app know maximum overtime you can work for."
     let hoursPickerLabel: String = "Hours"
     let minutesPickerLabel: String = "Minutes"
     let toggleLabel: String = "Keep logging overtime"
     private typealias Identifier = ScreenIdentifier.OnboardingView
     @ObservedObject var viewModel: OnboardingViewModel
-   
+    
     var body: some View {
         VStack(spacing: 40) {
             title
@@ -32,10 +33,12 @@ struct OnboardingOvertimeView: View {
                 HStack {
                     VStack {
                         Text(hoursPickerLabel)
-                        Picker(hoursPickerLabel, 
+                            .foregroundColor(.theme.primary)
+                        Picker(hoursPickerLabel,
                                selection: $viewModel.hoursOvertime) {
                             ForEach(0..<25){ i in
-                                Text("\(i)").tag(i)
+                                Text("\(i)")
+                                    .foregroundColor(.theme.primary).tag(i)
                             }
                         }
                         .accessibilityIdentifier(Identifier.Pickers.overtimeHours.rawValue)
@@ -43,21 +46,24 @@ struct OnboardingOvertimeView: View {
                     }
                     VStack {
                         Text(minutesPickerLabel)
+                            .foregroundColor(.theme.primary)
                         Picker(minutesPickerLabel,
                                selection: $viewModel.minutesOvertime) {
                             ForEach(0..<60) { i in
-                                Text("\(i)").tag(i)
+                                Text("\(i)").foregroundColor(.theme.primary).tag(i)
                             }
                         }
                         .accessibilityIdentifier(Identifier.Pickers.overtimeMinutes.rawValue)
                         .pickerStyle(.wheel)
                     }
                 }
+                .foregroundColor(.theme.primary)
                 .padding()
                 .padding(.top)
                 .background(Color.primary.colorInvert())
                 .cornerRadius(20)
             }
+            
         }
         .padding(30)
     } // END OF BODY
@@ -74,11 +80,13 @@ struct OnboardingOvertimeView: View {
     
     private var overtimeToggle: some View {
         Toggle(toggleLabel,
-               isOn: $viewModel.settingsStore.isLoggingOvertime)
+               isOn: $viewModel.settingsStore.isLoggingOvertime.animation(.easeInOut))
+        .foregroundColor(.theme.blackLabel)
+        .tint(.theme.primary)
             .accessibilityIdentifier(Identifier.Toggles.overtime.rawValue)
             .padding()
             .background()
-            .cornerRadius(20)
+            .cornerRadius(16)
     }
     
     
@@ -99,11 +107,14 @@ struct OnbardingOvertime_Previews: PreviewProvider {
         
         var body: some View {
             ZStack {
-                BackgroundFactory.buildGradient(colorScheme: colorScheme)
+                BackgroundFactory.buildSolidColor()
                 OnboardingOvertimeView(viewModel: vm)
                 VStack {
                     Spacer()
-                    ButtonFactory.build(labelText: "Preview button")
+                    Button("Preview button") {
+                        
+                    }
+                    .buttonStyle(.confirming)
                 } // END OF VSTACK
                 .padding(30)
             } // END OF ZSTACK
