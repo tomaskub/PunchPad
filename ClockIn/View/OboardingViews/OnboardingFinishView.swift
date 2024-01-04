@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct OnboardingFinishView: View {
-    let titleText: String = "Clock In has been succsessfully set up"
+    let titleText: String = "PunchPad has been succsessfully set up"
     let descriptionText: String = "You are all ready to go! Enjoy using the app!"
     
     var body: some View {
@@ -57,11 +57,14 @@ struct OnboardingFinish_Preview: PreviewProvider {
         @Environment(\.colorScheme) private var colorScheme
         var body: some View {
             ZStack {
-                BackgroundFactory.buildGradient(colorScheme: colorScheme)
+                BackgroundFactory.buildSolidColor()
                 OnboardingFinishView()
                 VStack {
                     Spacer()
-                    ButtonFactory.build(labelText: "Preview button")
+                    Button("Preview button") {
+                        
+                    }
+                    .buttonStyle(.confirming)
                         .padding(30)
                 }
             }
