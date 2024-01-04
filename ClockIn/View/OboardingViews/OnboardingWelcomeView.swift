@@ -6,62 +6,44 @@
 //
 
 import SwiftUI
+import ThemeKit
 
 struct OnboardingWelcomeView: View {
-    
-    let titleText: String = "ClockIn"
+    let logoResource: String = "LaunchLogo"
     let descriptionText: String = "This app was built to help you track time and make sure you are spending at work exactly the time you want and need. \n\n Plan your workdays and plan your paycheck!"
     
     var body: some View {
         VStack(spacing: 40){
             
-            logoView
+            Image(logoResource)
+                 .resizable()
+                 .aspectRatio(contentMode: .fit)
             
-            title
-            
-            description
+            TextFactory.buildDescription(descriptionText)
+                .padding()
             
             Spacer()
         }
         .padding(30)
     }
-    
-    var logoView: some View {
-        ZStack {
-            Circle()
-                .trim(from: 0.15, to: 0.85)
-                .stroke(lineWidth: 10)
-            Rectangle()
-                .frame(width: 10, height: 200)
-        }
-        .padding(.horizontal)
-    }
-    
-    var title: some View {
-        TextFactory.buildTitle(titleText)
-    }
-    
-    var description: some View {
-        TextFactory.buildDescription(descriptionText)
-    }
 }
 
-struct OnboardingWelcome_Previews: PreviewProvider {
-    private struct PreviewContainerView: View {
+#Preview {
+    struct PreviewContainerView: View {
         @Environment(\.colorScheme) private var colorScheme
         var body: some View {
             ZStack {
-                BackgroundFactory.buildGradient(colorScheme: colorScheme)
+                BackgroundFactory.buildSolidColor()
                 OnboardingWelcomeView()
                 VStack {
                     Spacer()
-                    ButtonFactory.build(labelText: "Preview button")
+                    Button("Preview button") {
+                        //do nothing
+                    }
+                    .buttonStyle(.confirming)
                 }.padding(30)
             }
         }
     }
-    
-    static var previews: some View {
-        PreviewContainerView()
-    }
+    return PreviewContainerView()
 }
