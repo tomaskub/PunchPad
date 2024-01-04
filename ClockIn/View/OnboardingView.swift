@@ -6,9 +6,9 @@
 //
 
 import SwiftUI
+import ThemeKit
 
 struct OnboardingView: View {
-    
     private enum OnboardingStage: Equatable, CaseIterable {
         case welcome // Logo and welcome message
         case worktime // Set the work time
@@ -18,10 +18,15 @@ struct OnboardingView: View {
         case exit // Inform setup complete, allow to finish onboarding
     }
     private typealias Identifier = ScreenIdentifier.OnboardingView
-    private let tansition: AnyTransition = .asymmetric(
-        insertion: .move(edge: .trailing),
-        removal: .move(edge: .leading)
-    )
+    
+    let backButtonText: String = "Back"
+    private var bottomButtonText: String {
+        switch currentStage {
+        case .welcome: "Let's start!"
+        case .exit: "Finish set up!"
+        default: "Next"
+        }
+    }
     
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) var dismiss
@@ -60,7 +65,7 @@ struct OnboardingView: View {
                     }
                 }
                 Spacer()
-                bottomButton
+                bottomNavigationButton
             }
             .padding(30)
         }
@@ -72,15 +77,10 @@ extension OnboardingView {
         BackgroundFactory.buildSolidColor()
     }
     
-    private var bottomButtonText: String {
-        currentStage == .welcome ? "Let's start!" :
-                                currentStage == .exit ? "Finish set up!" : "Next"
-    }
-    
     private var topButton: some View {
-        Text("Back")
+        Label(backButtonText, systemImage: "chevron.left")
             .accessibilityIdentifier(Identifier.Buttons.regressStage.rawValue)
-            .foregroundColor(.accentColor)
+            .foregroundColor(.theme.blackLabel)
             .onTapGesture {
                 withAnimation(.spring()) {
                     currentStage = currentStage.previous()
@@ -88,10 +88,9 @@ extension OnboardingView {
             }
     }
     
-    private var bottomButton: some View {
-        ButtonFactory.build(labelText: bottomButtonText)
-        .onTapGesture {
-            withAnimation(.spring()) {
+    private var bottomNavigationButton: some View {
+        Button(bottomButtonText) {
+            withAnimation(.easeInOut) {
                 if currentStage == .exit {
                     dismiss()
                 } else {
@@ -99,18 +98,8 @@ extension OnboardingView {
                 }
             }
         }
-        //This section is still in works until in-app tutorial is developed
-        /*
-         .overlay(content: {
-         if onboardingStage == 4 {
-         HStack {
-         Spacer()
-         Image(systemName: "figure.outdoor.cycle")
-         }
-         .padding(.trailing)
-         }
-         })
-         */
+        .buttonStyle(.confirming)
+        .accessibilityIdentifier(Identifier.Buttons.advanceStage.rawValue)
     }
 }
 
