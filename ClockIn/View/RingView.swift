@@ -61,7 +61,7 @@ struct RingView: View {
                 }
             }
         }
-        .padding()
+        .padding(ringWidth/2)
     }
 }
     

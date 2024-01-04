@@ -6,46 +6,30 @@
 //
 
 import SwiftUI
+import TabViewKit
+import NavigationKit
 
 struct ContentView: View {
-    
+    let navigator: Navigator<Route>
+    @State private var tabSelection: TabBarItem = .home
     @EnvironmentObject var container: Container
     @AppStorage(SettingsStore.SettingKey.isRunFirstTime.rawValue) var isRunFirstTime: Bool = true 
     
     var body: some View {
-        TabView {
-            NavigationView {
-                HomeView(viewModel:
-                            HomeViewModel(dataManager: container.dataManager,
-                                          settingsStore: container.settingsStore, 
-                                          payManager: container.payManager,
-                                          timerProvider: container.timerProvider)
+        NavHost(navigator: navigator) { route in
+            switch route {
+            case .main:
+                MainView(navigator: navigator,
+                         tabSelection: $tabSelection,
+                         container: container
                 )
-            }
-            .tabItem {
-                Label("Home", systemImage: "house")
-                    .accessibilityIdentifier(ScreenIdentifier.TabBar.home.rawValue)
-            }
-            NavigationView {
-                StatisticsView(viewModel:
-                                StatisticsViewModel(dataManager: container.dataManager,
-                                                    payManager: container.payManager,
-                                                    settingsStore: container.settingsStore)
+            case .settings:
+                SettingsView(viewModel:
+                                SettingsViewModel(
+                                    dataManger: container.dataManager,
+                                    settingsStore: container.settingsStore
+                                )
                 )
-            }
-            .tabItem {
-                Label("Statistics", systemImage: "chart.bar.xaxis")
-                    .accessibilityIdentifier(ScreenIdentifier.TabBar.statistics.rawValue)
-            }
-            NavigationView {
-                HistoryView(viewModel:
-                                HistoryViewModel(dataManager: container.dataManager,
-                                                 settingsStore: container.settingsStore)
-                )
-            }
-            .tabItem {
-                Label("History", systemImage: "rectangle.grid.1x2.fill")
-                    .accessibilityIdentifier(ScreenIdentifier.TabBar.history.rawValue)
             }
         }
         .fullScreenCover(isPresented: $isRunFirstTime, onDismiss: {
@@ -59,7 +43,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(navigator: Navigator(Route.main))
             .environmentObject(Container())
     }
 }

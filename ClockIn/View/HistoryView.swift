@@ -15,6 +15,8 @@ struct HistoryView: View {
                     Ooops! Something went wrong,
                     or you never recorded time...
                     """
+    let deleteRowMessage: String = "Are you sure you want to delete this entry?"
+    let deleteRowIcon: String = "checkmark.circle"
     let headerFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM yyyy"
@@ -23,13 +25,10 @@ struct HistoryView: View {
     
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject private var container: Container
-    @StateObject private var viewModel: HistoryViewModel
-    @State private var selectedEntry: Entry? = nil
-    @State private var isShowingFiltering: Bool = false
-    
-    init(viewModel: HistoryViewModel) {
-        self._viewModel = StateObject.init(wrappedValue: viewModel)        
-    }
+    @ObservedObject var viewModel: HistoryViewModel
+    @Binding var selectedEntry: Entry?
+    @Binding var isShowingFiltering: Bool
+    @State var entryToBeDeleted: Entry?
     
     var body: some View {
         ZStack {
@@ -39,6 +38,7 @@ struct HistoryView: View {
             List {
                 makeListConent(viewModel.groupedEntries)
             } // END OF LIST
+            .listStyle(.insetGrouped)
             .emptyPlaceholder(viewModel.groupedEntries) {
                 emptyPlaceholderView
             }
@@ -55,13 +55,6 @@ struct HistoryView: View {
                     .presentationDetents([.fraction(0.4)])
             }
         } // END OF ZSTACK
-        .toolbar {
-            addEntryToolbar
-            filterToolbar
-            navigationToolbar
-        } // END OF TOOLBAR
-        .navigationTitle(navigationTitleText)
-        .navigationBarTitleDisplayMode(.inline)
     } // END OF BODY
 
     func makeSectionHeader(_ entry: Entry?) -> String {
@@ -71,18 +64,7 @@ struct HistoryView: View {
             return String()
         }
     }
-    
-    func makeTimeWorkedLabel(_ entry: Entry) -> String {
-        let sumWorkedInSec = entry.workTimeInSeconds + entry.overTimeInSeconds
-        let hours = sumWorkedInSec / 3600
-        let minutes = (sumWorkedInSec % 3600) / 60
-        
-        let hoursString = hours > 9 ? "\(hours)" : "0\(hours)"
-        let minutesString = minutes > 9 ? "\(minutes)" : "0\(minutes)"
-        
-        return "\(hoursString) hours \(minutesString) minutes"
-    }
-    
+
     func isLastEntry(_ entry: Entry) -> Bool {
         guard let lastEntry = viewModel.groupedEntries.last?.last else { return true }
         return lastEntry == entry
@@ -101,24 +83,33 @@ extension HistoryView {
     func makeListSection(_ entries: [Entry]) -> some View {
         Section(makeSectionHeader(entries.first)) {
             ForEach(entries) { entry in
-                VStack {
-                    HistoryRowViewPrototype(startDate: entry.startDate,
-                                            finishDate: entry.finishDate,
-                                            workTime: entry.worktimeFraction,
-                                            overTime: entry.overtimeFraction,
-                                            timeWorked: makeTimeWorkedLabel(entry))
-                    .accessibilityIdentifier(Identifier.entryRow.rawValue)
-                    .onLongPressGesture(perform: {
-                        selectedEntry = entry
-                    })
-                    .swipeActions {
-                        makeDeleteButton(entry)
-                        makeEditButton(entry)
-                    } // END OF SWIPE ACTIONS
+                if entry != entryToBeDeleted {
+                    HistoryRowView(withEntry: entry)
+                        .accessibilityIdentifier(Identifier.entryRow.rawValue)
+                        .onTapGesture {
+                            //required to scroll list and have long press gesture
+                        }
+                        .onLongPressGesture {
+                            selectedEntry = entry
+                        }
+                        .swipeActions {
+                            makeDeleteButton(entry)
+                            makeEditButton(entry)
+                        } // END OF SWIPE ACTIONS
+                } else {
+                    ConfirmDeleteRowView(deleteRowMessage,
+                                         iconSystemName: deleteRowIcon) {
+                        viewModel.deleteEntry(entry: entry)
+                    } cancelAction: {
+                        withAnimation {
+                            entryToBeDeleted = nil
+                        }
+                    }
+                    .zIndex(1)
+                }
                     if isLastEntry(entry) && viewModel.isMoreEntriesAvaliable {
                         lastRow
                     }
-                }
             }
         }
     }
@@ -126,10 +117,11 @@ extension HistoryView {
     @ViewBuilder
     func makeDeleteButton(_ entry: Entry) -> some View {
         Button {
-            viewModel.deleteEntry(entry: entry)
+            withAnimation {
+                entryToBeDeleted = entry
+            }
         } label: {
             Image(systemName: "xmark")
-//                .foregroundColor(.red)
         } // END OF BUTTON
         .accessibilityIdentifier(Identifier.deleteEntryButton.rawValue)
         .tint(.red)
@@ -141,7 +133,6 @@ extension HistoryView {
             selectedEntry = entry
         } label: {
             Image(systemName: "pencil")
-//                .foregroundColor(.gray)
         } // END OF BUTTON
         .accessibilityIdentifier(Identifier.editEntryButton.rawValue)
     }
@@ -168,41 +159,6 @@ extension HistoryView {
         }
     }
     
-    var addEntryToolbar: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            Button {
-                selectedEntry = Entry()
-            } label: {
-                Image(systemName: "plus.circle")
-            } // END OF BUTTON
-            .tint(.primary)
-            .accessibilityIdentifier(Identifier.addEntryButton.rawValue)
-        } // END OF TOOBAR ITEM
-    }
-    
-    var filterToolbar: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            Image(systemName: "line.3.horizontal.decrease.circle")
-                .onTapGesture {
-                    isShowingFiltering.toggle()
-                }
-        }
-    }
-    
-    var navigationToolbar: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            NavigationLink{
-                SettingsView(viewModel: SettingsViewModel(
-                    dataManger: container.dataManager,
-                    settingsStore: container.settingsStore)
-                )
-            } label: {
-                Label("Settings", systemImage: "gearshape.fill")
-            }
-            .tint(.primary)
-        }
-    }
-    
     var lastRow: some View {
         ZStack(alignment: .center) {
             switch viewModel.paginationState {
@@ -215,7 +171,9 @@ extension HistoryView {
             case .error:
                 Text("Something went wrong")
             }
+                
         }
+        .listRowBackground(Color.clear)
         .onAppear {
             viewModel.loadMoreItems()
         }
@@ -226,22 +184,29 @@ extension HistoryView {
     }
 }
 
-struct HistoryView_Previews: PreviewProvider {
-    private struct ContainerView: View {
+#Preview {
+    struct ContainerView: View {
         @StateObject private var container: Container = .init()
+        @State private var selectedEntry: Entry? = nil
+        @State private var filter: Bool = false
         var body: some View {
-            NavigationView {
                 HistoryView(viewModel:
                                 HistoryViewModel(
                                     dataManager: container.dataManager,
-                                    settingsStore: container.settingsStore
-                                )
+                                    settingsStore: container.settingsStore),
+                            selectedEntry: $selectedEntry,
+                            isShowingFiltering: $filter
                 )
-            }
+                .overlay(alignment: .topTrailing) {
+                        Image(systemName: "line.3.horizontal.decrease.circle")
+                            .font(.title)
+                            .padding(.trailing)
+                            .onTapGesture {
+                                filter.toggle()
+                            }
+                }
             .environmentObject(container)
         }
     }
-    static var previews: some View {
-        ContainerView()
-    }
+    return ContainerView()
 }

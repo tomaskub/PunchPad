@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ThemeKit
 
 struct EditSheetView: View {
     @Environment(\.colorScheme) var colorScheme
@@ -26,7 +27,6 @@ struct EditSheetView: View {
     let standardWorkTimeText = "Standard work time"
     let grossPayPerMonthText = "Gross pay per month"
     let calculateNetPayText = "Calculate net pay"
-    //MARK: DATE FORMATTER
     let dateComponentFormatter = FormatterFactory.makeDateComponentFormatter()
     
     
@@ -37,157 +37,49 @@ extension EditSheetView {
     var body: some View {
         ZStack {
             background
-            VStack {
-                HStack {
-                    title
-                    Spacer()
-                }
-                .padding(.top)
-                ScrollView {
-                    timeIndicator
-                        .padding(.bottom)
-                    HStack {
-                        regularTimeLabel
-                        Spacer()
-                        overtimeLabel
-                    }
-                    Divider()
-                    dateControls()
-                    Divider()
-                    overrideSettingsHeader
-                        .padding(.top)
-                    if isShowingOverrideControls {
-                        overrideControls
+            GeometryReader { proxy in
+                ScrollViewReader { scrollProxy in
+                    
+                    ScrollView {
+                        VStack {
+                            title
+                            infoSection
+                            divider
+                            dateControls
+                            divider
+                            overrideControls(scrollProxy)
+                            Spacer()
+                            editControls
+                        }
+                        .padding(.horizontal, 32)
+                        .frame(minHeight: proxy.size.height)
                     }
                 }
-                editControls
-                .padding(.top)
-            } // END OF VSTACK
-            .padding(.horizontal, 32)
+            }
+            .padding(.top)
         } // END OF ZSTACK
     } // END OF BODY
 }
 
-// MARK: VIEW BUILDERS & FUNCTIONS
-extension EditSheetView {
-    @ViewBuilder
-    private func dateControls() -> some View {
-        if !viewModel.shouldDisplayFullDates {
-            sameDayDateControls
-        } else {
-            diffDayDateControls
-        }
-    }
-    
-    private func generateTimeIntervalLabel(value: TimeInterval) -> String {
-        return dateComponentFormatter.string(from: value) ?? "00:00"
-    }
-}
-
-//MARK: OVERRIDE SETTINGS CONTROLS
-extension EditSheetView {
-    var overrideControls: some View {
-        Grid(alignment: .leading) {
-            
-            GridRow {
-                Text(maximumOvertimeText)
-                TimeIntervalPicker(buttonLabelText: generateTimeIntervalLabel(value: viewModel.currentMaximumOvertime),
-                                   value: $viewModel.currentMaximumOvertime
-                )
-            }
-            
-            GridRow {
-                Text(standardWorkTimeText)
-                TimeIntervalPicker(buttonLabelText: generateTimeIntervalLabel(value: viewModel.currentStandardWorkTime),
-                                   value: $viewModel.currentStandardWorkTime
-                )
-            }
-            
-            GridRow {
-                Text(grossPayPerMonthText)
-                TextField("PLN",
-                          value: $viewModel.grossPayPerMonth,
-                          format: .currency(code: "PLN"))
-                .textFieldStyle(.roundedBorder)
-            }
-            
-            Toggle(isOn: .constant(true)) {
-                Text(calculateNetPayText)
-            }
-            .padding(.trailing)
-        }
-    }
-}
-
-//MARK: DATE CONTROLS
-extension EditSheetView {
-    var diffDayDateControls: some View {
-        Group {
-            DatePicker(startDateText, selection: $viewModel.startDate)
-                .accessibilityIdentifier(Identifier.DatePicker.startDate.rawValue)
-            DatePicker(finishDateText, selection: $viewModel.finishDate)
-                .accessibilityIdentifier(Identifier.DatePicker.finishDate.rawValue)
-        }
-    }
-    
-    var sameDayDateControls: some View {
-        Group {
-            DatePicker(selection: $viewModel.startDate,
-                       displayedComponents: .date) {
-                Image(systemName: "calendar")
-            }
-                       .fixedSize()
-            HStack {
-                VStack(alignment: .leading) {
-                    Text(startDateText)
-                        .font(.caption)
-                    
-                    DatePicker(selection: $viewModel.startDate,
-                               in: PartialRangeThrough(viewModel.finishDate),
-                               displayedComponents: .hourAndMinute) {
-                        Image(systemName: "clock")
-                    }
-                               .fixedSize()
-                }
-                VStack(alignment: .leading) {
-                    Text(finishDateText)
-                        .font(.caption)
-                    DatePicker(selection: $viewModel.finishDate,
-                               in: PartialRangeFrom(viewModel.startDate),
-                               displayedComponents: .hourAndMinute) {
-                        Image(systemName: "clock")
-                    }
-                               .fixedSize()
-                }
-            }
-        }
-    }
-}
-
 //MARK: TIME INDICATOR & LABELS
 extension EditSheetView {
-    var timeIndicator: some View {
-        ZStack {
-            RingView(startPoint: 0,
-                     endPoint: viewModel.workTimeFraction,
-                     ringColor: .blue,
-                     ringWidth: 5,
-                     displayPointer: false
-            )
-            RingView(startPoint: 0,
-                     endPoint: viewModel.overTimeFraction,
-                     ringColor: .green,
-                     ringWidth: 5,
-                     displayPointer: false
-            )
-                .padding(10)
-            VStack {
-                Text(timeIndicatorText.uppercased())
-                    .font(.caption)
-                Text(generateTimeIntervalLabel(value: viewModel.totalTimeInSeconds))
-                    .font(.largeTitle)
+    var infoSection: some View {
+        Group {
+            timeIndicator
+                .padding(.bottom)
+            HStack {
+                regularTimeLabel
+                Spacer()
+                overtimeLabel
             }
-        }  // END OF ZSTACK
+        }
+    }
+    var timeIndicator: some View {
+        TimerIndicator(
+            timerLabel: generateTimeIntervalLabel(value: viewModel.totalTimeInSeconds),
+            firstProgress: viewModel.workTimeFraction,
+            secondProgress: viewModel.overTimeFraction,
+            useOnlyWorkLabel: true)
         .frame(width: 250, height: 250)
     }
     
@@ -208,69 +100,225 @@ extension EditSheetView {
                     .font(.caption)
             }
     }
+    
+    private func generateTimeIntervalLabel(value: TimeInterval) -> String {
+        return dateComponentFormatter.string(from: value) ?? "00:00"
+    }
 }
 
-//MARK: STATIC VIEW VAR
+//MARK: DATE CONTROLS
 extension EditSheetView {
-    var title: some View {
-        Text(titleText)
-            .font(.title)
-    }
-    
-    var overrideSettingsHeader: some View {
-        HStack {
-            Image(systemName: "chevron.down")
-                .onTapGesture {
-                    isShowingOverrideControls.toggle()
-                }
-            Text(overrideSettingsHeaderText)
-            Spacer()
+    @ViewBuilder
+    var dateControls: some View {
+        if !viewModel.shouldDisplayFullDates {
+            sameDayDateControls
+        } else {
+            diffDayDateControls
         }
     }
     
-    var background: some View {
-        BackgroundFactory.buildSolidColor(.gray.opacity(0.1))
+    var diffDayDateControls: some View {
+        Group {
+            CustomDatePickerContainer(labelText: startDateText) {
+                DatePicker(startDateText, selection: $viewModel.startDate)
+                    .labelsHidden()
+                    .accessibilityIdentifier(Identifier.DatePicker.startDate.rawValue)
+            } trailing: {
+                imageCalendar
+            }
+            .frame(height: 50)
+            .padding(.top)
+            
+            CustomDatePickerContainer(labelText: startDateText) {
+                DatePicker(finishDateText, selection: $viewModel.finishDate)
+                    .labelsHidden()
+                    .accessibilityIdentifier(Identifier.DatePicker.finishDate.rawValue)
+            } trailing: {
+                imageCalendar
+            }
+            .frame(height: 50)
+            .padding(.bottom)
+        }
+        
+    }
+    
+    var sameDayDateControls: some View {
+        Group {
+            CustomDatePickerContainer(labelText: nil) {
+                DatePicker(selection: $viewModel.startDate,
+                           displayedComponents: .date) {
+                    EmptyView()
+                }
+                           .labelsHidden()
+            } trailing: {
+                imageCalendar
+            }
+            .frame(height: 50)
+            .padding(.top)
+            HStack {
+                CustomDatePickerContainer(labelText: startDateText) {
+                    DatePicker(selection: $viewModel.startDate,
+                               in: PartialRangeThrough(viewModel.finishDate),
+                               displayedComponents: .hourAndMinute) {
+                        EmptyView()
+                    }
+                               .labelsHidden()
+                } trailing: {
+                    imageClock
+                }
+                .frame(height: 50)
+                CustomDatePickerContainer(labelText: finishDateText) {
+                    DatePicker(selection: $viewModel.finishDate,
+                               in: PartialRangeFrom(viewModel.startDate),
+                               displayedComponents: .hourAndMinute) {
+                        EmptyView()
+                    }
+                               .labelsHidden()
+                } trailing: {
+                    imageClock
+                }
+                .frame(height: 50)
+            }
+            .padding(.bottom)
+        }
+    }
+}
+
+//MARK: OVERRIDE SETTINGS CONTROLS
+extension EditSheetView {
+    @ViewBuilder
+    func overrideControls(_ proxy: ScrollViewProxy) -> some View {
+        overrideSettingsHeader(proxy)
+        if isShowingOverrideControls {
+            overrideContent
+        }
+         
+    }
+    
+    @ViewBuilder func overrideSettingsHeader(_ proxy: ScrollViewProxy) -> some View {
+        HStack {
+            Image(systemName: isShowingOverrideControls ? "chevron.up" : "chevron.down")
+                .foregroundColor(.theme.primary)
+                .fontWeight(.bold)
+                .onTapGesture {
+                    Task {
+                        let duration: TimeInterval = 0.1
+                        await animate(duration: duration, animation: .spring(duration: duration)) {
+                            isShowingOverrideControls.toggle()
+                        }
+                        
+                        await animate(duration: duration, animation: .spring(duration: duration)) {
+                            proxy.scrollTo("editControls", anchor: .top)
+                        }
+                    }
+                }
+            Text(overrideSettingsHeaderText)
+                .font(.system(size: 24))
+            Spacer()
+        }
+        .frame(height: 50)
+    }
+    
+    var overrideContent: some View {
+        Grid(alignment: .leading) {
+            divider
+            GridRow {
+                Text(maximumOvertimeText)
+                TimeIntervalPicker(buttonLabelText: generateTimeIntervalLabel(value: viewModel.currentMaximumOvertime),
+                                   value: $viewModel.currentMaximumOvertime
+                )
+            }
+            divider
+            GridRow {
+                Text(standardWorkTimeText)
+                TimeIntervalPicker(buttonLabelText: generateTimeIntervalLabel(value: viewModel.currentStandardWorkTime),
+                                   value: $viewModel.currentStandardWorkTime
+                )
+            }
+            divider
+            GridRow {
+                Text(grossPayPerMonthText)
+                TextField("PLN",
+                          value: $viewModel.grossPayPerMonth,
+                          format: .currency(code: "PLN"))
+                .textFieldStyle(.roundedBorder)
+                .foregroundColor(.black)
+            }
+            divider
+            Toggle(isOn: .constant(true)) {
+                Text(calculateNetPayText)
+             
+            }
+            .tint(.theme.primary)
+            .padding(.trailing)
+            divider
+        }
+        .foregroundStyle(Color.theme.blackLabel)
     }
 }
 
 //MARK: SAVE CONTROLS
 extension EditSheetView {
     var editControls: some View {
-        HStack {
-            Button {
-                dismiss()
-            } label: {
-                Text(cancelButtonText.uppercased())
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(width: 140, height: 38)
-                    .background {
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(.gray)
-                    } // END OF BACKGROUND
-            } // END OF BUTTON
-            .accessibilityIdentifier(Identifier.Button.cancel.rawValue)
-            Button {
-                viewModel.saveEntry()
-                dismiss()
-            } label: {
-                Text(saveButtonText.uppercased())
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(width: 140, height: 38)
-                    .background {
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(.blue)
-                    } // END OF BACKGROUND
-            } // END OF BUTTON
-            .accessibilityIdentifier(Identifier.Button.save.rawValue)
-        } // END OF HSTACK
+        Group {
+            HStack {
+                Button(cancelButtonText.uppercased()) {
+                    dismiss()
+                }
+                .buttonStyle(CancelButtonStyle())
+                .accessibilityIdentifier(Identifier.Button.cancel.rawValue)
+                
+                Button(saveButtonText.uppercased()) {
+                    viewModel.saveEntry()
+                    dismiss()
+                }
+                .buttonStyle(ConfirmButtonStyle())
+                .accessibilityIdentifier(Identifier.Button.save.rawValue)
+            } // END OF HSTACK
+            .id("editControls")
+        }
     }
 }
 
-struct EditSheetView_Previews: PreviewProvider {
-    private struct ContainerView: View {
+//MARK: VIEW COMPONENTS
+extension EditSheetView {
+    var title: some View {
+        HStack {
+            Text(titleText)
+                .font(.title)
+                .foregroundColor(.theme.black)
+            Spacer()
+        }
+        .padding(.top)
         
+    }
+    
+    var divider: some View {
+        VerticalDivider()
+            .stroke(style: .init(lineWidth: 1, dash: [2]))
+            .foregroundColor(.theme.primary)
+            .frame(height: 1)
+    }
+    
+    var imageClock: some View {
+        Image(systemName: "clock")
+            .font(.title)
+            .foregroundColor(.theme.primary)
+    }
+    
+    var imageCalendar: some View {
+        Image(systemName: "calendar")
+            .font(.title)
+            .foregroundColor(.theme.primary)
+    }
+    
+    var background: some View {
+        BackgroundFactory.buildSolidColor(.theme.white)
+    }
+}
+
+#Preview("Signle date controls") {
+    struct ContainerView: View {
         @StateObject private var container: Container = .init()
         private let entry: Entry = {
             let startOfDay = Calendar.current.startOfDay(for: Date())
@@ -280,8 +328,8 @@ struct EditSheetView_Previews: PreviewProvider {
                                                    to: startDate)!
             return Entry(startDate: startDate,
                          finishDate: finishDate,
-                         workTimeInSec: 8*3600,
-                         overTimeInSec: 3600 + 1800,
+                         workTimeInSec: 4*3600 + 20 * 60,
+                         overTimeInSec: 0,
                          maximumOvertimeAllowedInSeconds: 5*3600,
                          standardWorktimeInSeconds: 8*3600,
                          grossPayPerMonth: 10000,
@@ -301,7 +349,44 @@ struct EditSheetView_Previews: PreviewProvider {
             }
         }
     }
-    static var previews: some View {
-        ContainerView()
-    } // END OF PREVIEWS
+    
+    return ContainerView()
+    
+} // END OF PREVIEW
+
+#Preview("Two date controls") {
+    struct ContainerView: View {
+        @StateObject private var container: Container = .init()
+        private let entry: Entry = {
+            let startOfDay = Calendar.current.startOfDay(for: Date())
+            let startDate = Calendar.current.date(byAdding: .hour, value: 16, to: startOfDay)!
+            let finishDate = Calendar.current.date(byAdding: .minute,
+                                                   value: 9 * 60 + 30,
+                                                   to: startDate)!
+            return Entry(startDate: startDate,
+                         finishDate: finishDate,
+                         workTimeInSec: 4*3600,
+                         overTimeInSec: 0,//3600 + 1800,
+                         maximumOvertimeAllowedInSeconds: 5*3600,
+                         standardWorktimeInSeconds: 8*3600,
+                         grossPayPerMonth: 10000,
+                         calculatedNetPay: nil)
+        }()
+        var body: some View {
+            ZStack {
+                BackgroundFactory.buildSolidColor()
+            }
+            .sheet(isPresented: .constant(true)){
+                EditSheetView(viewModel:
+                                EditSheetViewModel(dataManager: container.dataManager,
+                                                   settingsStore: container.settingsStore,
+                                                   payService: container.payManager,
+                                                   entry: entry)
+                )
+            }
+        }
+    }
+    
+    return ContainerView()
+    
 } // END OF PREVIEW

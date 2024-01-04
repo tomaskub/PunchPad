@@ -42,4 +42,35 @@ extension View {
                                     )
         )
     }
+    
+    
+    /// Animate in sync within a task.
+    /// - Parameters:
+    ///   - duration: length before next animation within a task will start
+    ///   - animation: animation to be used when animating the view
+    ///   - execute: change to execute
+    /// Use case:
+    ///   .onTapGesture {
+    ///    Task {
+    ///        let duration: TimeInterval = 0.2
+    ///        await animate(duration: duration, animation: .spring(duration: duration)) {
+    ///            isShowingOverrideControls.toggle()
+    ///        }
+    ///
+    ///        await animate(duration: duration, animation: .spring(duration: duration)) {
+    ///            proxy.scrollTo("editControls", anchor: .top)
+    ///        }
+    ///     }
+    /// }
+    func animate(duration: TimeInterval, animation: Animation, _ execute: @escaping () -> Void) async {
+        await withCheckedContinuation { continuation in
+            withAnimation(animation) {
+                execute()
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
+                continuation.resume()
+            }
+        }
+    }
 }
+

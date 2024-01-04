@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ThemeKit
 
 struct TextFactory {
     @ViewBuilder
@@ -13,12 +14,6 @@ struct TextFactory {
         Text(text)
             .font(.largeTitle)
             .fontWeight(.semibold)
-            .overlay {
-                Capsule()
-                    .frame(height: 3)
-                    .offset(y: 20)
-                    .foregroundColor(.primary)
-            }
     }
     @ViewBuilder
     static func buildMultilineTitle(_ text: String) -> some View {
@@ -32,7 +27,14 @@ struct TextFactory {
     static func buildDescription(_ text: String) -> some View {
         Text(text)
             .fontWeight(.medium)
-            .foregroundColor(.primary)
+            .foregroundColor(.theme.blackLabel)
             .multilineTextAlignment(.center)
+    }
+    
+    @ViewBuilder
+    static func buildSectionHeader(_ text: String) -> some View {
+        Text(text)
+            .foregroundColor(.theme.primary)
+            .font(.system(size: 24, weight: .medium))
     }
 }

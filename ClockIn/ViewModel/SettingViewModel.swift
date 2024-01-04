@@ -17,7 +17,7 @@ class SettingsViewModel: ObservableObject {
     @Published var timerMinutes: Int
     @Published var overtimeHours: Int
     @Published var overtimeMinutes: Int
-    @Published var grossPayPerMonthText: String
+    @Published var grossPayPerMonth: Int
     
     init(dataManger: DataManager, settingsStore: SettingsStore) {
         self.dataManager = dataManger
@@ -26,7 +26,7 @@ class SettingsViewModel: ObservableObject {
         self.timerMinutes = (settingsStore.workTimeInSeconds % 3600) / 60
         self.overtimeHours = settingsStore.maximumOvertimeAllowedInSeconds / 3600
         self.overtimeMinutes = (settingsStore.maximumOvertimeAllowedInSeconds % 3600) / 60
-        self.grossPayPerMonthText = String(settingsStore.grossPayPerMonth)
+        self.grossPayPerMonth = settingsStore.grossPayPerMonth
         setSubscribers()
     }
     
@@ -74,11 +74,11 @@ class SettingsViewModel: ObservableObject {
             .receive(on: RunLoop.main)
             .filter { [weak self] newGross in
                 guard let self else { return false }
-                return String(newGross) != self.grossPayPerMonthText
+                return newGross != self.grossPayPerMonth
             }
             .sink { [weak self] newGross in
                 guard let self else { return }
-                self.grossPayPerMonthText = String(newGross)
+                self.grossPayPerMonth = newGross
             }.store(in: &subscriptions)
         
         settingsStore.$isSendingNotification
@@ -95,12 +95,9 @@ class SettingsViewModel: ObservableObject {
     }
     
     private func setGrossPayUISubscribers() {
-        $grossPayPerMonthText.sink { [weak self] value in
+        $grossPayPerMonth.sink { [weak self] value in
             guard let self else { return }
-            let filtered = value.filter({"0123456789".contains($0)})
-            if let newGross = Int(filtered) {
-                self.settingsStore.grossPayPerMonth = newGross
-            }
+            self.settingsStore.grossPayPerMonth = value
         }.store(in: &subscriptions)
     }
     

@@ -16,4 +16,19 @@ struct FormatterFactory {
         return formatter
     }
     
+    /// Returns `DateFormatter` with `dateStyle` set to `.none` and `timeStyle` set to `.short`
+    static func makeTimeFormatter() -> DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .none
+        formatter.timeStyle = .short
+        return formatter
+    }
+    
+    /// Returns `DateFormatter` with `dateStyle` set to `.medium` and `timeStyle` set to `.none`
+    static func makeDateFormatter() -> DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return formatter
+    }
 }

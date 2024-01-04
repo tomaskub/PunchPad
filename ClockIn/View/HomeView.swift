@@ -6,49 +6,52 @@
 //
 
 import SwiftUI
+import NavigationKit
+import ThemeKit
+import TabViewKit
+
+
 
 struct HomeView: View {
     private typealias Identifier = ScreenIdentifier.HomeView
     @Environment(\.colorScheme) var colorScheme
-    @StateObject private var viewModel: HomeViewModel
+    @ObservedObject var viewModel: HomeViewModel
     @EnvironmentObject private var container: Container
     let timerIndicatorFormatter = FormatterFactory.makeDateComponentFormatter()
-    let titleText: String = "ClockIn"
     let settingText: String = "Settings"
-    init(viewModel: HomeViewModel) {
-        self._viewModel = StateObject(wrappedValue: viewModel)
-    }
+    let bottomMessageText: String = "Start your work day!".capitalized
     
     var body: some View {
         ZStack {
             background
-            VStack(spacing: 64) {
-                timerIndicator
-                makeControls(viewModel.state)
-            } // END OF VSTACK
+            VStack{
+                VStack(spacing: 60) {
+                    TimerIndicator(
+                        timerLabel: formatTimeInterval(viewModel.timerDisplayValue),
+                        firstProgress: viewModel.normalProgress,
+                        secondProgress: viewModel.overtimeProgress
+                    )
+                    .frame(width: 260, height: 260)
+                    makeControls(viewModel.state)
+                } // END OF VSTACK
+                .frame(height: 480, alignment: .top)
+                
+                Text(bottomMessageText)
+                    .foregroundColor(.theme.white)
+                    .opacity(viewModel.state == .notStarted ? 1 : 0)
+                    .font(.system(size: 24))
+                    .frame(height: 50)
+                    .padding(.bottom, 34)
+            }
         } // END OF ZSTACK
-        .navigationTitle(titleText)
-        .toolbar { toolbar }
     } // END OF BODY
     
     var background: some View {
         BackgroundFactory.buildSolidColor()
     }
     
-    var toolbar: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            NavigationLink {
-                SettingsView(viewModel:
-                                SettingsViewModel(
-                                    dataManger: container.dataManager,
-                                    settingsStore: container.settingsStore
-                                ))
-            } label: {
-                Label(settingText, systemImage: "gearshape.fill")
-            } // END OF NAV LINK
-            .tint(.primary)
-            .accessibilityIdentifier(Identifier.settingNavigationButton.rawValue)
-        } // END OF TOOLBAR ITEM
+    func formatTimeInterval(_ value: TimeInterval) -> String {
+        return timerIndicatorFormatter.string(from: value) ?? "\(value)"
     }
 } // END OF VIEW
 
@@ -58,12 +61,12 @@ extension HomeView {
     func makeControls(_ state: TimerService.TimerServiceState) -> some View {
         switch state {
         case .running:
-            HStack(spacing: 50) {
+            HStack {
                 pauseButton
                 finishButton
             }
         case .paused:
-            HStack(spacing: 50) {
+            HStack {
                 resumeButton
                 finishButton
             }
@@ -76,11 +79,9 @@ extension HomeView {
         Button {
             viewModel.stopTimerService()
         } label: {
-            Image(systemName: "stop.fill")
-                .resizable()
-                .foregroundColor(.primary)
-                .frame(width: 50, height: 50)
+            makeSmallButtonLabel(systemName: "stop.fill")
         }
+        .buttonStyle(CircleButton())
         .accessibilityIdentifier(Identifier.finishButton.rawValue)
     }
     
@@ -88,81 +89,55 @@ extension HomeView {
         Button {
             viewModel.startTimerService()
         } label: {
-            Image(systemName: viewModel.state  == .running ? "pause.fill" : "play.fill")
-                .resizable()
+            makeLargeButtonLabel(systemName: "play.fill",
+                                 offset: CGSize(width: 6, height: 0)
+            )
         } // END OF BUTTON
+        .buttonStyle(CircleButton())
         .accessibilityIdentifier(Identifier.startButton.rawValue)
-        .accentColor(.primary)
-        .frame(width: 50, height: 50)
+        
     }
     
     var resumeButton: some View {
         Button {
             viewModel.resumeTimerService()
         } label: {
-            Image(systemName: "play.fill")
-                .resizable()
+            makeLargeButtonLabel(systemName: "play.fill")
         } // END OF BUTTON
+        .buttonStyle(CircleButton())
         .accessibilityIdentifier(Identifier.resumeButton.rawValue)
-        .accentColor(.primary)
-        .frame(width: 50, height: 50)
     }
     
     var pauseButton: some View {
         Button {
             viewModel.pauseTimerService()
         } label: {
-            Image(systemName: "pause.fill")
-                .resizable()
+            makeLargeButtonLabel(systemName: "pause.fill")
         } // END OF BUTTON
+        .buttonStyle(CircleButton())
         .accessibilityIdentifier(Identifier.pauseButton.rawValue)
-        .accentColor(.primary)
-        .frame(width: 50, height: 50)
-    }
-}
-
-// MARK: - TIMER INDICATORS
-extension HomeView {
-    var timerIndicator: some View {
-        ZStack {
-            timerLabel
-            worktimeProgressRing
-            if viewModel.overtimeProgress > 0 {
-                overtimeProgressRing
-            }
-        }
     }
     
-    var timerLabel: some View {
-        Text(formatTimeInterval(viewModel.timerDisplayValue))
-            .accessibilityIdentifier(Identifier.timerLabel.rawValue)
-            .foregroundColor(.primary)
-            .font(.largeTitle)
+    @ViewBuilder
+    func makeSmallButtonLabel(systemName: String, offset: CGSize? = nil) -> some View {
+        Image(systemName: systemName)
+            .resizable()
+            .frame(width: 40, height: 40)
+            .ifLet(offset, transform: { image, offset in
+                image.offset(offset)
+            })
+            .frame(width: 98, height: 98)
     }
     
-    var worktimeProgressRing: some View {
-        return RingView(startPoint: 0,
-                        endPoint: viewModel.normalProgress,
-                        ringColor: .primary,
-                        ringWidth: 5,
-                        displayPointer: false
-        )
-            .frame(width: UIScreen.main.bounds.size.width-120,
-                   height: UIScreen.main.bounds.size.width-120)
-    }
-    
-    var overtimeProgressRing: some View {
-            RingView(startPoint: 0,
-                     endPoint: viewModel.overtimeProgress,
-                     ringColor: .red,
-                     ringWidth: 5,
-                     displayPointer: false
-            )
-                .frame(width: UIScreen.main.bounds.size.width-120,
-                       height: UIScreen.main.bounds.size.width-120)
-    }
-    func formatTimeInterval(_ value: TimeInterval) -> String {
-        return timerIndicatorFormatter.string(from: value) ?? "\(value)"
+    @ViewBuilder
+    func makeLargeButtonLabel(systemName: String, offset: CGSize? = nil) -> some View {
+        Image(systemName: systemName)
+            .resizable()
+            .frame(width: 60, height: 60)
+            .ifLet(offset, transform: { image, offset in
+                image.offset(offset)
+            })
+            .frame(width: 160, height: 160)
     }
 }
 
@@ -170,16 +145,20 @@ extension HomeView {
 struct Home_Previews: PreviewProvider {
     private struct ContainerView: View {
         @StateObject private var container: Container = .init()
+        
         var body: some View {
-            NavigationView {
-                HomeView(viewModel: HomeViewModel(dataManager: container.dataManager,
-                                                  settingsStore: container.settingsStore,
-                                                  payManager: container.payManager,
-                                                  timerProvider: container.timerProvider))
-            }
+            HomeView(viewModel:
+                        HomeViewModel(
+                            dataManager: container.dataManager,
+                            settingsStore: container.settingsStore,
+                            payManager: container.payManager,
+                            timerProvider: container.timerProvider
+                        )
+            )
             .environmentObject(Container())
         }
     }
+    
     static var previews: some View {
         ContainerView()
     }

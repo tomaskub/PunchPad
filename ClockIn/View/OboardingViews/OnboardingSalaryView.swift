@@ -6,14 +6,17 @@
 //
 
 import SwiftUI
+import ThemeKit
 
 struct OnboardingSalaryView: View {
     let titleText: String = "Salary"
-    let description1Text: String = "To let ClockIn calculate the salary you need to enter your gross montly income"
-    let description2Text: String = "Do you want to allow ClockIn to calculate your net salary based on Polish tax law?"
+    let description1Text: String = "To let PunchPad calculate your salary you need to enter your gross montly income"
+    let description2Text: String = "Do you want to PunchPad to calculate your net salary based on Polish tax law?"
     let paycheckText: String = "Gross paycheck"
-    let currencyText: String = "PLN"
     let netSalaryToggleText: String = "Calculate net salary"
+    let localCurrencyCode: String = {
+        return Locale.current.currency?.identifier ?? "USD"
+    }()
     private typealias Identifier = ScreenIdentifier.OnboardingView
     @ObservedObject var viewModel: OnboardingViewModel
     
@@ -40,11 +43,13 @@ struct OnboardingSalaryView: View {
     var grossPaycheckTextField: some View {
         HStack {
             Text(paycheckText)
-            TextField("", text: $viewModel.grossPayPerMonthText)
+                .foregroundStyle(Color.theme.blackLabel)
+            
+            TextField("", value: $viewModel.grossPayPerMonthText, format: .currency(code: localCurrencyCode))
                 .accessibilityIdentifier(Identifier.TextFields.grossPaycheck.rawValue)
-                .textFieldStyle(.roundedBorder)
-                .keyboardType(.numberPad)
-            Text(currencyText)
+                .textFieldStyle(.greenBordered)
+                
+            
         }
         .padding()
         .background()
@@ -53,10 +58,12 @@ struct OnboardingSalaryView: View {
     var netSalaryToggle: some View {
         Toggle(netSalaryToggleText,
                isOn: $viewModel.settingsStore.isCalculatingNetPay)
-            .accessibilityIdentifier(Identifier.Toggles.calculateNetSalary.rawValue)
-            .padding()
-            .background()
-            .cornerRadius(20)
+        .foregroundColor(.theme.blackLabel)
+        .tint(.theme.primary)
+        .accessibilityIdentifier(Identifier.Toggles.calculateNetSalary.rawValue)
+        .padding()
+        .background()
+        .cornerRadius(20)
     }
 }
 
@@ -74,11 +81,14 @@ struct OnboardingSalary_Preview: PreviewProvider {
         
         var body: some View {
             ZStack {
-                BackgroundFactory.buildGradient(colorScheme: colorScheme)
+                BackgroundFactory.buildSolidColor()
                 OnboardingSalaryView(viewModel: vm)
                 VStack {
                     Spacer()
-                    ButtonFactory.build(labelText: "Preview button")
+                    Button("Preview button") {
+                        
+                    }
+                    .buttonStyle(.confirming)
                         .padding(30)
                 }
             }

@@ -7,25 +7,16 @@
 
 import SwiftUI
 import Charts
-enum ChartTimeRange: String, Identifiable, CaseIterable {
-    var id: ChartTimeRange { self }
-    case week, month, year, all
-}
 
 struct StatisticsView: View {
     private typealias Identifier = ScreenIdentifier.StatisticsView
-    
     //MARK: PROPERTIES
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var container: Container
-    @StateObject private var viewModel: StatisticsViewModel
+    @ObservedObject var viewModel: StatisticsViewModel
     
-    let navTitleText: String = "Statistics"
     let salaryCalculationHeaderText: String = "Salary calculation"
     let chartTitleText: String = "time worked"
-    init(viewModel: StatisticsViewModel) {
-        self._viewModel = StateObject(wrappedValue: viewModel)
-    }
     
     //MARK: VIEW BODY
     var body: some View {
@@ -33,16 +24,20 @@ struct StatisticsView: View {
             background
             // CONTENT LAYER
             List {
+                
+                ChartTimeRangePicker(pickerSelection: $viewModel.chartTimeRange)
+                    .padding(.horizontal, -20)
+                    .listRowBackground(Color.clear)
+                
                 Section {
-                    ChartTimeRangePicker(pickerSelection: $viewModel.chartTimeRange)
-                    
                     VStack(alignment: .leading) {
                         hoursCount
                         displayedChartRange
                     }
                     chart
+                        .frame(height: 260)
                         .gesture(DragGesture()
-                            .onEnded({ value in
+                            .onEnded { value in
                                 switch detectDirection(value: value) {
                                 case .left:
                                     viewModel.loadPreviousPeriod()
@@ -51,11 +46,8 @@ struct StatisticsView: View {
                                 default:
                                     break
                                 }
-                            }))
-                        
-                } header: {
-                    sectionHeader(chartTitleText)
-                        .accessibilityIdentifier(Identifier.SectionHeaders.chart.rawValue)
+                            }
+                        )
                 }//END OF SECTION
                 .listRowSeparator(.hidden)
                 
@@ -65,13 +57,12 @@ struct StatisticsView: View {
                     } // END OF IF
                      grossSalaryData
                 } header: {
-                    sectionHeader(salaryCalculationHeaderText)
+                    TextFactory.buildSectionHeader(salaryCalculationHeaderText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.salaryCalculation.rawValue)
                 }// END OF SECTION
             } //END OF LIST
+            .shadow(color: .black.opacity(0.1), radius: 10, y: 4)
             .scrollContentBackground(.hidden)
-            .navigationTitle(navTitleText)
-            .toolbar { toolbar }
         } // END OF ZSTACK
     } //END OF VIEW
 }
@@ -104,32 +95,28 @@ extension StatisticsView {
     var background: some View {
         BackgroundFactory.buildSolidColor()
     }
-//TODO: FIX THE ISSUE WITH NAV LINK NOT WORKING
-    var toolbar: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            NavigationLink {
-                            SettingsView(viewModel: SettingsViewModel(
-                                dataManger: container.dataManager,
-                                settingsStore: container.settingsStore))
-            } label: {
-                Label("Settings", systemImage: "gearshape.fill")
-            } // END OF NAV LINK
-            .tint(.primary)
-        } // END OF TOOLBAR ITEM
-    }
-    
-    @ViewBuilder
-    func sectionHeader(_ text: String) -> some View {
-        Text(text)
-            .bold()
-            .foregroundColor(.primary)
-    }
 }
 
 //MARK: CHART VIEW BUILDERS & VARIABLES
 extension StatisticsView {
     private struct ChartTimeRangePicker: View {
         @Binding var pickerSelection: ChartTimeRange
+        
+        init(pickerSelection: Binding<ChartTimeRange>) {
+            self._pickerSelection = pickerSelection
+            UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(Color.theme.white)
+            
+            UISegmentedControl.appearance().setTitleTextAttributes(
+                [.foregroundColor: UIColor(Color.theme.primary)],
+                for: .selected
+            )
+            
+            UISegmentedControl.appearance().setTitleTextAttributes(
+                [.foregroundColor: UIColor(Color.theme.white)], 
+                for: .normal
+            )
+        }
+        
         var body: some View {
             Picker(String(), selection: $pickerSelection) {
                 ForEach(ChartTimeRange.allCases) { range in
@@ -141,8 +128,21 @@ extension StatisticsView {
     
     @ViewBuilder
     var chart: some View {
-            ChartFactory.buildBarChart(entries: viewModel.entriesForChart, includeRuleMark: false)
+        switch viewModel.chartTimeRange {
+        case .week, .month:
+            ChartFactory.buildBarChart(entries: viewModel.entriesForChart,
+                                       firstColor: .theme.primary,
+                                       secondColor: .theme.redChart
+            )
+        case .year, .all:
+            ChartFactory.buildBarChartForYear(
+                data: viewModel.createMonthlySummary(entries: viewModel.entriesForChart),
+                firstColor: .theme.primary,
+                secondColor: .theme.redChart
+            )
+        }
     } // END OF VAR
+    
     func makeChartRangeString(for period: Period) -> String {
         let periodEndMonth = Calendar.current.dateComponents([.month], from: period.1)
         let periodEndYear = Calendar.current.dateComponents([.year], from: period.1)
@@ -153,43 +153,40 @@ extension StatisticsView {
         }
         let isSameYear = Calendar.current.date(period.0, matchesComponents: periodEndYear)
         if isSameYear {
-            let startDate = Calendar.current.dateComponents([.day, .month], from: period.0)
             let startString = String(period.0.formatted(date: .abbreviated, time: .omitted).dropLast(5))
             return startString + " - " + period.1.formatted(date: .abbreviated, time: .omitted)
         }
         return period.0.formatted(date: .abbreviated, time: .omitted) + " - " + period.1.formatted(date: .abbreviated, time: .omitted)
     }
+    
     var displayedChartRange: some View {
         Text(makeChartRangeString(for: viewModel.periodDisplayed))
             .foregroundStyle(.secondary)
             .font(.caption)
     }
+    
     var hoursCount: some View {
-        HStack(alignment: .bottom, spacing: 16) {
-            VStack(alignment: .leading ) {
-                Text("worked".uppercased())
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                HStack(alignment: .bottom, spacing: 0) {
+        HStack {
+                HStack(spacing: 8) {
                     Text(String(viewModel.workedHoursInPeriod))
                         .font(.title)
-                    Text("hours")
+                    Text("hours worked")
                         .foregroundColor(.secondary)
                         .font(.caption)
                 }
-            }
-            VStack(alignment: .leading ) {
-                Text("overtime".uppercased())
+            Spacer()
+            HStack(spacing: 8) {
+                Text(String(viewModel.overtimeHoursInPeriod))
+                    .font(.title)
+                Text("hours overtime")
+                    .foregroundColor(.secondary)
                     .font(.caption)
-                    .foregroundStyle(.secondary)
-                HStack(alignment: .bottom, spacing: 0) {
-                    Text(String(viewModel.overtimeHoursInPeriod))
-                        .font(.title)
-                    Text("hours")
-                        .foregroundColor(.secondary)
-                        .font(.caption)
-                }
             }
+            Spacer()
+            Image(systemName: "calendar")
+                .opacity(0)
+                .foregroundColor(.theme.primary)
+                .font(.title)
         }
     }
 }
@@ -198,42 +195,47 @@ extension StatisticsView {
 extension StatisticsView {
     var netSalaryData: some View {
         ForEach(viewModel.salaryListDataNetPay, id: \.0) { data in
-            generateRow(label: data.0, value: data.1)
+            SalaryListRowView(propertyName: data.0,
+                              propertyValue: data.1)
         } // END OF FOR EACH
     }
     var grossSalaryData: some View {
         ForEach(viewModel.salaryListDataGrossPay, id: \.0) { data in
-            generateRow(label: data.0, value: data.1)
+            SalaryListRowView(propertyName: data.0,
+                              propertyValue: data.1)
         }
     }
-    @ViewBuilder
-    func generateRow(label: String, value: String) -> some View {
-        VStack(alignment: .leading) {
-            Text(label)
-                .foregroundStyle(.secondary)
-                .font(.caption)
-            Text(value)
-        } // END OF HSTACK
+    
+    private struct SalaryListRowView: View {
+        let propertyName: String
+        let propertyValue: String
+        
+        var body: some View {
+            HStack {
+                Text(propertyName)
+                    .foregroundColor(.theme.blackLabel)
+                    .font(.system(size: 16))
+                Spacer()
+                Text(propertyValue)
+                    .foregroundColor(.theme.primary)
+                    .font(.system(size: 20))
+            }
+        }
     }
 }
 
-//MARK: PREVIEW
-struct StatisticsView_Previews: PreviewProvider {
-    private struct ContainerView: View {
-        @StateObject private var container = Container()
+#Preview {
+    struct Preview: View {
+        @State private var container = Container()
         var body: some View {
-            NavigationView {
-                StatisticsView(viewModel:
-                                StatisticsViewModel(
-                                    dataManager: container.dataManager,
-                                    payManager: container.payManager,
-                                    settingsStore: container.settingsStore)
-                               )
-            }
+            StatisticsView(viewModel:
+                            StatisticsViewModel(
+                                dataManager: container.dataManager,
+                                payManager: container.payManager,
+                                settingsStore: container.settingsStore)
+            )
             .environmentObject(container)
         }
     }
-    static var previews: some View {
-        ContainerView()
-    }
+    return Preview()
 }

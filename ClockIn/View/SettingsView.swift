@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import NavigationKit
 
 struct SettingsView: View {
     private typealias Identifier = ScreenIdentifier.SettingsView
@@ -18,7 +19,6 @@ struct SettingsView: View {
         self._viewModel = StateObject.init(wrappedValue: viewModel)
     }
     
-    // MARK: TEXT PROPERTIES
     let navigationTitleText: String = "Settings"
     let hoursPickerText: String = "Hours"
     let minutesPickerText: String = "Minutes"
@@ -34,6 +34,7 @@ struct SettingsView: View {
     let colorSchemeLightText: String = "Light"
     let colorSchemeSystemText: String = "System"
     let currencyText: String = "PLN"
+    let notificationsText: String = "Send notification on finish"
     // header texts
     let timerSettingsHeaderText: String = "Timer settings"
     let overtimeSettingsHeaderText: String = "Overtime"
@@ -41,7 +42,14 @@ struct SettingsView: View {
     let userDataSettingsText: String = "User data"
     let appearanceText: String = "Appearance"
     
-    // MARK: BODY
+    var currencyCode: String {
+        let locale = Locale.current
+        return locale.currencySymbol ?? "PLN"
+    }
+}
+
+// MARK: BODY
+extension SettingsView {
     var body: some View {
         ZStack{
             //BACKGROUND
@@ -49,131 +57,164 @@ struct SettingsView: View {
             //CONTENT
             List {
                 Section {
-                    makeChevronListButton(timerLengthButtonText,
-                                          chevronOrientation: isShowingWorkTimeEditor,
-                                          accessibilityIdentifier: Identifier.ExpandableCells.setTimerLength.rawValue) {
-                        withAnimation(.spring()) {
-                            isShowingWorkTimeEditor.toggle()
-                        }
-                    }
-                    if isShowingWorkTimeEditor {
-                        makePickerRow(hours: $viewModel.timerHours,
-                                      minutes: $viewModel.timerMinutes,
-                                      hoursAccessibilityIdentifier: Identifier.Pickers.timeHoursPicker.rawValue,
-                                      minutesAccessibilityIdentifier: Identifier.Pickers.timeMinutesPicker.rawValue
-                        )
-                    } // END OF IF
+                    timerSettings
                     
-                    Toggle(isOn: $viewModel.settingsStore.isSendingNotification) {
-                        Text("Send notification on finish")
-                    } // END OF TOGGLE
-                    .accessibilityIdentifier(Identifier.ToggableCells.sendNotificationsOnFinish.rawValue)
+                    makeToggleRow(notificationsText,
+                                  isOn: $viewModel.settingsStore.isSendingNotification,
+                                  identifier: .sendNotificationsOnFinish
+                    )
                 } header: {
-                    makeHeader(timerSettingsHeaderText)
+                    TextFactory.buildSectionHeader(timerSettingsHeaderText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.timerSettings.rawValue)
                 } // END OF SECTION
                 Section {
-                    
-                    Toggle(isOn: $viewModel.settingsStore.isLoggingOvertime) {
-                        Text("Keep loging overtime")
-                    }
-                    .accessibilityIdentifier(Identifier.ToggableCells.keepLoggingOvertime.rawValue)
-                    
-                    makeChevronListButton(overtimeLengthButtonText,
-                                          chevronOrientation: isShowingOvertimeEditor,
-                                          accessibilityIdentifier: Identifier.ExpandableCells.setOvertimeLength.rawValue) {
-                        withAnimation(.spring()) {
-                            isShowingOvertimeEditor.toggle()
-                        }
-                    }
-                    
-                    if isShowingOvertimeEditor {
-                        makePickerRow(hours: $viewModel.overtimeHours,
-                                      minutes: $viewModel.overtimeMinutes,
-                                      hoursAccessibilityIdentifier: Identifier.Pickers.overtimeHoursPicker.rawValue,
-                                      minutesAccessibilityIdentifier: Identifier.Pickers.overtimeMinutesPicker.rawValue
-                        )
-                    }
+                    makeToggleRow(keepLogingOvertimeText,
+                                  isOn: $viewModel.settingsStore.isLoggingOvertime,
+                                  identifier: .keepLoggingOvertime
+                    )
+                    overtimeSettings
                 } header: {
-                    makeHeader(overtimeSettingsHeaderText)
+                    TextFactory.buildSectionHeader(overtimeSettingsHeaderText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.overtimeSettings.rawValue)
                 } // END OF SECTION
+                
                 Section {
-                    HStack {
-                        Text(grossPaycheckText)
-                        TextField(String(), text: $viewModel.grossPayPerMonthText)
-                            .accessibilityIdentifier(Identifier.TextFields.grossPay.rawValue)
-                            .textFieldStyle(.roundedBorder)
-                            .keyboardType(.numberPad)
-                        Text(currencyText)
-                    }
-                    Toggle(calculateNetPayText, isOn: $viewModel.settingsStore.isCalculatingNetPay)
-                        .accessibilityIdentifier(Identifier.ToggableCells.calculateNetPay.rawValue)
+                    grossPaycheckRow
+                    
+                    makeToggleRow(calculateNetPayText, isOn: $viewModel.settingsStore.isCalculatingNetPay,
+                                  identifier: .calculateNetPay
+                    )
                 } header: {
-                    makeHeader(paycheckSettingsText)
+                    TextFactory.buildSectionHeader(paycheckSettingsText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.paycheckCalculation.rawValue)
                 } // END OF SECTION
+                
                 Section {
-                    makeListButton(clearDataText,
-                                   systemName: "trash",
-                                   iconForegroundColor: .red,
-                                   accessibilityIdentifier: Identifier.ButtonCells.clearAllSavedData.rawValue) {
-                        viewModel.deleteAllData()
-                    }
-                    makeListButton(resetPreferencesText,
-                                   systemName: "arrow.counterclockwise",
-                                   iconForegroundColor: .red,
-                                   accessibilityIdentifier: Identifier.ButtonCells.resetPreferences.rawValue) {
-                        viewModel.resetUserDefaults()
-                    }
+                    clearDataButton
+                    resetPreferencesButton
                 } header: {
-                    makeHeader("User data")
+                    TextFactory.buildSectionHeader(userDataSettingsText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.userData.rawValue)
                 } // END OF SECTION
-                Section {
-                    VStack{
-                        Text(colorSchemeText)
-                        Picker("appearance", selection: $viewModel.settingsStore.savedColorScheme) {
-                            Text(colorSchemeSystemText)
-                                .tag(nil as ColorScheme?)
-                                .accessibilityIdentifier(Identifier.SegmentedControlButtons.system.rawValue)
-                            Text(colorSchemeDarkText)
-                                .tag(ColorScheme.dark)
-                                .accessibilityIdentifier(Identifier.SegmentedControlButtons.dark.rawValue)
-                            Text(colorSchemeLightText)
-                                .tag(ColorScheme.light)
-                                .accessibilityIdentifier(Identifier.SegmentedControlButtons.light.rawValue)
-                        } // END OF PICKER
-                        .accessibilityIdentifier(Identifier.Pickers.appearancePicker.rawValue)
-                        .pickerStyle(.segmented)
-                    } // END OF VSTACK
-                } header: {
-                    makeHeader(appearanceText)
-                        .accessibilityIdentifier(Identifier.SectionHeaders.appearance.rawValue)
-                } // END OF SECTION
+                
+//                appearanceSection
             } // END OF LIST
             .scrollContentBackground(.hidden)
+            .listRowSeparatorTint(.theme.primary)
             
         } // END OF ZSTACK
-        .navigationTitle(navigationTitleText)
+        .navigationBarTitle("Settings")
     } // END OF BODY
-    var background: some View {
-        BackgroundFactory.buildSolidColor()
-            .opacity(0.5)
+    
+    var timerSettings: some View {
+        Group {
+            makeChevronListButton(timerLengthButtonText,
+                                  chevronOrientation: isShowingWorkTimeEditor,
+                                  accessibilityIdentifier: .setTimerLength) {
+                withAnimation(.spring()) {
+                    isShowingWorkTimeEditor.toggle()
+                }
+            }
+            if isShowingWorkTimeEditor {
+                makePickerRow(hours: $viewModel.timerHours,
+                              minutes: $viewModel.timerMinutes,
+                              hoursAccessibilityIdentifier: .timeHoursPicker,
+                              minutesAccessibilityIdentifier: .timeMinutesPicker
+                )
+            } // END OF IF
+        }
     }
+    
+    var overtimeSettings: some View {
+        Group {
+            makeChevronListButton(overtimeLengthButtonText,
+                                  chevronOrientation: isShowingOvertimeEditor,
+                                  accessibilityIdentifier: .setOvertimeLength) {
+                withAnimation(.spring()) {
+                    isShowingOvertimeEditor.toggle()
+                }
+            }
+            if isShowingOvertimeEditor {
+                makePickerRow(hours: $viewModel.overtimeHours,
+                              minutes: $viewModel.overtimeMinutes,
+                              hoursAccessibilityIdentifier: .overtimeHoursPicker,
+                              minutesAccessibilityIdentifier: .overtimeMinutesPicker
+                )
+            }
+        }
+    }
+    
+    var grossPaycheckRow: some View {
+        HStack {
+            Text(grossPaycheckText)
+                .foregroundStyle(Color.theme.blackLabel)
+            TextField(String(),
+                      value: $viewModel.grossPayPerMonth,
+                      format: .currency(code: currencyCode)
+            )
+            .textFieldStyle(.greenBordered)
+        }
+    }
+    
+    var clearDataButton: some View {
+        makeListButton(clearDataText,
+                       systemName: "trash",
+                       iconForegroundColor: .theme.redLabel,
+                       accessibilityIdentifier: Identifier.ButtonCells.clearAllSavedData.rawValue) {
+            viewModel.deleteAllData()
+        }
+    }
+    
+    var resetPreferencesButton: some View {
+        makeListButton(resetPreferencesText,
+                       systemName: "arrow.counterclockwise",
+                       iconForegroundColor: .theme.redLabel,
+                       accessibilityIdentifier: Identifier.ButtonCells.resetPreferences.rawValue) {
+            viewModel.resetUserDefaults()
+        }
+
+    }
+    
+    //Removed color scheme section - crashes the app and right now colors are not supported
+    /*
+    var appearanceSection: some View {
+        Section {
+            VStack{
+                Text(colorSchemeText)
+                Picker("appearance", selection: $viewModel.settingsStore.savedColorScheme) {
+                    Text(colorSchemeSystemText)
+                        .tag(nil as ColorScheme?)
+                        .accessibilityIdentifier(Identifier.SegmentedControlButtons.system.rawValue)
+                    Text(colorSchemeDarkText)
+                        .tag(ColorScheme.dark)
+                        .accessibilityIdentifier(Identifier.SegmentedControlButtons.dark.rawValue)
+                    Text(colorSchemeLightText)
+                        .tag(ColorScheme.light)
+                        .accessibilityIdentifier(Identifier.SegmentedControlButtons.light.rawValue)
+                } // END OF PICKER
+                .accessibilityIdentifier(Identifier.Pickers.appearancePicker.rawValue)
+                .pickerStyle(.segmented)
+            } // END OF VSTACK
+        } header: {
+            TextFactory.buildSectionHeader(appearanceText)
+                .accessibilityIdentifier(Identifier.SectionHeaders.appearance.rawValue)
+        } // END OF SECTION
+         */
 }
+
 // MARK: VIEWBUILDERS
 extension SettingsView {
     @ViewBuilder
-    private func makeChevronListButton(_ text: String, chevronOrientation: Bool, accessibilityIdentifier: String? = nil, onTap: @escaping () -> Void) -> some View {
+    private func makeChevronListButton(_ text: String, chevronOrientation: Bool, accessibilityIdentifier: Identifier.ExpandableCells? = nil, onTap: @escaping () -> Void) -> some View {
         HStack {
             Text(text)
+                .foregroundStyle(Color.theme.blackLabel)
             Spacer()
             Image(systemName: chevronOrientation ? "chevron.up" : "chevron.down")
         } // END OF HSTACK
         .contentShape(Rectangle())
         .ifLet(accessibilityIdentifier) { view, identifier in
-            view.accessibilityIdentifier(identifier)
+            view.accessibilityIdentifier(identifier.rawValue)
         }
         .onTapGesture {
             onTap()
@@ -183,6 +224,7 @@ extension SettingsView {
     private func makeListButton(_ text: String, systemName: String, iconForegroundColor: Color? = nil, accessibilityIdentifier: String? = nil, onTap: @escaping () -> Void) -> some View {
         HStack {
             Text(text)
+                .foregroundStyle(Color.theme.blackLabel)
             Spacer()
             Image(systemName: systemName)
                 .ifLet(iconForegroundColor) { image, color in
@@ -197,52 +239,66 @@ extension SettingsView {
             onTap()
         } // END OF TAP GESTURE
     }
-    @ViewBuilder
-    private func makeHeader(_ text: String) -> some View {
-        Text(text.uppercased())
-            .foregroundColor(.primary)
-    }
     
     @ViewBuilder
-    private func makePickerRow(hours: Binding<Int>, minutes: Binding<Int>, hoursAccessibilityIdentifier: String? = nil, minutesAccessibilityIdentifier: String? = nil) -> some View {
+    private func makeToggleRow(_ text: String, isOn value: Binding<Bool>, identifier: Identifier.ToggableCells) -> some View {
+        Toggle(text, isOn: value)
+            .foregroundStyle(Color.theme.blackLabel)
+            .tint(.theme.primary)
+            .accessibilityIdentifier(identifier.rawValue)
+    }
+    
+    
+    @ViewBuilder
+    private func makePickerRow(hours: Binding<Int>, minutes: Binding<Int>, hoursAccessibilityIdentifier: Identifier.Pickers? = nil, minutesAccessibilityIdentifier: Identifier.Pickers? = nil) -> some View {
         HStack {
             VStack {
                 Text(hoursPickerText)
+                    .foregroundColor(.theme.primary)
+                
                 Picker(hoursPickerText, selection: hours) {
                     ForEach(0..<25) { i in
                         Text("\(i)").tag(i)
+                            .foregroundColor(.theme.primary)
                     }
                 }
                 .pickerStyle(.wheel)
                 .ifLet(hoursAccessibilityIdentifier) { picker, identifier in
                     picker
-                        .accessibilityIdentifier(identifier)
+                        .accessibilityIdentifier(identifier.rawValue)
                 }
             }
             VStack {
                 Text(minutesPickerText)
+                    .foregroundColor(.theme.primary)
+                
                 Picker(minutesPickerText, selection: minutes) {
                     ForEach(0..<60) { i in
                         Text("\(i)").tag(i)
+                            .foregroundColor(.theme.primary)
                     }
                 }
                 .pickerStyle(.wheel)
                 .ifLet(minutesAccessibilityIdentifier) { picker, identifier in
                     picker
-                        .accessibilityIdentifier(identifier)
+                        .accessibilityIdentifier(identifier.rawValue)
                 }
             }
         }
     }
 }
 
+//MARK: VIEW COMPONENTS
+extension SettingsView {
+    var background: some View {
+        BackgroundFactory.buildSolidColor(.theme.tertiary)
+    }
+}
 struct SettingsView_Previews: PreviewProvider {
     private struct ContainerView: View {
         @StateObject private var container = Container()
         var body: some View {
-            NavigationView {
                 SettingsView(viewModel: SettingsViewModel(dataManger: container.dataManager, settingsStore: container.settingsStore))
-            }
         }
     }
     static var previews: some View {
