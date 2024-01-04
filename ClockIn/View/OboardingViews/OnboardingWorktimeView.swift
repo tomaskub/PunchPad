@@ -10,7 +10,7 @@ import SwiftUI
 struct OnboardingWorktimeView: View {
     
     let titleText: String = "Workday"
-    let descriptionText: String = "ClockIn needs to know what is your normal workday length to let you know when you are done or when you enter into overtime"
+    let descriptionText: String = "PunchPad needs to know your normal workday length to let you know when you are done or when you enter into overtime"
     let hoursPickerLabel: String = "Hours"
     let minutesPickerLabel: String = "Minutes"
     
@@ -24,10 +24,13 @@ struct OnboardingWorktimeView: View {
             HStack {
                 VStack {
                     Text(hoursPickerLabel)
-                    Picker(hoursPickerLabel, 
+                        .foregroundColor(.theme.primary)
+                    Picker(hoursPickerLabel,
                            selection: $viewModel.hoursWorking) {
                         ForEach(0..<25){ i in
-                            Text("\(i)").tag(i)
+                            Text("\(i)")
+                                .foregroundColor(.theme.primary)
+                                .tag(i)
                         }
                     } // END OF PICKER
                     .accessibilityIdentifier(Identifier.Pickers.workingHours.rawValue)
@@ -35,19 +38,23 @@ struct OnboardingWorktimeView: View {
                 } // END OF VSTACK
                 VStack {
                     Text(minutesPickerLabel)
+                        .foregroundColor(.theme.primary)
                     Picker(minutesPickerLabel,
                            selection: $viewModel.minutesWorking) {
                         ForEach(0..<60) { i in
-                            Text("\(i)").tag(i)
+                            Text("\(i)")
+                                .foregroundColor(.theme.primary)
+                                .tag(i)
                         }
                     } // END OF PICKER
                     .accessibilityIdentifier(Identifier.Pickers.workingMinutes.rawValue)
                     .pickerStyle(.wheel)
                 } // END OF VSTACK
             } // END OF HSTACK
+
             .padding()
             .padding(.top)
-            .background(Color.primary.colorInvert())
+            .background(Color.theme.white)
             .cornerRadius(20)
         } // END OF VSTACK
         .padding(30)
@@ -77,11 +84,14 @@ struct OnbardingWorktime_Previews: PreviewProvider {
         
         var body: some View {
             ZStack {
-                BackgroundFactory.buildGradient(colorScheme: colorScheme)
+                BackgroundFactory.buildSolidColor()
                 OnboardingWorktimeView(viewModel: vm)
                 VStack {
                     Spacer()
-                    ButtonFactory.build(labelText: "Preview button")
+                    Button("Preview button") {
+                        
+                    }
+                    .buttonStyle(.confirming)
                 } // END OF VSTACK
                 .padding(30)
             } // END OF ZSTACK
