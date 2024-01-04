@@ -15,6 +15,8 @@ struct HistoryView: View {
                     Ooops! Something went wrong,
                     or you never recorded time...
                     """
+    let deleteRowMessage: String = "Are you sure you want to delete this entry?"
+    let deleteRowIcon: String = "checkmark.circle"
     let headerFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM yyyy"
@@ -26,6 +28,7 @@ struct HistoryView: View {
     @ObservedObject var viewModel: HistoryViewModel
     @Binding var selectedEntry: Entry?
     @Binding var isShowingFiltering: Bool
+    @State var entryToBeDeleted: Entry?
     
     var body: some View {
         ZStack {
@@ -80,6 +83,7 @@ extension HistoryView {
     func makeListSection(_ entries: [Entry]) -> some View {
         Section(makeSectionHeader(entries.first)) {
             ForEach(entries) { entry in
+                if entry != entryToBeDeleted {
                     HistoryRowView(withEntry: entry)
                         .accessibilityIdentifier(Identifier.entryRow.rawValue)
                         .onTapGesture {
@@ -92,6 +96,17 @@ extension HistoryView {
                             makeDeleteButton(entry)
                             makeEditButton(entry)
                         } // END OF SWIPE ACTIONS
+                } else {
+                    ConfirmDeleteRowView(deleteRowMessage,
+                                         iconSystemName: deleteRowIcon) {
+                        viewModel.deleteEntry(entry: entry)
+                    } cancelAction: {
+                        withAnimation {
+                            entryToBeDeleted = nil
+                        }
+                    }
+                    .zIndex(1)
+                }
                     if isLastEntry(entry) && viewModel.isMoreEntriesAvaliable {
                         lastRow
                     }
@@ -102,7 +117,9 @@ extension HistoryView {
     @ViewBuilder
     func makeDeleteButton(_ entry: Entry) -> some View {
         Button {
-            viewModel.deleteEntry(entry: entry)
+            withAnimation {
+                entryToBeDeleted = entry
+            }
         } label: {
             Image(systemName: "xmark")
         } // END OF BUTTON
