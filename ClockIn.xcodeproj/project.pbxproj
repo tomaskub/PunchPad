@@ -101,6 +101,7 @@
 		D6FA94FB2B013C770034B16A /* ChartLegendItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FA94FA2B013C770034B16A /* ChartLegendItem.swift */; };
 		D6FA94FD2B013F060034B16A /* ChartLegendItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FA94FC2B013F060034B16A /* ChartLegendItemView.swift */; };
 		D6FA94FF2B0145FF0034B16A /* ChartFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FA94FE2B0145FE0034B16A /* ChartFactory.swift */; };
+		D6FE20872B46EE0D00F931CD /* ConfirmDeleteRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FE20862B46EE0D00F931CD /* ConfirmDeleteRowView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -216,6 +217,7 @@
 		D6FA94FA2B013C770034B16A /* ChartLegendItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLegendItem.swift; sourceTree = "<group>"; };
 		D6FA94FC2B013F060034B16A /* ChartLegendItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLegendItemView.swift; sourceTree = "<group>"; };
 		D6FA94FE2B0145FE0034B16A /* ChartFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartFactory.swift; sourceTree = "<group>"; };
+		D6FE20862B46EE0D00F931CD /* ConfirmDeleteRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDeleteRowView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -262,6 +264,7 @@
 			isa = PBXGroup;
 			children = (
 				D621C0C92B3B79850065DF8C /* CircleButton.swift */,
+				D6FE20862B46EE0D00F931CD /* ConfirmDeleteRowView.swift */,
 				D621C0CB2B3B8BE40065DF8C /* TimerIndicator.swift */,
 				D69C8CDC2B44224100146EFA /* VerticalDivider.swift */,
 				D69C8CD62B43687700146EFA /* CustomDatePickerContainer.swift */,
@@ -622,6 +625,7 @@
 				D6D906B12AA12BDB004E09C9 /* BackgroundFactory.swift in Sources */,
 				D6D02FB029EF0B7F006CD0B2 /* EditShetViewModel.swift in Sources */,
 				D68732022B2243C9008CB0D4 /* PaginationState.swift in Sources */,
+				D6FE20872B46EE0D00F931CD /* ConfirmDeleteRowView.swift in Sources */,
 				D6FA94FD2B013F060034B16A /* ChartLegendItemView.swift in Sources */,
 				D6E2C15B29D6C31800229286 /* HistoryViewModel.swift in Sources */,
 				D6EA695C2AF8452A00D8F6C3 /* TextFactory.swift in Sources */,
