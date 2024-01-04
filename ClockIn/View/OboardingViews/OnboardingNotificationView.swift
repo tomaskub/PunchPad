@@ -6,31 +6,29 @@
 //
 
 import SwiftUI
+import ThemeKit
 
 struct OnboardingNotificationView: View {
     private typealias Identifier = ScreenIdentifier.OnboardingView
     let titleText: String = "Notifications"
-    let descriptionText: String = "Do you want to allow ClockIn to send you notifications when the work time is finished?"
+    let descriptionText: String = "Do you want PunchPad to send you notifications when the work time is finished?"
     @ObservedObject var viewModel: OnboardingViewModel
     
     var body: some View {
         VStack(spacing: 40) {
-            title
-            description
+            TextFactory.buildTitle(titleText)
+            
+            TextFactory.buildDescription(descriptionText)
+            
             Toggle("Send notifications on finish", isOn: $viewModel.settingsStore.isSendingNotification)
+                .foregroundColor(.theme.blackLabel)
+                .tint(.theme.primary)
                 .accessibilityIdentifier(Identifier.Toggles.notifications.rawValue)
                 .padding()
                 .background()
                 .cornerRadius(20)
-            
         }
         .padding(30)
-    }
-    var title: some View {
-        TextFactory.buildTitle(titleText)
-    }
-    var description: some View {
-        TextFactory.buildDescription(descriptionText)
     }
 }
 
@@ -48,11 +46,14 @@ struct OnboardingNotification_Preview: PreviewProvider {
         
         var body: some View {
             ZStack {
-                BackgroundFactory.buildGradient(colorScheme: colorScheme)
+                BackgroundFactory.buildSolidColor()
                 OnboardingNotificationView(viewModel: vm)
                 VStack {
                     Spacer()
-                    ButtonFactory.build(labelText: "Preview button")
+                    Button( "Preview button") {
+                        
+                    }
+                    .buttonStyle(.confirming)
                         .padding(30)
                 }
             }
