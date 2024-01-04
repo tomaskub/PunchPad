@@ -23,9 +23,11 @@
 		D61F11342AB3A6FF00902D6D /* ColorScheme+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61F11332AB3A6FF00902D6D /* ColorScheme+Extension.swift */; };
 		D621C0CA2B3B79850065DF8C /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D621C0C92B3B79850065DF8C /* CircleButton.swift */; };
 		D621C0CC2B3B8BE40065DF8C /* TimerIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D621C0CB2B3B8BE40065DF8C /* TimerIndicator.swift */; };
-		D62286742B40A04B00B41004 /* TabViewKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D62286732B40A04B00B41004 /* TabViewKit.framework */; };
 		D629CEF92B3613660036579D /* TimerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D629CEF82B3613660036579D /* TimerService.swift */; };
 		D629CEFB2B363B500036579D /* TimerServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D629CEFA2B363B500036579D /* TimerServiceTests.swift */; };
+		D630A53B2B4704EA0098CA86 /* ThemeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D630A53A2B4704EA0098CA86 /* ThemeKit.framework */; };
+		D630A53C2B47056C0098CA86 /* ThemeKit.framework in Resources */ = {isa = PBXBuildFile; fileRef = D630A53A2B4704EA0098CA86 /* ThemeKit.framework */; };
+		D630A53D2B4707E30098CA86 /* ThemeKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D630A53A2B4704EA0098CA86 /* ThemeKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D63753AE2B45DA2000386482 /* TextFieldStyle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63753AD2B45DA2000386482 /* TextFieldStyle+Extension.swift */; };
 		D63753B02B45DA5000386482 /* GreenBorderTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63753AF2B45DA5000386482 /* GreenBorderTextFieldStyle.swift */; };
 		D64313B82B1E606B003B5DBC /* PreviewDataFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64313B72B1E606B003B5DBC /* PreviewDataFactory.swift */; };
@@ -46,7 +48,6 @@
 		D67332E72AADB8B1005FFE7F /* LaunchArgument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67332E52AADB8B1005FFE7F /* LaunchArgument.swift */; };
 		D67332EA2AAE3D3D005FFE7F /* StatisticsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67332E92AAE3D3D005FFE7F /* StatisticsUITests.swift */; };
 		D6799EFC29E1BC0F0080E32A /* HistoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6799EFB29E1BC0F0080E32A /* HistoryViewModelTests.swift */; };
-		D6801A152B404F61003F54F9 /* NavigationKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6801A142B404F61003F54F9 /* NavigationKit.framework */; };
 		D682AF922B3C77F5004EE208 /* ChartTimeRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AF912B3C77F5004EE208 /* ChartTimeRange.swift */; };
 		D682AF942B3D83A2004EE208 /* MonthEntrySummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AF932B3D83A2004EE208 /* MonthEntrySummary.swift */; };
 		D68384F929DB25DD00228491 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68384F829DB25DD00228491 /* SettingViewModel.swift */; };
@@ -102,6 +103,10 @@
 		D6FA94FD2B013F060034B16A /* ChartLegendItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FA94FC2B013F060034B16A /* ChartLegendItemView.swift */; };
 		D6FA94FF2B0145FF0034B16A /* ChartFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FA94FE2B0145FE0034B16A /* ChartFactory.swift */; };
 		D6FE20872B46EE0D00F931CD /* ConfirmDeleteRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FE20862B46EE0D00F931CD /* ConfirmDeleteRowView.swift */; };
+		D6FE208D2B4700AD00F931CD /* NavigationKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6801A142B404F61003F54F9 /* NavigationKit.framework */; };
+		D6FE208E2B4700AD00F931CD /* NavigationKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D6801A142B404F61003F54F9 /* NavigationKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D6FE20902B4700AE00F931CD /* TabViewKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D62286732B40A04B00B41004 /* TabViewKit.framework */; };
+		D6FE20912B4700AE00F931CD /* TabViewKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D62286732B40A04B00B41004 /* TabViewKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -120,6 +125,22 @@
 			remoteInfo = ClockIn;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D6FE208F2B4700AD00F931CD /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D630A53D2B4707E30098CA86 /* ThemeKit.framework in Embed Frameworks */,
+				D6FE20912B4700AE00F931CD /* TabViewKit.framework in Embed Frameworks */,
+				D6FE208E2B4700AD00F931CD /* NavigationKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		D60480D72B122CDA00D6D70D /* ChartPeriodServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartPeriodServiceTests.swift; sourceTree = "<group>"; };
@@ -140,6 +161,7 @@
 		D62286732B40A04B00B41004 /* TabViewKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TabViewKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D629CEF82B3613660036579D /* TimerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerService.swift; sourceTree = "<group>"; };
 		D629CEFA2B363B500036579D /* TimerServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerServiceTests.swift; sourceTree = "<group>"; };
+		D630A53A2B4704EA0098CA86 /* ThemeKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ThemeKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D63753AD2B45DA2000386482 /* TextFieldStyle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextFieldStyle+Extension.swift"; sourceTree = "<group>"; };
 		D63753AF2B45DA5000386482 /* GreenBorderTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreenBorderTextFieldStyle.swift; sourceTree = "<group>"; };
 		D64313B72B1E606B003B5DBC /* PreviewDataFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewDataFactory.swift; sourceTree = "<group>"; };
@@ -225,8 +247,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D62286742B40A04B00B41004 /* TabViewKit.framework in Frameworks */,
-				D6801A152B404F61003F54F9 /* NavigationKit.framework in Frameworks */,
+				D630A53B2B4704EA0098CA86 /* ThemeKit.framework in Frameworks */,
+				D6FE20902B4700AE00F931CD /* TabViewKit.framework in Frameworks */,
+				D6FE208D2B4700AD00F931CD /* NavigationKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,6 +322,7 @@
 		D6801A132B404F61003F54F9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D630A53A2B4704EA0098CA86 /* ThemeKit.framework */,
 				D62286732B40A04B00B41004 /* TabViewKit.framework */,
 				D6801A142B404F61003F54F9 /* NavigationKit.framework */,
 			);
@@ -487,6 +511,7 @@
 				D6C4588C29D229210069D89B /* Sources */,
 				D6C4588D29D229210069D89B /* Frameworks */,
 				D6C4588E29D229210069D89B /* Resources */,
+				D6FE208F2B4700AD00F931CD /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -581,6 +606,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D630A53C2B47056C0098CA86 /* ThemeKit.framework in Resources */,
 				D6C4589B29D229230069D89B /* Preview Assets.xcassets in Resources */,
 				D6C4589829D229230069D89B /* Assets.xcassets in Resources */,
 			);

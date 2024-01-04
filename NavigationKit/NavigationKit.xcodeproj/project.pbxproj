@@ -30,7 +30,7 @@
 		D62651382B3F5D410089A84B /* NavigatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651372B3F5D410089A84B /* NavigatorDelegate.swift */; };
 		D626513A2B3F5DD70089A84B /* NavHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651392B3F5DD70089A84B /* NavHost.swift */; };
 		D626513C2B3F5E020089A84B /* Navigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D626513B2B3F5E020089A84B /* Navigator.swift */; };
-		D6CA77422B4171D700C98AF3 /* ThemeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6CA77412B4171D700C98AF3 /* ThemeKit.framework */; };
+		D6CA77422B4171D700C98AF3 /* ThemeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6CA77412B4171D700C98AF3 /* ThemeKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
