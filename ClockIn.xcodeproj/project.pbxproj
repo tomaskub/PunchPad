@@ -17,6 +17,7 @@
 		D61007492AAB867C00503C28 /* HistoryViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61007482AAB867C00503C28 /* HistoryViewScreen.swift */; };
 		D610074B2AAB8BC800503C28 /* HistoryViewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D610074A2AAB8BC800503C28 /* HistoryViewUITests.swift */; };
 		D610074D2AAC77F300503C28 /* EditSheetScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D610074C2AAC77F300503C28 /* EditSheetScreen.swift */; };
+		D617D43D2B4987480069AA3B /* GrossSalary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D617D43C2B4987480069AA3B /* GrossSalary.swift */; };
 		D61945EC29E7306B0046DE1F /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61945EB29E7306B0046DE1F /* HomeViewModelTests.swift */; };
 		D61945F029E735D80046DE1F /* MockTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61945EF29E735D80046DE1F /* MockTimer.swift */; };
 		D61F11312AB38F8700902D6D /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61F11302AB38F8700902D6D /* SettingsStore.swift */; };
@@ -153,6 +154,7 @@
 		D61007482AAB867C00503C28 /* HistoryViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HistoryViewScreen.swift; path = ClockInUITests/ScreenHelpers/HistoryViewScreen.swift; sourceTree = SOURCE_ROOT; };
 		D610074A2AAB8BC800503C28 /* HistoryViewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewUITests.swift; sourceTree = "<group>"; };
 		D610074C2AAC77F300503C28 /* EditSheetScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSheetScreen.swift; sourceTree = "<group>"; };
+		D617D43C2B4987480069AA3B /* GrossSalary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrossSalary.swift; sourceTree = "<group>"; };
 		D61945EB29E7306B0046DE1F /* HomeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
 		D61945EF29E735D80046DE1F /* MockTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTimer.swift; sourceTree = "<group>"; };
 		D61F11302AB38F8700902D6D /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
@@ -485,6 +487,7 @@
 		D6E2C15629D6BF9F00229286 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D617D43C2B4987480069AA3B /* GrossSalary.swift */,
 				D64574B129D9F16900207168 /* EntryMO+CoreDataClass.swift */,
 				D64574B229D9F16900207168 /* EntryMO+CoreDataProperties.swift */,
 				D629CEF82B3613660036579D /* TimerService.swift */,
@@ -675,6 +678,7 @@
 				D60480DA2B122D3F00D6D70D /* ChartPeriodService.swift in Sources */,
 				D66750EA29D713C900757F17 /* HistoryView.swift in Sources */,
 				D64313B82B1E606B003B5DBC /* PreviewDataFactory.swift in Sources */,
+				D617D43D2B4987480069AA3B /* GrossSalary.swift in Sources */,
 				D6C458C129D2DD4F0069D89B /* HomeViewModel.swift in Sources */,
 				D6C4589629D229210069D89B /* ContentView.swift in Sources */,
 				D63753AE2B45DA2000386482 /* TextFieldStyle+Extension.swift in Sources */,
