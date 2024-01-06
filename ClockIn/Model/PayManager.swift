@@ -119,9 +119,14 @@ extension PayManager {
         let averageWorktime = data.map { Double($0.workTimeInSeconds) }.reduce(0, +) / Double(data.count)
         let averageOvertime = data.map { Double($0.overTimeInSeconds) }.reduce(0, +) / Double(data.count)
         var payPredicted: Double?
-        if let numberOfDaysInFuture = Calendar.current.dateComponents([.day], from: Date(), to: period.1).day {
+        
+        if let lastEntry = data.last,
+           let numberOfDaysInFuture = Calendar.current.dateComponents([.day], from: lastEntry.startDate, to: period.1).day {
             for i in 0..<numberOfDaysInFuture {
-                if let currentDate = Calendar.current.date(byAdding: .day, value: i, to: Date()), !Calendar.current.isDateInWeekend(currentDate){
+                if let currentDate = Calendar.current.date(byAdding: .day, value: i, to: lastEntry.startDate), 
+                    !Calendar.current.isDateInWeekend(currentDate),
+                   !data.contains(where: { Calendar.current.isDate($0.startDate, inSameDayAs: currentDate)
+                   }){
                         let payForDate = calculateGrossPay(worktime: averageWorktime, overtime: averageOvertime, grossPayPerHour: payPerHour, overtimePayCoef: 1.5)
                         payPredicted = payForDate + (payPredicted ?? 0)
                 }
