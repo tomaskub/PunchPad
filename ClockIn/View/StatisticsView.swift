@@ -14,7 +14,8 @@ struct StatisticsView: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var container: Container
     @ObservedObject var viewModel: StatisticsViewModel
-    
+    let currencyFormatter = FormatterFactory.makeCurrencyFormatter(Locale.current)
+    let dateFormatter = FormatterFactory.makeDateFormatter()
     let salaryCalculationHeaderText: String = "Salary calculation"
     let chartTitleText: String = "time worked"
     
@@ -52,10 +53,7 @@ struct StatisticsView: View {
                 .listRowSeparator(.hidden)
                 
                 Section {
-                    if viewModel.netPayAvaliable {
-                        netSalaryData
-                    } // END OF IF
-                     grossSalaryData
+                    newGrossData
                 } header: {
                     TextFactory.buildSectionHeader(salaryCalculationHeaderText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.salaryCalculation.rawValue)
@@ -143,7 +141,7 @@ extension StatisticsView {
         }
     } // END OF VAR
     
-    func makeChartRangeString(for period: Period) -> String {
+    func makePeriodRangeString(for period: Period) -> String {
         let periodEndMonth = Calendar.current.dateComponents([.month], from: period.1)
         let periodEndYear = Calendar.current.dateComponents([.year], from: period.1)
         let isSameMonth = Calendar.current.date(period.0, matchesComponents: periodEndMonth)
@@ -160,7 +158,7 @@ extension StatisticsView {
     }
     
     var displayedChartRange: some View {
-        Text(makeChartRangeString(for: viewModel.periodDisplayed))
+        Text(makePeriodRangeString(for: viewModel.periodDisplayed))
             .foregroundStyle(.secondary)
             .font(.caption)
     }
@@ -193,19 +191,27 @@ extension StatisticsView {
 
 //MARK: DATA VIEW BUILDERS
 extension StatisticsView {
-    var netSalaryData: some View {
-        ForEach(viewModel.salaryListDataNetPay, id: \.0) { data in
-            SalaryListRowView(propertyName: data.0,
-                              propertyValue: data.1)
-        } // END OF FOR EACH
-    }
-    var grossSalaryData: some View {
-        ForEach(viewModel.salaryListDataGrossPay, id: \.0) { data in
-            SalaryListRowView(propertyName: data.0,
-                              propertyValue: data.1)
+    var newGrossData: some View {
+        Group {
+            SalaryListRowView(propertyName: "Period",
+                              propertyValue:makePeriodRangeString(for: viewModel.grossSalaryData.period))
+            SalaryListRowView(propertyName: "Gross pay per hour",
+                              propertyValue: currencyFormatter.string(from: viewModel.grossSalaryData.payPerHour as NSNumber) ?? String()
+            )
+            SalaryListRowView(propertyName: "Gross pay up to date",
+                              propertyValue: currencyFormatter.string(from: viewModel.grossSalaryData.payUpToDate as NSNumber) ?? String()
+            )
+            if let payPredicted = viewModel.grossSalaryData.payPredicted {
+                SalaryListRowView(propertyName: "Gross pay predicted",
+                                  propertyValue: currencyFormatter.string(from: payPredicted as NSNumber) ?? String()
+                )
+            }
+            SalaryListRowView(propertyName: "Number of working days",
+                              propertyValue: String(viewModel.grossSalaryData.numberOfWorkingDays)
+                                
+            )
         }
     }
-    
     private struct SalaryListRowView: View {
         let propertyName: String
         let propertyValue: String

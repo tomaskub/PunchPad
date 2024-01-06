@@ -41,14 +41,9 @@ class StatisticsViewModel: ObservableObject {
         ]
     }
 
-    var salaryListDataGrossPay: [(String, String)] {
-        [("Gross pay per hour:", String(format: "%.2f", payManager.grossPayPerHour) + " PLN"),
-         ("Gross pay up to date:", String(format: "%.2f", payManager.grossPayToDate) + " PLN"),
-         ("Gross pay predicted:", String(format: "%.2f", payManager.grossPayPredicted) + " PLN"),
-         ("Number of working days:", String(format: "%u", payManager.numberOfWorkingDays) + " DAYS")
-        ]
+    var grossSalaryData: GrossSalary {
+        payManager.grossDataForPeriod
     }
-    
     var workedHoursInPeriod: Int {
         entriesForChart.map { entry in
             (entry.workTimeInSeconds + entry.overTimeInSeconds ) / 3600

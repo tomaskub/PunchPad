@@ -22,12 +22,16 @@ class PayManager: ObservableObject {
     @Published var grossPayPredicted: Double = 1
     @Published var netPayAvaliable: Bool
     @Published var grossPayPerHour: Double = 0
+    // new published properties
+    @Published var grossDataForPeriod: GrossSalary
     
     init(dataManager: DataManager, settingsStore: SettingsStore) {
         self.settingsStore = settingsStore
         self.dataManager = dataManager
         self.netPayAvaliable = settingsStore.isCalculatingNetPay
         self.grossPayPerMonth = Double(settingsStore.grossPayPerMonth)
+        // new property init
+        self.grossDataForPeriod = .init()
         setSubscribers()
     }
     
