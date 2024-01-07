@@ -23,7 +23,7 @@ class PayManager: ObservableObject {
         self.grossDataForPeriod = .init()
         setSubscribers()
     }
-    
+    ///Update current period driving gross data
     func updatePeriod(with period: Period) {
         currentPeriod = period
     }
@@ -56,7 +56,7 @@ extension PayManager {
     /// - Returns: number of working days in month
     ///
     /// Function checks for weekend days only. Holidays are counting as working days, as they are normally paid as standard length working days. Default calendar used is the current instance of calendar, while default date is now.
-    func getNumberOfWorkingDays(using calendar: Calendar = .current, inMonthOfDate date: Date = Date()) -> Int {
+    private func getNumberOfWorkingDays(using calendar: Calendar = .current, inMonthOfDate date: Date = Date()) -> Int {
         let components = calendar.dateComponents([.month, .year], from: date)
         let startOfTheMonth = calendar.date(from: components)!
         let numberOfDays = calendar.range(of: .day, in: .month, for: startOfTheMonth)!.count
@@ -72,7 +72,7 @@ extension PayManager {
     ///   - calendar: calendar used for calculation
     ///   - period: date period (touple of start and finish dates)
     /// - Returns: number of working days in period
-    func getNumberOfWorkingDays(using calendar: Calendar = .current, in period: Period) -> Int {
+    private func getNumberOfWorkingDays(using calendar: Calendar = .current, in period: Period) -> Int {
         guard let numberOfDays = calendar.dateComponents([.day], from: period.0, to: period.1).day else { return 0}
         let daysInPeriod = Array(0..<numberOfDays).map { i in
             calendar.date(byAdding: .day, value: i, to: period.0)!
@@ -86,7 +86,7 @@ extension PayManager {
     ///   - calendar: calendar used for calculation
     ///   - date: date until which working days are counted
     /// - Returns: number of working days passed
-    func getNumberOfWorkingDaysPassed(using calendar: Calendar = .current, till date: Date = Date()) -> Int {
+    private func getNumberOfWorkingDaysPassed(using calendar: Calendar = .current, till date: Date = Date()) -> Int {
         // calculate how many working days already passed
         let components = calendar.dateComponents([.month, .year], from: date)
         let startOfTheMonth = calendar.date(from: components)!
@@ -171,7 +171,7 @@ extension PayManager {
     /// - Returns: gross pay amount
     ///
     /// Function returns gross pay for given entry based on the time work, overtime worked, and gross pay per month set for the entry. Included overtime pay coefficient of 1.5 extra for overtime.
-    func calculateGrossPayFor(entry: Entry, overtimePayCoef: Double) -> Double {
+    private func calculateGrossPayFor(entry: Entry, overtimePayCoef: Double) -> Double {
         let payPerHour = calculateGrossPayPerHour(for: entry)
         return calculateGrossPay(worktime: Double(entry.workTimeInSeconds),
                                        overtime: Double(entry.overTimeInSeconds),
@@ -185,7 +185,7 @@ extension PayManager {
     ///   - grossPayPerHour: gross pay  per hour
     ///   - overtimePayCoef: overtime adjustment coefficient
     /// - Returns: gross pay
-    func calculateGrossPay(worktime: Double, overtime: Double, grossPayPerHour: Double, overtimePayCoef: Double) -> Double {
+    private func calculateGrossPay(worktime: Double, overtime: Double, grossPayPerHour: Double, overtimePayCoef: Double) -> Double {
         let worktimeHours = worktime / 3600
         let overtimeHours = overtime / 3600
         return grossPayPerHour * (worktimeHours + overtimePayCoef * overtimeHours)
@@ -196,7 +196,7 @@ extension PayManager {
     /// - Returns: gross pay per hour
     ///
     /// Calculate gross pay per hour based on the provided entry, The gross pay per month stored in entry is used, with the number of working days in month retrived based on entry start date.
-    func calculateGrossPayPerHour(for entry: Entry) -> Double {
+    private func calculateGrossPayPerHour(for entry: Entry) -> Double {
         let numberOfWorkingHoursInDay = Double(entry.standardWorktimeInSeconds) / 3600
         let numberOfWorkingHours = Double(getNumberOfWorkingDays(inMonthOfDate: entry.startDate)) * numberOfWorkingHoursInDay
         return Double(entry.grossPayPerMonth) / numberOfWorkingHours
@@ -205,13 +205,13 @@ extension PayManager {
 
     /// Calculate gross pay per hour in the current mont based on current set gross pay per month
     /// - Returns: gross pay per hour
-    func calculateGrossPayPerHour() -> Double {
-        let numberOfWorkHours = Double(getNumberOfWorkingDays() * 8)
+    private func calculateGrossPayPerHour() -> Double {
+        let numberOfWorkHours = Double(getNumberOfWorkingDays() * settingsStore.workTimeInSeconds) / 3600
         return Double(settingsStore.grossPayPerMonth) / numberOfWorkHours
     }
 }
 
-//MARK: NET PAY FUNCTIONS - for now it will be unused
+//MARK: NET PAY FUNCTIONS - FOR NOW UNUSED
 extension PayManager {
     ///Calculate net pay based on gross pay given, using standard polish taxation for work contract
     /// - Parameters:
