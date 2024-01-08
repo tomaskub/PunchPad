@@ -57,6 +57,39 @@ final class PayManagerTests: XCTestCase {
         XCTAssertNil(result.payPredicted)
         XCTAssertEqual(result.payUpToDate, Double(settingsStore.grossPayPerMonth))
     }
+    
+    func testGeneratingDataForNotFinishedPeriod() {
+        //Given 
+        let date = Calendar.current.startOfDay(for: Date())
+        guard let initialPeriod = try? periodService.generatePeriod(for: date, in: .week),
+              let endOfToday = Calendar.current.date(byAdding: .day, value: 1, to: date),
+              let numberOfWorkingDaysInMonth = numberOfWorkingDays(for: date) else {
+            XCTFail("FAILED TO PREPARE INPUT DATA")
+            return
+        }
+        let expectedNumberOfWorkingDaysInPeriod = numberOfWorkingDays(in: initialPeriod)
+        let dataPeriod = (initialPeriod.0, endOfToday)
+        let dataDays = Calendar.current.dateComponents([.day], from: dataPeriod.0, to: dataPeriod.1)
+        let numberOfAddedWorkingDays = addTestData(forPeriod: dataPeriod,
+                                              workTimeInSec: 8 * 3600,
+                                              overtimeInSec: 0,
+                                              standardWorkTimeInSec: 8 * 3600,
+                                              maximumOvertimeInSec: 5 * 3600,
+                                              grossPayPerMonth: settingsStore.grossPayPerMonth)
+        
+        let expectedPayPerHour = Double(settingsStore.grossPayPerMonth) / (Double(numberOfWorkingDaysInMonth) * 8)
+        let expectedPayPrediced = expectedPayPerHour * Double(expectedNumberOfWorkingDaysInPeriod) * 8
+        let expectedPayUpToDate = Double(numberOfAddedWorkingDays) * 8 * expectedPayPerHour
+        
+        //When
+        sut.updatePeriod(with: initialPeriod)
+        // then
+        let result = sut.grossDataForPeriod
+        XCTAssertEqual(result.payPerHour, expectedPayPerHour)
+        XCTAssertEqual(result.numberOfWorkingDays, expectedNumberOfWorkingDaysInPeriod)
+        XCTAssertEqual(result.payPredicted, expectedPayPrediced)
+        XCTAssertEqual(result.payUpToDate, expectedPayUpToDate)
+    }
 }
 
 
@@ -96,10 +129,10 @@ extension PayManagerTests {
             }
             dateArray.append(date)
         }
-        var filteredArray = dateArray.filter { date in
-            !Calendar.current.isDateInWeekend(date)
-        }
-        let resultArray = filteredArray.map { date in
+        let resultArray = dateArray
+            .filter { date in
+                !Calendar.current.isDateInWeekend(date)
+            }.map { date in
             let startOfDate = Calendar.current.startOfDay(for: date)
             return Entry(
                 startDate:  Calendar.current.date(byAdding: .hour, value: 8, to: startOfDate)!,
@@ -116,5 +149,29 @@ extension PayManagerTests {
             DataManager.testing.updateAndSave(entry: entry)
         }
         return resultArray.count
+    }
+    
+    /// Returns number of working days present in period based on current calendar
+    func numberOfWorkingDays(in period: Period) -> Int {
+        let calendar = Calendar.current
+        guard let numberOfDays = calendar.dateComponents([.day], from: period.0, to: period.1).day else { return 0}
+        let daysInPeriod = Array(0..<numberOfDays).map { i in
+            calendar.date(byAdding: .day, value: i, to: period.0)!
+        }
+        let workingDays = daysInPeriod.filter { !calendar.isDateInWeekend($0) }
+        return workingDays.count
+    }
+    
+    /// Returns number of working days in month of the date
+    func numberOfWorkingDays(for date: Date) -> Int? {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.month, .year], from: date)
+        let startOfTheMonth = calendar.date(from: components)!
+        guard let numberOfDays = calendar.range(of: .day, in: .month, for: startOfTheMonth)?.count else { return nil}
+        let daysInMonth = Array(0..<numberOfDays).map { i in
+            calendar.date(byAdding: .day, value: i, to: startOfTheMonth)!
+        }
+        let workDays = daysInMonth.filter({ !calendar.isDateInWeekend($0) })
+        return workDays.count
     }
 }
