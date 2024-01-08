@@ -131,6 +131,9 @@ extension PayManager {
                         payPredicted = payForDate + (payPredicted ?? 0)
                 }
             }
+            if let prediction = payPredicted {
+                payPredicted = prediction + payUpToDate
+            }
         }
         
         return .init(period: period,
