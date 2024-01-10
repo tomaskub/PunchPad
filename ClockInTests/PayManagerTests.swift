@@ -83,12 +83,32 @@ final class PayManagerTests: XCTestCase {
         
         //When
         sut.updatePeriod(with: initialPeriod)
-        // then
+        //Then
         let result = sut.grossDataForPeriod
         XCTAssertEqual(result.payPerHour, expectedPayPerHour)
         XCTAssertEqual(result.numberOfWorkingDays, expectedNumberOfWorkingDaysInPeriod)
         XCTAssertEqual(result.payPredicted, expectedPayPrediced)
         XCTAssertEqual(result.payUpToDate, expectedPayUpToDate)
+    }
+    
+    func testGeneratingDataForPeriodInFuture_withNoEntries() {
+        //Given
+        let date = Calendar.current.startOfDay(for: Date())
+        guard let dateInFuture = Calendar.current.date(byAdding: .month, value: 1, to: date),
+              let numberOfWorkingDaysInMonth = numberOfWorkingDays(for: dateInFuture),
+              let period = try? periodService.generatePeriod(for: dateInFuture, in: .week) else {
+            XCTFail("FAILED TO PREPARE INPUT DATA")
+            return
+        }
+        let expectedPayPerHour = Double(settingsStore.grossPayPerMonth) / (Double(numberOfWorkingDaysInMonth) * 8)
+        //When
+        sut.updatePeriod(with: period)
+        //Then
+        let result = sut.grossDataForPeriod
+        XCTAssertEqual(result.payPerHour, expectedPayPerHour)
+        XCTAssertEqual(result.numberOfWorkingDays, 5)
+        XCTAssertNil(result.payPredicted)
+        XCTAssertEqual(result.payUpToDate, 0)
     }
 }
 
