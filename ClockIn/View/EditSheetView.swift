@@ -120,7 +120,7 @@ extension EditSheetView {
     var diffDayDateControls: some View {
         Group {
             CustomDatePickerContainer(labelText: startDateText) {
-                DatePicker(startDateText, selection: $viewModel.startDate)
+                DatePicker(startDateText, selection: $viewModel.startDate, in: PartialRangeThrough(viewModel.finishDate))
                     .labelsHidden()
                     .accessibilityIdentifier(Identifier.DatePicker.startDate.rawValue)
             } trailing: {
@@ -129,8 +129,8 @@ extension EditSheetView {
             .frame(height: 50)
             .padding(.top)
             
-            CustomDatePickerContainer(labelText: startDateText) {
-                DatePicker(finishDateText, selection: $viewModel.finishDate)
+            CustomDatePickerContainer(labelText: finishDateText) {
+                DatePicker(finishDateText, selection: $viewModel.finishDate, in: PartialRangeFrom(viewModel.startDate))
                     .labelsHidden()
                     .accessibilityIdentifier(Identifier.DatePicker.finishDate.rawValue)
             } trailing: {
