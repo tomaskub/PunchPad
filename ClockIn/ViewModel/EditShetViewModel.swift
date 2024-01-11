@@ -60,34 +60,13 @@ final class EditSheetViewModel: ObservableObject {
         self.currentStandardWorkTime = TimeInterval(entry.standardWorktimeInSeconds)
         self.grossPayPerMonth = entry.grossPayPerMonth
         self.calculateNetPay = entry.calculatedNetPay == nil ? false : true
-        // set up combine subscribers
-        $finishDate
-            .dropFirst()
-            .removeDuplicates()
-            .sink { [weak self] date in
-                guard let self else { return }
-                self.calculateTime(self.startDate, date)
-            }.store(in: &cancellables)
-        
-        $startDate
-            .dropFirst()
-            .removeDuplicates()
-            .sink { [weak self] date in
-                guard let self else { return }
-                self.calculateTime(date, self.finishDate)
-            }.store(in: &cancellables)
-        
-        $startDate
-            .dropFirst()
-            .removeDuplicates()
-            .filter({ [weak self] date in
-                guard let self else { return false }
-                return !self.shouldDisplayFullDates
-            })
-            .map { date in
-                self.adjustToEqualDateComponents([.year, .month, .day], from: date, to: self.finishDate, using: self.calendar)
-            }.assign(to: &$finishDate)
-        
+        // set up combine pipelines
+        setDateMatchingPipeline()
+        setTimeCalculationPipelines()
+        setOverrideTimePipelines()
+    }
+    
+    private func setOverrideTimePipelines() {
         $currentStandardWorkTime
             .dropFirst()
             .removeDuplicates()
@@ -103,6 +82,49 @@ final class EditSheetViewModel: ObservableObject {
                 guard let self else { return }
                 self.adjustTimeSplit(currentStandardWorkTime, overtime)
             }.store(in: &cancellables)
+    }
+    
+    private func setTimeCalculationPipelines() {
+        $finishDate
+            .dropFirst()
+            .removeDuplicates()
+        // run calculate changes only when time components change
+            .filter { [weak self] newValue in
+                guard let self else { return false }
+                let oldValueComponents = Calendar.current.dateComponents([.year, .month, .day], from: self.finishDate)
+                return Calendar.current.date(newValue, matchesComponents: oldValueComponents) || self.shouldDisplayFullDates
+            }
+            .sink { [weak self] date in
+                guard let self else { return }
+                self.calculateTime(self.startDate, date)
+            }.store(in: &cancellables)
+        
+        $startDate
+            .dropFirst()
+            .removeDuplicates()
+        // run calculate changes only when time components change
+            .filter { [weak self] newValue in
+                guard let self else { return false }
+                let oldValueComponents = Calendar.current.dateComponents([.year, .month, .day], from: self.startDate)
+                return Calendar.current.date(newValue, matchesComponents: oldValueComponents) || self.shouldDisplayFullDates
+            }
+            .sink { [weak self] date in
+                guard let self else { return }
+                self.calculateTime(date, self.finishDate)
+            }.store(in: &cancellables)
+    }
+
+    private func setDateMatchingPipeline() {
+        $startDate
+            .dropFirst()
+            .removeDuplicates()
+            .filter({ [weak self] date in
+                guard let self else { return false }
+                return !self.shouldDisplayFullDates
+            })
+            .map { date in
+                self.adjustToEqualDateComponents([.year, .month, .day], from: date, to: self.finishDate, using: self.calendar)
+            }.assign(to: &$finishDate)
     }
     
     private func adjustToEqualDateComponents(_ calendarComponents: Set<Calendar.Component>, from source: Date, to target: Date, using calendar: Calendar) -> Date {
