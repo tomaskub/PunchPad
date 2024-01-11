@@ -58,6 +58,18 @@ final class HistoryViewModel: ObservableObject {
         self.groupedEntries = loadInitialEntries()
     }
     
+    ///Return new entry with current date, empty time properties, and default values driven by setting store values
+    func newEntry() -> Entry {
+        return Entry(startDate: Date(),
+                          finishDate: Date(),
+                          workTimeInSec: 0,
+                          overTimeInSec: 0,
+                          maximumOvertimeAllowedInSeconds: settingsStore.maximumOvertimeAllowedInSeconds,
+                          standardWorktimeInSeconds: settingsStore.workTimeInSeconds,
+                          grossPayPerMonth: settingsStore.grossPayPerMonth,
+                          calculatedNetPay: nil)
+    }
+    
     func deleteEntry(entry: Entry) {
         dataManager.delete(entry: entry)
     }
