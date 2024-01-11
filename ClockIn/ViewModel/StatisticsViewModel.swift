@@ -31,24 +31,10 @@ class StatisticsViewModel: ObservableObject {
     //MARK: PUBLISHED VARIABLES
     @Published var chartTimeRange: ChartTimeRange = .week
     @Published var periodDisplayed: Period = (Date(), Date())
-    //TODO: WRAP IN MODEL STRUCT
-    var netPayAvaliable: Bool {
-        payManager.netPayAvaliable
-    }
-    var salaryListDataNetPay: [(String, String)] {
-        [ ("Net pay up to date:", String(format: "%.2f", payManager.netPayToDate) + " PLN"),
-          ("Net pay predicted:", String(format: "%.2f", payManager.netPayPredicted) + " PLN")
-        ]
-    }
 
-    var salaryListDataGrossPay: [(String, String)] {
-        [("Gross pay per hour:", String(format: "%.2f", payManager.grossPayPerHour) + " PLN"),
-         ("Gross pay up to date:", String(format: "%.2f", payManager.grossPayToDate) + " PLN"),
-         ("Gross pay predicted:", String(format: "%.2f", payManager.grossPayPredicted) + " PLN"),
-         ("Number of working days:", String(format: "%u", payManager.numberOfWorkingDays) + " DAYS")
-        ]
+    var grossSalaryData: GrossSalary {
+        payManager.grossDataForPeriod
     }
-    
     var workedHoursInPeriod: Int {
         entriesForChart.map { entry in
             (entry.workTimeInSeconds + entry.overTimeInSeconds ) / 3600
@@ -88,6 +74,7 @@ class StatisticsViewModel: ObservableObject {
                     // when changing to lwoer range date it is not working great - maybe use current date if there is no period change?
                     let midDate = try self.chartPeriodService.returnPeriodMidDate(for: periodDisplayed)
                     self.periodDisplayed = try self.chartPeriodService.generatePeriod(for: midDate, in: timeRange)
+                    self.payManager.updatePeriod(with: self.periodDisplayed)
                 } catch ChartPeriodServiceError.attemptedToRetrievePeriodForAll {
                     //TODO: IMPLEMENT RETRIEVING ALL OF THE DATA
                     print("Failed to generate chart time period becouse `all` was selected")
@@ -179,6 +166,7 @@ extension StatisticsViewModel {
     func loadPreviousPeriod() {
         do {
             periodDisplayed = try chartPeriodService.retardPeriod(by: chartTimeRange, from: periodDisplayed)
+            payManager.updatePeriod(with: periodDisplayed)
         } catch {
             print("Failed to load previous period")
         }
@@ -187,6 +175,7 @@ extension StatisticsViewModel {
     func loadNextPeriod() {
         do {
             periodDisplayed = try chartPeriodService.advancePeriod(by: chartTimeRange, from: periodDisplayed)
+            payManager.updatePeriod(with: periodDisplayed)
         } catch {
             print("Failed to load next period")
         }

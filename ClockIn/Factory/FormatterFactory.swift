@@ -31,4 +31,11 @@ struct FormatterFactory {
         formatter.timeStyle = .none
         return formatter
     }
+    
+    static func makeCurrencyFormatter(_ locale: Locale) -> NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.locale = locale
+        formatter.numberStyle = .currency
+        return formatter
+    }
 }
