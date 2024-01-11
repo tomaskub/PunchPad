@@ -245,7 +245,7 @@ extension EditSheetView {
                 .foregroundColor(.black)
             }
             divider
-            Toggle(isOn: .constant(true)) {
+            Toggle(isOn: $viewModel.calculateNetPay) {
                 Text(calculateNetPayText)
              
             }
