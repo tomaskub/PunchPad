@@ -84,12 +84,26 @@ final class EditSheetViewModel: ObservableObject {
                 guard let self else { return false }
                 return !self.shouldDisplayFullDates
             })
-            .map({ date in
+            .map { date in
                 self.adjustToEqualDateComponents([.year, .month, .day], from: date, to: self.finishDate, using: self.calendar)
-            })
-            .assign(to: &$finishDate)
+            }.assign(to: &$finishDate)
+        
+        $currentStandardWorkTime
+            .dropFirst()
+            .removeDuplicates()
+            .sink { [weak self] workTime in
+                guard let self else { return }
+                self.adjustTimeSplit(workTime, currentMaximumOvertime)
+            }.store(in: &cancellables)
+        
+        $currentMaximumOvertime
+            .dropFirst()
+            .removeDuplicates()
+            .sink { [weak self] overtime in
+                guard let self else { return }
+                self.adjustTimeSplit(currentStandardWorkTime, overtime)
+            }.store(in: &cancellables)
     }
-
     
     private func adjustToEqualDateComponents(_ calendarComponents: Set<Calendar.Component>, from source: Date, to target: Date, using calendar: Calendar) -> Date {
         let allowedCalendarComponents: Set<Calendar.Component> = [.year, .month, .day, .hour, .minute, .second]
@@ -109,16 +123,32 @@ final class EditSheetViewModel: ObservableObject {
         return calendar.date(from: resultDateComponents) ?? target
     }
     
-    // calculating time intervals
     private func calculateTime(_ startDate: Date, _ finishDate: Date) {
         guard startDate < finishDate else { return }
         let interval = DateInterval(start: startDate, end: finishDate)
         if interval.duration <= currentStandardWorkTime {
             workTimeInSeconds = interval.duration
             overTimeInSeconds = 0
-        } else {
+        } else if interval.duration - currentStandardWorkTime < currentMaximumOvertime{
             workTimeInSeconds = currentStandardWorkTime
             overTimeInSeconds = interval.duration - currentStandardWorkTime
+        } else {
+            workTimeInSeconds = currentStandardWorkTime
+            overTimeInSeconds = currentMaximumOvertime
+        }
+    }
+    
+    private func adjustTimeSplit(_ standardWorkTime: TimeInterval, _ maximumOvertime: TimeInterval) {
+        let interval = totalTimeInSeconds
+        if interval <= standardWorkTime {
+            workTimeInSeconds = interval
+            overTimeInSeconds = 0
+        } else if interval - standardWorkTime < maximumOvertime {
+            workTimeInSeconds = standardWorkTime
+            overTimeInSeconds = interval - standardWorkTime
+        } else {
+            workTimeInSeconds = standardWorkTime
+            overTimeInSeconds = maximumOvertime
         }
     }
     
