@@ -58,6 +58,8 @@ struct StatisticsView: View {
                     TextFactory.buildSectionHeader(salaryCalculationHeaderText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.salaryCalculation.rawValue)
                 }// END OF SECTION
+                Color.clear.frame(height: 80)
+                    .listRowBackground(Color.clear)
             } //END OF LIST
             .shadow(color: .black.opacity(0.1), radius: 10, y: 4)
             .scrollContentBackground(.hidden)
@@ -198,7 +200,7 @@ extension StatisticsView {
             SalaryListRowView(propertyName: "Gross pay per hour",
                               propertyValue: currencyFormatter.string(from: viewModel.grossSalaryData.payPerHour as NSNumber) ?? String()
             )
-            SalaryListRowView(propertyName: "Gross pay up to date",
+            SalaryListRowView(propertyName: "Gross pay",
                               propertyValue: currencyFormatter.string(from: viewModel.grossSalaryData.payUpToDate as NSNumber) ?? String()
             )
             if let payPredicted = viewModel.grossSalaryData.payPredicted {
