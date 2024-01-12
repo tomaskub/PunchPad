@@ -28,15 +28,16 @@ final class EditSheetViewModel: ObservableObject {
     var totalTimeInSeconds: TimeInterval {
         TimeInterval(workTimeInSeconds + overTimeInSeconds)
     }
-    
-    var shouldDisplayFullDates: Bool {
-        if let hours = Calendar.current.dateComponents([.hour], from: startDate).hour {
-            if hours >= 16 {
-                return true
-            }
-        }
-        return false
-    }
+    //TODO: MODIFY LOGIC SO THAT IT IS MODIFIED BETTER - ESPECIALLY WHEN RETURNING TO ONE DATE (IT DOES NOT UPDATE TIME)
+    @Published var shouldDisplayFullDates: Bool
+//    {
+//        if let hours = Calendar.current.dateComponents([.hour], from: startDate).hour {
+//            if hours >= 16 {
+//                return true
+//            }
+//        }
+//        return false
+//    }
     
     var workTimeFraction: CGFloat {
         CGFloat(workTimeInSeconds / currentStandardWorkTime)
@@ -60,10 +61,20 @@ final class EditSheetViewModel: ObservableObject {
         self.currentStandardWorkTime = TimeInterval(entry.standardWorktimeInSeconds)
         self.grossPayPerMonth = entry.grossPayPerMonth
         self.calculateNetPay = entry.calculatedNetPay == nil ? false : true
+        
+        self.shouldDisplayFullDates = {
+            if let hours = calendar.dateComponents([.hour], from: entry.startDate).hour {
+                if hours >= 24 - (entry.standardWorktimeInSeconds / 3600) {
+                            return true
+                        }
+                    }
+            return false
+        }()
         // set up combine pipelines
         setDateMatchingPipeline()
         setTimeCalculationPipelines()
         setOverrideTimePipelines()
+        setDisplayingFullDatesPipeline()
     }
     
     private func setOverrideTimePipelines() {
@@ -118,13 +129,55 @@ final class EditSheetViewModel: ObservableObject {
         $startDate
             .dropFirst()
             .removeDuplicates()
-            .filter({ [weak self] date in
-                guard let self else { return false }
-                return !self.shouldDisplayFullDates
-            })
+            .filter {  _ in
+                self.shouldDisplayFullDates
+            }
             .map { date in
                 self.adjustToEqualDateComponents([.year, .month, .day], from: date, to: self.finishDate, using: self.calendar)
             }.assign(to: &$finishDate)
+    }
+    
+    private func setDisplayingFullDatesPipeline() {
+        $startDate
+            .dropFirst()
+            .removeDuplicates()
+            .filter { _ in
+                !self.shouldDisplayFullDates
+            }
+            .map { [weak self] dateValue in
+                if let hours = self?.calendar.dateComponents([.hour], from: dateValue).hour,
+                   let worktimeInterval = self?.currentStandardWorkTime {
+                    if hours >= 24 - Int(worktimeInterval / 3600) {
+                        return true
+                    }
+                }
+                return false
+            }.assign(to: &$shouldDisplayFullDates)
+        
+        $startDate
+            .filter { _ in
+                self.shouldDisplayFullDates
+            }
+            .map { [weak self] date in
+                guard let self else { return false }
+                let dateComponents = self.calendar.dateComponents([.year, .month, .day], from: date)
+                let isMatchingFinishDate = self.calendar.date(self.finishDate, matchesComponents: dateComponents)
+                return !isMatchingFinishDate
+            }
+            .assign(to: &$shouldDisplayFullDates)
+        
+        $finishDate
+            .filter { _ in
+                self.shouldDisplayFullDates
+            }
+            .map { [weak self] date in
+                guard let self else { return false }
+                let dateComponents = self.calendar.dateComponents([.year, .month, .day], from: date)
+                let isMatchingStartDate = self.calendar.date(self.startDate, matchesComponents: dateComponents)
+                return !isMatchingStartDate
+            }
+            .assign(to: &$shouldDisplayFullDates)
+        
     }
     
     private func adjustToEqualDateComponents(_ calendarComponents: Set<Calendar.Component>, from source: Date, to target: Date, using calendar: Calendar) -> Date {
