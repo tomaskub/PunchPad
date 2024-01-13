@@ -88,7 +88,7 @@ struct MainView: View {
         case .history:
             makeToolBarItemIcon("plus")
                 .onTapGesture {
-                    selectedEntry = Entry()
+                    selectedEntry = historyViewModel.newEntry()
                 }
         case .statistics:
             EmptyView()
