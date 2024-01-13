@@ -24,21 +24,10 @@ final class EditSheetViewModel: ObservableObject {
     @Published var currentStandardWorkTime: TimeInterval
     @Published var grossPayPerMonth: Int
     @Published var calculateNetPay: Bool
-    
+    @Published var shouldDisplayFullDates: Bool
     var totalTimeInSeconds: TimeInterval {
         TimeInterval(workTimeInSeconds + overTimeInSeconds)
     }
-    //TODO: MODIFY LOGIC SO THAT IT IS MODIFIED BETTER - ESPECIALLY WHEN RETURNING TO ONE DATE (IT DOES NOT UPDATE TIME)
-    @Published var shouldDisplayFullDates: Bool
-//    {
-//        if let hours = Calendar.current.dateComponents([.hour], from: startDate).hour {
-//            if hours >= 16 {
-//                return true
-//            }
-//        }
-//        return false
-//    }
-    
     var workTimeFraction: CGFloat {
         CGFloat(workTimeInSeconds / currentStandardWorkTime)
     }
@@ -180,6 +169,16 @@ final class EditSheetViewModel: ObservableObject {
         
     }
     
+    /// Adjust component in target date to match components in source date
+    /// - Parameters:
+    ///   - calendarComponents: set of calendar components that should be changed
+    ///   - source: date from which to take components
+    ///   - target: date to which set the components to match
+    ///   - calendar: calendar instance used for date manipulation
+    /// - Returns: Date with adjusted components or unchanged component if date creation failed
+    ///
+    ///  Minimum resultion to which the date will be adjusted is `.second`.
+    ///  Components allowed to be used in set are `.year`, `.month`, `.day`, `.hour`, `.minute` and `.second`
     private func adjustToEqualDateComponents(_ calendarComponents: Set<Calendar.Component>, from source: Date, to target: Date, using calendar: Calendar) -> Date {
         let allowedCalendarComponents: Set<Calendar.Component> = [.year, .month, .day, .hour, .minute, .second]
         let changedDateComponents = calendar.dateComponents(calendarComponents, from: source)
@@ -198,6 +197,10 @@ final class EditSheetViewModel: ObservableObject {
         return calendar.date(from: resultDateComponents) ?? target
     }
     
+    /// Calculate time for the entry and allot it to workTime and overTime
+    /// - Parameters:
+    ///   - startDate: date at which work was started
+    ///   - finishDate: date at which work was finished
     private func calculateTime(_ startDate: Date, _ finishDate: Date) {
         guard startDate < finishDate else { return }
         let interval = DateInterval(start: startDate, end: finishDate)
@@ -213,6 +216,12 @@ final class EditSheetViewModel: ObservableObject {
         }
     }
     
+    /// Adjust existing total time recorded in entry into work time and overtime based on new values.
+    /// - Parameters:
+    ///   - standardWorkTime: standard worktime for the entry
+    ///   - maximumOvertime: maximum overtime allowed for the entry
+    ///
+    /// Used when overriding setttings. Does not affect date in entry. If the time currently stored exceeds new maximum (sum of standard and overtime), it is set to new maximum.
     private func adjustTimeSplit(_ standardWorkTime: TimeInterval, _ maximumOvertime: TimeInterval) {
         let interval = totalTimeInSeconds
         if interval <= standardWorkTime {
@@ -227,6 +236,7 @@ final class EditSheetViewModel: ObservableObject {
         }
     }
     
+    /// Save entry constructed from data published by view model
     func saveEntry() {
         entry.startDate = startDate
         entry.finishDate = finishDate
@@ -238,5 +248,4 @@ final class EditSheetViewModel: ObservableObject {
         entry.calculatedNetPay = calculateNetPay ? payService.calculateNetPay(gross: Double(grossPayPerMonth)) : nil
         dataManager.updateAndSave(entry: entry)
     }
-    
 }
