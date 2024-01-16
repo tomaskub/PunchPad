@@ -5,12 +5,12 @@
       location = "container:/Users/tomaszkubiak/xcode/PunchPad/PunchPad/PunchPad.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:ThemeKit/ThemeKit.xcodeproj">
+      location = "group:Frameworks/ThemeKit.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:TabViewKit/TabViewKit.xcodeproj">
+      location = "group:Frameworks/TabViewKit.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:NavigationKit/NavigationKit.xcodeproj">
+      location = "group:Frameworks/NavigationKit.xcodeproj">
    </FileRef>
 </Workspace>
