@@ -16,7 +16,6 @@
 		D6D9BAD92B407CFF002D4C19 /* TabBarItemsPrefKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D9BAD82B407CFE002D4C19 /* TabBarItemsPrefKey.swift */; };
 		D6D9BADB2B407D19002D4C19 /* TabBarItemViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D9BADA2B407D19002D4C19 /* TabBarItemViewModifier.swift */; };
 		D6D9BADD2B407D50002D4C19 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D9BADC2B407D50002D4C19 /* View+Extension.swift */; };
-		D6D9BAF82B408388002D4C19 /* ThemeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6D9BAF72B408388002D4C19 /* ThemeKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,7 +37,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D6D9BAF82B408388002D4C19 /* ThemeKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
