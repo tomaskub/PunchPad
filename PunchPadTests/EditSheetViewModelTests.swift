@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import ClockIn
+@testable import PunchPad
 
 final class EditSheetViewModelTests: XCTestCase {
     

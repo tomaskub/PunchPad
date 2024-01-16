@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "container:PunchPad.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Frameworks/ThemeKit.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Frameworks/TabViewKit.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Frameworks/NavigationKit.xcodeproj">
+   </FileRef>
+</Workspace>

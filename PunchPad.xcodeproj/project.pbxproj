@@ -26,9 +26,7 @@
 		D621C0CC2B3B8BE40065DF8C /* TimerIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D621C0CB2B3B8BE40065DF8C /* TimerIndicator.swift */; };
 		D629CEF92B3613660036579D /* TimerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D629CEF82B3613660036579D /* TimerService.swift */; };
 		D629CEFB2B363B500036579D /* TimerServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D629CEFA2B363B500036579D /* TimerServiceTests.swift */; };
-		D630A53B2B4704EA0098CA86 /* ThemeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D630A53A2B4704EA0098CA86 /* ThemeKit.framework */; };
 		D630A53C2B47056C0098CA86 /* ThemeKit.framework in Resources */ = {isa = PBXBuildFile; fileRef = D630A53A2B4704EA0098CA86 /* ThemeKit.framework */; };
-		D630A53D2B4707E30098CA86 /* ThemeKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D630A53A2B4704EA0098CA86 /* ThemeKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D630A53F2B473A320098CA86 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D630A53E2B473A320098CA86 /* LaunchScreen.storyboard */; };
 		D63753AE2B45DA2000386482 /* TextFieldStyle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63753AD2B45DA2000386482 /* TextFieldStyle+Extension.swift */; };
 		D63753B02B45DA5000386482 /* GreenBorderTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63753AF2B45DA5000386482 /* GreenBorderTextFieldStyle.swift */; };
@@ -43,6 +41,10 @@
 		D65A976D29F323A900462D8C /* K.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65A976C29F323A900462D8C /* K.swift */; };
 		D65A976F29F3BBDD00462D8C /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65A976E29F3BBDD00462D8C /* OnboardingView.swift */; };
 		D65FD53D29D8B259006CC34F /* PersistanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65FD53C29D8B259006CC34F /* PersistanceController.swift */; };
+		D66451062B56FF47003C537B /* ThemeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D630A53A2B4704EA0098CA86 /* ThemeKit.framework */; };
+		D66451072B56FF47003C537B /* ThemeKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D630A53A2B4704EA0098CA86 /* ThemeKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D66451092B56FF88003C537B /* PunchPadUITests.xctest in Resources */ = {isa = PBXBuildFile; fileRef = D6C458AA29D229230069D89B /* PunchPadUITests.xctest */; };
+		D664510A2B56FF8A003C537B /* PunchPadTests.xctest in Resources */ = {isa = PBXBuildFile; fileRef = D6C458A029D229230069D89B /* PunchPadTests.xctest */; };
 		D666ADCC2AC05A0500B74663 /* CaseIterable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D666ADCB2AC05A0500B74663 /* CaseIterable+Extension.swift */; };
 		D66750EA29D713C900757F17 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66750E929D713C900757F17 /* HistoryView.swift */; };
 		D66750EC29D71C8300757F17 /* HistoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66750EB29D71C8300757F17 /* HistoryRow.swift */; };
@@ -135,7 +137,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D630A53D2B4707E30098CA86 /* ThemeKit.framework in Embed Frameworks */,
+				D66451072B56FF47003C537B /* ThemeKit.framework in Embed Frameworks */,
 				D6FE20912B4700AE00F931CD /* TabViewKit.framework in Embed Frameworks */,
 				D6FE208E2B4700AD00F931CD /* NavigationKit.framework in Embed Frameworks */,
 			);
@@ -151,7 +153,7 @@
 		D60D21F12AA30F310055BE34 /* HomeViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewScreen.swift; sourceTree = "<group>"; };
 		D60D21F42AA357BA0055BE34 /* OnboardingViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewScreen.swift; sourceTree = "<group>"; };
 		D60EB9B52AB0D7000053136A /* Container.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Container.swift; sourceTree = "<group>"; };
-		D61007482AAB867C00503C28 /* HistoryViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HistoryViewScreen.swift; path = ClockInUITests/ScreenHelpers/HistoryViewScreen.swift; sourceTree = SOURCE_ROOT; };
+		D61007482AAB867C00503C28 /* HistoryViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HistoryViewScreen.swift; path = PunchPadUITests/ScreenHelpers/HistoryViewScreen.swift; sourceTree = SOURCE_ROOT; };
 		D610074A2AAB8BC800503C28 /* HistoryViewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewUITests.swift; sourceTree = "<group>"; };
 		D610074C2AAC77F300503C28 /* EditSheetScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSheetScreen.swift; sourceTree = "<group>"; };
 		D617D43C2B4987480069AA3B /* GrossSalary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrossSalary.swift; sourceTree = "<group>"; };
@@ -206,14 +208,14 @@
 		D6B3B2652ABA237800101A1F /* SettingsViewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewUITests.swift; sourceTree = "<group>"; };
 		D6B7D1C72B0EB41A00E6F7A8 /* ContentViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewScreen.swift; sourceTree = "<group>"; };
 		D6C3567A2B44AAB4007C23A3 /* ButtonStyle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ButtonStyle+Extension.swift"; sourceTree = "<group>"; };
-		D6C4589029D229210069D89B /* ClockIn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClockIn.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6C4589029D229210069D89B /* PunchPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PunchPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6C4589329D229210069D89B /* ClockInApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockInApp.swift; sourceTree = "<group>"; };
 		D6C4589529D229210069D89B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D6C4589729D229230069D89B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D6C4589A29D229230069D89B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		D6C458A029D229230069D89B /* ClockInTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClockInTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6C458A029D229230069D89B /* PunchPadTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PunchPadTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6C458A429D229230069D89B /* ClockInTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockInTests.swift; sourceTree = "<group>"; };
-		D6C458AA29D229230069D89B /* ClockInUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClockInUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6C458AA29D229230069D89B /* PunchPadUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PunchPadUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6C458AE29D229230069D89B /* ClockInUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockInUITests.swift; sourceTree = "<group>"; };
 		D6C458B029D229230069D89B /* ClockInUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockInUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		D6C458C029D2DD4E0069D89B /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
@@ -251,7 +253,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D630A53B2B4704EA0098CA86 /* ThemeKit.framework in Frameworks */,
+				D66451062B56FF47003C537B /* ThemeKit.framework in Frameworks */,
 				D6FE20902B4700AE00F931CD /* TabViewKit.framework in Frameworks */,
 				D6FE208D2B4700AD00F931CD /* NavigationKit.framework in Frameworks */,
 			);
@@ -357,9 +359,9 @@
 		D6C4588729D229200069D89B = {
 			isa = PBXGroup;
 			children = (
-				D6C4589229D229210069D89B /* ClockIn */,
-				D6C458A329D229230069D89B /* ClockInTests */,
-				D6C458AD29D229230069D89B /* ClockInUITests */,
+				D6C4589229D229210069D89B /* PunchPad */,
+				D6C458A329D229230069D89B /* PunchPadTests */,
+				D6C458AD29D229230069D89B /* PunchPadUITests */,
 				D6C4589129D229210069D89B /* Products */,
 				D6801A132B404F61003F54F9 /* Frameworks */,
 			);
@@ -368,14 +370,14 @@
 		D6C4589129D229210069D89B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D6C4589029D229210069D89B /* ClockIn.app */,
-				D6C458A029D229230069D89B /* ClockInTests.xctest */,
-				D6C458AA29D229230069D89B /* ClockInUITests.xctest */,
+				D6C4589029D229210069D89B /* PunchPad.app */,
+				D6C458A029D229230069D89B /* PunchPadTests.xctest */,
+				D6C458AA29D229230069D89B /* PunchPadUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D6C4589229D229210069D89B /* ClockIn */ = {
+		D6C4589229D229210069D89B /* PunchPad */ = {
 			isa = PBXGroup;
 			children = (
 				D6B2BDF52B27C42800CB4FA7 /* ViewModifiers */,
@@ -394,7 +396,7 @@
 				D6E2C15729D6C20E00229286 /* WorkHistory.xcdatamodeld */,
 				D6C4589929D229230069D89B /* Preview Content */,
 			);
-			path = ClockIn;
+			path = PunchPad;
 			sourceTree = "<group>";
 		};
 		D6C4589929D229230069D89B /* Preview Content */ = {
@@ -405,7 +407,7 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		D6C458A329D229230069D89B /* ClockInTests */ = {
+		D6C458A329D229230069D89B /* PunchPadTests */ = {
 			isa = PBXGroup;
 			children = (
 				D61945EB29E7306B0046DE1F /* HomeViewModelTests.swift */,
@@ -418,10 +420,10 @@
 				D6C458A429D229230069D89B /* ClockInTests.swift */,
 				D6CBB8652B3443360074CE8B /* EditSheetViewModelTests.swift */,
 			);
-			path = ClockInTests;
+			path = PunchPadTests;
 			sourceTree = "<group>";
 		};
-		D6C458AD29D229230069D89B /* ClockInUITests */ = {
+		D6C458AD29D229230069D89B /* PunchPadUITests */ = {
 			isa = PBXGroup;
 			children = (
 				D67332E82AAE3C1A005FFE7F /* ScreenHelpers */,
@@ -432,7 +434,7 @@
 				D6C458B029D229230069D89B /* ClockInUITestsLaunchTests.swift */,
 				D6B3B2652ABA237800101A1F /* SettingsViewUITests.swift */,
 			);
-			path = ClockInUITests;
+			path = PunchPadUITests;
 			sourceTree = "<group>";
 		};
 		D6C458BE29D2D3E50069D89B /* View */ = {
@@ -510,9 +512,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D6C4588F29D229210069D89B /* ClockIn */ = {
+		D6C4588F29D229210069D89B /* PunchPad */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D6C458B429D229230069D89B /* Build configuration list for PBXNativeTarget "ClockIn" */;
+			buildConfigurationList = D6C458B429D229230069D89B /* Build configuration list for PBXNativeTarget "PunchPad" */;
 			buildPhases = (
 				D6C4588C29D229210069D89B /* Sources */,
 				D6C4588D29D229210069D89B /* Frameworks */,
@@ -523,14 +525,14 @@
 			);
 			dependencies = (
 			);
-			name = ClockIn;
+			name = PunchPad;
 			productName = ClockIn;
-			productReference = D6C4589029D229210069D89B /* ClockIn.app */;
+			productReference = D6C4589029D229210069D89B /* PunchPad.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D6C4589F29D229230069D89B /* ClockInTests */ = {
+		D6C4589F29D229230069D89B /* PunchPadTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D6C458B729D229230069D89B /* Build configuration list for PBXNativeTarget "ClockInTests" */;
+			buildConfigurationList = D6C458B729D229230069D89B /* Build configuration list for PBXNativeTarget "PunchPadTests" */;
 			buildPhases = (
 				D6C4589C29D229230069D89B /* Sources */,
 				D6C4589D29D229230069D89B /* Frameworks */,
@@ -541,14 +543,14 @@
 			dependencies = (
 				D6C458A229D229230069D89B /* PBXTargetDependency */,
 			);
-			name = ClockInTests;
+			name = PunchPadTests;
 			productName = ClockInTests;
-			productReference = D6C458A029D229230069D89B /* ClockInTests.xctest */;
+			productReference = D6C458A029D229230069D89B /* PunchPadTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		D6C458A929D229230069D89B /* ClockInUITests */ = {
+		D6C458A929D229230069D89B /* PunchPadUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D6C458BA29D229230069D89B /* Build configuration list for PBXNativeTarget "ClockInUITests" */;
+			buildConfigurationList = D6C458BA29D229230069D89B /* Build configuration list for PBXNativeTarget "PunchPadUITests" */;
 			buildPhases = (
 				D6C458A629D229230069D89B /* Sources */,
 				D6C458A729D229230069D89B /* Frameworks */,
@@ -559,9 +561,9 @@
 			dependencies = (
 				D6C458AC29D229230069D89B /* PBXTargetDependency */,
 			);
-			name = ClockInUITests;
+			name = PunchPadUITests;
 			productName = ClockInUITests;
-			productReference = D6C458AA29D229230069D89B /* ClockInUITests.xctest */;
+			productReference = D6C458AA29D229230069D89B /* PunchPadUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -587,7 +589,7 @@
 					};
 				};
 			};
-			buildConfigurationList = D6C4588B29D229200069D89B /* Build configuration list for PBXProject "ClockIn" */;
+			buildConfigurationList = D6C4588B29D229200069D89B /* Build configuration list for PBXProject "PunchPad" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -600,9 +602,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D6C4588F29D229210069D89B /* ClockIn */,
-				D6C4589F29D229230069D89B /* ClockInTests */,
-				D6C458A929D229230069D89B /* ClockInUITests */,
+				D6C4588F29D229210069D89B /* PunchPad */,
+				D6C4589F29D229230069D89B /* PunchPadTests */,
+				D6C458A929D229230069D89B /* PunchPadUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -623,6 +625,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D664510A2B56FF8A003C537B /* PunchPadTests.xctest in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -630,6 +633,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D66451092B56FF88003C537B /* PunchPadUITests.xctest in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -754,12 +758,12 @@
 /* Begin PBXTargetDependency section */
 		D6C458A229D229230069D89B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D6C4588F29D229210069D89B /* ClockIn */;
+			target = D6C4588F29D229210069D89B /* PunchPad */;
 			targetProxy = D6C458A129D229230069D89B /* PBXContainerItemProxy */;
 		};
 		D6C458AC29D229230069D89B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D6C4588F29D229210069D89B /* ClockIn */;
+			target = D6C4588F29D229210069D89B /* PunchPad */;
 			targetProxy = D6C458AB29D229230069D89B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -887,7 +891,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"ClockIn/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"PunchPad/Preview Content\"";
 				DEVELOPMENT_TEAM = 73N45UT488;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -895,18 +899,22 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = tomaszkubiak.ClockIn;
+				PRODUCT_BUNDLE_IDENTIFIER = tomasz.m.kubiak.PunchPad;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -918,7 +926,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"ClockIn/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"PunchPad/Preview Content\"";
 				DEVELOPMENT_TEAM = 73N45UT488;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -926,18 +934,22 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = tomaszkubiak.ClockIn;
+				PRODUCT_BUNDLE_IDENTIFIER = tomasz.m.kubiak.PunchPad;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -957,7 +969,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ClockIn.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ClockIn";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PunchPad.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PunchPad";
 			};
 			name = Debug;
 		};
@@ -977,7 +989,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ClockIn.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ClockIn";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PunchPad.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PunchPad";
 			};
 			name = Release;
 		};
@@ -1020,7 +1032,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D6C4588B29D229200069D89B /* Build configuration list for PBXProject "ClockIn" */ = {
+		D6C4588B29D229200069D89B /* Build configuration list for PBXProject "PunchPad" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D6C458B229D229230069D89B /* Debug */,
@@ -1029,7 +1041,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D6C458B429D229230069D89B /* Build configuration list for PBXNativeTarget "ClockIn" */ = {
+		D6C458B429D229230069D89B /* Build configuration list for PBXNativeTarget "PunchPad" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D6C458B529D229230069D89B /* Debug */,
@@ -1038,7 +1050,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D6C458B729D229230069D89B /* Build configuration list for PBXNativeTarget "ClockInTests" */ = {
+		D6C458B729D229230069D89B /* Build configuration list for PBXNativeTarget "PunchPadTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D6C458B829D229230069D89B /* Debug */,
@@ -1047,7 +1059,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D6C458BA29D229230069D89B /* Build configuration list for PBXNativeTarget "ClockInUITests" */ = {
+		D6C458BA29D229230069D89B /* Build configuration list for PBXNativeTarget "PunchPadUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D6C458BB29D229230069D89B /* Debug */,
