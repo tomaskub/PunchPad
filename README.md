@@ -1,4 +1,4 @@
-# ClockIn
+# PunchPad
 A simple app helping to track time at work 
 
 # Description 
@@ -34,7 +34,8 @@ ClockIn helps with tracking the work time and overtime you do at work. Whenever 
 - TimerModel has injected TimerProvider with metatypes allows for easy testing in XCTest with mock timer.
 
 # Build 
-No external dependencies - clone and run 
+No external dependencies - clone and run.
+To configure schema look at the LaunchArgument enum and pass data in build scheme. 
 
 # Feedback 
 Feel free to file an issue or submit a PR. Im always looking to improve my work. 
