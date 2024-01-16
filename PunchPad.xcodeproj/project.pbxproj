@@ -357,9 +357,9 @@
 		D6C4588729D229200069D89B = {
 			isa = PBXGroup;
 			children = (
-				D6C4589229D229210069D89B /* ClockIn */,
-				D6C458A329D229230069D89B /* ClockInTests */,
-				D6C458AD29D229230069D89B /* ClockInUITests */,
+				D6C4589229D229210069D89B /* PunchPad */,
+				D6C458A329D229230069D89B /* PunchPadTests */,
+				D6C458AD29D229230069D89B /* PunchPadUITests */,
 				D6C4589129D229210069D89B /* Products */,
 				D6801A132B404F61003F54F9 /* Frameworks */,
 			);
@@ -375,7 +375,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D6C4589229D229210069D89B /* ClockIn */ = {
+		D6C4589229D229210069D89B /* PunchPad */ = {
 			isa = PBXGroup;
 			children = (
 				D6B2BDF52B27C42800CB4FA7 /* ViewModifiers */,
@@ -394,7 +394,7 @@
 				D6E2C15729D6C20E00229286 /* WorkHistory.xcdatamodeld */,
 				D6C4589929D229230069D89B /* Preview Content */,
 			);
-			path = ClockIn;
+			path = PunchPad;
 			sourceTree = "<group>";
 		};
 		D6C4589929D229230069D89B /* Preview Content */ = {
@@ -405,7 +405,7 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		D6C458A329D229230069D89B /* ClockInTests */ = {
+		D6C458A329D229230069D89B /* PunchPadTests */ = {
 			isa = PBXGroup;
 			children = (
 				D61945EB29E7306B0046DE1F /* HomeViewModelTests.swift */,
@@ -418,10 +418,10 @@
 				D6C458A429D229230069D89B /* ClockInTests.swift */,
 				D6CBB8652B3443360074CE8B /* EditSheetViewModelTests.swift */,
 			);
-			path = ClockInTests;
+			path = PunchPadTests;
 			sourceTree = "<group>";
 		};
-		D6C458AD29D229230069D89B /* ClockInUITests */ = {
+		D6C458AD29D229230069D89B /* PunchPadUITests */ = {
 			isa = PBXGroup;
 			children = (
 				D67332E82AAE3C1A005FFE7F /* ScreenHelpers */,
@@ -432,7 +432,7 @@
 				D6C458B029D229230069D89B /* ClockInUITestsLaunchTests.swift */,
 				D6B3B2652ABA237800101A1F /* SettingsViewUITests.swift */,
 			);
-			path = ClockInUITests;
+			path = PunchPadUITests;
 			sourceTree = "<group>";
 		};
 		D6C458BE29D2D3E50069D89B /* View */ = {
@@ -887,7 +887,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"ClockIn/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"PunchPad/Preview Content\"";
 				DEVELOPMENT_TEAM = 73N45UT488;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -902,7 +902,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = tomaszkubiak.ClockIn;
+				PRODUCT_BUNDLE_IDENTIFIER = tomasz.m.kubiak.PunchPad;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -918,7 +918,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"ClockIn/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"PunchPad/Preview Content\"";
 				DEVELOPMENT_TEAM = 73N45UT488;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -933,7 +933,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = tomaszkubiak.ClockIn;
+				PRODUCT_BUNDLE_IDENTIFIER = tomasz.m.kubiak.PunchPad;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
