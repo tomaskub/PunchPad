@@ -206,14 +206,14 @@
 		D6B3B2652ABA237800101A1F /* SettingsViewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewUITests.swift; sourceTree = "<group>"; };
 		D6B7D1C72B0EB41A00E6F7A8 /* ContentViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewScreen.swift; sourceTree = "<group>"; };
 		D6C3567A2B44AAB4007C23A3 /* ButtonStyle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ButtonStyle+Extension.swift"; sourceTree = "<group>"; };
-		D6C4589029D229210069D89B /* ClockIn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClockIn.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6C4589029D229210069D89B /* PunchPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PunchPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6C4589329D229210069D89B /* ClockInApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockInApp.swift; sourceTree = "<group>"; };
 		D6C4589529D229210069D89B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D6C4589729D229230069D89B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D6C4589A29D229230069D89B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		D6C458A029D229230069D89B /* ClockInTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClockInTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6C458A029D229230069D89B /* PunchPadTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PunchPadTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6C458A429D229230069D89B /* ClockInTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockInTests.swift; sourceTree = "<group>"; };
-		D6C458AA29D229230069D89B /* ClockInUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClockInUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6C458AA29D229230069D89B /* PunchPadUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PunchPadUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6C458AE29D229230069D89B /* ClockInUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockInUITests.swift; sourceTree = "<group>"; };
 		D6C458B029D229230069D89B /* ClockInUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockInUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		D6C458C029D2DD4E0069D89B /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
@@ -368,9 +368,9 @@
 		D6C4589129D229210069D89B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D6C4589029D229210069D89B /* ClockIn.app */,
-				D6C458A029D229230069D89B /* ClockInTests.xctest */,
-				D6C458AA29D229230069D89B /* ClockInUITests.xctest */,
+				D6C4589029D229210069D89B /* PunchPad.app */,
+				D6C458A029D229230069D89B /* PunchPadTests.xctest */,
+				D6C458AA29D229230069D89B /* PunchPadUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -510,9 +510,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D6C4588F29D229210069D89B /* ClockIn */ = {
+		D6C4588F29D229210069D89B /* PunchPad */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D6C458B429D229230069D89B /* Build configuration list for PBXNativeTarget "ClockIn" */;
+			buildConfigurationList = D6C458B429D229230069D89B /* Build configuration list for PBXNativeTarget "PunchPad" */;
 			buildPhases = (
 				D6C4588C29D229210069D89B /* Sources */,
 				D6C4588D29D229210069D89B /* Frameworks */,
@@ -523,14 +523,14 @@
 			);
 			dependencies = (
 			);
-			name = ClockIn;
+			name = PunchPad;
 			productName = ClockIn;
-			productReference = D6C4589029D229210069D89B /* ClockIn.app */;
+			productReference = D6C4589029D229210069D89B /* PunchPad.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D6C4589F29D229230069D89B /* ClockInTests */ = {
+		D6C4589F29D229230069D89B /* PunchPadTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D6C458B729D229230069D89B /* Build configuration list for PBXNativeTarget "ClockInTests" */;
+			buildConfigurationList = D6C458B729D229230069D89B /* Build configuration list for PBXNativeTarget "PunchPadTests" */;
 			buildPhases = (
 				D6C4589C29D229230069D89B /* Sources */,
 				D6C4589D29D229230069D89B /* Frameworks */,
@@ -541,14 +541,14 @@
 			dependencies = (
 				D6C458A229D229230069D89B /* PBXTargetDependency */,
 			);
-			name = ClockInTests;
+			name = PunchPadTests;
 			productName = ClockInTests;
-			productReference = D6C458A029D229230069D89B /* ClockInTests.xctest */;
+			productReference = D6C458A029D229230069D89B /* PunchPadTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		D6C458A929D229230069D89B /* ClockInUITests */ = {
+		D6C458A929D229230069D89B /* PunchPadUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D6C458BA29D229230069D89B /* Build configuration list for PBXNativeTarget "ClockInUITests" */;
+			buildConfigurationList = D6C458BA29D229230069D89B /* Build configuration list for PBXNativeTarget "PunchPadUITests" */;
 			buildPhases = (
 				D6C458A629D229230069D89B /* Sources */,
 				D6C458A729D229230069D89B /* Frameworks */,
@@ -559,9 +559,9 @@
 			dependencies = (
 				D6C458AC29D229230069D89B /* PBXTargetDependency */,
 			);
-			name = ClockInUITests;
+			name = PunchPadUITests;
 			productName = ClockInUITests;
-			productReference = D6C458AA29D229230069D89B /* ClockInUITests.xctest */;
+			productReference = D6C458AA29D229230069D89B /* PunchPadUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -587,7 +587,7 @@
 					};
 				};
 			};
-			buildConfigurationList = D6C4588B29D229200069D89B /* Build configuration list for PBXProject "ClockIn" */;
+			buildConfigurationList = D6C4588B29D229200069D89B /* Build configuration list for PBXProject "PunchPad" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -600,9 +600,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D6C4588F29D229210069D89B /* ClockIn */,
-				D6C4589F29D229230069D89B /* ClockInTests */,
-				D6C458A929D229230069D89B /* ClockInUITests */,
+				D6C4588F29D229210069D89B /* PunchPad */,
+				D6C4589F29D229230069D89B /* PunchPadTests */,
+				D6C458A929D229230069D89B /* PunchPadUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -754,12 +754,12 @@
 /* Begin PBXTargetDependency section */
 		D6C458A229D229230069D89B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D6C4588F29D229210069D89B /* ClockIn */;
+			target = D6C4588F29D229210069D89B /* PunchPad */;
 			targetProxy = D6C458A129D229230069D89B /* PBXContainerItemProxy */;
 		};
 		D6C458AC29D229230069D89B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D6C4588F29D229210069D89B /* ClockIn */;
+			target = D6C4588F29D229210069D89B /* PunchPad */;
 			targetProxy = D6C458AB29D229230069D89B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -957,7 +957,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ClockIn.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ClockIn";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PunchPad.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PunchPad";
 			};
 			name = Debug;
 		};
@@ -977,7 +977,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ClockIn.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ClockIn";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PunchPad.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PunchPad";
 			};
 			name = Release;
 		};
@@ -1020,7 +1020,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D6C4588B29D229200069D89B /* Build configuration list for PBXProject "ClockIn" */ = {
+		D6C4588B29D229200069D89B /* Build configuration list for PBXProject "PunchPad" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D6C458B229D229230069D89B /* Debug */,
@@ -1029,7 +1029,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D6C458B429D229230069D89B /* Build configuration list for PBXNativeTarget "ClockIn" */ = {
+		D6C458B429D229230069D89B /* Build configuration list for PBXNativeTarget "PunchPad" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D6C458B529D229230069D89B /* Debug */,
@@ -1038,7 +1038,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D6C458B729D229230069D89B /* Build configuration list for PBXNativeTarget "ClockInTests" */ = {
+		D6C458B729D229230069D89B /* Build configuration list for PBXNativeTarget "PunchPadTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D6C458B829D229230069D89B /* Debug */,
@@ -1047,7 +1047,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D6C458BA29D229230069D89B /* Build configuration list for PBXNativeTarget "ClockInUITests" */ = {
+		D6C458BA29D229230069D89B /* Build configuration list for PBXNativeTarget "PunchPadUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D6C458BB29D229230069D89B /* Debug */,

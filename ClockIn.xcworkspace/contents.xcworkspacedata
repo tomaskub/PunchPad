@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "container:ClockIn.xcodeproj">
+      location = "container:/Users/tomaszkubiak/xcode/PunchPad/PunchPad/PunchPad.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:ThemeKit/ThemeKit.xcodeproj">
