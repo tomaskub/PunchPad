@@ -9,11 +9,15 @@ import SwiftUI
 
 public struct CustomTabView<Content: View>: View  {
     let content: Content
+    let tabBarColorConfig: TabBarColorConfiguration
     @Binding var selection: TabBarItem
     @State private var tabs: [TabBarItem] = []
     
-    public init(selection: Binding<TabBarItem>, @ViewBuilder content: () -> Content) {
+    public init(selection: Binding<TabBarItem>, 
+                tabBarColorConfiguration: TabBarColorConfiguration,
+                @ViewBuilder content: () -> Content) {
         self._selection = selection
+        self.tabBarColorConfig = tabBarColorConfiguration
         self.content = content()
     }
     
@@ -21,7 +25,8 @@ public struct CustomTabView<Content: View>: View  {
         ZStack(alignment: .bottom) {
             content
             CustomTabBarView(selection: $selection,
-                             tabs: tabs)
+                             tabs: tabs,
+            colorConfiguration: tabBarColorConfig)
         }
         .onPreferenceChange(TabBarItemsPrefKey.self) { value in
             self.tabs = value
@@ -30,7 +35,7 @@ public struct CustomTabView<Content: View>: View  {
 }
 
 #Preview {
-    CustomTabView(selection: .constant(.home)) {
+    CustomTabView(selection: .constant(.home), tabBarColorConfiguration: TabBarColorConfiguration()) {
         Color.red
     }
 }

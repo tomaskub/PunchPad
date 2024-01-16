@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D622866D2B4094D100B41004 /* TabBarIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D622866C2B4094D100B41004 /* TabBarIdentifier.swift */; };
+		D6C89A222B572A6200B9EEC9 /* TabBarColorConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C89A212B572A6200B9EEC9 /* TabBarColorConfiguration.swift */; };
 		D6D9BAC62B407A8F002D4C19 /* TabViewKit.h in Headers */ = {isa = PBXBuildFile; fileRef = D6D9BAC52B407A8F002D4C19 /* TabViewKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D6D9BAD52B407C33002D4C19 /* TabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D9BAD22B407C32002D4C19 /* TabBarItem.swift */; };
 		D6D9BAD62B407C33002D4C19 /* CustomTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D9BAD32B407C33002D4C19 /* CustomTabBarView.swift */; };
@@ -20,6 +21,7 @@
 
 /* Begin PBXFileReference section */
 		D622866C2B4094D100B41004 /* TabBarIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarIdentifier.swift; sourceTree = "<group>"; };
+		D6C89A212B572A6200B9EEC9 /* TabBarColorConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarColorConfiguration.swift; sourceTree = "<group>"; };
 		D6D9BAC22B407A8F002D4C19 /* TabViewKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TabViewKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6D9BAC52B407A8F002D4C19 /* TabViewKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TabViewKit.h; sourceTree = "<group>"; };
 		D6D9BAD22B407C32002D4C19 /* TabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItem.swift; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 			children = (
 				D6D9BAD22B407C32002D4C19 /* TabBarItem.swift */,
 				D622866C2B4094D100B41004 /* TabBarIdentifier.swift */,
+				D6C89A212B572A6200B9EEC9 /* TabBarColorConfiguration.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -206,6 +209,7 @@
 				D622866D2B4094D100B41004 /* TabBarIdentifier.swift in Sources */,
 				D6D9BAD72B407C33002D4C19 /* CustomTabView.swift in Sources */,
 				D6D9BAD62B407C33002D4C19 /* CustomTabBarView.swift in Sources */,
+				D6C89A222B572A6200B9EEC9 /* TabBarColorConfiguration.swift in Sources */,
 				D6D9BAD92B407CFF002D4C19 /* TabBarItemsPrefKey.swift in Sources */,
 				D6D9BADD2B407D50002D4C19 /* View+Extension.swift in Sources */,
 				D6D9BADB2B407D19002D4C19 /* TabBarItemViewModifier.swift in Sources */,
