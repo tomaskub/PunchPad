@@ -7,7 +7,7 @@
 
 import XCTest
 import CoreData
-@testable import ClockIn
+@testable import PunchPad
 
 final class StatisticsViewModelTests: XCTestCase {
 
