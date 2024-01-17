@@ -201,7 +201,7 @@ extension HomeViewModel {
                 overtimeTimerService.send(event: .resumeWith(overtimeTimerService.remainingTime))
             }
         } else {
-            workTimerService.send(event: .resumeWith(workTimerService.remainingTime))
+            workTimerService.send(event: .resumeWith(timePassedInBackground))
         }
     }
     
