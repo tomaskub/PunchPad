@@ -26,12 +26,15 @@ final class HomeViewModelModelTests: XCTestCase {
                                   timerProvider: MockTimer.self)
         )
     }
-
+    
     override func tearDown() {
         super.tearDown()
         sut = nil
     }
-    
+}
+
+//MARK: TIMER STATE CHANGE FUNCTIONS
+extension HomeViewModelModelTests {
     func test_startTimerService_when_noOvertime_firstRun() {
         //Given
         let expectedState: TimerService.TimerServiceState = .running
@@ -74,7 +77,7 @@ final class HomeViewModelModelTests: XCTestCase {
         XCTAssertEqual(sut.normalProgress, expectedNormalProgressValue, "Normal progress should be equal to \(expectedNormalProgressValue)")
         XCTAssertEqual(sut.overtimeProgress, expectedOvertimeProgressValue, "Overtime progress should be equal to \(expectedOvertimeProgressValue)")
     }
-
+    
     func test_timerProperties_notUpdating_whenPaused_noOvertime() {
         //Given
         setUpWithOneTimer()
@@ -88,7 +91,7 @@ final class HomeViewModelModelTests: XCTestCase {
         XCTAssertEqual(sut.normalProgress, CGFloat(0.1), "Normal progress should be equal to 0.1")
         XCTAssertEqual(sut.overtimeProgress, CGFloat(0), "Overtime progress should be equal to 0")
     }
-
+    
     func test_resumeTimerService_whenPaused_noOvertime() {
         //Given
         let numberOfFires = 10
@@ -143,7 +146,7 @@ final class HomeViewModelModelTests: XCTestCase {
         XCTAssertEqual(sut.normalProgress, expectedNormalProgressValue, accuracy: 0.01, "Normal progress should be equal to \(expectedNormalProgressValue)")
         XCTAssertEqual(sut.overtimeProgress, expectedOvertimeProgressValue, accuracy: 0.01, "Overtime progress should be equal to \(expectedOvertimeProgressValue)")
     }
-
+    
     func test_stopTimerService_stopsServiceAndSavesEntry_noOvertime() {
         //Given
         let numberOfExistingEntries = DataManager.testing.entryArray.count
@@ -360,7 +363,15 @@ final class HomeViewModelModelTests: XCTestCase {
         XCTAssertEqual(sut.state, .finished, "Service state should be finished")
         XCTAssertEqual(DataManager.testing.entryArray.count, expectedNumberOfEntries, "Additional entry should be saved")
     }
+}
+
+//MARK: BACKGROUND AND FOREGROUND TIMER UPDATES
+extension HomeViewModelModelTests {
     
+}
+
+//MARK: HELPERS
+extension HomeViewModelModelTests {
     private func setUpWithOneTimer() {
         settingsStore.isLoggingOvertime = false
         settingsStore.workTimeInSeconds = workTimerLimit
