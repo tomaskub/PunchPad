@@ -6,13 +6,13 @@
 //
 
 import SwiftUI
-import ThemeKit
 
 struct CustomNavigationBarView: View {
     @State private var barItemsWidth: CGFloat = 0
     let config: NavBarTitleConfiguration
     let shouldShowBackButton: Bool
     let background: _EquatableView
+    let backButtonColor: Color = .black
     let leadingElements: _EquatableView
     let trailingElements: _EquatableView
     let shouldElevate: Bool
@@ -102,7 +102,7 @@ struct CustomNavigationBarView: View {
             Text("Back")
         }
         .font(.system(size: 16))
-        .foregroundColor(Color.theme.primary)
+        .foregroundColor(backButtonColor)
         .onTapGesture {
             onBackTapped()
         }
@@ -153,27 +153,25 @@ private extension CustomNavigationBarView {
             }
             return NavBarTitleConfiguration(title: title)
         }()
-//        NavBarTitleConfiguration(title: "PunchPad", font: .system(size: 32))
         
         var navBarBackground: some View {
             RoundedRectangle(cornerRadius: 24)
                 .foregroundColor(.white)
                 .ignoresSafeArea(edges: .top)
-                .background(Color.theme.background)
+                .background(Color.white)
                 .shadow(color: .black.opacity(0.2), radius: 12, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 4)
         }
         var leadingElements: some View {
-            Logo.logo()
-                .resizable()
+            Circle()
                 .frame(width: 26, height: 26)
         }
         var trailingElements: some View {
             Image(systemName:"gearshape.fill")
-                .foregroundColor(.theme.primary)
+                .foregroundColor(.green)
         }
         
         var background: some View {
-            Color.theme.background
+            Color.gray
                 .ignoresSafeArea()
         }
         var body: some View {
@@ -194,26 +192,27 @@ private extension CustomNavigationBarView {
 
 #Preview("History configuration") {
     struct Preview: View {
-        let navBarTitleConfiguration = NavBarTitleConfiguration(title: "History", font: .system(size: 32,weight: .semibold))
+        let navBarTitleConfiguration = NavBarTitleConfiguration(title: "History", 
+                                                                font: .system(size: 32,weight: .semibold))
         var navBarBackground: some View {
             RoundedRectangle(cornerRadius: 24)
                 .foregroundColor(.white)
                 .ignoresSafeArea(edges: .top)
-                .background(Color.theme.background)
+                .background(Color.gray)
                 .shadow(color: .black.opacity(0.2), radius: 12, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 4)
         }
         var leadingElements: some View {
             Image(systemName: "plus")
                 .font(.title)
-                .foregroundColor(.theme.primary)
+                .foregroundColor(.green)
         }
         var trailingElements: some View {
             Image(systemName:"gearshape.fill")
-                .foregroundColor(.theme.primary)
+                .foregroundColor(.green)
         }
         
         var background: some View {
-            Color.theme.background
+            Color.gray
                 .ignoresSafeArea()
         }
         var body: some View {
@@ -239,15 +238,15 @@ private extension CustomNavigationBarView {
             RoundedRectangle(cornerRadius: 24)
                 .foregroundColor(.white)
                 .ignoresSafeArea(edges: .top)
-                .background(Color.theme.background)
+                .background(Color.white)
                 .shadow(color: .black.opacity(0.2), radius: 12, x: 0, y: 4)
         }
         var trailingElements: some View {
             Image(systemName:"gearshape.fill")
-                .foregroundColor(.theme.primary)
+                .foregroundColor(.green)
         }
         var background: some View {
-            Color.theme.background
+            Color.gray
                 .ignoresSafeArea()
         }
         var body: some View {
@@ -273,11 +272,11 @@ private extension CustomNavigationBarView {
             RoundedRectangle(cornerRadius: 24)
                 .foregroundColor(.white)
                 .ignoresSafeArea(edges: .top)
-                .background(Color.theme.background)
+                .background(Color.gray)
                 .shadow(color: .black.opacity(0.2), radius: 12, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: 4)
         }
         var background: some View {
-            Color.theme.background
+            Color.gray
                 .ignoresSafeArea()
         }
         var body: some View {

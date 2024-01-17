@@ -26,7 +26,6 @@
 		D621C0CC2B3B8BE40065DF8C /* TimerIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D621C0CB2B3B8BE40065DF8C /* TimerIndicator.swift */; };
 		D629CEF92B3613660036579D /* TimerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D629CEF82B3613660036579D /* TimerService.swift */; };
 		D629CEFB2B363B500036579D /* TimerServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D629CEFA2B363B500036579D /* TimerServiceTests.swift */; };
-		D630A53C2B47056C0098CA86 /* ThemeKit.framework in Resources */ = {isa = PBXBuildFile; fileRef = D630A53A2B4704EA0098CA86 /* ThemeKit.framework */; };
 		D630A53F2B473A320098CA86 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D630A53E2B473A320098CA86 /* LaunchScreen.storyboard */; };
 		D63753AE2B45DA2000386482 /* TextFieldStyle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63753AD2B45DA2000386482 /* TextFieldStyle+Extension.swift */; };
 		D63753B02B45DA5000386482 /* GreenBorderTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63753AF2B45DA5000386482 /* GreenBorderTextFieldStyle.swift */; };
@@ -614,7 +613,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D630A53C2B47056C0098CA86 /* ThemeKit.framework in Resources */,
 				D630A53F2B473A320098CA86 /* LaunchScreen.storyboard in Resources */,
 				D6C4589B29D229230069D89B /* Preview Assets.xcassets in Resources */,
 				D6C4589829D229230069D89B /* Assets.xcassets in Resources */,

@@ -30,8 +30,6 @@
 		D62651382B3F5D410089A84B /* NavigatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651372B3F5D410089A84B /* NavigatorDelegate.swift */; };
 		D626513A2B3F5DD70089A84B /* NavHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62651392B3F5DD70089A84B /* NavHost.swift */; };
 		D626513C2B3F5E020089A84B /* Navigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D626513B2B3F5E020089A84B /* Navigator.swift */; };
-		D6C89A242B5734FA00B9EEC9 /* NavBarColorConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C89A232B5734FA00B9EEC9 /* NavBarColorConfiguration.swift */; };
-		D6CA77422B4171D700C98AF3 /* ThemeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6CA77412B4171D700C98AF3 /* ThemeKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,7 +57,6 @@
 		D62651372B3F5D410089A84B /* NavigatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatorDelegate.swift; sourceTree = "<group>"; };
 		D62651392B3F5DD70089A84B /* NavHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavHost.swift; sourceTree = "<group>"; };
 		D626513B2B3F5E020089A84B /* Navigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigator.swift; sourceTree = "<group>"; };
-		D6C89A232B5734FA00B9EEC9 /* NavBarColorConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBarColorConfiguration.swift; sourceTree = "<group>"; };
 		D6CA77412B4171D700C98AF3 /* ThemeKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ThemeKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -68,7 +65,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D6CA77422B4171D700C98AF3 /* ThemeKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,7 +154,6 @@
 			children = (
 				D626512A2B3F48EC0089A84B /* NavBarConfigurationState.swift */,
 				D626510C2B3F135D0089A84B /* NavBarTitleConfiguration.swift */,
-				D6C89A232B5734FA00B9EEC9 /* NavBarColorConfiguration.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -267,7 +262,6 @@
 				D626511A2B3F470F0089A84B /* CustomNavBarPrefKey.swift in Sources */,
 				D626510F2B3F13DC0089A84B /* _EquatableView.swift in Sources */,
 				D62651202B3F47560089A84B /* NavBarBackgroundPrefKey.swift in Sources */,
-				D6C89A242B5734FA00B9EEC9 /* NavBarColorConfiguration.swift in Sources */,
 				D62651182B3F465C0089A84B /* NavBarScrollingPrefKey.swift in Sources */,
 				D626512B2B3F48EC0089A84B /* NavBarConfigurationState.swift in Sources */,
 				D62651382B3F5D410089A84B /* NavigatorDelegate.swift in Sources */,
