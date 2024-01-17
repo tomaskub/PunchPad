@@ -29,6 +29,11 @@ struct MainView: View {
         return result
     }()
     
+    let tabBarColorConfiguration = TabBarColorConfiguration(activeColor: .theme.primary,
+                                                            inactiveColor: .theme.secondaryLabel,
+                                                            shadowColor: .theme.black.opacity(0.3),
+                                                            backgroundColor: .theme.white)
+    
     init(navigator: Navigator<Route>, tabSelection: Binding<TabBarItem>, container: Container) {
         self.navigator = navigator
         
@@ -52,7 +57,8 @@ struct MainView: View {
     }
     
     var body: some View {
-        CustomTabView(selection: $tabSelection) {
+        CustomTabView(selection: $tabSelection,
+                      tabBarColorConfiguration: tabBarColorConfiguration) {
             HomeView(viewModel: homeViewModel)
                 .tabBarItem(tab: .home, selection: $tabSelection)
             
