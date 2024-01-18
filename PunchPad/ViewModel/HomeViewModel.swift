@@ -223,7 +223,12 @@ extension HomeViewModel {
     func resumeFromBackground(_ appDidEnterBackgroundDate: Date) {
         let timePassedInBackground = DateInterval(start: appDidEnterBackgroundDate, end: Date()).duration
         guard let overtimeTimerService else {
-            workTimerService.send(event: .resumeWith(timePassedInBackground))
+            if timePassedInBackground < workTimerService.remainingTime {
+                workTimerService.send(event: .resumeWith(timePassedInBackground))
+            } else {
+                self.finishDate = appDidEnterBackgroundDate.addingTimeInterval(workTimerService.remainingTime)
+                workTimerService.send(event: .resumeWith(timePassedInBackground))
+            }
             return
         }
         if workTimerService.remainingTime < timePassedInBackground {
