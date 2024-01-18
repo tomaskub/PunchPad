@@ -122,8 +122,12 @@ class HomeViewModel: NSObject, ObservableObject {
             }.sink { [weak self] _ in
                 guard let self else { return }
                 self.state = .finished
-                self.finishDate = Date()
-                self.saveEntry()
+                if let _ = self.finishDate {
+                    self.saveEntry()
+                } else {
+                    self.finishDate = Date()
+                    self.saveEntry()
+                }
             }.store(in: &subscriptions)
         } else {
             self.workTimerService.$serviceState.filter { state in
@@ -131,8 +135,12 @@ class HomeViewModel: NSObject, ObservableObject {
             }.sink { [weak self] _ in
                 guard let self else { return }
                 self.state = .finished
-                self.finishDate = Date()
-                self.saveEntry()
+                if let _ = self.finishDate {
+                    self.saveEntry()
+                } else {
+                    self.finishDate = Date()
+                    self.saveEntry()
+                }
             }.store(in: &subscriptions)
         }
     }
@@ -175,7 +183,6 @@ extension HomeViewModel {
     }
     func stopTimerService() {
         guard state != .finished else { return }
-        self.state = .finished
         finishDate = Date()
         workTimerService.send(event: .stop)
         overtimeTimerService?.send(event: .stop)
@@ -199,6 +206,20 @@ extension HomeViewModel {
             }.store(in: &subscriptions)
     }
     
+    /// Set appDidEnterBackgroundDate to now and set notifications for worktime and overtime timers finish
+    private func appDidEnterBackground() {
+        appDidEnterBackgroundDate = Date()
+        scheduleTimerFinishNotifications()
+    }
+    
+    /// Remove pending notifications for timers and update timers
+    private func appWillEnterForeground() {
+        if let appDidEnterBackgroundDate {
+            resumeFromBackground(appDidEnterBackgroundDate)
+        }
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [K.Notification.identifier])
+    }
+    // this needs to include the scenario when the app wakes up after the timers are past and needs to save entry with correct date -> notification date
     func resumeFromBackground(_ appDidEnterBackgroundDate: Date) {
         let timePassedInBackground = DateInterval(start: appDidEnterBackgroundDate, end: Date()).duration
         guard let overtimeTimerService else {
@@ -217,30 +238,8 @@ extension HomeViewModel {
         } else {
             workTimerService.send(event: .resumeWith(timePassedInBackground))
         }
+        self.appDidEnterBackgroundDate = nil
     }
-    
-    private func appDidEnterBackground() {
-        // update background entrance date
-        appDidEnterBackgroundDate = Date()
-        // schedule notifications
-        if let overtimeTimerService,
-           overtimeTimerService.serviceState == .running {
-            let timerToTimerFinish: TimeInterval = overtimeTimerService.remainingTime
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timerToTimerFinish, repeats: false)
-            checkForPermissionAndDispatch(withTrigger: trigger) // schedule notification for end of overtime
-        } else if workTimerService.serviceState == .running {
-            let timeToTimerFinish: TimeInterval = workTimerService.remainingTime
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeToTimerFinish , repeats: false)
-            checkForPermissionAndDispatch(withTrigger: trigger) // schedule notification for end of worktime
-        }
-    }
-    
-    @objc private func appWillEnterForeground() {
-        guard let appDidEnterBackgroundDate else { return }
-        resumeFromBackground(appDidEnterBackgroundDate)
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [K.Notification.identifier])
-    }
-    
 }
 
 //MARK: DATA OPERATIONS
@@ -265,8 +264,28 @@ extension HomeViewModel {
 
 //MARK: NOTIFICATIONS
 extension HomeViewModel {
+    /// Schedule notifications for finish of overtime timer service and worktime timer service
+    private func scheduleTimerFinishNotifications() {
+        if let overtimeTimerService {
+            if workTimerService.serviceState == .running {
+                let workTimeTrigger = UNTimeIntervalNotificationTrigger(timeInterval: workTimerService.remainingTime, repeats: false)
+                let overtimeTimeInterval = workTimerService.remainingTime + overtimeTimerService.remainingTime
+                let overtimeTrigger = UNTimeIntervalNotificationTrigger(timeInterval: overtimeTimeInterval, repeats: false)
+                checkForPermissionAndDispatch(withTrigger: workTimeTrigger)
+                checkForPermissionAndDispatch(withTrigger: overtimeTrigger)
+            } else if overtimeTimerService.serviceState == .running {
+                let timerToTimerFinish: TimeInterval = overtimeTimerService.remainingTime
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timerToTimerFinish, repeats: false)
+                checkForPermissionAndDispatch(withTrigger: trigger)
+            }
+        } else if workTimerService.serviceState == .running {
+            let timeToTimerFinish: TimeInterval = workTimerService.remainingTime
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeToTimerFinish , repeats: false)
+            checkForPermissionAndDispatch(withTrigger: trigger)
+        }
+    }
     
-    func checkForPermissionAndDispatch(withTrigger trigger: UNNotificationTrigger? = nil) {
+    private func checkForPermissionAndDispatch(withTrigger trigger: UNNotificationTrigger? = nil) {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
             switch settings.authorizationStatus {
             case .authorized:
@@ -276,17 +295,15 @@ extension HomeViewModel {
             }
         }
     }
+    
     ///dispatch a local notification with standard title and body
     ///- Parameter trigger: a UNNotificationTrigger, set to nil for dispatching now
-    func dispatch(withTrigger trigger: UNNotificationTrigger? = nil) {
-        
+    private func dispatch(withTrigger trigger: UNNotificationTrigger? = nil) {
         let content = UNMutableNotificationContent()
         content.title = K.Notification.title
         content.body = K.Notification.body
         content.sound = .default
-        
         let request = UNNotificationRequest(identifier: K.Notification.identifier, content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request)
-        
     }
 }
