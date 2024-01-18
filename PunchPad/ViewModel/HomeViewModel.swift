@@ -222,26 +222,37 @@ extension HomeViewModel {
     // this needs to include the scenario when the app wakes up after the timers are past and needs to save entry with correct date -> notification date
     func resumeFromBackground(_ appDidEnterBackgroundDate: Date) {
         let timePassedInBackground = DateInterval(start: appDidEnterBackgroundDate, end: Date()).duration
+        // Handle update of timer when no overtime is allowed
         guard let overtimeTimerService else {
-            if timePassedInBackground < workTimerService.remainingTime {
-                workTimerService.send(event: .resumeWith(timePassedInBackground))
-            } else {
-                self.finishDate = appDidEnterBackgroundDate.addingTimeInterval(workTimerService.remainingTime)
-                workTimerService.send(event: .resumeWith(timePassedInBackground))
+            if workTimerService.serviceState == .running {
+                if timePassedInBackground < workTimerService.remainingTime {
+                    workTimerService.send(event: .resumeWith(timePassedInBackground))
+                } else {
+                    self.finishDate = appDidEnterBackgroundDate.addingTimeInterval(workTimerService.remainingTime)
+                    workTimerService.send(event: .resumeWith(timePassedInBackground))
+                }
             }
             return
         }
-        if workTimerService.remainingTime < timePassedInBackground {
-            let remainingTime = workTimerService.remainingTime
-            workTimerService.send(event: .resumeWith(remainingTime))
-            overtimeTimerService.send(event: .start)
-            if overtimeTimerService.remainingTime >= timePassedInBackground - remainingTime {
-                overtimeTimerService.send(event: .resumeWith(timePassedInBackground - remainingTime))
+        // Handle update of timer when there is overtime
+        if workTimerService.serviceState == .running {
+            if workTimerService.remainingTime < timePassedInBackground {
+                let worktimePassedInBackground = workTimerService.remainingTime
+                let overtimePassedInBackground = timePassedInBackground - worktimePassedInBackground
+                workTimerService.send(event: .resumeWith(worktimePassedInBackground))
+                
+                overtimeTimerService.send(event: .start)
+                if overtimePassedInBackground < overtimeTimerService.remainingTime {
+                    overtimeTimerService.send(event: .resumeWith(overtimePassedInBackground))
+                } else {
+                    self.finishDate = appDidEnterBackgroundDate.addingTimeInterval(worktimePassedInBackground + overtimeTimerService.remainingTime)
+                    overtimeTimerService.send(event: .resumeWith(overtimeTimerService.remainingTime))
+                }
             } else {
-                overtimeTimerService.send(event: .resumeWith(overtimeTimerService.remainingTime))
+                workTimerService.send(event: .resumeWith(timePassedInBackground))
             }
-        } else {
-            workTimerService.send(event: .resumeWith(timePassedInBackground))
+        } else if overtimeTimerService.serviceState == .running {
+            //TODO: ADD IMPLEMENTATION FOR WAKE UP WHEN OVERTIME TIMER SERVICE WAS RUNNING
         }
         self.appDidEnterBackgroundDate = nil
     }
