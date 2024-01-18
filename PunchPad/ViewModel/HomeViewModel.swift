@@ -81,22 +81,22 @@ class HomeViewModel: NSObject, ObservableObject {
         settingsStore.$workTimeInSeconds
             .filter { [weak self] _ in
                 self?.state == .notStarted
-            }.sink { [weak self] value in
+            }.sink { [weak self] workTime in
                 guard let self else { return }
                 self.workTimerService = .init(
                         timerProvider: timerProvider,
-                        timerLimit: TimeInterval(self.settingsStore.workTimeInSeconds)
+                        timerLimit: TimeInterval(workTime)
                         )
             }.store(in: &subscriptions)
         
         settingsStore.$maximumOvertimeAllowedInSeconds
             .filter { [weak self] _ in
                 self?.state == .notStarted && (self?.settingsStore.isLoggingOvertime ?? false)
-            }.sink { [weak self] value in
+            }.sink { [weak self] maximumOvertime in
                 guard let self else { return }
                 self.overtimeTimerService = .init(
                         timerProvider: timerProvider,
-                        timerLimit: TimeInterval(self.settingsStore.maximumOvertimeAllowedInSeconds)
+                        timerLimit: TimeInterval(maximumOvertime)
                         )
             }.store(in: &subscriptions)
     }
@@ -122,8 +122,12 @@ class HomeViewModel: NSObject, ObservableObject {
             }.sink { [weak self] _ in
                 guard let self else { return }
                 self.state = .finished
-                self.finishDate = Date()
-                self.saveEntry()
+                if let _ = self.finishDate {
+                    self.saveEntry()
+                } else {
+                    self.finishDate = Date()
+                    self.saveEntry()
+                }
             }.store(in: &subscriptions)
         } else {
             self.workTimerService.$serviceState.filter { state in
@@ -131,8 +135,12 @@ class HomeViewModel: NSObject, ObservableObject {
             }.sink { [weak self] _ in
                 guard let self else { return }
                 self.state = .finished
-                self.finishDate = Date()
-                self.saveEntry()
+                if let _ = self.finishDate {
+                    self.saveEntry()
+                } else {
+                    self.finishDate = Date()
+                    self.saveEntry()
+                }
             }.store(in: &subscriptions)
         }
     }
@@ -143,6 +151,7 @@ extension HomeViewModel {
     
     func startTimerService() {
         guard state != .running else { return }
+        //TODO: add clean up of old dates, subscribers and other data
         if state == .finished {
             workTimerService = .init(
                 timerProvider: timerProvider,
@@ -154,6 +163,7 @@ extension HomeViewModel {
                     timerLimit: TimeInterval(settingsStore.maximumOvertimeAllowedInSeconds)
                 )
             }
+            // this needs to deinitialize previous subscribers too
             setUpTimerSubscribers()
         }
         startDate = Date()
@@ -175,7 +185,6 @@ extension HomeViewModel {
     }
     func stopTimerService() {
         guard state != .finished else { return }
-        self.state = .finished
         finishDate = Date()
         workTimerService.send(event: .stop)
         overtimeTimerService?.send(event: .stop)
@@ -184,53 +193,78 @@ extension HomeViewModel {
 
 //MARK: HANDLING BACKGROUND TIMER UPDATE FUNC
 extension HomeViewModel {
-    
-    func resumeFromBackground(_ appDidEnterBackgroundDate: Date) {
-        let timePassedInBackground = DateInterval(start: appDidEnterBackgroundDate, end: Date()).duration
-        guard let overtimeTimerService else {
-            workTimerService.send(event: .resumeWith(timePassedInBackground))
-            return
-        }
-        if workTimerService.remainingTime < timePassedInBackground {
-            let remainingTime = workTimerService.remainingTime
-            workTimerService.send(event: .resumeWith(remainingTime))
-            overtimeTimerService.send(event: .start)
-            if overtimeTimerService.remainingTime >= timePassedInBackground - remainingTime {
-                overtimeTimerService.send(event: .resumeWith(timePassedInBackground - remainingTime))
-            } else {
-                overtimeTimerService.send(event: .resumeWith(overtimeTimerService.remainingTime))
-            }
-        } else {
-            workTimerService.send(event: .resumeWith(workTimerService.remainingTime))
-        }
-    }
-    
+    /// Set up combine subs to UI application background and foreground events
     private func setAppStateObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default
+            .publisher(for: UIApplication.didEnterBackgroundNotification)
+            .sink { [weak self] _ in
+                self?.appDidEnterBackground()
+            }.store(in: &subscriptions)
+        
+        NotificationCenter.default
+            .publisher(for: UIApplication.willEnterForegroundNotification)
+            .sink { [weak self] _ in
+                self?.appWillEnterForeground()
+            }.store(in: &subscriptions)
     }
     
-    @objc private func appDidEnterBackground() {
-        if workTimerService.serviceState == .running {
-            appDidEnterBackgroundDate = Date()
-            let timeToTimerFinish: TimeInterval? = {
-                if workTimerService.serviceState == .running {
-                    return workTimerService.remainingTime
-                }
-                return nil
-            }()
-            guard let timeToTimerFinish else { return }
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeToTimerFinish , repeats: false)
-            checkForPermissionAndDispatch(withTrigger: trigger)
+    /// Set appDidEnterBackgroundDate to now and set notifications for worktime and overtime timers finish
+    private func appDidEnterBackground() {
+        appDidEnterBackgroundDate = Date()
+        scheduleTimerFinishNotifications()
+    }
+    
+    /// Remove pending notifications for timers and update timers
+    private func appWillEnterForeground() {
+        if let appDidEnterBackgroundDate {
+            resumeFromBackground(appDidEnterBackgroundDate)
         }
-    }
-    
-    @objc private func appWillEnterForeground() {
-        guard let appDidEnterBackgroundDate else { return }
-        resumeFromBackground(appDidEnterBackgroundDate)
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [K.Notification.identifier])
     }
     
+    func resumeFromBackground(_ appDidEnterBackgroundDate: Date) {
+        let timePassedInBackground = DateInterval(start: appDidEnterBackgroundDate, end: Date()).duration
+        // Handle update of timer when no overtime is allowed
+        guard let overtimeTimerService else {
+            if workTimerService.serviceState == .running {
+                if timePassedInBackground < workTimerService.remainingTime {
+                    workTimerService.send(event: .resumeWith(timePassedInBackground))
+                } else {
+                    self.finishDate = appDidEnterBackgroundDate.addingTimeInterval(workTimerService.remainingTime)
+                    workTimerService.send(event: .resumeWith(timePassedInBackground))
+                }
+            }
+            return
+        }
+        // Handle update of timer when there is overtime
+        if workTimerService.serviceState == .running {
+            if workTimerService.remainingTime < timePassedInBackground {
+                let worktimePassedInBackground = workTimerService.remainingTime
+                let overtimePassedInBackground = timePassedInBackground - worktimePassedInBackground
+                workTimerService.send(event: .resumeWith(worktimePassedInBackground))
+                //something is wrong - at this time the overtime timer service has timer limit of 0?
+                overtimeTimerService.send(event: .start)
+                if overtimePassedInBackground < overtimeTimerService.remainingTime {
+                    overtimeTimerService.send(event: .resumeWith(overtimePassedInBackground))
+                } else {
+                    self.finishDate = appDidEnterBackgroundDate.addingTimeInterval(worktimePassedInBackground + overtimeTimerService.remainingTime)
+                    // OVERTIME DID NOT REGISTER HERE
+                    overtimeTimerService.send(event: .resumeWith(overtimeTimerService.remainingTime))
+                }
+            } else {
+                workTimerService.send(event: .resumeWith(timePassedInBackground))
+            }
+        } else if overtimeTimerService.serviceState == .running {
+            if overtimeTimerService.remainingTime < timePassedInBackground {
+                let remainingOvertime = overtimeTimerService.remainingTime
+                self.finishDate = appDidEnterBackgroundDate.addingTimeInterval(remainingOvertime)
+                overtimeTimerService.send(event: .resumeWith(remainingOvertime))
+            } else {
+                overtimeTimerService.send(event: .resumeWith(timePassedInBackground))
+            }
+        }
+        self.appDidEnterBackgroundDate = nil
+    }
 }
 
 //MARK: DATA OPERATIONS
@@ -255,8 +289,28 @@ extension HomeViewModel {
 
 //MARK: NOTIFICATIONS
 extension HomeViewModel {
+    /// Schedule notifications for finish of overtime timer service and worktime timer service
+    private func scheduleTimerFinishNotifications() {
+        if let overtimeTimerService {
+            if workTimerService.serviceState == .running {
+                let workTimeTrigger = UNTimeIntervalNotificationTrigger(timeInterval: workTimerService.remainingTime, repeats: false)
+                let overtimeTimeInterval = workTimerService.remainingTime + overtimeTimerService.remainingTime
+                let overtimeTrigger = UNTimeIntervalNotificationTrigger(timeInterval: overtimeTimeInterval, repeats: false)
+                checkForPermissionAndDispatch(withTrigger: workTimeTrigger)
+                checkForPermissionAndDispatch(withTrigger: overtimeTrigger)
+            } else if overtimeTimerService.serviceState == .running {
+                let timerToTimerFinish: TimeInterval = overtimeTimerService.remainingTime
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timerToTimerFinish, repeats: false)
+                checkForPermissionAndDispatch(withTrigger: trigger)
+            }
+        } else if workTimerService.serviceState == .running {
+            let timeToTimerFinish: TimeInterval = workTimerService.remainingTime
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeToTimerFinish , repeats: false)
+            checkForPermissionAndDispatch(withTrigger: trigger)
+        }
+    }
     
-    func checkForPermissionAndDispatch(withTrigger trigger: UNNotificationTrigger? = nil) {
+    private func checkForPermissionAndDispatch(withTrigger trigger: UNNotificationTrigger? = nil) {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
             switch settings.authorizationStatus {
             case .authorized:
@@ -266,17 +320,15 @@ extension HomeViewModel {
             }
         }
     }
+    //TODO: READ ABOUT IDENTIFIERS - SAME ID MAKES THEM NOT APEAR
     ///dispatch a local notification with standard title and body
     ///- Parameter trigger: a UNNotificationTrigger, set to nil for dispatching now
-    func dispatch(withTrigger trigger: UNNotificationTrigger? = nil) {
-        
+    private func dispatch(withTrigger trigger: UNNotificationTrigger? = nil) {
         let content = UNMutableNotificationContent()
         content.title = K.Notification.title
         content.body = K.Notification.body
         content.sound = .default
-        
         let request = UNNotificationRequest(identifier: K.Notification.identifier, content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request)
-        
     }
 }

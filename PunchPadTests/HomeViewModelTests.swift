@@ -26,12 +26,15 @@ final class HomeViewModelModelTests: XCTestCase {
                                   timerProvider: MockTimer.self)
         )
     }
-
+    
     override func tearDown() {
         super.tearDown()
         sut = nil
     }
-    
+}
+
+//MARK: TIMER STATE CHANGE FUNCTIONS
+extension HomeViewModelModelTests {
     func test_startTimerService_when_noOvertime_firstRun() {
         //Given
         let expectedState: TimerService.TimerServiceState = .running
@@ -74,7 +77,7 @@ final class HomeViewModelModelTests: XCTestCase {
         XCTAssertEqual(sut.normalProgress, expectedNormalProgressValue, "Normal progress should be equal to \(expectedNormalProgressValue)")
         XCTAssertEqual(sut.overtimeProgress, expectedOvertimeProgressValue, "Overtime progress should be equal to \(expectedOvertimeProgressValue)")
     }
-
+    
     func test_timerProperties_notUpdating_whenPaused_noOvertime() {
         //Given
         setUpWithOneTimer()
@@ -88,7 +91,7 @@ final class HomeViewModelModelTests: XCTestCase {
         XCTAssertEqual(sut.normalProgress, CGFloat(0.1), "Normal progress should be equal to 0.1")
         XCTAssertEqual(sut.overtimeProgress, CGFloat(0), "Overtime progress should be equal to 0")
     }
-
+    
     func test_resumeTimerService_whenPaused_noOvertime() {
         //Given
         let numberOfFires = 10
@@ -143,7 +146,7 @@ final class HomeViewModelModelTests: XCTestCase {
         XCTAssertEqual(sut.normalProgress, expectedNormalProgressValue, accuracy: 0.01, "Normal progress should be equal to \(expectedNormalProgressValue)")
         XCTAssertEqual(sut.overtimeProgress, expectedOvertimeProgressValue, accuracy: 0.01, "Overtime progress should be equal to \(expectedOvertimeProgressValue)")
     }
-
+    
     func test_stopTimerService_stopsServiceAndSavesEntry_noOvertime() {
         //Given
         let numberOfExistingEntries = DataManager.testing.entryArray.count
@@ -360,7 +363,143 @@ final class HomeViewModelModelTests: XCTestCase {
         XCTAssertEqual(sut.state, .finished, "Service state should be finished")
         XCTAssertEqual(DataManager.testing.entryArray.count, expectedNumberOfEntries, "Additional entry should be saved")
     }
+}
+
+//MARK: BACKGROUND AND FOREGROUND TIMER UPDATES
+extension HomeViewModelModelTests {
+    func test_resumeFromBackground_withOneTimer_notExceedingTimerLimit() {
+        //Given
+        setUpWithOneTimer()
+        sut.startTimerService()
+        NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: nil)
+        sleep(5)
+        //When
+        NotificationCenter.default.post(name: UIApplication.willEnterForegroundNotification, object: nil)
+        //Then
+        XCTAssertEqual(sut.normalProgress, 0.05, accuracy: 0.01)
+    }
     
+    func test_resumeFromBackground_withOneTimer_exceedingTimerLimit() {
+        //Given
+        workTimerLimit = 2
+        setUpWithOneTimer()
+        sut.startTimerService()
+        NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: nil)
+        sleep(3)
+        //When
+        NotificationCenter.default.post(name: UIApplication.willEnterForegroundNotification, object: nil)
+        //Then
+        XCTAssertEqual(sut.normalProgress, 1, accuracy: 0.01)
+    }
+    func test_resumeFromBackground_withOneTimer_exceedingTimerLimit_savesEntry() {
+        //Given
+        let expectedEntriesCount = DataManager.testing.entryArray.count + 1
+        workTimerLimit = 2
+        setUpWithOneTimer()
+        let expectedStartTime = Date().timeIntervalSince1970
+        let expectedFinishTimer = expectedStartTime + 2
+        sut.startTimerService()
+        NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: nil)
+        sleep(5)
+        //When
+        NotificationCenter.default.post(name: UIApplication.willEnterForegroundNotification, object: nil)
+        //Then
+        XCTAssertEqual(expectedEntriesCount, DataManager.testing.entryArray.count, "There should be additional entry in array")
+        guard let addedEntry = DataManager.testing.entryArray.first else {
+            XCTFail("Failed to retrieve expected entry in \(#function)")
+            return
+        }
+        XCTAssertEqual(addedEntry.startDate.timeIntervalSince1970, expectedStartTime, accuracy: 0.01)
+        XCTAssertEqual(addedEntry.finishDate.timeIntervalSince1970, expectedFinishTimer, accuracy: 0.01)
+    }
+    
+    func test_resumeFromBackground_withTwoTimers_notExceedingFirstTimerLimit() {
+        //Given
+        workTimerLimit = 10
+        setUpWithTwoTimers()
+        sut.startTimerService()
+        NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: nil)
+        sleep(3)
+        //When
+        NotificationCenter.default.post(name: UIApplication.willEnterForegroundNotification, object: nil)
+        //Then
+        XCTAssertEqual(sut.normalProgress, 0.3, accuracy: 0.01)
+        XCTAssertEqual(sut.overtimeProgress, 0, accuracy: 0.01)
+        XCTAssertEqual(DataManager.testing.entryArray.count, 0)
+    }
+    
+    func test_resumeFromBackground_withTwoTimers_exceedingFirstTimerLimit() {
+        //Given
+        workTimerLimit = 2
+        setUpWithTwoTimers()
+        sut.startTimerService()
+        NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: nil)
+        sleep(3)
+        //When
+        NotificationCenter.default.post(name: UIApplication.willEnterForegroundNotification, object: nil)
+        //Then
+        XCTAssertEqual(sut.normalProgress, 1, accuracy: 0.01)
+        XCTAssertEqual(sut.overtimeProgress, 0.01, accuracy: 0.01)
+    }
+    
+    func test_resumeFromBackground_withTwoTimers_exceedingSecondTimer() {
+        //Given
+        workTimerLimit = 2
+        overtimeTimerLimit = 2
+        setUpWithTwoTimers()
+        let expectedStartTimeInterval = Date().timeIntervalSince1970
+        let expectedFinishTimeInterval = expectedStartTimeInterval + 4
+        let expectedEntriesCount = DataManager.testing.entryArray.count + 1
+        sut.startTimerService()
+        NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: nil)
+        sleep(5)
+        //When
+        NotificationCenter.default.post(name: UIApplication.willEnterForegroundNotification, object: nil)
+        //Then
+        XCTAssertEqual(sut.normalProgress, 1, accuracy: 0.01)
+        XCTAssertEqual(sut.overtimeProgress, 1, accuracy: 0.01)
+        XCTAssertEqual(expectedEntriesCount, DataManager.testing.entryArray.count, "There should be additional entry in array")
+        guard let addedEntry = DataManager.testing.entryArray.first else {
+            XCTFail("Failed to retrieve expected entry in \(#function)")
+            return
+        }
+        XCTAssertEqual(addedEntry.startDate.timeIntervalSince1970, expectedStartTimeInterval, accuracy: 0.01)
+        XCTAssertEqual(addedEntry.finishDate.timeIntervalSince1970, expectedFinishTimeInterval, accuracy: 0.01)
+        XCTAssertEqual(addedEntry.workTimeInSeconds, 2)
+        XCTAssertEqual(addedEntry.overTimeInSeconds, 2)
+    }
+    
+    func test_resumeFromBackground_whenEnteredDuringSecondTimer_withTwoTimers_exceedingSecondTimer() {
+        //Given
+        workTimerLimit = 2
+        overtimeTimerLimit = 2
+        setUpWithTwoTimers()
+        let expectedStartTimeInterval = Date().timeIntervalSince1970
+        let expectedFinishTimeInterval = expectedStartTimeInterval + 4
+        let expectedEntriesCount = DataManager.testing.entryArray.count + 1
+        sut.startTimerService()
+        fireTimer(3)
+        NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: nil)
+        sleep(5)
+        //When
+        NotificationCenter.default.post(name: UIApplication.willEnterForegroundNotification, object: nil)
+        //Then
+        XCTAssertEqual(sut.normalProgress, 1, accuracy: 0.01)
+        XCTAssertEqual(sut.overtimeProgress, 1, accuracy: 0.01)
+        XCTAssertEqual(expectedEntriesCount, DataManager.testing.entryArray.count, "There should be additional entry in array")
+        guard let addedEntry = DataManager.testing.entryArray.first else {
+            XCTFail("Failed to retrieve expected entry in \(#function)")
+            return
+        }
+        XCTAssertEqual(addedEntry.startDate.timeIntervalSince1970, expectedStartTimeInterval, accuracy: 0.01)
+        XCTAssertEqual(addedEntry.finishDate.timeIntervalSince1970, expectedFinishTimeInterval, accuracy: 0.01)
+        XCTAssertEqual(addedEntry.workTimeInSeconds, 2)
+        XCTAssertEqual(addedEntry.overTimeInSeconds, 2)
+    }
+}
+
+//MARK: HELPERS
+extension HomeViewModelModelTests {
     private func setUpWithOneTimer() {
         settingsStore.isLoggingOvertime = false
         settingsStore.workTimeInSeconds = workTimerLimit

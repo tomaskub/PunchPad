@@ -1,0 +1,53 @@
+{
+  "configurations" : [
+    {
+      "id" : "5CF637A5-79C5-4B9A-8115-E418BC661B79",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "skippedTests" : [
+        "ChartPeriodServiceTests",
+        "ClockInTests",
+        "EditSheetViewModelTests",
+        "HistoryViewModelTests",
+        "HomeViewModelModelTests\/test_displayedValue_whenFirstTimerFinished_whenSecondTimerStarts()",
+        "HomeViewModelModelTests\/test_resumeFromBackground_whenSecondTimerWasStarted()",
+        "HomeViewModelModelTests\/test_resumeFromBackground_whenTimeInBackgroundExceedsFirstTimeLimit()",
+        "HomeViewModelModelTests\/test_resumeFromBackground_whenTimeInBackgroundExceedsSumOfTimeLimits()",
+        "HomeViewModelModelTests\/test_resumeFromBackground_when_timerServiceWasNotStarted_noOvertime()",
+        "HomeViewModelModelTests\/test_resumeFromBackground_when_timerServiceWasStarted_noOvertime()",
+        "HomeViewModelModelTests\/test_resumeTimerService_whenPaused_noOvertime()",
+        "HomeViewModelModelTests\/test_resumeTimerService_whenPaused_withOvertime()",
+        "HomeViewModelModelTests\/test_secondTimerFinished_stopsServiceAndSavesEntry()",
+        "HomeViewModelModelTests\/test_startSecondTimer_whenFirstIsFinished_firstRun()",
+        "HomeViewModelModelTests\/test_startSecondTimer_whenFirstIsFinished_secondRun()",
+        "HomeViewModelModelTests\/test_startTimerService_when_noOvertime_firstRun()",
+        "HomeViewModelModelTests\/test_startTimerService_when_noOvertime_secondRun()",
+        "HomeViewModelModelTests\/test_stopTimerService_stopsSecondTimerAndSavesEntry()",
+        "HomeViewModelModelTests\/test_stopTimerService_stopsServiceAndSavesEntry_noOvertime()",
+        "HomeViewModelModelTests\/test_timerFinished_stopsServiceAndSavesEntry_noOvertime()",
+        "HomeViewModelModelTests\/test_timerPropertiesUpdate_whenSecondTimerIsRunning()",
+        "HomeViewModelModelTests\/test_timerProperties_notUpdating_whenPaused_noOvertime()",
+        "HomeViewModelModelTests\/test_timerProperties_notUpdating_whenPaused_withOvertime()",
+        "HomeViewModelModelTests\/test_timerProperties_updateWhenRunning_noOvertime()",
+        "PayManagerTests",
+        "StatisticsViewModelTests",
+        "TimerServiceTests"
+      ],
+      "target" : {
+        "containerPath" : "container:PunchPad.xcodeproj",
+        "identifier" : "D6C4589F29D229230069D89B",
+        "name" : "PunchPadTests"
+      }
+    }
+  ],
+  "version" : 1
+}
