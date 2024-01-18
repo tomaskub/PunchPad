@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:PunchPadTests.xctestplan">
+   </FileRef>
+   <FileRef
+      location = "group:PunchPad-Timer-Foreground-Background.xctestplan">
+   </FileRef>
+   <FileRef
       location = "container:PunchPad.xcodeproj">
    </FileRef>
    <FileRef

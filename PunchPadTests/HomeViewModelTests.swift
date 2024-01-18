@@ -367,7 +367,80 @@ extension HomeViewModelModelTests {
 
 //MARK: BACKGROUND AND FOREGROUND TIMER UPDATES
 extension HomeViewModelModelTests {
+    func test_resumeFromBackground_withOneTimer_notExceedingTimerLimit() {
+        //Given
+        setUpWithOneTimer()
+        sut.startTimerService()
+        NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: nil)
+        sleep(5)
+        //When
+        NotificationCenter.default.post(name: UIApplication.willEnterForegroundNotification, object: nil)
+        //Then
+        XCTAssertEqual(sut.normalProgress, 0.05, accuracy: 0.01)
+    }
     
+    func test_resumeFromBackground_withOneTimer_exceedingTimerLimit() {
+        //Given
+        workTimerLimit = 2
+        setUpWithOneTimer()
+        sut.startTimerService()
+        NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: nil)
+        sleep(3)
+        //When
+        NotificationCenter.default.post(name: UIApplication.willEnterForegroundNotification, object: nil)
+        //Then
+        XCTAssertEqual(sut.normalProgress, 1, accuracy: 0.01)
+    }
+    func test_resumeFromBackground_withOneTimer_exceedingTimerLimit_savesEntry() {
+        //Given
+        let expectedEntriesCount = DataManager.testing.entryArray.count + 1
+        workTimerLimit = 2
+        setUpWithOneTimer()
+        let expectedStartTime = Date().timeIntervalSince1970
+        let expectedFinishTimer = expectedStartTime + 2
+        sut.startTimerService()
+        NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: nil)
+        sleep(5)
+        //When
+        NotificationCenter.default.post(name: UIApplication.willEnterForegroundNotification, object: nil)
+        //Then
+        XCTAssertEqual(expectedEntriesCount, DataManager.testing.entryArray.count, "There should be additional entry in array")
+        guard let addedEntry = DataManager.testing.entryArray.first else {
+            XCTFail("Failed to retrieve expected entry in \(#function)")
+            return
+        }
+        XCTAssertEqual(addedEntry.startDate.timeIntervalSince1970, expectedStartTime, accuracy: 0.01)
+        XCTAssertEqual(addedEntry.finishDate.timeIntervalSince1970, expectedFinishTimer, accuracy: 0.01)
+    }
+    
+    func test_resumeFromBackground_withTwoTimers_notExceedingFirstTimerLimit() {
+        //Given
+        workTimerLimit = 10
+        setUpWithTwoTimers()
+        sut.startTimerService()
+        NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: nil)
+        sleep(3)
+        //When
+        NotificationCenter.default.post(name: UIApplication.willEnterForegroundNotification, object: nil)
+        //Then
+        XCTAssertEqual(sut.normalProgress, 0.3, accuracy: 0.01)
+        XCTAssertEqual(sut.overtimeProgress, 0, accuracy: 0.01)
+        XCTAssertEqual(DataManager.testing.entryArray.count, 0)
+    }
+    
+    func test_resumeFromBackground_withTwoTimers_ExceedingFirstTimerLimit() {
+        //Given
+        workTimerLimit = 2
+        setUpWithTwoTimers()
+        sut.startTimerService()
+        NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: nil)
+        sleep(3)
+        //When
+        NotificationCenter.default.post(name: UIApplication.willEnterForegroundNotification, object: nil)
+        //Then
+        XCTAssertEqual(sut.normalProgress, 1, accuracy: 0.01)
+        XCTAssertEqual(sut.overtimeProgress, 0.01, accuracy: 0.01)
+    }
 }
 
 //MARK: HELPERS

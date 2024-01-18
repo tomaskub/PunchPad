@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "196AF9B2-9080-4E79-BF65-B17EDB57EBB2",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "skippedTests" : [
+        "HomeViewModelModelTests\/test_resumeFromBackground_withOneTimer_exceedingTimerLimit()",
+        "HomeViewModelModelTests\/test_resumeFromBackground_withOneTimer_exceedingTimerLimit_savesEntry()",
+        "HomeViewModelModelTests\/test_resumeFromBackground_withOneTimer_notExceedingTimerLimit()"
+      ],
+      "target" : {
+        "containerPath" : "container:PunchPad.xcodeproj",
+        "identifier" : "D6C4589F29D229230069D89B",
+        "name" : "PunchPadTests"
+      }
+    }
+  ],
+  "version" : 1
+}
