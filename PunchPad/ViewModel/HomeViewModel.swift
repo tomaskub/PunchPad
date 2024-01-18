@@ -219,19 +219,19 @@ extension HomeViewModel {
         }
     }
     
-    
-    @objc private func appDidEnterBackground() {
-        if workTimerService.serviceState == .running {
-            appDidEnterBackgroundDate = Date()
-            let timeToTimerFinish: TimeInterval? = {
-                if workTimerService.serviceState == .running {
-                    return workTimerService.remainingTime
-                }
-                return nil
-            }()
-            guard let timeToTimerFinish else { return }
+    private func appDidEnterBackground() {
+        // update background entrance date
+        appDidEnterBackgroundDate = Date()
+        // schedule notifications
+        if let overtimeTimerService,
+           overtimeTimerService.serviceState == .running {
+            let timerToTimerFinish: TimeInterval = overtimeTimerService.remainingTime
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timerToTimerFinish, repeats: false)
+            checkForPermissionAndDispatch(withTrigger: trigger) // schedule notification for end of overtime
+        } else if workTimerService.serviceState == .running {
+            let timeToTimerFinish: TimeInterval = workTimerService.remainingTime
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeToTimerFinish , repeats: false)
-            checkForPermissionAndDispatch(withTrigger: trigger)
+            checkForPermissionAndDispatch(withTrigger: trigger) // schedule notification for end of worktime
         }
     }
     
