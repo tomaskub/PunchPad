@@ -184,6 +184,20 @@ extension HomeViewModel {
 
 //MARK: HANDLING BACKGROUND TIMER UPDATE FUNC
 extension HomeViewModel {
+    /// Set up combine subs to UI application background and foreground events
+    private func setAppStateObservers() {
+        NotificationCenter.default
+            .publisher(for: UIApplication.didEnterBackgroundNotification)
+            .sink { [weak self] _ in
+                self?.appDidEnterBackground()
+            }.store(in: &subscriptions)
+        
+        NotificationCenter.default
+            .publisher(for: UIApplication.willEnterForegroundNotification)
+            .sink { [weak self] _ in
+                self?.appWillEnterForeground()
+            }.store(in: &subscriptions)
+    }
     
     func resumeFromBackground(_ appDidEnterBackgroundDate: Date) {
         let timePassedInBackground = DateInterval(start: appDidEnterBackgroundDate, end: Date()).duration
@@ -205,10 +219,6 @@ extension HomeViewModel {
         }
     }
     
-    private func setAppStateObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-    }
     
     @objc private func appDidEnterBackground() {
         if workTimerService.serviceState == .running {
