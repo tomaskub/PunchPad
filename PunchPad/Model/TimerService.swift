@@ -74,9 +74,12 @@ class TimerService: ObservableObject {
         })
     }
     
+    /// Update the timer counter if it is running by a secified value
+    /// - Parameter addValue: value to add to the counter, default is 1
+    /// If the value added is larger than remaining time, it will be reduced to the remaining time left on timer. When reaching the timer limit, service state will be changed to `.finished`
     private func updateTimer(byAdding addValue: TimeInterval = 1) {
         guard self.serviceState == .running else { return }
-        counter += addValue
+        counter += addValue < remainingTime ? addValue : remainingTime
         withAnimation(.easeInOut) {
             updateProgressCounter()
         }
