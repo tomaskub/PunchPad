@@ -81,22 +81,22 @@ class HomeViewModel: NSObject, ObservableObject {
         settingsStore.$workTimeInSeconds
             .filter { [weak self] _ in
                 self?.state == .notStarted
-            }.sink { [weak self] value in
+            }.sink { [weak self] workTime in
                 guard let self else { return }
                 self.workTimerService = .init(
                         timerProvider: timerProvider,
-                        timerLimit: TimeInterval(self.settingsStore.workTimeInSeconds)
+                        timerLimit: TimeInterval(workTime)
                         )
             }.store(in: &subscriptions)
         
         settingsStore.$maximumOvertimeAllowedInSeconds
             .filter { [weak self] _ in
                 self?.state == .notStarted && (self?.settingsStore.isLoggingOvertime ?? false)
-            }.sink { [weak self] value in
+            }.sink { [weak self] maximumOvertime in
                 guard let self else { return }
                 self.overtimeTimerService = .init(
                         timerProvider: timerProvider,
-                        timerLimit: TimeInterval(self.settingsStore.maximumOvertimeAllowedInSeconds)
+                        timerLimit: TimeInterval(maximumOvertime)
                         )
             }.store(in: &subscriptions)
     }
@@ -151,6 +151,7 @@ extension HomeViewModel {
     
     func startTimerService() {
         guard state != .running else { return }
+        //TODO: add clean up of old dates, subscribers and other data
         if state == .finished {
             workTimerService = .init(
                 timerProvider: timerProvider,
@@ -162,6 +163,7 @@ extension HomeViewModel {
                     timerLimit: TimeInterval(settingsStore.maximumOvertimeAllowedInSeconds)
                 )
             }
+            // this needs to deinitialize previous subscribers too
             setUpTimerSubscribers()
         }
         startDate = Date()
@@ -219,7 +221,7 @@ extension HomeViewModel {
         }
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [K.Notification.identifier])
     }
-    // this needs to include the scenario when the app wakes up after the timers are past and needs to save entry with correct date -> notification date
+    
     func resumeFromBackground(_ appDidEnterBackgroundDate: Date) {
         let timePassedInBackground = DateInterval(start: appDidEnterBackgroundDate, end: Date()).duration
         // Handle update of timer when no overtime is allowed
@@ -240,19 +242,26 @@ extension HomeViewModel {
                 let worktimePassedInBackground = workTimerService.remainingTime
                 let overtimePassedInBackground = timePassedInBackground - worktimePassedInBackground
                 workTimerService.send(event: .resumeWith(worktimePassedInBackground))
-                
+                //something is wrong - at this time the overtime timer service has timer limit of 0?
                 overtimeTimerService.send(event: .start)
                 if overtimePassedInBackground < overtimeTimerService.remainingTime {
                     overtimeTimerService.send(event: .resumeWith(overtimePassedInBackground))
                 } else {
                     self.finishDate = appDidEnterBackgroundDate.addingTimeInterval(worktimePassedInBackground + overtimeTimerService.remainingTime)
+                    // OVERTIME DID NOT REGISTER HERE
                     overtimeTimerService.send(event: .resumeWith(overtimeTimerService.remainingTime))
                 }
             } else {
                 workTimerService.send(event: .resumeWith(timePassedInBackground))
             }
         } else if overtimeTimerService.serviceState == .running {
-            //TODO: ADD IMPLEMENTATION FOR WAKE UP WHEN OVERTIME TIMER SERVICE WAS RUNNING
+            if overtimeTimerService.remainingTime < timePassedInBackground {
+                let remainingOvertime = overtimeTimerService.remainingTime
+                self.finishDate = appDidEnterBackgroundDate.addingTimeInterval(remainingOvertime)
+                overtimeTimerService.send(event: .resumeWith(remainingOvertime))
+            } else {
+                overtimeTimerService.send(event: .resumeWith(timePassedInBackground))
+            }
         }
         self.appDidEnterBackgroundDate = nil
     }
@@ -311,7 +320,7 @@ extension HomeViewModel {
             }
         }
     }
-    
+    //TODO: READ ABOUT IDENTIFIERS - SAME ID MAKES THEM NOT APEAR
     ///dispatch a local notification with standard title and body
     ///- Parameter trigger: a UNNotificationTrigger, set to nil for dispatching now
     private func dispatch(withTrigger trigger: UNNotificationTrigger? = nil) {
