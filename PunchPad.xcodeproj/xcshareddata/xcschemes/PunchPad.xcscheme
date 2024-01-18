@@ -29,7 +29,8 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:PunchPad-Timer-Foreground-Background.xctestplan">
+            reference = "container:PunchPad-Timer-Foreground-Background.xctestplan"
+            default = "YES">
          </TestPlanReference>
          <TestPlanReference
             reference = "container:PunchPadTests.xctestplan">
