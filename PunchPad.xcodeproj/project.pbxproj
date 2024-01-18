@@ -42,8 +42,6 @@
 		D65FD53D29D8B259006CC34F /* PersistanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65FD53C29D8B259006CC34F /* PersistanceController.swift */; };
 		D66451062B56FF47003C537B /* ThemeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D630A53A2B4704EA0098CA86 /* ThemeKit.framework */; };
 		D66451072B56FF47003C537B /* ThemeKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D630A53A2B4704EA0098CA86 /* ThemeKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D66451092B56FF88003C537B /* PunchPadUITests.xctest in Resources */ = {isa = PBXBuildFile; fileRef = D6C458AA29D229230069D89B /* PunchPadUITests.xctest */; };
-		D664510A2B56FF8A003C537B /* PunchPadTests.xctest in Resources */ = {isa = PBXBuildFile; fileRef = D6C458A029D229230069D89B /* PunchPadTests.xctest */; };
 		D666ADCC2AC05A0500B74663 /* CaseIterable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D666ADCB2AC05A0500B74663 /* CaseIterable+Extension.swift */; };
 		D66750EA29D713C900757F17 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66750E929D713C900757F17 /* HistoryView.swift */; };
 		D66750EC29D71C8300757F17 /* HistoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66750EB29D71C8300757F17 /* HistoryRow.swift */; };
@@ -623,7 +621,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D664510A2B56FF8A003C537B /* PunchPadTests.xctest in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -631,7 +628,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D66451092B56FF88003C537B /* PunchPadUITests.xctest in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
