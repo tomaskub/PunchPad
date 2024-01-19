@@ -17,7 +17,8 @@ struct HomeView: View {
     @Environment(\.colorScheme) var colorScheme
     @ObservedObject var viewModel: HomeViewModel
     @EnvironmentObject private var container: Container
-    let timerIndicatorFormatter = FormatterFactory.makeDateComponentFormatter()
+    let timerIndicatorHourAndMinuteFormatter = FormatterFactory.makeHourAndMinuteDateComponentFormatter()
+    let timerIndicatorMinuteAndSecondFormatter = FormatterFactory.makeMinuteAndSecondDateComponetFormatter()
     let settingText: String = "Settings"
     let bottomMessageText: String = "Start your work day!".capitalized
     
@@ -51,7 +52,11 @@ struct HomeView: View {
     }
     
     func formatTimeInterval(_ value: TimeInterval) -> String {
-        return timerIndicatorFormatter.string(from: value) ?? "\(value)"
+        if value >= 3600 {
+            return timerIndicatorHourAndMinuteFormatter.string(from: value) ?? "\(value)"
+        } else {
+            return timerIndicatorMinuteAndSecondFormatter.string(from: value) ?? "\(value)"
+        }
     }
 } // END OF VIEW
 
