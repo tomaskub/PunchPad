@@ -14,6 +14,7 @@ class Container: ObservableObject {
     private(set) var payManager: PayManager
     private(set) var timerProvider: Timer.Type
     private(set) var settingsStore: SettingsStore
+    private(set) var notificationService: NotificationService
     
     private enum ContainerType {
         case production, test, preview
@@ -50,5 +51,6 @@ class Container: ObservableObject {
             self.dataManager = .preview
             self.payManager = PayManager(dataManager: .preview, settingsStore: settingsStore)
         }
+        self.notificationService = NotificationService(center: .current())
     }
 }
