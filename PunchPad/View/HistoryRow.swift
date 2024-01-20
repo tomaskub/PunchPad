@@ -9,7 +9,7 @@ import SwiftUI
 import ThemeKit
 
 struct HistoryRowView: View {
-    let timeIntervalFormatter: DateComponentsFormatter = FormatterFactory.makeDateComponentFormatter()
+    let timeIntervalFormatter: DateComponentsFormatter = FormatterFactory.makeHourAndMinuteDateComponentFormatter()
     let timeFormatter: DateFormatter = FormatterFactory.makeTimeFormatter()
     let dateFormatter: DateFormatter = FormatterFactory.makeDateFormatter()
     let hoursText = "hours"

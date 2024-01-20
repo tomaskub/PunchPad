@@ -8,10 +8,20 @@
 import Foundation
 
 struct FormatterFactory {
-    static func makeDateComponentFormatter() -> DateComponentsFormatter {
+    /// Returns `DateComponentsFormatter` with hour and a minute components, positional unit style, and padd zero formatting behaviour
+    static func makeHourAndMinuteDateComponentFormatter() -> DateComponentsFormatter {
         let formatter = DateComponentsFormatter()
         formatter.unitsStyle = .positional
         formatter.allowedUnits = [.hour, .minute]
+        formatter.zeroFormattingBehavior = [.pad]
+        return formatter
+    }
+    
+    /// Returns `DateComponentsFormatter` with minute and second components, positional unit style, and padd zero formatting behaviour
+    static func makeMinuteAndSecondDateComponetFormatter() -> DateComponentsFormatter {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .positional
+        formatter.allowedUnits = [.minute, .second]
         formatter.zeroFormattingBehavior = [.pad]
         return formatter
     }
