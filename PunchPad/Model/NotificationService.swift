@@ -19,6 +19,7 @@ class NotificationService {
     func requestAuthorizationForNotifications(failureHandler: @escaping (Bool, Error?) -> Void) {
         center.requestAuthorization(options: [.alert, .sound, .badge]) { success, error in
             if !success {
+                print("User declined notification")
                 // setting in store should be false
                 failureHandler(success, error) // <- this happens when user does not accept the notifications
             }
@@ -29,6 +30,7 @@ class NotificationService {
     }
     func deschedulePendingNotifications() {
         center.removeAllPendingNotificationRequests()
+        pendingNotificationsIDs.removeAll()
     }
     
     func scheduleNotification(for notification: AppNotification, in timeInterval: TimeInterval) {
@@ -39,6 +41,7 @@ class NotificationService {
         let notificationContent = UNMutableNotificationContent()
         notificationContent.title = notification.title
         notificationContent.body = notification.body
+        notificationContent.interruptionLevel = .active
         
         let request = UNNotificationRequest(identifier: id,
                                             content: notificationContent,
@@ -46,7 +49,7 @@ class NotificationService {
         checkForPermissionAndDispatch(request)
     }
     
-    func checkForPermissionAndDispatch(_ notificationRequest: UNNotificationRequest) {
+    private func checkForPermissionAndDispatch(_ notificationRequest: UNNotificationRequest) {
         center.getNotificationSettings { settings in
             switch settings.authorizationStatus {
             case .authorized:
@@ -57,7 +60,7 @@ class NotificationService {
         }
     }
     
-    func dispatch(notification: UNNotificationRequest) {
+    private func dispatch(notification: UNNotificationRequest) {
         _ = pendingNotificationsIDs.insert(notification.identifier)
         center.add(notification)
     }
