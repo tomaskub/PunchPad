@@ -41,6 +41,7 @@ struct MainView: View {
                                         HomeViewModel(dataManager: container.dataManager,
                                                       settingsStore: container.settingsStore,
                                                       payManager: container.payManager,
+                                                      notificationService: container.notificationService,
                                                       timerProvider: container.timerProvider)
         )
         
