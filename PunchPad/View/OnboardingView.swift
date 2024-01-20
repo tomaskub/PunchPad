@@ -103,8 +103,14 @@ extension OnboardingView {
     }
 }
 
-struct OnboardingView_Previews: PreviewProvider {
-    static var previews: some View {
-        OnboardingView(viewModel: OnboardingViewModel(settingsStore: SettingsStore()))
+#Preview {
+    struct ContainerView: View {
+        @StateObject private var container: Container = Container()
+        var body: some View {
+            OnboardingView(viewModel:
+                            OnboardingViewModel(notificationService: container.notificationService,
+                                                settingsStore: container.settingsStore))
+        }
     }
+    return ContainerView()
 }

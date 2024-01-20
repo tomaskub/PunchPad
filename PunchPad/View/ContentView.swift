@@ -36,7 +36,10 @@ struct ContentView: View {
         .fullScreenCover(isPresented: $isRunFirstTime, onDismiss: {
             isRunFirstTime = false
         }) {
-            OnboardingView(viewModel: OnboardingViewModel(settingsStore: container.settingsStore))
+            OnboardingView(viewModel: 
+                            OnboardingViewModel(notificationService: container.notificationService,
+                                                settingsStore: container.settingsStore)
+            )
         }
         
     }

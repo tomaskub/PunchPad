@@ -41,7 +41,8 @@ struct OnboardingNotification_Preview: PreviewProvider {
         init() {
             let container = Container()
             self._container = StateObject(wrappedValue: container)
-            self._vm = StateObject(wrappedValue: OnboardingViewModel(settingsStore: container.settingsStore))
+            self._vm = StateObject(wrappedValue: OnboardingViewModel(notificationService: container.notificationService,
+                                                                     settingsStore: container.settingsStore))
         }
         
         var body: some View {

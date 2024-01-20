@@ -12,6 +12,7 @@ import UserNotifications
 class OnboardingViewModel: ObservableObject {
     
     private var subscriptions = Set<AnyCancellable>()
+    private var notificationService: NotificationService
     @Published var settingsStore: SettingsStore
     @Published var grossPayPerMonthText: Int
     @Published var hoursWorking: Int
@@ -19,7 +20,8 @@ class OnboardingViewModel: ObservableObject {
     @Published var hoursOvertime: Int
     @Published var minutesOvertime: Int
     
-    init(settingsStore: SettingsStore) {
+    init(notificationService: NotificationService, settingsStore: SettingsStore) {
+        self.notificationService = notificationService
         self.settingsStore = settingsStore
         self.hoursWorking = settingsStore.workTimeInSeconds / 3600
         self.minutesWorking = (settingsStore.workTimeInSeconds % 3600) / 60
@@ -77,14 +79,8 @@ class OnboardingViewModel: ObservableObject {
     }
     
     func requestAuthorizationForNotifications() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge], completionHandler: { [weak self] success, error in
-            if success {
-                print("Autorization success")
-            } else if let error = error {
-                print(error.localizedDescription)
-                guard let self else { return }
-                self.settingsStore.isSendingNotification = false
-            }
-        })
+        notificationService.requestAuthorizationForNotifications { [weak self] result, error in
+            self?.settingsStore.isSendingNotification = result
+        }
     }
 }
