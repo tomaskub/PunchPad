@@ -59,6 +59,7 @@
 		D684A3882AF6F3E700511E0D /* OnboardingWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D684A3872AF6F3E700511E0D /* OnboardingWelcomeView.swift */; };
 		D684A38A2AF6F54B00511E0D /* ButtonFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D684A3892AF6F54B00511E0D /* ButtonFactory.swift */; };
 		D68732022B2243C9008CB0D4 /* PaginationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68732012B2243C9008CB0D4 /* PaginationState.swift */; };
+		D698F3F02B5C131D00D9DFF4 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D698F3EF2B5C131D00D9DFF4 /* NotificationService.swift */; };
 		D69C8CD72B43687700146EFA /* CustomDatePickerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C8CD62B43687700146EFA /* CustomDatePickerContainer.swift */; };
 		D69C8CD92B44208C00146EFA /* ConfirmButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C8CD82B44208C00146EFA /* ConfirmButtonStyle.swift */; };
 		D69C8CDB2B4420D600146EFA /* CancelButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C8CDA2B4420D600146EFA /* CancelButtonStyle.swift */; };
@@ -195,6 +196,7 @@
 		D684A3872AF6F3E700511E0D /* OnboardingWelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingWelcomeView.swift; sourceTree = "<group>"; };
 		D684A3892AF6F54B00511E0D /* ButtonFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonFactory.swift; sourceTree = "<group>"; };
 		D68732012B2243C9008CB0D4 /* PaginationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationState.swift; sourceTree = "<group>"; };
+		D698F3EF2B5C131D00D9DFF4 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		D69C8CD62B43687700146EFA /* CustomDatePickerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePickerContainer.swift; sourceTree = "<group>"; };
 		D69C8CD82B44208C00146EFA /* ConfirmButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmButtonStyle.swift; sourceTree = "<group>"; };
 		D69C8CDA2B4420D600146EFA /* CancelButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelButtonStyle.swift; sourceTree = "<group>"; };
@@ -502,6 +504,7 @@
 				D68732012B2243C9008CB0D4 /* PaginationState.swift */,
 				D682AF912B3C77F5004EE208 /* ChartTimeRange.swift */,
 				D6CA773E2B40BB4D00C98AF3 /* Route.swift */,
+				D698F3EF2B5C131D00D9DFF4 /* NotificationService.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -657,6 +660,7 @@
 				D6D02FB029EF0B7F006CD0B2 /* EditShetViewModel.swift in Sources */,
 				D68732022B2243C9008CB0D4 /* PaginationState.swift in Sources */,
 				D6FE20872B46EE0D00F931CD /* ConfirmDeleteRowView.swift in Sources */,
+				D698F3F02B5C131D00D9DFF4 /* NotificationService.swift in Sources */,
 				D6FA94FD2B013F060034B16A /* ChartLegendItemView.swift in Sources */,
 				D6E2C15B29D6C31800229286 /* HistoryViewModel.swift in Sources */,
 				D6EA695C2AF8452A00D8F6C3 /* TextFactory.swift in Sources */,
