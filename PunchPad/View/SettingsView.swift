@@ -298,7 +298,11 @@ struct SettingsView_Previews: PreviewProvider {
     private struct ContainerView: View {
         @StateObject private var container = Container()
         var body: some View {
-                SettingsView(viewModel: SettingsViewModel(dataManger: container.dataManager, settingsStore: container.settingsStore))
+            SettingsView(viewModel: 
+                            SettingsViewModel(dataManger: container.dataManager,
+                                              notificationService: container.notificationService,
+                                              settingsStore: container.settingsStore)
+            )
         }
     }
     static var previews: some View {

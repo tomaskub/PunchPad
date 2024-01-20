@@ -27,6 +27,7 @@ struct ContentView: View {
                 SettingsView(viewModel:
                                 SettingsViewModel(
                                     dataManger: container.dataManager,
+                                    notificationService: container.notificationService,
                                     settingsStore: container.settingsStore
                                 )
                 )

@@ -10,7 +10,7 @@ import SwiftUI
 
 class SettingsViewModel: ObservableObject {
     private var subscriptions = Set<AnyCancellable>()
-    
+    private var notificationService: NotificationService
     private var dataManager: DataManager
     @Published var settingsStore: SettingsStore
     @Published var timerHours: Int
@@ -19,8 +19,9 @@ class SettingsViewModel: ObservableObject {
     @Published var overtimeMinutes: Int
     @Published var grossPayPerMonth: Int
     
-    init(dataManger: DataManager, settingsStore: SettingsStore) {
+    init(dataManger: DataManager, notificationService: NotificationService, settingsStore: SettingsStore) {
         self.dataManager = dataManger
+        self.notificationService = notificationService
         self.settingsStore = settingsStore
         self.timerHours = settingsStore.workTimeInSeconds / 3600
         self.timerMinutes = (settingsStore.workTimeInSeconds % 3600) / 60
@@ -85,12 +86,9 @@ class SettingsViewModel: ObservableObject {
             .filter({ $0 })
             .sink { [weak self] value in
                 guard let self else { return }
-                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge], completionHandler: { success, error in
-                    if let error = error {
-                        print(error.localizedDescription)
-                        self.settingsStore.isSendingNotification = false
-                    }
-                })
+                self.notificationService.requestAuthorizationForNotifications { [weak self] success, error in
+                    self?.settingsStore.isSendingNotification = success
+                }
             }.store(in: &subscriptions)
     }
     
