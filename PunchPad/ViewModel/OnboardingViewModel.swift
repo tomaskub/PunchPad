@@ -19,6 +19,7 @@ class OnboardingViewModel: ObservableObject {
     @Published var minutesWorking: Int
     @Published var hoursOvertime: Int
     @Published var minutesOvertime: Int
+    @Published var authorizationDenied = false
     
     init(notificationService: NotificationService, settingsStore: SettingsStore) {
         self.notificationService = notificationService
@@ -67,20 +68,25 @@ class OnboardingViewModel: ObservableObject {
                 self.settingsStore.grossPayPerMonth = newValue
             }.store(in: &subscriptions)
         
-        settingsStore.$isSendingNotification.sink { [weak self] value in
-            guard let self else { return }
-            if value {
-                self.requestAuthorizationForNotifications()
+        settingsStore.$isSendingNotification
+            .filter { value in
+                return value
             }
-        }.store(in: &subscriptions)
+            .sink { [weak self] value in
+                self?.requestAuthorizationForNotifications()
+            }.store(in: &subscriptions)
     }
+    
     private func calculateTimeInSeconds(hours: Int, minutes: Int) -> Int {
         return hours * 3600 + minutes * 60
     }
     
     func requestAuthorizationForNotifications() {
         notificationService.requestAuthorizationForNotifications { [weak self] result, error in
-            self?.settingsStore.isSendingNotification = result
+            DispatchQueue.main.async {
+                self?.settingsStore.isSendingNotification = result
+                self?.authorizationDenied = !result
+            }
         }
     }
 }
