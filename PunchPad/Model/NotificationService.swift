@@ -33,6 +33,20 @@ class NotificationService {
         pendingNotificationsIDs.removeAll()
     }
     
+    func checkForAuthorization() async -> Bool? {
+        let settings = await center.notificationSettings()
+        switch settings.authorizationStatus {
+        case .notDetermined:
+            return nil
+        case .denied:
+            return false
+        case .authorized, .provisional, .ephemeral:
+            return true
+        @unknown default:
+            return nil
+        }
+    }
+    
     func scheduleNotification(for notification: AppNotification, in timeInterval: TimeInterval) {
         let id = UUID().uuidString
         
