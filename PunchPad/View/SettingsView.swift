@@ -14,11 +14,14 @@ struct SettingsView: View {
     @StateObject private var viewModel: SettingsViewModel
     @State private var isShowingWorkTimeEditor: Bool = false
     @State private var isShowingOvertimeEditor: Bool = false
+    @State private var isShowingAlert: Bool = false
     
     init(viewModel: SettingsViewModel) {
         self._viewModel = StateObject.init(wrappedValue: viewModel)
     }
-    
+    let alertTitle: String = "PunchPad needs permission to show notifications"
+    let alertMessage: String = "You need to allow for notification in settings"
+    let alertButtonText: String = "OK"
     let navigationTitleText: String = "Settings"
     let hoursPickerText: String = "Hours"
     let minutesPickerText: String = "Minutes"
@@ -63,6 +66,15 @@ extension SettingsView {
                                   isOn: $viewModel.settingsStore.isSendingNotification,
                                   identifier: .sendNotificationsOnFinish
                     )
+                    .disabled(viewModel.authorizationDenied)
+                    .overlay {
+                        Color.white
+                            .opacity(viewModel.authorizationDenied ?
+                                     0.1 : 0)
+                            .onTapGesture {
+                                isShowingAlert.toggle()
+                            }
+                    }
                 } header: {
                     TextFactory.buildSectionHeader(timerSettingsHeaderText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.timerSettings.rawValue)
@@ -104,6 +116,15 @@ extension SettingsView {
             
         } // END OF ZSTACK
         .navigationBarTitle("Settings")
+        .alert(alertTitle,
+               isPresented: $isShowingAlert) {
+            Button(alertButtonText) {
+                isShowingAlert.toggle()
+            }
+        } message: {
+            Text(alertMessage)
+        }
+
     } // END OF BODY
     
     var timerSettings: some View {

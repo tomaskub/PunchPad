@@ -18,6 +18,7 @@ class SettingsViewModel: ObservableObject {
     @Published var overtimeHours: Int
     @Published var overtimeMinutes: Int
     @Published var grossPayPerMonth: Int
+    @Published var authorizationDenied: Bool = true
     
     init(dataManger: DataManager, notificationService: NotificationService, settingsStore: SettingsStore) {
         self.dataManager = dataManger
@@ -28,6 +29,9 @@ class SettingsViewModel: ObservableObject {
         self.overtimeHours = settingsStore.maximumOvertimeAllowedInSeconds / 3600
         self.overtimeMinutes = (settingsStore.maximumOvertimeAllowedInSeconds % 3600) / 60
         self.grossPayPerMonth = settingsStore.grossPayPerMonth
+        notificationService.checkForAuthorization { [weak self] optionalValue in
+                self?.authorizationDenied = !(optionalValue ?? true)
+        }
         setSubscribers()
     }
     
