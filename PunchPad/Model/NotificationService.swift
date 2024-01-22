@@ -19,9 +19,7 @@ class NotificationService {
     func requestAuthorizationForNotifications(failureHandler: @escaping (Bool, Error?) -> Void) {
         center.requestAuthorization(options: [.alert, .sound, .badge]) { success, error in
             if !success {
-                print("User declined notification")
-                // setting in store should be false
-                failureHandler(success, error) // <- this happens when user does not accept the notifications
+                failureHandler(success, error)
             }
             if let error {
                 print(error.localizedDescription)
@@ -44,6 +42,24 @@ class NotificationService {
             return true
         @unknown default:
             return nil
+        }
+    }
+    
+    func checkForAuthorization(completionHandler: @escaping (Bool?) -> Void) {
+        center.getNotificationSettings { settings in
+            let value: Bool? = {
+                switch settings.authorizationStatus {
+                case .notDetermined:
+                    return nil
+                case .denied:
+                    return false
+                case .authorized, .provisional, .ephemeral:
+                    return true
+                @unknown default:
+                    return nil
+                }
+            }()
+            completionHandler(value)
         }
     }
     
