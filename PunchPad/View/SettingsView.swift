@@ -7,6 +7,7 @@
 
 import SwiftUI
 import NavigationKit
+import ThemeKit
 
 struct SettingsView: View {
     private typealias Identifier = ScreenIdentifier.SettingsView
@@ -69,6 +70,7 @@ extension SettingsView {
                     TextFactory.buildSectionHeader(timerSettingsHeaderText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.timerSettings.rawValue)
                 } // END OF SECTION
+                .listRowBackground(Color.theme.white)
                 Section {
                     makeToggleRow(keepLogingOvertimeText,
                                   isOn: $viewModel.settingsStore.isLoggingOvertime,
@@ -79,7 +81,7 @@ extension SettingsView {
                     TextFactory.buildSectionHeader(overtimeSettingsHeaderText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.overtimeSettings.rawValue)
                 } // END OF SECTION
-                
+                .listRowBackground(Color.theme.white)
                 Section {
                     grossPaycheckRow
                     
@@ -90,7 +92,7 @@ extension SettingsView {
                     TextFactory.buildSectionHeader(paycheckSettingsText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.paycheckCalculation.rawValue)
                 } // END OF SECTION
-                
+                .listRowBackground(Color.theme.white)
                 Section {
                     clearDataButton
                     resetPreferencesButton
@@ -98,9 +100,10 @@ extension SettingsView {
                     TextFactory.buildSectionHeader(userDataSettingsText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.userData.rawValue)
                 } // END OF SECTION
-                
+                .listRowBackground(Color.theme.white)
 //                appearanceSection
             } // END OF LIST
+            
             .scrollContentBackground(.hidden)
             .listRowSeparatorTint(.theme.primary)
             
@@ -163,6 +166,7 @@ extension SettingsView {
                       value: $viewModel.grossPayPerMonth,
                       format: .currency(code: currencyCode)
             )
+            .foregroundColor(.theme.blackLabel)
             .textFieldStyle(.greenBordered)
         }
     }
