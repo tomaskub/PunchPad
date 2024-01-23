@@ -14,7 +14,6 @@ struct SettingsView: View {
     @StateObject private var viewModel: SettingsViewModel
     @State private var isShowingWorkTimeEditor: Bool = false
     @State private var isShowingOvertimeEditor: Bool = false
-    @State private var isShowingAlert: Bool = false
     
     init(viewModel: SettingsViewModel) {
         self._viewModel = StateObject.init(wrappedValue: viewModel)
@@ -66,15 +65,6 @@ extension SettingsView {
                                   isOn: $viewModel.settingsStore.isSendingNotification,
                                   identifier: .sendNotificationsOnFinish
                     )
-                    .disabled(viewModel.authorizationDenied)
-                    .overlay {
-                        Color.white
-                            .opacity(viewModel.authorizationDenied ?
-                                     0.1 : 0)
-                            .onTapGesture {
-                                isShowingAlert.toggle()
-                            }
-                    }
                 } header: {
                     TextFactory.buildSectionHeader(timerSettingsHeaderText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.timerSettings.rawValue)
@@ -117,9 +107,9 @@ extension SettingsView {
         } // END OF ZSTACK
         .navigationBarTitle("Settings")
         .alert(alertTitle,
-               isPresented: $isShowingAlert) {
+               isPresented: $viewModel.shouldShowNotificationDeniedAlert) {
             Button(alertButtonText) {
-                isShowingAlert.toggle()
+                viewModel.shouldShowNotificationDeniedAlert = false 
             }
         } message: {
             Text(alertMessage)

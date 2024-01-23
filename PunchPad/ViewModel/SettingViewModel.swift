@@ -19,6 +19,7 @@ class SettingsViewModel: ObservableObject {
     @Published var overtimeMinutes: Int
     @Published var grossPayPerMonth: Int
     @Published var authorizationDenied: Bool = true
+    @Published var shouldShowNotificationDeniedAlert: Bool = false
     
     init(dataManger: DataManager, notificationService: NotificationService, settingsStore: SettingsStore) {
         self.dataManager = dataManger
@@ -87,13 +88,34 @@ class SettingsViewModel: ObservableObject {
             }.store(in: &subscriptions)
         
         settingsStore.$isSendingNotification
-            .filter({ $0 })
-            .sink { [weak self] value in
-                guard let self else { return }
-                self.notificationService.requestAuthorizationForNotifications { [weak self] success, error in
-                    self?.settingsStore.isSendingNotification = success
-                }
+            .filter { [weak self] value in
+                //check authorization here?
+                return value && !(self?.authorizationDenied ?? true)
+            }.sink { [weak self] value in
+                self?.requestAuthorizationForNotifications()
             }.store(in: &subscriptions)
+        
+        settingsStore.$isSendingNotification
+            .filter { [weak self] _ in
+                self?.authorizationDenied ?? false
+            }.assign(to: &$shouldShowNotificationDeniedAlert)
+        
+        $shouldShowNotificationDeniedAlert
+            .dropFirst()
+            .removeDuplicates()
+            .filter { !$0 }
+            .sink { [weak self] _ in
+                self?.settingsStore.isSendingNotification = false
+            }.store(in: &subscriptions)
+    }
+    
+    private func requestAuthorizationForNotifications() {
+        self.notificationService.requestAuthorizationForNotifications { [weak self] success, error in
+            DispatchQueue.main.async {
+                self?.settingsStore.isSendingNotification = success
+                self?.authorizationDenied = !success
+            }
+        }
     }
     
     private func setGrossPayUISubscribers() {
