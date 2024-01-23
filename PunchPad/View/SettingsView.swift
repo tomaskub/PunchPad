@@ -18,7 +18,9 @@ struct SettingsView: View {
     init(viewModel: SettingsViewModel) {
         self._viewModel = StateObject.init(wrappedValue: viewModel)
     }
-    
+    let alertTitle: String = "PunchPad needs permission to show notifications"
+    let alertMessage: String = "You need to allow for notification in settings"
+    let alertButtonText: String = "OK"
     let navigationTitleText: String = "Settings"
     let hoursPickerText: String = "Hours"
     let minutesPickerText: String = "Minutes"
@@ -104,6 +106,15 @@ extension SettingsView {
             
         } // END OF ZSTACK
         .navigationBarTitle("Settings")
+        .alert(alertTitle,
+               isPresented: $viewModel.shouldShowNotificationDeniedAlert) {
+            Button(alertButtonText) {
+                viewModel.shouldShowNotificationDeniedAlert = false 
+            }
+        } message: {
+            Text(alertMessage)
+        }
+
     } // END OF BODY
     
     var timerSettings: some View {
@@ -298,7 +309,11 @@ struct SettingsView_Previews: PreviewProvider {
     private struct ContainerView: View {
         @StateObject private var container = Container()
         var body: some View {
-                SettingsView(viewModel: SettingsViewModel(dataManger: container.dataManager, settingsStore: container.settingsStore))
+            SettingsView(viewModel: 
+                            SettingsViewModel(dataManger: container.dataManager,
+                                              notificationService: container.notificationService,
+                                              settingsStore: container.settingsStore)
+            )
         }
     }
     static var previews: some View {

@@ -10,7 +10,7 @@ import SwiftUI
 
 class SettingsViewModel: ObservableObject {
     private var subscriptions = Set<AnyCancellable>()
-    
+    private var notificationService: NotificationService
     private var dataManager: DataManager
     @Published var settingsStore: SettingsStore
     @Published var timerHours: Int
@@ -18,9 +18,11 @@ class SettingsViewModel: ObservableObject {
     @Published var overtimeHours: Int
     @Published var overtimeMinutes: Int
     @Published var grossPayPerMonth: Int
+    @Published var shouldShowNotificationDeniedAlert: Bool = false
     
-    init(dataManger: DataManager, settingsStore: SettingsStore) {
+    init(dataManger: DataManager, notificationService: NotificationService, settingsStore: SettingsStore) {
         self.dataManager = dataManger
+        self.notificationService = notificationService
         self.settingsStore = settingsStore
         self.timerHours = settingsStore.workTimeInSeconds / 3600
         self.timerMinutes = (settingsStore.workTimeInSeconds % 3600) / 60
@@ -82,16 +84,35 @@ class SettingsViewModel: ObservableObject {
             }.store(in: &subscriptions)
         
         settingsStore.$isSendingNotification
-            .filter({ $0 })
+            .removeDuplicates()
+            .filter { $0 }
             .sink { [weak self] value in
-                guard let self else { return }
-                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge], completionHandler: { success, error in
-                    if let error = error {
-                        print(error.localizedDescription)
-                        self.settingsStore.isSendingNotification = false
-                    }
-                })
+                self?.requestAuthorizationForNotifications()
             }.store(in: &subscriptions)
+        
+        $shouldShowNotificationDeniedAlert
+            .dropFirst()
+            .removeDuplicates()
+            .filter { !$0 }
+            .receive(on: RunLoop.main)
+            .assign(to: &self.settingsStore.$isSendingNotification)
+        
+        NotificationCenter.default
+            .publisher(for: UIApplication.willEnterForegroundNotification)
+            .filter { [weak self] _ in
+                self?.settingsStore.isSendingNotification ?? false
+            }
+            .sink { [weak self] _ in
+                self?.requestAuthorizationForNotifications()
+            }.store(in: &subscriptions)
+    }
+    
+    private func requestAuthorizationForNotifications() {
+        self.notificationService.requestAuthorizationForNotifications { [weak self] result, error in
+            DispatchQueue.main.async {
+                self?.shouldShowNotificationDeniedAlert = !result
+            }
+        }
     }
     
     private func setGrossPayUISubscribers() {

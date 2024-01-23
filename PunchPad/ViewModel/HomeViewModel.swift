@@ -12,6 +12,7 @@ class HomeViewModel: NSObject, ObservableObject {
     private var dataManager: DataManager
     private var settingsStore: SettingsStore
     private var payManager: PayManager
+    private var notificationService: NotificationService
     private var startDate: Date?
     private var finishDate: Date?
     private var appDidEnterBackgroundDate: Date?
@@ -41,11 +42,12 @@ class HomeViewModel: NSObject, ObservableObject {
         return overtimeTimerService?.progress ?? 0
     }
     
-    init(dataManager: DataManager, settingsStore: SettingsStore, payManager: PayManager ,timerProvider: Timer.Type) {
+    init(dataManager: DataManager, settingsStore: SettingsStore, payManager: PayManager, notificationService: NotificationService, timerProvider: Timer.Type) {
         self.dataManager = dataManager
         self.settingsStore = settingsStore
         self.timerProvider = timerProvider
         self.payManager = payManager
+        self.notificationService = notificationService
         self.workTimerService = .init(
             timerProvider: timerProvider,
             timerLimit: TimeInterval(settingsStore.workTimeInSeconds)
@@ -219,7 +221,7 @@ extension HomeViewModel {
         if let appDidEnterBackgroundDate {
             resumeFromBackground(appDidEnterBackgroundDate)
         }
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [K.Notification.identifier])
+        notificationService.deschedulePendingNotifications()
     }
     
     func resumeFromBackground(_ appDidEnterBackgroundDate: Date) {
@@ -291,44 +293,16 @@ extension HomeViewModel {
 extension HomeViewModel {
     /// Schedule notifications for finish of overtime timer service and worktime timer service
     private func scheduleTimerFinishNotifications() {
+        guard settingsStore.isSendingNotification else { return }
         if let overtimeTimerService {
             if workTimerService.serviceState == .running {
-                let workTimeTrigger = UNTimeIntervalNotificationTrigger(timeInterval: workTimerService.remainingTime, repeats: false)
-                let overtimeTimeInterval = workTimerService.remainingTime + overtimeTimerService.remainingTime
-                let overtimeTrigger = UNTimeIntervalNotificationTrigger(timeInterval: overtimeTimeInterval, repeats: false)
-                checkForPermissionAndDispatch(withTrigger: workTimeTrigger)
-                checkForPermissionAndDispatch(withTrigger: overtimeTrigger)
+                notificationService.scheduleNotification(for: .workTime, in: workTimerService.remainingTime)
+                notificationService.scheduleNotification(for: .overTime, in: workTimerService.remainingTime + overtimeTimerService.remainingTime)
             } else if overtimeTimerService.serviceState == .running {
-                let timerToTimerFinish: TimeInterval = overtimeTimerService.remainingTime
-                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timerToTimerFinish, repeats: false)
-                checkForPermissionAndDispatch(withTrigger: trigger)
+                notificationService.scheduleNotification(for: .overTime, in: overtimeTimerService.remainingTime)
             }
         } else if workTimerService.serviceState == .running {
-            let timeToTimerFinish: TimeInterval = workTimerService.remainingTime
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeToTimerFinish , repeats: false)
-            checkForPermissionAndDispatch(withTrigger: trigger)
+            notificationService.scheduleNotification(for: .workTime, in: workTimerService.remainingTime)
         }
-    }
-    
-    private func checkForPermissionAndDispatch(withTrigger trigger: UNNotificationTrigger? = nil) {
-        UNUserNotificationCenter.current().getNotificationSettings { settings in
-            switch settings.authorizationStatus {
-            case .authorized:
-                self.dispatch(withTrigger: trigger)
-            default:
-                return
-            }
-        }
-    }
-    //TODO: READ ABOUT IDENTIFIERS - SAME ID MAKES THEM NOT APEAR
-    ///dispatch a local notification with standard title and body
-    ///- Parameter trigger: a UNNotificationTrigger, set to nil for dispatching now
-    private func dispatch(withTrigger trigger: UNNotificationTrigger? = nil) {
-        let content = UNMutableNotificationContent()
-        content.title = K.Notification.title
-        content.body = K.Notification.body
-        content.sound = .default
-        let request = UNNotificationRequest(identifier: K.Notification.identifier, content: content, trigger: trigger)
-        UNUserNotificationCenter.current().add(request)
     }
 }

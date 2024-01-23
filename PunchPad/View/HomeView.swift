@@ -156,7 +156,8 @@ struct Home_Previews: PreviewProvider {
                         HomeViewModel(
                             dataManager: container.dataManager,
                             settingsStore: container.settingsStore,
-                            payManager: container.payManager,
+                            payManager: container.payManager, 
+                            notificationService: container.notificationService,
                             timerProvider: container.timerProvider
                         )
             )

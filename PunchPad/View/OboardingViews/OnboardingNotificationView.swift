@@ -12,6 +12,9 @@ struct OnboardingNotificationView: View {
     private typealias Identifier = ScreenIdentifier.OnboardingView
     let titleText: String = "Notifications"
     let descriptionText: String = "Do you want PunchPad to send you notifications when the work time is finished?"
+    let alertTitle: String = "PunchPad needs permission to show notifications"
+    let alertMessage: String = "You need to allow for notification in settings"
+    let alertButtonText: String = "OK"
     @ObservedObject var viewModel: OnboardingViewModel
     
     var body: some View {
@@ -29,6 +32,14 @@ struct OnboardingNotificationView: View {
                 .cornerRadius(20)
         }
         .padding(30)
+        .alert(alertTitle,
+               isPresented: $viewModel.shouldShowNotificationDeniedAlert) {
+            Button(alertButtonText) {
+                viewModel.shouldShowNotificationDeniedAlert = false
+            }
+        } message: {
+            Text(alertMessage)
+        }
     }
 }
 
@@ -41,7 +52,11 @@ struct OnboardingNotification_Preview: PreviewProvider {
         init() {
             let container = Container()
             self._container = StateObject(wrappedValue: container)
-            self._vm = StateObject(wrappedValue: OnboardingViewModel(settingsStore: container.settingsStore))
+            self._vm = StateObject(wrappedValue: 
+                                    OnboardingViewModel(
+                                        notificationService: container.notificationService,
+                                        settingsStore: container.settingsStore)
+            )
         }
         
         var body: some View {

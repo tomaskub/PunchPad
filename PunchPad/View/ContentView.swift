@@ -27,6 +27,7 @@ struct ContentView: View {
                 SettingsView(viewModel:
                                 SettingsViewModel(
                                     dataManger: container.dataManager,
+                                    notificationService: container.notificationService,
                                     settingsStore: container.settingsStore
                                 )
                 )
@@ -35,7 +36,10 @@ struct ContentView: View {
         .fullScreenCover(isPresented: $isRunFirstTime, onDismiss: {
             isRunFirstTime = false
         }) {
-            OnboardingView(viewModel: OnboardingViewModel(settingsStore: container.settingsStore))
+            OnboardingView(viewModel: 
+                            OnboardingViewModel(notificationService: container.notificationService,
+                                                settingsStore: container.settingsStore)
+            )
         }
         
     }
