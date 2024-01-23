@@ -18,7 +18,6 @@ class SettingsViewModel: ObservableObject {
     @Published var overtimeHours: Int
     @Published var overtimeMinutes: Int
     @Published var grossPayPerMonth: Int
-    @Published var authorizationDenied: Bool = true
     @Published var shouldShowNotificationDeniedAlert: Bool = false
     
     init(dataManger: DataManager, notificationService: NotificationService, settingsStore: SettingsStore) {
@@ -30,9 +29,6 @@ class SettingsViewModel: ObservableObject {
         self.overtimeHours = settingsStore.maximumOvertimeAllowedInSeconds / 3600
         self.overtimeMinutes = (settingsStore.maximumOvertimeAllowedInSeconds % 3600) / 60
         self.grossPayPerMonth = settingsStore.grossPayPerMonth
-        notificationService.checkForAuthorization { [weak self] optionalValue in
-                self?.authorizationDenied = !(optionalValue ?? true)
-        }
         setSubscribers()
     }
     
@@ -88,32 +84,33 @@ class SettingsViewModel: ObservableObject {
             }.store(in: &subscriptions)
         
         settingsStore.$isSendingNotification
-            .filter { [weak self] value in
-                //check authorization here?
-                return value && !(self?.authorizationDenied ?? true)
-            }.sink { [weak self] value in
+            .removeDuplicates()
+            .filter { $0 }
+            .sink { [weak self] value in
                 self?.requestAuthorizationForNotifications()
             }.store(in: &subscriptions)
-        
-        settingsStore.$isSendingNotification
-            .filter { [weak self] _ in
-                self?.authorizationDenied ?? false
-            }.assign(to: &$shouldShowNotificationDeniedAlert)
         
         $shouldShowNotificationDeniedAlert
             .dropFirst()
             .removeDuplicates()
             .filter { !$0 }
+            .receive(on: RunLoop.main)
+            .assign(to: &self.settingsStore.$isSendingNotification)
+        
+        NotificationCenter.default
+            .publisher(for: UIApplication.willEnterForegroundNotification)
+            .filter { [weak self] _ in
+                self?.settingsStore.isSendingNotification ?? false
+            }
             .sink { [weak self] _ in
-                self?.settingsStore.isSendingNotification = false
+                self?.requestAuthorizationForNotifications()
             }.store(in: &subscriptions)
     }
     
     private func requestAuthorizationForNotifications() {
-        self.notificationService.requestAuthorizationForNotifications { [weak self] success, error in
+        self.notificationService.requestAuthorizationForNotifications { [weak self] result, error in
             DispatchQueue.main.async {
-                self?.settingsStore.isSendingNotification = success
-                self?.authorizationDenied = !success
+                self?.shouldShowNotificationDeniedAlert = !result
             }
         }
     }
