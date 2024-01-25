@@ -13,6 +13,9 @@ struct NavigationBarWrapper<Content: View>: View {
     // Determines if a back button should be shown in the navigation bar.
     let showBackButton: Bool
     
+    // Controls the color of the back button
+    @State private var backButtonColor: Color = .primary
+    
     // The destination content view that this navigation bar is associated with.
     @ViewBuilder let destination: () -> Content
     
@@ -51,7 +54,8 @@ struct NavigationBarWrapper<Content: View>: View {
                 CustomNavigationBarView(
                     config: navConfig,
                     shouldShowBackButton: showBackButton,
-                    background: backgroundView,
+                    background: backgroundView, 
+                    backButtonColor: backButtonColor,
                     leadingElements: leadingView,
                     trailingElements: trailingView,
                     shouldElevate: isScrolling,
@@ -83,6 +87,9 @@ struct NavigationBarWrapper<Content: View>: View {
         }
         .onPreferenceChange(CustomNavBarPrefKey.self) { navBar in
             self.customNavBar = navBar
+        }
+        .onPreferenceChange(NavBarBackButtonColorPrefKey.self) { newColor in
+            self.backButtonColor = newColor
         }
     }
 }
