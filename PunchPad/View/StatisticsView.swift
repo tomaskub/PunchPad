@@ -142,7 +142,8 @@ extension StatisticsView {
             ChartFactory.buildBarChartForYear(
                 data: viewModel.createMonthlySummary(entries: viewModel.entriesForChart),
                 firstColor: .theme.primary,
-                secondColor: .theme.redChart
+                secondColor: .theme.redChart,
+                axisColor: .theme.buttonLabelGray
             )
         }
     } // END OF VAR
