@@ -135,7 +135,8 @@ extension StatisticsView {
         case .week, .month:
             ChartFactory.buildBarChart(entries: viewModel.entriesForChart,
                                        firstColor: .theme.primary,
-                                       secondColor: .theme.redChart
+                                       secondColor: .theme.redChart,
+                                       axisColor: .theme.buttonLabelGray
             )
         case .year, .all:
             ChartFactory.buildBarChartForYear(
@@ -164,7 +165,7 @@ extension StatisticsView {
     
     var displayedChartRange: some View {
         Text(makePeriodRangeString(for: viewModel.periodDisplayed))
-            .foregroundStyle(.secondary)
+            .foregroundStyle(Color.theme.buttonLabelGray)
             .font(.caption)
     }
     
