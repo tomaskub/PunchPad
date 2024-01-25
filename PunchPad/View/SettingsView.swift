@@ -19,10 +19,15 @@ struct SettingsView: View {
     init(viewModel: SettingsViewModel) {
         self._viewModel = StateObject.init(wrappedValue: viewModel)
     }
+    let navigationTitle: AttributedString = {
+        var result = AttributedString("Settings")
+        result.font = .title.weight(.medium)
+        result.foregroundColor = .theme.black
+        return result
+    }()
     let alertTitle: String = "PunchPad needs permission to show notifications"
     let alertMessage: String = "You need to allow for notification in settings"
     let alertButtonText: String = "OK"
-    let navigationTitleText: String = "Settings"
     let hoursPickerText: String = "Hours"
     let minutesPickerText: String = "Minutes"
     let timerLengthButtonText: String = "Set timer length"
@@ -108,7 +113,8 @@ extension SettingsView {
             .listRowSeparatorTint(.theme.primary)
             
         } // END OF ZSTACK
-        .navigationBarTitle("Settings")
+        .navigationBarTitle(navigationTitle)
+        .navigationBarBackButtonColor(color: .theme.black)
         .alert(alertTitle,
                isPresented: $viewModel.shouldShowNotificationDeniedAlert) {
             Button(alertButtonText) {
