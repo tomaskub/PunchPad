@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Charts
+import ThemeKit
 
 struct HistoryView: View {
     private typealias Identifier = ScreenIdentifier.HistoryView
@@ -37,6 +38,7 @@ struct HistoryView: View {
             // CONTENT LAYER
             List {
                 makeListConent(viewModel.groupedEntries)
+                    .listRowBackground(Color.theme.white)
             } // END OF LIST
             .listStyle(.insetGrouped)
             .emptyPlaceholder(viewModel.groupedEntries) {
@@ -56,7 +58,7 @@ struct HistoryView: View {
             }
         } // END OF ZSTACK
     } // END OF BODY
-
+    
     func makeSectionHeader(_ entry: Entry?) -> String {
         if let date = entry?.startDate {
             return headerFormatter.string(from: date)
@@ -81,7 +83,7 @@ extension HistoryView {
     }
     @ViewBuilder
     func makeListSection(_ entries: [Entry]) -> some View {
-        Section(makeSectionHeader(entries.first)) {
+        Section(/*makeSectionHeader(entries.first)*/) {
             ForEach(entries) { entry in
                 if entry != entryToBeDeleted {
                     HistoryRowView(withEntry: entry)
@@ -111,6 +113,9 @@ extension HistoryView {
                         lastRow
                     }
             }
+        } header: {
+            Text(makeSectionHeader(entries.first))
+                .foregroundStyle(Color.theme.buttonLabelGray)
         }
     }
     
@@ -200,6 +205,7 @@ extension HistoryView {
                 .overlay(alignment: .topTrailing) {
                         Image(systemName: "line.3.horizontal.decrease.circle")
                             .font(.title)
+                            .foregroundColor(.theme.blackLabel)
                             .padding(.trailing)
                             .onTapGesture {
                                 filter.toggle()

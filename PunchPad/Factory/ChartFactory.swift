@@ -11,7 +11,7 @@ import Charts
 struct ChartFactory {
     // TODO: ADD FLEXIBILITY WITH KEY PATHS
     @ViewBuilder
-    static func buildBarChart(entries: [Entry], firstColor: Color, secondColor: Color, includeRuleMark: Bool = false) -> some View {
+    static func buildBarChart(entries: [Entry], firstColor: Color, secondColor: Color, axisColor: Color, includeRuleMark: Bool = false) -> some View {
             Chart(entries) {
                 // ruler
                 if includeRuleMark {
@@ -29,11 +29,37 @@ struct ChartFactory {
                         y: .value("Hours worked", $0.overTimeInSeconds / 3600))
                 .foregroundStyle(secondColor)
             }
+            .chartXAxis {
+                AxisMarks(values: .automatic) { value in
+                    AxisGridLine()
+                        .foregroundStyle(axisColor)
+                    
+                    AxisValueLabel() {
+                        if let date = value.as(Date.self) {
+                            Text(FormatterFactory.makeDayAndMonthDateFormatter().string(from: date))
+                                .foregroundStyle(axisColor)
+                        }
+                    }
+                }
+            }
+            .chartYAxis {
+                AxisMarks(values: .automatic) { value in
+                    AxisGridLine()
+                        .foregroundStyle(axisColor)
+                    
+                    AxisValueLabel() {
+                        if let intVal = value.as(Int.self) {
+                            Text("\(intVal)")
+                                .foregroundStyle(axisColor)
+                        }
+                    }
+                }
+            }
             .chartYScale(domain: 0...15)
     }
     
     @ViewBuilder
-    static func buildBarChartForYear(data: [MonthEntrySummary], firstColor: Color, secondColor: Color) -> some View {
+    static func buildBarChartForYear(data: [MonthEntrySummary], firstColor: Color, secondColor: Color, axisColor: Color) -> some View {
         Chart(data) { summary in
             BarMark(x: .value("Date", summary.startDate, unit: .month),
                     y: .value("Hours worked", summary.workTimeInSeconds / 3600)
@@ -44,6 +70,32 @@ struct ChartFactory {
                     y: .value("Hours overtime", summary.overtimeInSecond / 3600)
             )
             .foregroundStyle(secondColor)
+        }
+        .chartXAxis {
+            AxisMarks(values: .automatic) { value in
+                AxisGridLine()
+                    .foregroundStyle(axisColor)
+                
+                AxisValueLabel() {
+                    if let date = value.as(Date.self) {
+                        Text(FormatterFactory.makeMonthDateFormatter().string(from: date))
+                            .foregroundStyle(axisColor)
+                    }
+                }
+            }
+        }
+        .chartYAxis {
+            AxisMarks(values: .automatic) { value in
+                AxisGridLine()
+                    .foregroundStyle(axisColor)
+                
+                AxisValueLabel() {
+                    if let intVal = value.as(Int.self) {
+                        Text("\(intVal)")
+                            .foregroundStyle(axisColor)
+                    }
+                }
+            }
         }
     }
     

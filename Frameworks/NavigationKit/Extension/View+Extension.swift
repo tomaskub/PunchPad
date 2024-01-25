@@ -46,6 +46,14 @@ public extension View {
         self
             .preference(key: NavBarConfigPrefKey.self, value: config)
     }
+    
+    /// Set the color of back button for the navigation bar
+    /// - Parameter color: Foreground color of the navigation bar
+    /// - Returns: A modified view with the specified navigation bar back button color
+    func navigationBarBackButtonColor(color: Color) -> some View {
+        self
+            .preference(key: NavBarBackButtonColorPrefKey.self, value: color)
+    }
 }
 
 //MARK: NAVIGATION BAR BACKGROUND

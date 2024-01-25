@@ -12,7 +12,7 @@ struct CustomNavigationBarView: View {
     let config: NavBarTitleConfiguration
     let shouldShowBackButton: Bool
     let background: _EquatableView
-    let backButtonColor: Color = .black
+    let backButtonColor: Color
     let leadingElements: _EquatableView
     let trailingElements: _EquatableView
     let shouldElevate: Bool
@@ -178,7 +178,8 @@ private extension CustomNavigationBarView {
             VStack(spacing: 0){
                 CustomNavigationBarView(config: navBarTitleConfiguration,
                                         shouldShowBackButton: false,
-                                        background: .init(view: AnyView(navBarBackground)),
+                                        background: .init(view: AnyView(navBarBackground)), 
+                                        backButtonColor: .primary,
                                         leadingElements: .init(view: AnyView(leadingElements)),
                                         trailingElements: .init(view: AnyView(trailingElements)),
                                         shouldElevate: false) { print("back tapped") }
@@ -219,7 +220,8 @@ private extension CustomNavigationBarView {
             VStack(spacing: 0){
                 CustomNavigationBarView(config: navBarTitleConfiguration,
                                         shouldShowBackButton: false,
-                                        background: .init(view: AnyView(navBarBackground)),
+                                        background: .init(view: AnyView(navBarBackground)), 
+                                        backButtonColor: .primary,
                                         leadingElements: .init(view: AnyView(leadingElements)),
                                         trailingElements: .init(view: AnyView(trailingElements)),
                                         shouldElevate: true) { print("back tapped") }
@@ -254,6 +256,7 @@ private extension CustomNavigationBarView {
                 CustomNavigationBarView(config: navBarTitleConfiguration,
                                         shouldShowBackButton: false,
                                         background: .init(view: AnyView(navBarBackground)),
+                                        backButtonColor: .primary,
                                         leadingElements: .init(),
                                         trailingElements: .init(view: AnyView(trailingElements)),
                                         shouldElevate: false) { print("back tapped") }
@@ -284,6 +287,7 @@ private extension CustomNavigationBarView {
                 CustomNavigationBarView(config: navBarTitleConfiguration,
                                         shouldShowBackButton: true,
                                         background: .init(view: AnyView(navBarBackground)),
+                                        backButtonColor: .primary,
                                         leadingElements: .init(),
                                         trailingElements: .init(),
                                         shouldElevate: true) { print("back tapped") }

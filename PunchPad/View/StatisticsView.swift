@@ -30,6 +30,7 @@ struct StatisticsView: View {
                     .padding(.horizontal, -20)
                     .listRowBackground(Color.clear)
                 
+                
                 Section {
                     VStack(alignment: .leading) {
                         hoursCount
@@ -50,6 +51,7 @@ struct StatisticsView: View {
                             }
                         )
                 }//END OF SECTION
+                .listRowBackground(Color.theme.white)
                 .listRowSeparator(.hidden)
                 
                 Section {
@@ -58,6 +60,7 @@ struct StatisticsView: View {
                     TextFactory.buildSectionHeader(salaryCalculationHeaderText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.salaryCalculation.rawValue)
                 }// END OF SECTION
+                .listRowBackground(Color.theme.white)
                 Color.clear.frame(height: 80)
                     .listRowBackground(Color.clear)
             } //END OF LIST
@@ -132,13 +135,15 @@ extension StatisticsView {
         case .week, .month:
             ChartFactory.buildBarChart(entries: viewModel.entriesForChart,
                                        firstColor: .theme.primary,
-                                       secondColor: .theme.redChart
+                                       secondColor: .theme.redChart,
+                                       axisColor: .theme.buttonLabelGray
             )
         case .year, .all:
             ChartFactory.buildBarChartForYear(
                 data: viewModel.createMonthlySummary(entries: viewModel.entriesForChart),
                 firstColor: .theme.primary,
-                secondColor: .theme.redChart
+                secondColor: .theme.redChart,
+                axisColor: .theme.buttonLabelGray
             )
         }
     } // END OF VAR
@@ -161,7 +166,7 @@ extension StatisticsView {
     
     var displayedChartRange: some View {
         Text(makePeriodRangeString(for: viewModel.periodDisplayed))
-            .foregroundStyle(.secondary)
+            .foregroundStyle(Color.theme.buttonLabelGray)
             .font(.caption)
     }
     
@@ -171,7 +176,6 @@ extension StatisticsView {
                     Text(String(viewModel.workedHoursInPeriod))
                         .font(.title)
                     Text("hours worked")
-                        .foregroundColor(.secondary)
                         .font(.caption)
                 }
             Spacer()
@@ -179,7 +183,6 @@ extension StatisticsView {
                 Text(String(viewModel.overtimeHoursInPeriod))
                     .font(.title)
                 Text("hours overtime")
-                    .foregroundColor(.secondary)
                     .font(.caption)
             }
             Spacer()
@@ -188,6 +191,7 @@ extension StatisticsView {
                 .foregroundColor(.theme.primary)
                 .font(.title)
         }
+        .foregroundColor(.theme.black)
     }
 }
 

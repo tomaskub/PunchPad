@@ -42,6 +42,20 @@ struct FormatterFactory {
         return formatter
     }
     
+    /// Returns `DateFormatter` with date style displaying `23 Jun`, with no time components
+    static func makeDayAndMonthDateFormatter() -> DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd MMM"
+        return formatter
+    }
+    
+    /// Returns `DateFormatter` with date style displaying 3 letter month - `Jun`, with no time components
+    static func makeMonthDateFormatter() -> DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM"
+        return formatter
+    }
+    
     static func makeCurrencyFormatter(_ locale: Locale) -> NumberFormatter {
         let formatter = NumberFormatter()
         formatter.locale = locale
