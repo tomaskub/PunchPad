@@ -16,6 +16,7 @@ struct EditSheetView: View {
     private typealias Identifier = ScreenIdentifier.EditSheetView
     let regularTimeText: String = "Regular time"
     let overtimeText: String = "Overtime"
+    let breaktimeText: String = "Break time"
     let titleText: String = "Edit entry"
     let timeIndicatorText: String = "work time"
     let overrideSettingsHeaderText: String = "Override settings"
@@ -71,6 +72,8 @@ extension EditSheetView {
                 regularTimeLabel
                 Spacer()
                 overtimeLabel
+                Spacer()
+                breakTimeLabel
             }
         }
     }
@@ -84,21 +87,33 @@ extension EditSheetView {
     }
     
     var overtimeLabel: some View {
-            HStack {
+            VStack {
                 Text(generateTimeIntervalLabel(value: viewModel.overTimeInSeconds))
                     .font(.title)
                 Text(overtimeText)
                     .font(.caption)
             }
+            .foregroundColor(.theme.black)
     }
     
     var regularTimeLabel: some View {
-            HStack {
+            VStack {
                 Text(generateTimeIntervalLabel(value: viewModel.workTimeInSeconds))
                     .font(.title)
                 Text(regularTimeText)
                     .font(.caption)
             }
+            .foregroundColor(.theme.black)
+    }
+    
+    var breakTimeLabel: some View {
+        VStack {
+            Text(generateTimeIntervalLabel(value: viewModel.breakTime))
+                .font(.title)
+            Text(breaktimeText)
+                .font(.caption)
+        }
+        .foregroundColor(.theme.black)
     }
     
     private func generateTimeIntervalLabel(value: TimeInterval) -> String {
