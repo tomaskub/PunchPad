@@ -243,7 +243,7 @@ final class EditSheetViewModel: ObservableObject {
         entry.workTimeInSeconds = Int(workTimeInSeconds)
         entry.overTimeInSeconds = Int(overTimeInSeconds)
         entry.maximumOvertimeAllowedInSeconds = Int(currentMaximumOvertime)
-        entry.standardWorktimeInSeconds = Int(currentMaximumOvertime)
+        entry.standardWorktimeInSeconds = Int(currentStandardWorkTime)
         entry.grossPayPerMonth = grossPayPerMonth
         entry.calculatedNetPay = calculateNetPay ? payService.calculateNetPay(gross: Double(grossPayPerMonth)) : nil
         dataManager.updateAndSave(entry: entry)
