@@ -28,6 +28,14 @@ final class EditSheetViewModel: ObservableObject {
     var totalTimeInSeconds: TimeInterval {
         TimeInterval(workTimeInSeconds + overTimeInSeconds)
     }
+    var breakTime: TimeInterval {
+        let timeFromDates = DateInterval(start: startDate, end: finishDate).duration
+        if timeFromDates > workTimeInSeconds + overTimeInSeconds {
+            return timeFromDates - workTimeInSeconds - overTimeInSeconds
+        } else {
+            return 0
+        }
+    }
     var workTimeFraction: CGFloat {
         CGFloat(workTimeInSeconds / currentStandardWorkTime)
     }
