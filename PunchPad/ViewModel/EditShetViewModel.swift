@@ -68,10 +68,10 @@ final class EditSheetViewModel: ObservableObject {
             return false
         }()
         // set up combine pipelines
-        setDateMatchingPipeline()
         setTimeCalculationPipelines()
         setOverrideTimePipelines()
-        setDisplayingFullDatesPipeline()
+//        setDateMatchingPipeline()
+//        setDisplayingFullDatesPipeline()
     }
     
     private func setOverrideTimePipelines() {
