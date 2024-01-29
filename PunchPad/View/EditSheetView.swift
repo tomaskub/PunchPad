@@ -29,8 +29,6 @@ struct EditSheetView: View {
     let grossPayPerMonthText = "Gross pay per month"
     let calculateNetPayText = "Calculate net pay"
     let dateComponentFormatter = FormatterFactory.makeHourAndMinuteDateComponentFormatter()
-    
-    
 } // END OF STRUCT
 
 //MARK: BODY
@@ -139,17 +137,18 @@ extension EditSheetView {
                     .labelsHidden()
                     .accessibilityIdentifier(Identifier.DatePicker.startDate.rawValue)
             } trailing: {
-                imageCalendar
+               calendarToggable
             }
             .frame(height: 50)
             .padding(.top)
+            .padding(.bottom, 2)
             
             CustomDatePickerContainer(labelText: finishDateText) {
                 DatePicker(finishDateText, selection: $viewModel.finishDate, in: PartialRangeFrom(viewModel.startDate))
                     .labelsHidden()
                     .accessibilityIdentifier(Identifier.DatePicker.finishDate.rawValue)
             } trailing: {
-                imageCalendar
+                calendarToggable
             }
             .frame(height: 50)
             .padding(.bottom)
@@ -159,17 +158,18 @@ extension EditSheetView {
     
     var sameDayDateControls: some View {
         Group {
-            CustomDatePickerContainer(labelText: nil) {
+            CustomDatePickerContainer(labelText: "Date") {
                 DatePicker(selection: $viewModel.startDate,
                            displayedComponents: .date) {
                     EmptyView()
                 }
                            .labelsHidden()
             } trailing: {
-                imageCalendar
+                calendarToggable
             }
             .frame(height: 50)
             .padding(.top)
+            .padding(.bottom, 2)
             HStack {
                 CustomDatePickerContainer(labelText: startDateText) {
                     DatePicker(selection: $viewModel.startDate,
@@ -319,6 +319,15 @@ extension EditSheetView {
         Image(systemName: "clock")
             .font(.title)
             .foregroundColor(.theme.primary)
+    }
+    
+    var calendarToggable: some View {
+        imageCalendar
+            .onTapGesture {
+                withAnimation {
+                    viewModel.shouldDisplayFullDates.toggle()
+                }
+            }
     }
     
     var imageCalendar: some View {
