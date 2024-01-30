@@ -70,8 +70,6 @@ final class EditSheetViewModel: ObservableObject {
         // set up combine pipelines
         setTimeCalculationPipelines()
         setOverrideTimePipelines()
-//        setDateMatchingPipeline()
-//        setDisplayingFullDatesPipeline()
     }
     
     private func setOverrideTimePipelines() {
@@ -120,89 +118,6 @@ final class EditSheetViewModel: ObservableObject {
                 guard let self else { return }
                 self.calculateTime(date, self.finishDate)
             }.store(in: &cancellables)
-    }
-
-    private func setDateMatchingPipeline() {
-        $startDate
-            .dropFirst()
-            .removeDuplicates()
-            .filter {  _ in
-                self.shouldDisplayFullDates
-            }
-            .map { date in
-                self.adjustToEqualDateComponents([.year, .month, .day], from: date, to: self.finishDate, using: self.calendar)
-            }.assign(to: &$finishDate)
-    }
-    
-    private func setDisplayingFullDatesPipeline() {
-        $startDate
-            .dropFirst()
-            .removeDuplicates()
-            .filter { _ in
-                !self.shouldDisplayFullDates
-            }
-            .map { [weak self] dateValue in
-                if let hours = self?.calendar.dateComponents([.hour], from: dateValue).hour,
-                   let worktimeInterval = self?.currentStandardWorkTime {
-                    if hours >= 24 - Int(worktimeInterval / 3600) {
-                        return true
-                    }
-                }
-                return false
-            }.assign(to: &$shouldDisplayFullDates)
-        
-        $startDate
-            .filter { _ in
-                self.shouldDisplayFullDates
-            }
-            .map { [weak self] date in
-                guard let self else { return false }
-                let dateComponents = self.calendar.dateComponents([.year, .month, .day], from: date)
-                let isMatchingFinishDate = self.calendar.date(self.finishDate, matchesComponents: dateComponents)
-                return !isMatchingFinishDate
-            }
-            .assign(to: &$shouldDisplayFullDates)
-        
-        $finishDate
-            .filter { _ in
-                self.shouldDisplayFullDates
-            }
-            .map { [weak self] date in
-                guard let self else { return false }
-                let dateComponents = self.calendar.dateComponents([.year, .month, .day], from: date)
-                let isMatchingStartDate = self.calendar.date(self.startDate, matchesComponents: dateComponents)
-                return !isMatchingStartDate
-            }
-            .assign(to: &$shouldDisplayFullDates)
-        
-    }
-    
-    /// Adjust component in target date to match components in source date
-    /// - Parameters:
-    ///   - calendarComponents: set of calendar components that should be changed
-    ///   - source: date from which to take components
-    ///   - target: date to which set the components to match
-    ///   - calendar: calendar instance used for date manipulation
-    /// - Returns: Date with adjusted components or unchanged component if date creation failed
-    ///
-    ///  Minimum resultion to which the date will be adjusted is `.second`.
-    ///  Components allowed to be used in set are `.year`, `.month`, `.day`, `.hour`, `.minute` and `.second`
-    private func adjustToEqualDateComponents(_ calendarComponents: Set<Calendar.Component>, from source: Date, to target: Date, using calendar: Calendar) -> Date {
-        let allowedCalendarComponents: Set<Calendar.Component> = [.year, .month, .day, .hour, .minute, .second]
-        let changedDateComponents = calendar.dateComponents(calendarComponents, from: source)
-        let unchangedDateComponents = calendar.dateComponents(allowedCalendarComponents.subtracting(calendarComponents), from: target)
-        
-        var resultDateComponents = DateComponents()
-        for calendarComponent in allowedCalendarComponents {
-            guard let keyPath = calendarComponent.dateComponentKeyPath else { continue }
-            if calendarComponents.contains(calendarComponent) {
-                resultDateComponents[keyPath: keyPath] = changedDateComponents[keyPath: keyPath]
-            } else {
-                resultDateComponents[keyPath: keyPath] = unchangedDateComponents[keyPath: keyPath]
-            }
-        }
-        
-        return calendar.date(from: resultDateComponents) ?? target
     }
     
     /// Calculate time for the entry and allot it to workTime and overTime
