@@ -60,12 +60,12 @@ final class EditSheetViewModel: ObservableObject {
         self.calculateNetPay = entry.calculatedNetPay == nil ? false : true
         
         self.shouldDisplayFullDates = {
-            if let hours = calendar.dateComponents([.hour], from: entry.startDate).hour {
-                if hours >= 24 - (entry.standardWorktimeInSeconds / 3600) {
-                            return true
-                        }
-                    }
-            return false
+            let startDateComponents = calendar.dateComponents([.year, .month, .day], from: entry.startDate)
+            if calendar.date(entry.finishDate, matchesComponents: startDateComponents) {
+                return false
+            } else {
+                return true
+            }
         }()
         // set up combine pipelines
         setTimeCalculationPipelines()
