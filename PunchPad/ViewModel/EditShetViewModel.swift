@@ -60,18 +60,17 @@ final class EditSheetViewModel: ObservableObject {
         self.calculateNetPay = entry.calculatedNetPay == nil ? false : true
         
         self.shouldDisplayFullDates = {
-            if let hours = calendar.dateComponents([.hour], from: entry.startDate).hour {
-                if hours >= 24 - (entry.standardWorktimeInSeconds / 3600) {
-                            return true
-                        }
-                    }
-            return false
+            let startDateComponents = calendar.dateComponents([.year, .month, .day], from: entry.startDate)
+            if calendar.date(entry.finishDate, matchesComponents: startDateComponents) {
+                return false
+            } else {
+                return true
+            }
         }()
         // set up combine pipelines
-        setDateMatchingPipeline()
         setTimeCalculationPipelines()
         setOverrideTimePipelines()
-        setDisplayingFullDatesPipeline()
+        setDateMatchingPipeline()
     }
     
     private func setOverrideTimePipelines() {
@@ -123,58 +122,20 @@ final class EditSheetViewModel: ObservableObject {
     }
 
     private func setDateMatchingPipeline() {
-        $startDate
+        $shouldDisplayFullDates
             .dropFirst()
             .removeDuplicates()
-            .filter {  _ in
-                self.shouldDisplayFullDates
-            }
-            .map { date in
-                self.adjustToEqualDateComponents([.year, .month, .day], from: date, to: self.finishDate, using: self.calendar)
-            }.assign(to: &$finishDate)
-    }
-    
-    private func setDisplayingFullDatesPipeline() {
-        $startDate
-            .dropFirst()
-            .removeDuplicates()
-            .filter { _ in
-                !self.shouldDisplayFullDates
-            }
-            .map { [weak self] dateValue in
-                if let hours = self?.calendar.dateComponents([.hour], from: dateValue).hour,
-                   let worktimeInterval = self?.currentStandardWorkTime {
-                    if hours >= 24 - Int(worktimeInterval / 3600) {
-                        return true
-                    }
+            .filter({ value in
+                return !value
+            })
+            .map { _ in
+                let newDate = self.adjustToEqualDateComponents([.year, .month, .day], from: self.startDate, to: self.finishDate, using: self.calendar)
+                if newDate.timeIntervalSince1970 < self.startDate.timeIntervalSince1970 {
+                    return self.startDate
+                } else {
+                    return newDate
                 }
-                return false
-            }.assign(to: &$shouldDisplayFullDates)
-        
-        $startDate
-            .filter { _ in
-                self.shouldDisplayFullDates
-            }
-            .map { [weak self] date in
-                guard let self else { return false }
-                let dateComponents = self.calendar.dateComponents([.year, .month, .day], from: date)
-                let isMatchingFinishDate = self.calendar.date(self.finishDate, matchesComponents: dateComponents)
-                return !isMatchingFinishDate
-            }
-            .assign(to: &$shouldDisplayFullDates)
-        
-        $finishDate
-            .filter { _ in
-                self.shouldDisplayFullDates
-            }
-            .map { [weak self] date in
-                guard let self else { return false }
-                let dateComponents = self.calendar.dateComponents([.year, .month, .day], from: date)
-                let isMatchingStartDate = self.calendar.date(self.startDate, matchesComponents: dateComponents)
-                return !isMatchingStartDate
-            }
-            .assign(to: &$shouldDisplayFullDates)
-        
+            }.assign(to: &$finishDate)
     }
     
     /// Adjust component in target date to match components in source date
