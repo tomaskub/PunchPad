@@ -149,17 +149,32 @@ extension StatisticsView {
     } // END OF VAR
     
     func makePeriodRangeString(for period: Period) -> String {
-        let periodEndMonth = Calendar.current.dateComponents([.month], from: period.1)
-        let periodEndYear = Calendar.current.dateComponents([.year], from: period.1)
-        let isSameMonth = Calendar.current.date(period.0, matchesComponents: periodEndMonth)
-        if isSameMonth {
-            let startDay = Calendar.current.dateComponents([.day], from: period.0)
-            return "\(startDay.day ?? 0) - \(period.1.formatted(date: .abbreviated, time: .omitted))"
-        }
-        let isSameYear = Calendar.current.date(period.0, matchesComponents: periodEndYear)
-        if isSameYear {
-            let startString = String(period.0.formatted(date: .abbreviated, time: .omitted).dropLast(5))
-            return startString + " - " + period.1.formatted(date: .abbreviated, time: .omitted)
+        let number = Calendar.current.dateComponents([.day], from: period.0, to: period.1).day!
+        if number <= 7 {
+            // this works well for week
+            let periodEndMonth = Calendar.current.dateComponents([.month], from: period.1)
+            let periodEndYear = Calendar.current.dateComponents([.year], from: period.1)
+            let isSameMonth = Calendar.current.date(period.0, matchesComponents: periodEndMonth)
+            
+            if isSameMonth {
+                let startDay = Calendar.current.dateComponents([.day], from: period.0)
+                return "\(startDay.day ?? 0) - \(period.1.formatted(date: .abbreviated, time: .omitted))"
+            }
+            let isSameYear = Calendar.current.date(period.0, matchesComponents: periodEndYear)
+            if isSameYear {
+                let startString = String(period.0.formatted(date: .abbreviated, time: .omitted).dropLast(5))
+                return startString + " - " + period.1.formatted(date: .abbreviated, time: .omitted)
+            }
+        } else if number <= 31 {
+            // this is a month
+            let startDateComponents = Calendar.current.dateComponents([.month, .year], from: period.0)
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MMMM yyyy"
+            return formatter.string(from: period.0)
+        } else if number <= 366 {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy"
+            return formatter.string(from: period.0)
         }
         return period.0.formatted(date: .abbreviated, time: .omitted) + " - " + period.1.formatted(date: .abbreviated, time: .omitted)
     }
