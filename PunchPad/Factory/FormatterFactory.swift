@@ -56,6 +56,27 @@ struct FormatterFactory {
         return formatter
     }
     
+    /// Returns `DateFormatter` with date style displaying full month name - `January` and 4 digit year `1999`, with no time components
+    static func makeFullMonthYearDateFormatter() -> DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM yyyy"
+        return formatter
+    }
+    
+    /// Returns `DateFormatter` with date style displaying 4 digit year `1999`, with no time components
+    static func makeYearDateFormatter() -> DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy"
+        return formatter
+    }
+    
+    /// Returns `DateFormatter` with date style displaying 1 or 2 digit day of the month, with no time components
+    static func makeDayDateFormatter() -> DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd"
+        return formatter
+    }
+    
     static func makeCurrencyFormatter(_ locale: Locale) -> NumberFormatter {
         let formatter = NumberFormatter()
         formatter.locale = locale
