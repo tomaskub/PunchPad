@@ -148,41 +148,52 @@ extension StatisticsView {
         }
     } // END OF VAR
     
-    func makePeriodRangeString(for period: Period) -> String {
-        let number = Calendar.current.dateComponents([.day], from: period.0, to: period.1).day!
-        if number <= 7 {
-            // this works well for week
+    private func makePeriodRangeString(for period: Period, selectedRange: ChartTimeRange) -> String {
+        switch selectedRange {
+        case .week:
+            return makePeriodRangeForWeek(for: period)
+        case .month:
+            return FormatterFactory.makeFullMonthYearDateFormatter().string(from: period.0)
+        case .year:
+            return FormatterFactory.makeYearDateFormatter().string(from: period.0)
+        case .all:
+            return makePeriodRangeFullDatesString(for: period)
+        }
+    }
+    
+    private func makePeriodRangeForWeek(for period: Period) -> String {
+        let endDateFormatter = FormatterFactory.makeDateFormatter()
+        let endString = endDateFormatter.string(from: period.1)
+        let startFormatter: DateFormatter? = {
             let periodEndMonth = Calendar.current.dateComponents([.month], from: period.1)
             let periodEndYear = Calendar.current.dateComponents([.year], from: period.1)
-            let isSameMonth = Calendar.current.date(period.0, matchesComponents: periodEndMonth)
-            
-            if isSameMonth {
-                let startDay = Calendar.current.dateComponents([.day], from: period.0)
-                return "\(startDay.day ?? 0) - \(period.1.formatted(date: .abbreviated, time: .omitted))"
+            if Calendar.current.date(period.0, matchesComponents: periodEndMonth) {
+                return  FormatterFactory.makeDayDateFormatter()
+            } else if Calendar.current.date(period.0, matchesComponents: periodEndYear) {
+                return FormatterFactory.makeDayAndMonthDateFormatter()
             }
-            let isSameYear = Calendar.current.date(period.0, matchesComponents: periodEndYear)
-            if isSameYear {
-                let startString = String(period.0.formatted(date: .abbreviated, time: .omitted).dropLast(5))
-                return startString + " - " + period.1.formatted(date: .abbreviated, time: .omitted)
-            }
-        } else if number <= 31 {
-            // this is a month
-            let startDateComponents = Calendar.current.dateComponents([.month, .year], from: period.0)
-            let formatter = DateFormatter()
-            formatter.dateFormat = "MMMM yyyy"
-            return formatter.string(from: period.0)
-        } else if number <= 366 {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy"
-            return formatter.string(from: period.0)
+            return nil
+        }()
+        guard let startFormatter else {
+            return makePeriodRangeFullDatesString(for: period)
         }
-        return period.0.formatted(date: .abbreviated, time: .omitted) + " - " + period.1.formatted(date: .abbreviated, time: .omitted)
+        let startString = startFormatter.string(from: period.0)
+        return startString + " - " + endString
+    }
+    
+    private func makePeriodRangeFullDatesString(for period: Period) -> String {
+        let formatter = FormatterFactory.makeDateFormatter()
+        let startString = formatter.string(from: period.0)
+        let finishString = formatter.string(from: period.1)
+        return startString + " - " + finishString
     }
     
     var displayedChartRange: some View {
-        Text(makePeriodRangeString(for: viewModel.periodDisplayed))
-            .foregroundStyle(Color.theme.buttonLabelGray)
-            .font(.caption)
+        Text(makePeriodRangeString(for: viewModel.periodDisplayed,
+                                   selectedRange: viewModel.chartTimeRange)
+        )
+        .foregroundStyle(Color.theme.buttonLabelGray)
+        .font(.caption)
     }
     
     var hoursCount: some View {
@@ -215,7 +226,11 @@ extension StatisticsView {
     var newGrossData: some View {
         Group {
             SalaryListRowView(propertyName: "Period",
-                              propertyValue:makePeriodRangeString(for: viewModel.grossSalaryData.period))
+                              propertyValue: makePeriodRangeString(
+                                for: viewModel.grossSalaryData.period,
+                                selectedRange: viewModel.chartTimeRange
+                              )
+            )
             SalaryListRowView(propertyName: "Gross pay per hour",
                               propertyValue: currencyFormatter.string(from: viewModel.grossSalaryData.payPerHour as NSNumber) ?? String()
             )
