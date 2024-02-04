@@ -32,11 +32,42 @@ final class PayManagerTests: XCTestCase {
         settingsStore = nil
         dataManager = nil
     }
-    
-    func testGeneratingDataForPastPeriod() {
+}
+
+//MARK: TEST DATA GENERATION FOR PAST PERIODS
+extension PayManagerTests {
+    func testGenerateDataForPastWeek() {
         //Given
         guard let date = generateStableDate(),
-        let testPeriod = try? periodService.generatePeriod(for: date, in: .month) else {
+              let testPeriod = try? periodService.generatePeriod(for: date, in: .week) else {
+            XCTFail("Failed to build date from string")
+            return
+        }
+        let _ = addTestData(forPeriod: testPeriod,
+                                              workTimeInSec: 8 * 3600,
+                                              overtimeInSec: 0, standardWorkTimeInSec: 8 * 3600,
+                                              maximumOvertimeInSec: 5 * 3600,
+                                              grossPayPerMonth: settingsStore.grossPayPerMonth
+        )
+        //When
+        sut.updatePeriod(with: testPeriod)
+        //Then
+        let result = sut.grossDataForPeriod
+        guard let numberOfDayInMonth = numberOfWorkingDays(for: date) else { 
+            XCTFail("Failed to retrieve number of working days in a month")
+            return
+        }
+        let expectedPayHour = Double(settingsStore.grossPayPerMonth) / Double(numberOfDayInMonth * 8)
+        XCTAssertEqual(result.numberOfWorkingDays, 5)
+        XCTAssertEqual(result.payPerHour, expectedPayHour)
+        XCTAssertNil(result.payPredicted)
+        XCTAssertEqual(result.payUpToDate, expectedPayHour * 40)
+    }
+    
+    func testGeneratingDataForPastMonth() {
+        //Given
+        guard let date = generateStableDate(),
+              let testPeriod = try? periodService.generatePeriod(for: date, in: .month) else {
             XCTFail("Failed to build date from given string")
             return
         }
@@ -58,8 +89,15 @@ final class PayManagerTests: XCTestCase {
         XCTAssertEqual(result.payUpToDate, Double(settingsStore.grossPayPerMonth))
     }
     
+    func testGenerateDataForPastYear() {
+        
+    }
+}
+
+//MARK: TEST DATA GENERATION FOR CURRENT PERIODS
+extension PayManagerTests {
     func testGeneratingDataForNotFinishedPeriod() {
-        //Given 
+        //Given
         let date = Calendar.current.startOfDay(for: Date())
         guard let initialPeriod = try? periodService.generatePeriod(for: date, in: .week),
               let endOfToday = Calendar.current.date(byAdding: .day, value: 1, to: date),
@@ -71,11 +109,11 @@ final class PayManagerTests: XCTestCase {
         let dataPeriod = (initialPeriod.0, endOfToday)
         let dataDays = Calendar.current.dateComponents([.day], from: dataPeriod.0, to: dataPeriod.1)
         let numberOfAddedWorkingDays = addTestData(forPeriod: dataPeriod,
-                                              workTimeInSec: 8 * 3600,
-                                              overtimeInSec: 0,
-                                              standardWorkTimeInSec: 8 * 3600,
-                                              maximumOvertimeInSec: 5 * 3600,
-                                              grossPayPerMonth: settingsStore.grossPayPerMonth)
+                                                   workTimeInSec: 8 * 3600,
+                                                   overtimeInSec: 0,
+                                                   standardWorkTimeInSec: 8 * 3600,
+                                                   maximumOvertimeInSec: 5 * 3600,
+                                                   grossPayPerMonth: settingsStore.grossPayPerMonth)
         
         let expectedPayPerHour = Double(settingsStore.grossPayPerMonth) / (Double(numberOfWorkingDaysInMonth) * 8)
         let expectedPayPrediced = expectedPayPerHour * Double(expectedNumberOfWorkingDaysInPeriod) * 8
@@ -90,7 +128,10 @@ final class PayManagerTests: XCTestCase {
         XCTAssertEqual(result.payPredicted, expectedPayPrediced)
         XCTAssertEqual(result.payUpToDate, expectedPayUpToDate)
     }
-    
+}
+
+//MARK: TEST DATA GENERATION FOR FUTURE PERIODS
+extension PayManagerTests {
     func testGeneratingDataForPeriodInFuture_withNoEntries() {
         //Given
         let date = Calendar.current.startOfDay(for: Date())
@@ -121,6 +162,7 @@ extension PayManagerTests {
         let dateString = "April 16, 2023"
         return formatter.date(from: dateString)
     }
+    
     /// Add test data for a given period, using entries constructed from input parameters. Entries are saved in testing data manager instance.
     /// - Parameters:
     ///     - period: period in which to create test data
