@@ -23,6 +23,7 @@ final class HomeViewModelModelTests: XCTestCase {
         sut = .init(HomeViewModel(dataManager: DataManager.testing,
                                   settingsStore: settingsStore,
                                   payManager: PayManager(dataManager: DataManager.testing, settingsStore: settingsStore),
+                                  notificationService: NotificationService(center: .current()),
                                   timerProvider: MockTimer.self)
         )
     }
@@ -506,6 +507,7 @@ extension HomeViewModelModelTests {
         sut = .init(HomeViewModel(dataManager: DataManager.testing,
                                   settingsStore: settingsStore,
                                   payManager: PayManager(dataManager: DataManager.testing, settingsStore: settingsStore),
+                                  notificationService: NotificationService(center: .current()),
                                   timerProvider: MockTimer.self)
         )
     }
@@ -518,6 +520,7 @@ extension HomeViewModelModelTests {
                     settingsStore: settingsStore,
                     payManager: PayManager(dataManager: .testing, 
                                            settingsStore: settingsStore),
+                    notificationService: NotificationService(center: .current()),
                     timerProvider: MockTimer.self)
     }
     
