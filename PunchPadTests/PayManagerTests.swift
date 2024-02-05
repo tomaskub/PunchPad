@@ -64,7 +64,7 @@ extension PayManagerTests {
         XCTAssertEqual(result.payUpToDate, expectedPayHour * 40)
     }
     
-    func testGeneratingDataForPastMonth() {
+    func testGenerateDataForPastMonth() {
         //Given
         guard let date = generateStableDate(),
               let testPeriod = try? periodService.generatePeriod(for: date, in: .month) else {
@@ -90,7 +90,28 @@ extension PayManagerTests {
     }
     
     func testGenerateDataForPastYear() {
-        
+        //Given
+        guard let date = generateStableDate(),
+              let testPeriod = try? periodService.generatePeriod(for: date, in: .year) else {
+            XCTFail("Failed to build date from given string")
+            return
+        }
+        let expectedNumberOfWorkingDays = addTestData(forPeriod: testPeriod,
+                                              workTimeInSec: 8 * 3600,
+                                              overtimeInSec: 0,
+                                              standardWorkTimeInSec: 8 * 3600,
+                                              maximumOvertimeInSec: 5 * 3600,
+                                              grossPayPerMonth: settingsStore.grossPayPerMonth
+        )
+        //When
+        sut.updatePeriod(with: testPeriod)
+        //Then
+        let result = sut.grossDataForPeriod
+        let expectedPayHour = Double(12 * settingsStore.grossPayPerMonth) / Double(expectedNumberOfWorkingDays * 8)
+        XCTAssertEqual(result.numberOfWorkingDays, expectedNumberOfWorkingDays)
+        XCTAssertEqual(result.payPerHour, expectedPayHour, accuracy: 0.01)
+        XCTAssertEqual(result.payUpToDate, Double(12 * settingsStore.grossPayPerMonth), accuracy: 0.01)
+        XCTAssertNil(result.payPredicted)
     }
 }
 
