@@ -259,6 +259,28 @@ extension PayManagerTests {
         XCTAssertNil(result.payPredicted)
         XCTAssertEqual(result.payUpToDate, expectedPayUpToDate)
     }
+    
+    func testGenerateDataForYearPeriodInFuture() {
+        //Given
+        let date = Calendar.current.startOfDay(for: Date())
+        guard let dateInFuture = Calendar.current.date(byAdding: .year, value: 1, to: date),
+              let period = try? periodService.generatePeriod(for: dateInFuture, in: .year) else {
+            XCTFail("FAILED TO PREPARE INPUT DATA")
+            return
+        }
+        let expectedNumberOfWorkingDays = numberOfWorkingDays(in: period)
+        let expectedPayPerHour = Double(12 * settingsStore.grossPayPerMonth) / Double(expectedNumberOfWorkingDays * 8)
+        let expectedPayUpToDate: Double = 0
+        //When
+        sut.updatePeriod(with: period)
+        //Then
+        let result = sut.grossDataForPeriod
+        XCTAssertEqual(result.payPerHour, expectedPayPerHour, accuracy: 0.01)
+        XCTAssertEqual(result.numberOfWorkingDays, expectedNumberOfWorkingDays)
+        XCTAssertNil(result.payPredicted)
+        XCTAssertEqual(result.payUpToDate, expectedPayUpToDate)
+    }
+    
 }
 
 
