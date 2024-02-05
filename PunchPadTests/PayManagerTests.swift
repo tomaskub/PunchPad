@@ -149,6 +149,71 @@ extension PayManagerTests {
         XCTAssertEqual(result.payPredicted, expectedPayPrediced)
         XCTAssertEqual(result.payUpToDate, expectedPayUpToDate)
     }
+    
+    func testGenerateDataForCurrentMonth() {
+        //Given
+        let date = Calendar.current.startOfDay(for: Date())
+        guard let initialPeriod = try? periodService.generatePeriod(for: date, in: .month),
+              let endOfToday = Calendar.current.date(byAdding: .day, value: 1, to: date),
+              let numberOfWorkingDaysInMonth = numberOfWorkingDays(for: date) else {
+            XCTFail("FAILED TO PREPARE INPUT DATA")
+            return
+        }
+        let expectedNumberOfWorkingDaysInPeriod = numberOfWorkingDays(in: initialPeriod)
+        let dataPeriod = (initialPeriod.0, endOfToday)
+        let dataDays = Calendar.current.dateComponents([.day], from: dataPeriod.0, to: dataPeriod.1)
+        let numberOfAddedWorkingDays = addTestData(forPeriod: dataPeriod,
+                                                   workTimeInSec: 8 * 3600,
+                                                   overtimeInSec: 0,
+                                                   standardWorkTimeInSec: 8 * 3600,
+                                                   maximumOvertimeInSec: 5 * 3600,
+                                                   grossPayPerMonth: settingsStore.grossPayPerMonth)
+        
+        let expectedPayPerHour = Double(settingsStore.grossPayPerMonth) / Double(numberOfWorkingDaysInMonth * 8)
+        let expectedPayPrediced = expectedPayPerHour * Double(expectedNumberOfWorkingDaysInPeriod * 8)
+        let expectedPayUpToDate = Double(numberOfAddedWorkingDays) * 8 * expectedPayPerHour
+        
+        //When
+        sut.updatePeriod(with: initialPeriod)
+        //Then
+        let result = sut.grossDataForPeriod
+        print(result)
+        XCTAssertEqual(result.payPerHour, expectedPayPerHour)
+        XCTAssertEqual(result.numberOfWorkingDays, expectedNumberOfWorkingDaysInPeriod)
+        //Result pay predicted is equal to 9523.8095(...) instead of predicted 10000 (8 hour less of pay?)
+        XCTAssertEqual(result.payPredicted, expectedPayPrediced)
+        XCTAssertEqual(result.payUpToDate, expectedPayUpToDate)
+    }
+    
+    func testGenerateDataForCurrentYear() {
+        //Given
+        let date = Calendar.current.startOfDay(for: Date())
+        guard let initialPeriod = try? periodService.generatePeriod(for: date, in: .year),
+              let endOfToday = Calendar.current.date(byAdding: .day, value: 1, to: date) else {
+            XCTFail("FAILED TO PREPARE INPUT DATA")
+            return
+        }
+        let dataPeriod = (initialPeriod.0, endOfToday)
+        
+        let numberOfAddedWorkingDays = addTestData(forPeriod: dataPeriod,
+                                                   workTimeInSec: 8 * 3600,
+                                                   overtimeInSec: 0,
+                                                   standardWorkTimeInSec: 8 * 3600,
+                                                   maximumOvertimeInSec: 5 * 3600,
+                                                   grossPayPerMonth: settingsStore.grossPayPerMonth)
+        let expectedNumberOfWorkingDaysInPeriod = numberOfWorkingDays(in: initialPeriod)
+        let expectedPayPerHour = Double(12 * settingsStore.grossPayPerMonth) / Double(expectedNumberOfWorkingDaysInPeriod * 8)
+        let expectedPayUpToDate = Double(numberOfAddedWorkingDays) * 8 * expectedPayPerHour
+        let expectedPayPrediced = Double(12 * settingsStore.grossPayPerMonth)
+        //When
+        sut.updatePeriod(with: initialPeriod)
+        //Then
+        let result = sut.grossDataForPeriod
+        XCTAssertEqual(result.payPerHour, expectedPayPerHour)
+        XCTAssertEqual(result.numberOfWorkingDays, expectedNumberOfWorkingDaysInPeriod)
+        XCTAssertEqual(result.payPredicted, expectedPayPrediced)
+        XCTAssertEqual(result.payUpToDate, expectedPayUpToDate)
+    }
 }
 
 //MARK: TEST DATA GENERATION FOR FUTURE PERIODS
