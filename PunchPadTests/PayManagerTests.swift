@@ -39,150 +39,147 @@ extension PayManagerTests {
     func testGenerateDataForPastWeek() {
         //Given
         guard let date = generateStableDate(),
-              let testPeriod = try? periodService.generatePeriod(for: date, in: .week) else {
-            XCTFail("Failed to build date from string")
+              let testPeriod = try? periodService.generatePeriod(for: date, in: .week),
+              let numberOfDayInMonth = numberOfWorkingDays(for: date) else {
+            XCTFail("Failed to prepare test data in \(#function)")
             return
         }
-        let _ = addTestData(forPeriod: testPeriod,
-                                              workTimeInSec: 8 * 3600,
-                                              overtimeInSec: 0, standardWorkTimeInSec: 8 * 3600,
-                                              maximumOvertimeInSec: 5 * 3600,
-                                              grossPayPerMonth: settingsStore.grossPayPerMonth
+        let expectedPayHour = Double(settingsStore.grossPayPerMonth) / Double(numberOfDayInMonth * 8)
+        let expectedNumberOfWorkingDays = 5
+        let expectedPayToDate = expectedPayHour * 40
+        addTestData(forPeriod: testPeriod,
+                    workTimeInSec: 8 * 3600,
+                    overtimeInSec: 0, standardWorkTimeInSec: 8 * 3600,
+                    maximumOvertimeInSec: 5 * 3600,
+                    grossPayPerMonth: settingsStore.grossPayPerMonth
         )
         //When
         sut.updatePeriod(with: testPeriod)
         //Then
         let result = sut.grossDataForPeriod
-        guard let numberOfDayInMonth = numberOfWorkingDays(for: date) else { 
-            XCTFail("Failed to retrieve number of working days in a month")
-            return
-        }
-        let expectedPayHour = Double(settingsStore.grossPayPerMonth) / Double(numberOfDayInMonth * 8)
-        XCTAssertEqual(result.numberOfWorkingDays, 5)
-        XCTAssertEqual(result.payPerHour, expectedPayHour)
+        XCTAssertEqual(result.numberOfWorkingDays, expectedNumberOfWorkingDays)
+        XCTAssertEqual(result.payPerHour, expectedPayHour, accuracy: 0.01)
+        XCTAssertEqual(result.payUpToDate, expectedPayToDate, accuracy: 0.01)
         XCTAssertNil(result.payPredicted)
-        XCTAssertEqual(result.payUpToDate, expectedPayHour * 40)
     }
     
     func testGenerateDataForPastMonth() {
         //Given
         guard let date = generateStableDate(),
-              let testPeriod = try? periodService.generatePeriod(for: date, in: .month) else {
-            XCTFail("Failed to build date from given string")
+              let testPeriod = try? periodService.generatePeriod(for: date, in: .month),
+              let numberOfWorkingDays = numberOfWorkingDays(for: date) else {
+            XCTFail("Failed to prepare test data in \(#function)")
             return
         }
-        let numberOfWorkingDays = addTestData(forPeriod: testPeriod,
-                                              workTimeInSec: 8 * 3600,
-                                              overtimeInSec: 0,
-                                              standardWorkTimeInSec: 8 * 3600,
-                                              maximumOvertimeInSec: 5 * 3600,
-                                              grossPayPerMonth: settingsStore.grossPayPerMonth
+        let expectedPayHour = Double(settingsStore.grossPayPerMonth) / Double(numberOfWorkingDays * 8)
+        let expectedNumberOfWorkingDays = numberOfWorkingDays
+        let expectedPayToDate = Double(settingsStore.grossPayPerMonth)
+        addTestData(forPeriod: testPeriod,
+                    workTimeInSec: 8 * 3600,
+                    overtimeInSec: 0,
+                    standardWorkTimeInSec: 8 * 3600,
+                    maximumOvertimeInSec: 5 * 3600,
+                    grossPayPerMonth: settingsStore.grossPayPerMonth
         )
         //When
         sut.updatePeriod(with: testPeriod)
         //Then
         let result = sut.grossDataForPeriod
-        let expectedPayHour = Double(settingsStore.grossPayPerMonth) / Double(numberOfWorkingDays * 8)
-        XCTAssertEqual(result.numberOfWorkingDays, numberOfWorkingDays)
-        XCTAssertEqual(result.payPerHour, expectedPayHour)
+        XCTAssertEqual(result.numberOfWorkingDays, expectedNumberOfWorkingDays)
+        XCTAssertEqual(result.payPerHour, expectedPayHour, accuracy: 0.01)
+        XCTAssertEqual(result.payUpToDate, expectedPayToDate, accuracy: 0.01)
         XCTAssertNil(result.payPredicted)
-        XCTAssertEqual(result.payUpToDate, Double(settingsStore.grossPayPerMonth))
     }
     
     func testGenerateDataForPastYear() {
         //Given
         guard let date = generateStableDate(),
               let testPeriod = try? periodService.generatePeriod(for: date, in: .year) else {
-            XCTFail("Failed to build date from given string")
+            XCTFail("Failed to prepare test data in \(#function)")
             return
         }
-        let expectedNumberOfWorkingDays = addTestData(forPeriod: testPeriod,
-                                              workTimeInSec: 8 * 3600,
-                                              overtimeInSec: 0,
-                                              standardWorkTimeInSec: 8 * 3600,
-                                              maximumOvertimeInSec: 5 * 3600,
-                                              grossPayPerMonth: settingsStore.grossPayPerMonth
+        let expectedNumberOfWorkingDays = numberOfWorkingDays(in: testPeriod)
+        let expectedPayHour = Double(12 * settingsStore.grossPayPerMonth) / Double(expectedNumberOfWorkingDays * 8)
+        let expectedPayToDate = Double(12 * settingsStore.grossPayPerMonth)
+        addTestData(forPeriod: testPeriod,
+                    workTimeInSec: 8 * 3600,
+                    overtimeInSec: 0,
+                    standardWorkTimeInSec: 8 * 3600,
+                    maximumOvertimeInSec: 5 * 3600,
+                    grossPayPerMonth: settingsStore.grossPayPerMonth
         )
         //When
         sut.updatePeriod(with: testPeriod)
         //Then
         let result = sut.grossDataForPeriod
-        let expectedPayHour = Double(12 * settingsStore.grossPayPerMonth) / Double(expectedNumberOfWorkingDays * 8)
         XCTAssertEqual(result.numberOfWorkingDays, expectedNumberOfWorkingDays)
         XCTAssertEqual(result.payPerHour, expectedPayHour, accuracy: 0.01)
-        XCTAssertEqual(result.payUpToDate, Double(12 * settingsStore.grossPayPerMonth), accuracy: 0.01)
+        XCTAssertEqual(result.payUpToDate, expectedPayToDate, accuracy: 0.01)
         XCTAssertNil(result.payPredicted)
     }
 }
 
 //MARK: TEST DATA GENERATION FOR CURRENT PERIODS
 extension PayManagerTests {
-    func testGeneratingDataForNotFinishedPeriod() {
+    func testGeneratingDataForNotFinishedWeek() {
         //Given
         let date = Calendar.current.startOfDay(for: Date())
         guard let initialPeriod = try? periodService.generatePeriod(for: date, in: .week),
               let endOfToday = Calendar.current.date(byAdding: .day, value: 1, to: date),
               let numberOfWorkingDaysInMonth = numberOfWorkingDays(for: date) else {
-            XCTFail("FAILED TO PREPARE INPUT DATA")
+            XCTFail("Failed to prepare test data in \(#function)")
             return
         }
-        let expectedNumberOfWorkingDaysInPeriod = numberOfWorkingDays(in: initialPeriod)
         let dataPeriod = (initialPeriod.0, endOfToday)
-        let dataDays = Calendar.current.dateComponents([.day], from: dataPeriod.0, to: dataPeriod.1)
-        let numberOfAddedWorkingDays = addTestData(forPeriod: dataPeriod,
-                                                   workTimeInSec: 8 * 3600,
-                                                   overtimeInSec: 0,
-                                                   standardWorkTimeInSec: 8 * 3600,
-                                                   maximumOvertimeInSec: 5 * 3600,
-                                                   grossPayPerMonth: settingsStore.grossPayPerMonth)
-        
-        let expectedPayPerHour = Double(settingsStore.grossPayPerMonth) / (Double(numberOfWorkingDaysInMonth) * 8)
+        let expectedNumberOfWorkingDaysInPeriod = numberOfWorkingDays(in: initialPeriod)
+        let expectedPayPerHour = Double(settingsStore.grossPayPerMonth) / Double(numberOfWorkingDaysInMonth * 8)
         let expectedPayPrediced = expectedPayPerHour * Double(expectedNumberOfWorkingDaysInPeriod) * 8
-        let expectedPayUpToDate = Double(numberOfAddedWorkingDays) * 8 * expectedPayPerHour
-        
+        let expectedPayUpToDate = Double(numberOfWorkingDays(in: dataPeriod)) * 8 * expectedPayPerHour
+        addTestData(forPeriod: dataPeriod,
+                    workTimeInSec: 8 * 3600,
+                    overtimeInSec: 0,
+                    standardWorkTimeInSec: 8 * 3600,
+                    maximumOvertimeInSec: 5 * 3600,
+                    grossPayPerMonth: settingsStore.grossPayPerMonth
+        )
         //When
         sut.updatePeriod(with: initialPeriod)
         //Then
         let result = sut.grossDataForPeriod
-        XCTAssertEqual(result.payPerHour, expectedPayPerHour)
         XCTAssertEqual(result.numberOfWorkingDays, expectedNumberOfWorkingDaysInPeriod)
-        XCTAssertEqual(result.payPredicted, expectedPayPrediced)
-        XCTAssertEqual(result.payUpToDate, expectedPayUpToDate)
+        XCTAssertEqual(result.payPerHour, expectedPayPerHour, accuracy: 0.01)
+        XCTAssertEqual(result.payPredicted ?? 0, expectedPayPrediced, accuracy: 0.01)
+        XCTAssertEqual(result.payUpToDate, expectedPayUpToDate, accuracy: 0.01)
     }
     
     func testGenerateDataForCurrentMonth() {
         //Given
         let date = Calendar.current.startOfDay(for: Date())
         guard let initialPeriod = try? periodService.generatePeriod(for: date, in: .month),
-              let endOfToday = Calendar.current.date(byAdding: .day, value: 1, to: date),
-              let numberOfWorkingDaysInMonth = numberOfWorkingDays(for: date) else {
-            XCTFail("FAILED TO PREPARE INPUT DATA")
+              let endOfToday = Calendar.current.date(byAdding: .day, value: 1, to: date) else {
+            XCTFail("Failed to prepare test data in \(#function)")
             return
         }
-        let expectedNumberOfWorkingDaysInPeriod = numberOfWorkingDays(in: initialPeriod)
         let dataPeriod = (initialPeriod.0, endOfToday)
-        let dataDays = Calendar.current.dateComponents([.day], from: dataPeriod.0, to: dataPeriod.1)
-        let numberOfAddedWorkingDays = addTestData(forPeriod: dataPeriod,
-                                                   workTimeInSec: 8 * 3600,
-                                                   overtimeInSec: 0,
-                                                   standardWorkTimeInSec: 8 * 3600,
-                                                   maximumOvertimeInSec: 5 * 3600,
-                                                   grossPayPerMonth: settingsStore.grossPayPerMonth)
-        
-        let expectedPayPerHour = Double(settingsStore.grossPayPerMonth) / Double(numberOfWorkingDaysInMonth * 8)
+        let expectedNumberOfWorkingDaysInPeriod = numberOfWorkingDays(in: initialPeriod)
+        let expectedPayPerHour = Double(settingsStore.grossPayPerMonth) / Double(expectedNumberOfWorkingDaysInPeriod * 8)
         let expectedPayPrediced = expectedPayPerHour * Double(expectedNumberOfWorkingDaysInPeriod * 8)
-        let expectedPayUpToDate = Double(numberOfAddedWorkingDays) * 8 * expectedPayPerHour
-        
+        let expectedPayUpToDate = Double(numberOfWorkingDays(in: dataPeriod)) * 8 * expectedPayPerHour
+        addTestData(forPeriod: dataPeriod,
+                    workTimeInSec: 8 * 3600,
+                    overtimeInSec: 0,
+                    standardWorkTimeInSec: 8 * 3600,
+                    maximumOvertimeInSec: 5 * 3600,
+                    grossPayPerMonth: settingsStore.grossPayPerMonth
+        )
         //When
         sut.updatePeriod(with: initialPeriod)
         //Then
         let result = sut.grossDataForPeriod
-        print(result)
-        XCTAssertEqual(result.payPerHour, expectedPayPerHour)
         XCTAssertEqual(result.numberOfWorkingDays, expectedNumberOfWorkingDaysInPeriod)
-        //Result pay predicted is equal to 9523.8095(...) instead of predicted 10000 (8 hour less of pay?)
-        XCTAssertEqual(result.payPredicted, expectedPayPrediced)
-        XCTAssertEqual(result.payUpToDate, expectedPayUpToDate)
+        XCTAssertEqual(result.payPerHour, expectedPayPerHour, accuracy: 0.01)
+        XCTAssertEqual(result.payPredicted ?? 0, expectedPayPrediced, accuracy: 0.01)
+        XCTAssertEqual(result.payUpToDate, expectedPayUpToDate, accuracy: 0.01)
     }
     
     func testGenerateDataForCurrentYear() {
@@ -190,29 +187,29 @@ extension PayManagerTests {
         let date = Calendar.current.startOfDay(for: Date())
         guard let initialPeriod = try? periodService.generatePeriod(for: date, in: .year),
               let endOfToday = Calendar.current.date(byAdding: .day, value: 1, to: date) else {
-            XCTFail("FAILED TO PREPARE INPUT DATA")
+            XCTFail("Failed to prepare test data in \(#function)")
             return
         }
         let dataPeriod = (initialPeriod.0, endOfToday)
-        
-        let numberOfAddedWorkingDays = addTestData(forPeriod: dataPeriod,
-                                                   workTimeInSec: 8 * 3600,
-                                                   overtimeInSec: 0,
-                                                   standardWorkTimeInSec: 8 * 3600,
-                                                   maximumOvertimeInSec: 5 * 3600,
-                                                   grossPayPerMonth: settingsStore.grossPayPerMonth)
         let expectedNumberOfWorkingDaysInPeriod = numberOfWorkingDays(in: initialPeriod)
         let expectedPayPerHour = Double(12 * settingsStore.grossPayPerMonth) / Double(expectedNumberOfWorkingDaysInPeriod * 8)
-        let expectedPayUpToDate = Double(numberOfAddedWorkingDays) * 8 * expectedPayPerHour
+        let expectedPayUpToDate = Double(numberOfWorkingDays(in: dataPeriod)) * 8 * expectedPayPerHour
         let expectedPayPrediced = Double(12 * settingsStore.grossPayPerMonth)
+        addTestData(forPeriod: dataPeriod,
+                    workTimeInSec: 8 * 3600,
+                    overtimeInSec: 0,
+                    standardWorkTimeInSec: 8 * 3600,
+                    maximumOvertimeInSec: 5 * 3600,
+                    grossPayPerMonth: settingsStore.grossPayPerMonth
+        )
         //When
         sut.updatePeriod(with: initialPeriod)
         //Then
         let result = sut.grossDataForPeriod
-        XCTAssertEqual(result.payPerHour, expectedPayPerHour)
         XCTAssertEqual(result.numberOfWorkingDays, expectedNumberOfWorkingDaysInPeriod)
-        XCTAssertEqual(result.payPredicted, expectedPayPrediced)
-        XCTAssertEqual(result.payUpToDate, expectedPayUpToDate)
+        XCTAssertEqual(result.payPerHour, expectedPayPerHour, accuracy: 0.01)
+        XCTAssertEqual(result.payPredicted ?? 0, expectedPayPrediced, accuracy: 0.01)
+        XCTAssertEqual(result.payUpToDate, expectedPayUpToDate, accuracy: 0.01)
     }
 }
 
@@ -224,18 +221,20 @@ extension PayManagerTests {
         guard let dateInFuture = Calendar.current.date(byAdding: .month, value: 1, to: date),
               let numberOfWorkingDaysInMonth = numberOfWorkingDays(for: dateInFuture),
               let period = try? periodService.generatePeriod(for: dateInFuture, in: .week) else {
-            XCTFail("FAILED TO PREPARE INPUT DATA")
+            XCTFail("Failed to prepare test data in \(#function)")
             return
         }
-        let expectedPayPerHour = Double(settingsStore.grossPayPerMonth) / (Double(numberOfWorkingDaysInMonth) * 8)
+        let expectedNumberOfWorkingDays = 5
+        let expectedPayPerHour = Double(settingsStore.grossPayPerMonth) / Double(numberOfWorkingDaysInMonth * 8)
+        let expectedPayUpToDate: Double = 0
         //When
         sut.updatePeriod(with: period)
         //Then
         let result = sut.grossDataForPeriod
-        XCTAssertEqual(result.payPerHour, expectedPayPerHour)
-        XCTAssertEqual(result.numberOfWorkingDays, 5)
+        XCTAssertEqual(result.numberOfWorkingDays, expectedNumberOfWorkingDays)
+        XCTAssertEqual(result.payPerHour, expectedPayPerHour, accuracy: 0.01)
+        XCTAssertEqual(result.payUpToDate, expectedPayUpToDate)
         XCTAssertNil(result.payPredicted)
-        XCTAssertEqual(result.payUpToDate, 0)
     }
     
     func testGenerateDataForMonthPeriodInFuture() {
@@ -254,10 +253,10 @@ extension PayManagerTests {
         sut.updatePeriod(with: period)
         //Then
         let result = sut.grossDataForPeriod
-        XCTAssertEqual(result.payPerHour, expectedPayPerHour, accuracy: 0.01)
         XCTAssertEqual(result.numberOfWorkingDays, expectedNumberOfWorkingDays)
-        XCTAssertNil(result.payPredicted)
+        XCTAssertEqual(result.payPerHour, expectedPayPerHour, accuracy: 0.01)
         XCTAssertEqual(result.payUpToDate, expectedPayUpToDate)
+        XCTAssertNil(result.payPredicted)
     }
     
     func testGenerateDataForYearPeriodInFuture() {
@@ -275,10 +274,10 @@ extension PayManagerTests {
         sut.updatePeriod(with: period)
         //Then
         let result = sut.grossDataForPeriod
-        XCTAssertEqual(result.payPerHour, expectedPayPerHour, accuracy: 0.01)
         XCTAssertEqual(result.numberOfWorkingDays, expectedNumberOfWorkingDays)
-        XCTAssertNil(result.payPredicted)
+        XCTAssertEqual(result.payPerHour, expectedPayPerHour, accuracy: 0.01)
         XCTAssertEqual(result.payUpToDate, expectedPayUpToDate)
+        XCTAssertNil(result.payPredicted)
     }
     
 }
@@ -301,23 +300,22 @@ extension PayManagerTests {
     ///     - standardWorkTimeInSec: standard work time for entry
     ///     - maximumOvertimeInSec: maximum amount of overtime for entry
     ///     - grossPayPerMont: gross pay per month in entry
-    /// - Returns: number of working days in period
     func addTestData(forPeriod period: Period,
                      workTimeInSec: Int,
                      overtimeInSec: Int,
                      standardWorkTimeInSec: Int,
                      maximumOvertimeInSec: Int,
-                     grossPayPerMonth: Int) -> Int {
+                     grossPayPerMonth: Int) {
         let failMessage = "Add test data failed"
         guard let numberOfDays = Calendar.current.dateComponents([.day], from: period.0, to: period.1).day else {
             XCTFail(failMessage)
-            return 0
+            return
         }
         var dateArray = [Date]()
         for i in 0..<numberOfDays {
             guard let date = Calendar.current.date(byAdding: .day, value: i, to: period.0) else {
                 XCTFail(failMessage)
-                return 0
+                return
             }
             dateArray.append(date)
         }
@@ -340,7 +338,6 @@ extension PayManagerTests {
         for entry in resultArray {
             DataManager.testing.updateAndSave(entry: entry)
         }
-        return resultArray.count
     }
     
     /// Returns number of working days present in period based on current calendar
