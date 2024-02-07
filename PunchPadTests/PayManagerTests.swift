@@ -47,7 +47,7 @@ extension PayManagerTests {
         let expectedPayHour = Double(settingsStore.grossPayPerMonth) / Double(numberOfDayInMonth * 8)
         let expectedNumberOfWorkingDays = 5
         let expectedPayToDate = expectedPayHour * 40
-        addTestData(forPeriod: testPeriod,
+        _ = addTestData(forPeriod: testPeriod,
                     workTimeInSec: 8 * 3600,
                     overtimeInSec: 0, standardWorkTimeInSec: 8 * 3600,
                     maximumOvertimeInSec: 5 * 3600,
@@ -74,7 +74,7 @@ extension PayManagerTests {
         let expectedPayHour = Double(settingsStore.grossPayPerMonth) / Double(numberOfWorkingDays * 8)
         let expectedNumberOfWorkingDays = numberOfWorkingDays
         let expectedPayToDate = Double(settingsStore.grossPayPerMonth)
-        addTestData(forPeriod: testPeriod,
+        _ = addTestData(forPeriod: testPeriod,
                     workTimeInSec: 8 * 3600,
                     overtimeInSec: 0,
                     standardWorkTimeInSec: 8 * 3600,
@@ -101,7 +101,7 @@ extension PayManagerTests {
         let expectedNumberOfWorkingDays = numberOfWorkingDays(in: testPeriod)
         let expectedPayHour = Double(12 * settingsStore.grossPayPerMonth) / Double(expectedNumberOfWorkingDays * 8)
         let expectedPayToDate = Double(12 * settingsStore.grossPayPerMonth)
-        addTestData(forPeriod: testPeriod,
+        _ = addTestData(forPeriod: testPeriod,
                     workTimeInSec: 8 * 3600,
                     overtimeInSec: 0,
                     standardWorkTimeInSec: 8 * 3600,
@@ -135,7 +135,7 @@ extension PayManagerTests {
         let expectedPayPerHour = Double(settingsStore.grossPayPerMonth) / Double(numberOfWorkingDaysInMonth * 8)
         let expectedPayPrediced = expectedPayPerHour * Double(expectedNumberOfWorkingDaysInPeriod) * 8
         let expectedPayUpToDate = Double(numberOfWorkingDays(in: dataPeriod)) * 8 * expectedPayPerHour
-        addTestData(forPeriod: dataPeriod,
+        _ = addTestData(forPeriod: dataPeriod,
                     workTimeInSec: 8 * 3600,
                     overtimeInSec: 0,
                     standardWorkTimeInSec: 8 * 3600,
@@ -165,7 +165,7 @@ extension PayManagerTests {
         let expectedPayPerHour = Double(settingsStore.grossPayPerMonth) / Double(expectedNumberOfWorkingDaysInPeriod * 8)
         let expectedPayPrediced = expectedPayPerHour * Double(expectedNumberOfWorkingDaysInPeriod * 8)
         let expectedPayUpToDate = Double(numberOfWorkingDays(in: dataPeriod)) * 8 * expectedPayPerHour
-        addTestData(forPeriod: dataPeriod,
+        _ = addTestData(forPeriod: dataPeriod,
                     workTimeInSec: 8 * 3600,
                     overtimeInSec: 0,
                     standardWorkTimeInSec: 8 * 3600,
@@ -193,15 +193,21 @@ extension PayManagerTests {
         let dataPeriod = (initialPeriod.0, endOfToday)
         let expectedNumberOfWorkingDaysInPeriod = numberOfWorkingDays(in: initialPeriod)
         let expectedPayPerHour = Double(12 * settingsStore.grossPayPerMonth) / Double(expectedNumberOfWorkingDaysInPeriod * 8)
-        let expectedPayUpToDate = Double(numberOfWorkingDays(in: dataPeriod)) * 8 * expectedPayPerHour
         let expectedPayPrediced = Double(12 * settingsStore.grossPayPerMonth)
-        addTestData(forPeriod: dataPeriod,
+        let addedEntries = addTestData(forPeriod: dataPeriod,
                     workTimeInSec: 8 * 3600,
                     overtimeInSec: 0,
                     standardWorkTimeInSec: 8 * 3600,
                     maximumOvertimeInSec: 5 * 3600,
                     grossPayPerMonth: settingsStore.grossPayPerMonth
         )
+        let expectedPayUpToDate: Double =
+            addedEntries.map { [weak self] entry in
+                guard let self else { return 0.0 }
+                let numberOfWorkingDays = self.numberOfWorkingDays(for: entry.startDate)
+                let grossPerHour = Double(entry.grossPayPerMonth) / Double((numberOfWorkingDays ?? 30) * 8)
+                return grossPerHour * Double(entry.workTimeInSeconds) / 3600
+            }.reduce(0, +)
         //When
         sut.updatePeriod(with: initialPeriod)
         //Then
@@ -282,7 +288,6 @@ extension PayManagerTests {
     
 }
 
-
 extension PayManagerTests {
     /// Returns a date object representing start of day of April 16, 2023
     func generateStableDate() -> Date? {
@@ -305,17 +310,17 @@ extension PayManagerTests {
                      overtimeInSec: Int,
                      standardWorkTimeInSec: Int,
                      maximumOvertimeInSec: Int,
-                     grossPayPerMonth: Int) {
+                     grossPayPerMonth: Int) -> [Entry] {
         let failMessage = "Add test data failed"
         guard let numberOfDays = Calendar.current.dateComponents([.day], from: period.0, to: period.1).day else {
             XCTFail(failMessage)
-            return
+            return []
         }
         var dateArray = [Date]()
         for i in 0..<numberOfDays {
             guard let date = Calendar.current.date(byAdding: .day, value: i, to: period.0) else {
                 XCTFail(failMessage)
-                return
+                return []
             }
             dateArray.append(date)
         }
@@ -338,6 +343,7 @@ extension PayManagerTests {
         for entry in resultArray {
             DataManager.testing.updateAndSave(entry: entry)
         }
+        return resultArray
     }
     
     /// Returns number of working days present in period based on current calendar
