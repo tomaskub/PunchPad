@@ -9,13 +9,19 @@ import Foundation
 import Combine
 
 class PayManager: ObservableObject {
+    ///Data manager used to retrieve existing data
     private var dataManager: DataManager
+    ///Setting store used to retrieve user settings
     private var settingsStore: SettingsStore
+    ///Calendar service used to perform date calculations and comparisions
     private var calendar: Calendar
-    ///temporary coeficcient before implementation in settings store
+    ///Temporary overtime pay coeficcient implementation
     private var overtimePayCoef: Double = 1.5
+    ///Set of all combine subscribers
     private var subscriptions = Set<AnyCancellable>()
+    ///Current period driving gross salary data
     @Published private var currentPeriod: Period
+    ///Gross salary data generated for a given period of time
     @Published var grossDataForPeriod: GrossSalary
     
     init(dataManager: DataManager, settingsStore: SettingsStore, currentPeriod: Period = (Date(), Date()), calendar: Calendar) {
@@ -24,14 +30,17 @@ class PayManager: ObservableObject {
         self.currentPeriod = currentPeriod
         self.calendar = calendar
         self.grossDataForPeriod = .init()
-        setSubscribers()
+        setStoreSubscribers()
+        setCurrentPeriodSubscriber()
     }
-    ///Update current period driving published gross data
+    
+    ///Update current period driving published gross salary data
     func updatePeriod(with period: Period) {
         currentPeriod = period
     }
     
-    private func setSubscribers() {
+    /// Set subscribers to settingStore and dataManager changes
+    private func setStoreSubscribers() {
         settingsStore.objectWillChange.sink { [weak self] _ in
             self?.objectWillChange.send()
         }.store(in: &subscriptions)
@@ -39,7 +48,10 @@ class PayManager: ObservableObject {
         dataManager.objectWillChange.sink { [weak self] _ in
             self?.objectWillChange.send()
         }.store(in: &subscriptions)
-        
+    }
+    
+    /// Set subscriber responsible for updating gross data for period on current period change
+    private func setCurrentPeriodSubscriber() {
         $currentPeriod
             .removeDuplicates { lhs, rhs in
                 return lhs.0 == rhs.0 && lhs.1 == rhs.1
@@ -52,6 +64,9 @@ class PayManager: ObservableObject {
 
 //MARK: GROSS PAY DISPLAY DATA GENERATING FUNCTIONS
 extension PayManager {
+    /// Generate salary data based on given period
+    /// - Parameter period: period for which salary data should be generated
+    /// - Returns: generated gross salary data
     private func generateGrossDataForPeriod(_ period: Period) -> GrossSalary {
         let entryData = dataManager.fetch(for: period)
         let averageWorktime: Int? = calculateAverage(from: entryData, keypath: \.workTimeInSeconds)
@@ -79,7 +94,6 @@ extension PayManager {
                      payPrediced: predictedPay,
                      numberOfWorkingDays: processedEntries.count)
     }
-    
     
     /// Process avaliable entry data for the given period by adding empty entries before today and standard entries in future
     /// - Parameters:
