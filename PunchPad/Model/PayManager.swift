@@ -52,40 +52,39 @@ class PayManager: ObservableObject {
 extension PayManager {
     private func generateGrossDataForPeriod(_ period: Period) -> GrossSalary {
         return period.1 > Date() ?
-        generateDataForPeriodEndingInFuture(period, from: dataManager) :
-        generateGrossDataForPeriodInPast(period, from: dataManager)
+        generateDataForCurrrentPeriod(period, from: dataManager) :
+        generateGrossDataForPastPeriod(period, from: dataManager)
     }
-    
-    private func generateDataForPeriodEndingInFuture(_ period: Period, from dataManager: DataManager) -> GrossSalary {
+     
+    private func generateDataForCurrrentPeriod(_ period: Period, from dataManager: DataManager) -> GrossSalary {
+        
         guard let data = dataManager.fetch(for: period) else { return .init() }
         let numberOfWorkingDays = getNumberOfWorkingDays(in: period)
+        let payUpToDate = data.map { calculateGrossPayFor(entry: $0, overtimePayCoef: 1.5) } .reduce(0, +)
         
         let payPerHour = {
             !data.isEmpty ? calculateAverageGrossPayPerHour(from: data) : calculateAverageGrossPayPerHour(forPeriod: period)
         }()
-        let payUpToDate = data.map { calculateGrossPayFor(entry: $0, overtimePayCoef: 1.5) } .reduce(0, +)
         
         let averageWorktime = data.map { Double($0.workTimeInSeconds) }.reduce(0, +) / Double(data.count)
         let averageOvertime = data.map { Double($0.overTimeInSeconds) }.reduce(0, +) / Double(data.count)
         
-        var payPredicted: Double?
-        
-        if let lastEntry = data.last,
-           let numberOfDaysInFuture = Calendar.current.dateComponents([.day], from: lastEntry.startDate, to: period.1).day {
-            for i in 0..<numberOfDaysInFuture {
-                if let currentDate = Calendar.current.date(byAdding: .day, value: i, to: lastEntry.startDate),
-                    !Calendar.current.isDateInWeekend(currentDate),
-                   !data.contains(where: { Calendar.current.isDate($0.startDate, inSameDayAs: currentDate)
-                   }){
-                    let payForDate = calculateGrossPay(worktime: averageWorktime, overtime: averageOvertime, grossPayPerHour: payPerHour, overtimePayCoef: 1.5)
-                    payPredicted = payForDate + (payPredicted ?? 0)
+        var payPredicted: Double? = {
+            let daysInPeriod: [Date] = getWorkDaysInPeriod(in: period)
+            let addedDays = daysInPeriod
+                .filter { date in
+                    !data.contains(where: {
+                        Calendar.current.isDate(date, inSameDayAs: $0.startDate)
+                    })
                 }
-            }
-            if let prediction = payPredicted {
-                payPredicted = prediction + payUpToDate
-            }
-        }
-        
+                .map { date in
+                    calculateGrossPay(worktime: averageWorktime,
+                                      overtime: averageOvertime,
+                                      grossPayPerHour: payPerHour,
+                                      overtimePayCoef: 1.5)
+                }
+            return addedDays.reduce(payUpToDate, +)
+        }()
         return .init(period: period,
                      payPerHour: payPerHour,
                      payUpToDate: payUpToDate,
@@ -97,7 +96,7 @@ extension PayManager {
     /// - Parameter period: period (touple of start and finish dates) representing the timeframe
     /// - Parameter dataManager: data manager instance containing the entries
     /// - Returns: GrossSalary object containing salary data
-    private func generateGrossDataForPeriodInPast(_ period: Period, from dataManager: DataManager) -> GrossSalary {
+    private func generateGrossDataForPastPeriod(_ period: Period, from dataManager: DataManager) -> GrossSalary {
         guard let data = dataManager.fetch(for: period) else { return .init() }
         let payPerHour = {
             if !data.isEmpty {
@@ -206,6 +205,22 @@ extension PayManager {
 
 //MARK: CALENDAR FUNCTIONS
 extension PayManager {
+    /// Return an array containing start of the day dates of working days in input period
+    /// - Parameters:
+    ///   - calendar: calendar used for calculation
+    ///   - period: date period (touple of start and finish dates)
+    /// - Returns: an array of dates in period
+    private func getWorkDaysInPeriod(using calendar: Calendar = .current, in period: Period) -> [Date] {
+        guard let numberOfDays = calendar.dateComponents([.day], from: period.0, to: period.1).day,
+              numberOfDays > 0 else { return [] }
+        let result: [Date] = [Int](0..<numberOfDays).compactMap { i in
+            calendar.date(byAdding: .day, value: i, to: period.0)
+        }.filter { date in
+            !calendar.isDateInWeekend(date)
+        }
+        return result
+    }
+    
     /// Get the number of working days in month containing given date
     /// - Parameters:
     ///   - calendar: calendar used for calculation
