@@ -22,7 +22,8 @@ final class PayManagerTests: XCTestCase {
         SettingsStore.setTestUserDefaults()
         settingsStore = SettingsStore()
         sut = .init(dataManager: dataManager,
-                    settingsStore: settingsStore)
+                    settingsStore: settingsStore,
+                    calendar: .current)
         periodService = ChartPeriodService(calendar: .current)
     }
     

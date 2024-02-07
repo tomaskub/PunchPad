@@ -34,7 +34,7 @@ final class EditSheetViewModelTests: XCTestCase {
         
         sut = .init(dataManager: .testing,
                     settingsStore: settingStore,
-                    payService: PayManager(dataManager: .testing, settingsStore: settingStore),
+                    payService: PayManager(dataManager: .testing, settingsStore: settingStore, calendar: .current),
                     calendar: .current,
                     entry: entry)
     }

@@ -22,7 +22,9 @@ final class HomeViewModelModelTests: XCTestCase {
         DataManager.testing.deleteAll()
         sut = .init(HomeViewModel(dataManager: DataManager.testing,
                                   settingsStore: settingsStore,
-                                  payManager: PayManager(dataManager: DataManager.testing, settingsStore: settingsStore),
+                                  payManager: PayManager(dataManager: DataManager.testing,
+                                                         settingsStore: settingsStore,
+                                                         calendar: .current),
                                   notificationService: NotificationService(center: .current()),
                                   timerProvider: MockTimer.self)
         )
@@ -506,7 +508,9 @@ extension HomeViewModelModelTests {
         settingsStore.workTimeInSeconds = workTimerLimit
         sut = .init(HomeViewModel(dataManager: DataManager.testing,
                                   settingsStore: settingsStore,
-                                  payManager: PayManager(dataManager: DataManager.testing, settingsStore: settingsStore),
+                                  payManager: PayManager(dataManager: DataManager.testing, 
+                                                         settingsStore: settingsStore,
+                                                         calendar: .current),
                                   notificationService: NotificationService(center: .current()),
                                   timerProvider: MockTimer.self)
         )
@@ -519,7 +523,8 @@ extension HomeViewModelModelTests {
         sut = .init(dataManager: DataManager.testing,
                     settingsStore: settingsStore,
                     payManager: PayManager(dataManager: .testing, 
-                                           settingsStore: settingsStore),
+                                           settingsStore: settingsStore,
+                                           calendar: .current),
                     notificationService: NotificationService(center: .current()),
                     timerProvider: MockTimer.self)
     }
