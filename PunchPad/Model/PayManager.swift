@@ -51,11 +51,113 @@ class PayManager: ObservableObject {
 //MARK: GROSS PAY DISPLAY DATA GENERATING FUNCTIONS
 extension PayManager {
     private func generateGrossDataForPeriod(_ period: Period) -> GrossSalary {
-        return period.1 > Date() ?
-        generateDataForCurrrentPeriod(period, from: dataManager) :
-        generateGrossDataForPastPeriod(period, from: dataManager)
+        return generateData(period, from: dataManager)
     }
-     
+    
+    private func generateData(_ period: Period, from dataManager: DataManager) -> GrossSalary {
+        // retrive existing data
+        let retrieved = dataManager.fetch(for: period)
+        // generate averages based on existing entries
+        let averageWorktime: Int? = {
+            if let retrieved, !retrieved.isEmpty {
+                return retrieved.map({ entry in
+                    return entry.workTimeInSeconds
+                }).reduce(0, +) / retrieved.count
+            } else {
+                return nil
+            }
+        }()
+        let averageOvertime: Int? = {
+            if let retrieved, !retrieved.isEmpty {
+                return retrieved.map({ entry in
+                    return entry.overTimeInSeconds
+                }).reduce(0, +) / retrieved.count
+            } else {
+                return nil
+            }
+        }()
+        // create a plceholder array with all of the working days for period
+        let daysInPeriod = getWorkDaysInPeriod(in: period)
+        var placeholderArray = [Entry]()
+        // go thorugh the array up to today and:
+        for day in daysInPeriod {
+            // start of today
+            if day < Calendar.current.startOfDay(for: Date()) {
+                let replacer = retrieved?.first(where: { entry in
+                    Calendar.current.isDate(entry.startDate, inSameDayAs: day)
+                })
+                // replace days with entries if is avaliable
+                if let replacer {
+                    placeholderArray.append(replacer)
+                } else {
+                    // if not avaliable - add empty entry with no time
+                    placeholderArray.append(
+                        Entry(startDate: day,
+                              finishDate: day,
+                              workTimeInSec: 0,
+                              overTimeInSec: 0,
+                              maximumOvertimeAllowedInSeconds: settingsStore.maximumOvertimeAllowedInSeconds,
+                              standardWorktimeInSeconds: settingsStore.workTimeInSeconds,
+                              grossPayPerMonth: settingsStore.grossPayPerMonth,
+                              calculatedNetPay: nil
+                             )
+                    )
+                }
+            } else {
+                // continue through array
+                if day >= Calendar.current.startOfDay(for: Date()) {
+                    let replacer = retrieved?.first(where: { entry in
+                        Calendar.current.isDate(entry.startDate, inSameDayAs: day)
+                    })
+                    // replace days with entries if is avaliable
+                    if let replacer {
+                        placeholderArray.append(replacer)
+                    } else {
+                        // if entry is not avaliable add an entry with average existing time and gross pay from store
+                        placeholderArray.append(
+                            Entry(startDate: day, // not needed
+                                  finishDate: day, // not needed
+                                  workTimeInSec: averageWorktime ?? settingsStore.workTimeInSeconds, // needs average pre existing worktime
+                                  overTimeInSec: averageOvertime ?? 0, // needs average pre existing overtime
+                                  maximumOvertimeAllowedInSeconds: settingsStore.maximumOvertimeAllowedInSeconds,
+                                  standardWorktimeInSeconds: settingsStore.workTimeInSeconds,
+                                  grossPayPerMonth: settingsStore.grossPayPerMonth,
+                                  calculatedNetPay: nil
+                                 )
+                        )
+                        
+                    }
+                }
+            }
+        }
+        
+        // calculate average pay per hour based on gross per hour for entry
+        let averagePayPerHour = calculateAverageGrossPayPerHour(from: placeholderArray)
+        // calculate up to date per retrieved data
+        let payUpToDate = retrieved?.map { entry in
+            calculateGrossPayFor(entry: entry, overtimePayCoef: 1.5)
+        }.reduce(0, +)
+        // calculate predicted pay based on existing and added entries
+        // this should be nil for future periods?
+        let predictedPay: Double? = {
+            if period.0 > Date() { return nil }
+            if retrieved?.count != daysInPeriod.count || retrieved?.count == 0 {
+                return placeholderArray.map { entry in
+                    calculateGrossPayFor(entry: entry, overtimePayCoef: 1.5)
+                }.reduce(0, +)
+            } else {
+                return nil
+            }
+        }()
+        // calculate working days from placeholder array
+        let workingDays = daysInPeriod.count
+        // return value
+        return .init(period: period,
+                     payPerHour: averagePayPerHour,
+                     payUpToDate: payUpToDate ?? 0,
+                     payPrediced: predictedPay,
+                     numberOfWorkingDays: workingDays)
+    }
     private func generateDataForCurrrentPeriod(_ period: Period, from dataManager: DataManager) -> GrossSalary {
         
         guard let data = dataManager.fetch(for: period) else { return .init() }
