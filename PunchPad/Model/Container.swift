@@ -43,13 +43,13 @@ class Container: ObservableObject {
         switch containerType {
         case .production:
             self.dataManager = .shared
-            self.payManager = PayManager(dataManager: .shared, settingsStore: settingsStore)
+            self.payManager = PayManager(dataManager: .shared, settingsStore: settingsStore, calendar: .current)
         case .test:
             self.dataManager = .testing
-            self.payManager = PayManager(dataManager: .testing, settingsStore: settingsStore)
+            self.payManager = PayManager(dataManager: .testing, settingsStore: settingsStore, calendar: .current)
         case .preview:
             self.dataManager = .preview
-            self.payManager = PayManager(dataManager: .preview, settingsStore: settingsStore)
+            self.payManager = PayManager(dataManager: .preview, settingsStore: settingsStore, calendar: .current)
         }
         self.notificationService = NotificationService(center: .current())
     }

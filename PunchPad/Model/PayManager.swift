@@ -9,26 +9,38 @@ import Foundation
 import Combine
 
 class PayManager: ObservableObject {
+    ///Data manager used to retrieve existing data
     private var dataManager: DataManager
+    ///Setting store used to retrieve user settings
     private var settingsStore: SettingsStore
+    ///Calendar service used to perform date calculations and comparisions
+    private var calendar: Calendar
+    ///Temporary overtime pay coeficcient implementation
+    private var overtimePayCoef: Double = 1.5
+    ///Set of all combine subscribers
     private var subscriptions = Set<AnyCancellable>()
+    ///Current period driving gross salary data
     @Published private var currentPeriod: Period
+    ///Gross salary data generated for a given period of time
     @Published var grossDataForPeriod: GrossSalary
     
-    init(dataManager: DataManager, settingsStore: SettingsStore, currentPeriod: Period = (Date(), Date())) {
+    init(dataManager: DataManager, settingsStore: SettingsStore, currentPeriod: Period = (Date(), Date()), calendar: Calendar) {
         self.settingsStore = settingsStore
         self.dataManager = dataManager
-        // new property init
         self.currentPeriod = currentPeriod
+        self.calendar = calendar
         self.grossDataForPeriod = .init()
-        setSubscribers()
+        setStoreSubscribers()
+        setCurrentPeriodSubscriber()
     }
-    ///Update current period driving gross data
+    
+    ///Update current period driving published gross salary data
     func updatePeriod(with period: Period) {
         currentPeriod = period
     }
-    // subscribers for changing data in settings store and data manager - might be not needed
-    private func setSubscribers() {
+    
+    /// Set subscribers to settingStore and dataManager changes
+    private func setStoreSubscribers() {
         settingsStore.objectWillChange.sink { [weak self] _ in
             self?.objectWillChange.send()
         }.store(in: &subscriptions)
@@ -36,7 +48,10 @@ class PayManager: ObservableObject {
         dataManager.objectWillChange.sink { [weak self] _ in
             self?.objectWillChange.send()
         }.store(in: &subscriptions)
-        
+    }
+    
+    /// Set subscriber responsible for updating gross data for period on current period change
+    private func setCurrentPeriodSubscriber() {
         $currentPeriod
             .removeDuplicates { lhs, rhs in
                 return lhs.0 == rhs.0 && lhs.1 == rhs.1
@@ -44,77 +59,69 @@ class PayManager: ObservableObject {
                 guard let self else { return }
                 self.grossDataForPeriod = self.generateGrossDataForPeriod(period)
             }.store(in: &subscriptions)
-            
     }
 }
 
 //MARK: GROSS PAY DISPLAY DATA GENERATING FUNCTIONS
 extension PayManager {
+    /// Generate salary data based on given period
+    /// - Parameter period: period for which salary data should be generated
+    /// - Returns: generated gross salary data
     private func generateGrossDataForPeriod(_ period: Period) -> GrossSalary {
-        return period.1 > Date() ?
-        generateDataForPeriodEndingInFuture(period, from: dataManager) :
-        generateGrossDataForPeriodInPast(period, from: dataManager)
+        let entryData = dataManager.fetch(for: period)
+        let averageWorktime: Int? = calculateAverage(from: entryData, keypath: \.workTimeInSeconds)
+        let averageOvertime: Int? = calculateAverage(from: entryData, keypath: \.overTimeInSeconds)
+        let processedEntries = processEntryData(in: period, from: entryData, averageWorktime: averageWorktime, averageOvertime: averageOvertime, calendar: calendar, store: settingsStore)
+        
+        let payUpToDate = entryData?.map { entry in
+            calculateGrossPayFor(entry: entry, overtimePayCoef: 1.5, using: calendar)
+        }.reduce(0, +)
+        
+        let predictedPay: Double? = {
+            if period.0 > Date() { return nil }
+            if entryData?.count != processedEntries.count || entryData?.count == 0 {
+                return processedEntries.map { entry in
+                    calculateGrossPayFor(entry: entry, overtimePayCoef: 1.5, using: calendar)
+                }.reduce(0, +)
+            } else {
+                return nil
+            }
+        }()
+        
+        return .init(period: period,
+                     payPerHour: calculateAverageGrossPayPerHour(from: processedEntries, using: calendar),
+                     payUpToDate: payUpToDate ?? 0,
+                     payPrediced: predictedPay,
+                     numberOfWorkingDays: processedEntries.count)
     }
     
-    private func generateDataForPeriodEndingInFuture(_ period: Period, from dataManager: DataManager) -> GrossSalary {
-        guard let data = dataManager.fetch(for: period) else { return .init() }
-        let numberOfWorkingDays = getNumberOfWorkingDays(in: period)
-        
-        let payPerHour = {
-            !data.isEmpty ? calculateAverageGrossPayPerHour(from: data) : calculateAverageGrossPayPerHour(forPeriod: period)
-        }()
-        let payUpToDate = data.map { calculateGrossPayFor(entry: $0, overtimePayCoef: 1.5) } .reduce(0, +)
-        
-        let averageWorktime = data.map { Double($0.workTimeInSeconds) }.reduce(0, +) / Double(data.count)
-        let averageOvertime = data.map { Double($0.overTimeInSeconds) }.reduce(0, +) / Double(data.count)
-        
-        var payPredicted: Double?
-        
-        if let lastEntry = data.last,
-           let numberOfDaysInFuture = Calendar.current.dateComponents([.day], from: lastEntry.startDate, to: period.1).day {
-            for i in 0..<numberOfDaysInFuture {
-                if let currentDate = Calendar.current.date(byAdding: .day, value: i, to: lastEntry.startDate),
-                    !Calendar.current.isDateInWeekend(currentDate),
-                   !data.contains(where: { Calendar.current.isDate($0.startDate, inSameDayAs: currentDate)
-                   }){
-                    let payForDate = calculateGrossPay(worktime: averageWorktime, overtime: averageOvertime, grossPayPerHour: payPerHour, overtimePayCoef: 1.5)
-                    payPredicted = payForDate + (payPredicted ?? 0)
-                }
-            }
-            if let prediction = payPredicted {
-                payPredicted = prediction + payUpToDate
+    /// Process avaliable entry data for the given period by adding empty entries before today and standard entries in future
+    /// - Parameters:
+    ///   - period: start and finish date touple
+    ///   - entryData: existing retrieved entry data
+    ///   - averageWorktime: average worktime to use for entries in the future
+    ///   - averageOvertime: average overtime to use for entries in the future
+    ///   - calendar: calendar used for comparisions and date generation
+    ///   - store: store with default values
+    /// - Returns: an array with existing entries and predicted future entries
+    private func processEntryData(in period: Period, from entryData: [Entry]?, averageWorktime: Int?, averageOvertime: Int?, calendar: Calendar, store: SettingsStore) -> [Entry] {
+        return getWorkDaysInPeriod(using: calendar, in: period).map { date in
+            if let retrievedEntry = entryData?.first(where: { calendar.isDate($0.startDate, inSameDayAs: date) }) {
+                return retrievedEntry
+            } else {
+                let shouldAddEmptyTime = date < calendar.startOfDay(for: Date())
+                return Entry(startDate: date,
+                          finishDate: date,
+                          workTimeInSec: shouldAddEmptyTime ? 0 : (averageWorktime ?? settingsStore.workTimeInSeconds),
+                          overTimeInSec: shouldAddEmptyTime ? 0 : (averageOvertime ?? 0),
+                          maximumOvertimeAllowedInSeconds: store.maximumOvertimeAllowedInSeconds,
+                          standardWorktimeInSeconds: store.workTimeInSeconds,
+                          grossPayPerMonth: store.grossPayPerMonth,
+                          calculatedNetPay: nil
+                         )
             }
         }
-        
-        return .init(period: period,
-                     payPerHour: payPerHour,
-                     payUpToDate: payUpToDate,
-                     payPrediced: payPredicted,
-                     numberOfWorkingDays: numberOfWorkingDays)
     }
-    
-    /// Generate gross salary data for past period based on saved data
-    /// - Parameter period: period (touple of start and finish dates) representing the timeframe
-    /// - Parameter dataManager: data manager instance containing the entries
-    /// - Returns: GrossSalary object containing salary data
-    private func generateGrossDataForPeriodInPast(_ period: Period, from dataManager: DataManager) -> GrossSalary {
-        guard let data = dataManager.fetch(for: period) else { return .init() }
-        let payPerHour = {
-            if !data.isEmpty {
-                return calculateAverageGrossPayPerHour(from: data)
-            } else {
-                return calculateAverageGrossPayPerHour(forPeriod: period)
-            }
-        }()
-        let numberOfWorkingDays = getNumberOfWorkingDays(in: period)
-        let payUpToDate = data.map { calculateGrossPayFor(entry: $0, overtimePayCoef: 1.5) } .reduce(0, +)
-        return .init(period: period,
-                     payPerHour: payPerHour,
-                     payUpToDate: payUpToDate,
-                     payPrediced: nil,
-                     numberOfWorkingDays: numberOfWorkingDays)
-    }
-    
 }
 
 //MARK: GROSS PAY CALCULATION
@@ -126,8 +133,8 @@ extension PayManager {
     /// - Returns: gross pay amount
     ///
     /// Function returns gross pay for given entry based on the time work, overtime worked, and gross pay per month set for the entry. Included overtime pay coefficient of 1.5 extra for overtime.
-    private func calculateGrossPayFor(entry: Entry, overtimePayCoef: Double) -> Double {
-        let payPerHour = calculateGrossPayPerHour(for: entry)
+    private func calculateGrossPayFor(entry: Entry, overtimePayCoef: Double, using calendar: Calendar) -> Double {
+        let payPerHour = calculateGrossPayPerHour(for: entry, using: calendar)
         return calculateGrossPay(worktime: Double(entry.workTimeInSeconds),
                                  overtime: Double(entry.overTimeInSeconds),
                                  grossPayPerHour: payPerHour,
@@ -153,33 +160,25 @@ extension PayManager {
     /// Calculate average gross pay per hour based on gross monthly pay in entry
     /// - Parameter entries: an  array of entries
     /// - Returns: Average of gross pay per hour in entries
-    private func calculateAverageGrossPayPerHour(from entries: [Entry]) -> Double {
+    private func calculateAverageGrossPayPerHour(from entries: [Entry], using calendar: Calendar) -> Double {
         let payPerHourInEntries = entries.map { entry in
-            calculateGrossPayPerHour(for: entry)
+            calculateGrossPayPerHour(for: entry, using: calendar)
         }
         let sum = payPerHourInEntries.reduce(0, +)
         return sum / Double(payPerHourInEntries.count)
     }
     
-    ///  Calculate average gross pay per hour based on given period. Uses data from settings store.
-    /// - Parameter period: period for which to calculate average
-    /// - Returns: average of gross pay per hour for dates in period
-    private func calculateAverageGrossPayPerHour(forPeriod period: Period) -> Double {
-        guard let numberOfDays = Calendar.current.dateComponents([.day], from: period.0, to: period.1).day else { return 0 }
-        var dates: [Date] = []
-        for i in 0..<numberOfDays {
-            if let date = Calendar.current.date(byAdding: .day, value: i, to: period.0) {
-                dates.append(date)
-            }
+    /// Calculate average of an Int property based on entry array
+    /// - Parameters:
+    ///   - input: optional entry array
+    ///   - keypath: property keypath
+    /// - Returns: average of the values for keypath propery in given array of entries, or nil if input is nil
+    func calculateAverage(from input: [Entry]?, keypath: KeyPath<Entry, Int>) -> Int? {
+        if let input, !input.isEmpty {
+            return input.map { $0[keyPath: keypath] }.reduce(0, +) / input.count
         }
-        let grossPayForDates = dates.map { date in
-            calculateGrossPayPerHour(forDate: date)
-        }
-        let sum = grossPayForDates.reduce(0, +)
-        let average = sum / Double(dates.count)
-        return average
+        return nil
     }
-    
 }
 
 //MARK: GROSS PAY PER HOUR FUNCTIONS
@@ -189,23 +188,31 @@ extension PayManager {
     /// - Returns: gross pay per hour
     ///
     /// Calculate gross pay per hour based on the provided entry, The gross pay per month stored in entry is used, with the number of working days in month retrived based on entry start date.
-    private func calculateGrossPayPerHour(for entry: Entry) -> Double {
+    private func calculateGrossPayPerHour(for entry: Entry, using calendar: Calendar) -> Double {
         let numberOfWorkingHoursInDay = Double(entry.standardWorktimeInSeconds) / 3600
-        let numberOfWorkingHours = Double(getNumberOfWorkingDays(inMonthOfDate: entry.startDate)) * numberOfWorkingHoursInDay
+        let numberOfWorkingHours = Double(getNumberOfWorkingDays(using: calendar, inMonthOfDate: entry.startDate)) * numberOfWorkingHoursInDay
         return Double(entry.grossPayPerMonth) / numberOfWorkingHours
-    }
-    
-    /// Calculate gross pay per hour in the month of date based on currently set gross pay per month
-    /// - Returns: gross pay per hour
-    private func calculateGrossPayPerHour(forDate date: Date) -> Double {
-        let numberOfWorkingHoursInDay = Double(settingsStore.workTimeInSeconds) / 3600
-        let numberOfWorkHours = Double(getNumberOfWorkingDays(inMonthOfDate: date)) * numberOfWorkingHoursInDay
-        return Double(settingsStore.grossPayPerMonth) / numberOfWorkHours
     }
 }
 
 //MARK: CALENDAR FUNCTIONS
 extension PayManager {
+    /// Return an array containing start of the day dates of working days in input period
+    /// - Parameters:
+    ///   - calendar: calendar used for calculation
+    ///   - period: date period (touple of start and finish dates)
+    /// - Returns: an array of dates in period
+    private func getWorkDaysInPeriod(using calendar: Calendar, in period: Period) -> [Date] {
+        guard let numberOfDays = calendar.dateComponents([.day], from: period.0, to: period.1).day,
+              numberOfDays > 0 else { return [] }
+        let result: [Date] = [Int](0..<numberOfDays).compactMap { i in
+            calendar.date(byAdding: .day, value: i, to: period.0)
+        }.filter { date in
+            !calendar.isDateInWeekend(date)
+        }
+        return result
+    }
+    
     /// Get the number of working days in month containing given date
     /// - Parameters:
     ///   - calendar: calendar used for calculation
@@ -213,7 +220,7 @@ extension PayManager {
     /// - Returns: number of working days in month
     ///
     /// Function checks for weekend days only. Holidays are counting as working days, as they are normally paid as standard length working days. Default calendar used is the current instance of calendar, while default date is now.
-    private func getNumberOfWorkingDays(using calendar: Calendar = .current, inMonthOfDate date: Date = Date()) -> Int {
+    private func getNumberOfWorkingDays(using calendar: Calendar, inMonthOfDate date: Date = Date()) -> Int {
         let components = calendar.dateComponents([.month, .year], from: date)
         let startOfTheMonth = calendar.date(from: components)!
         let numberOfDays = calendar.range(of: .day, in: .month, for: startOfTheMonth)!.count
@@ -223,43 +230,9 @@ extension PayManager {
         let workDays = daysInMonth.filter({ !calendar.isDateInWeekend($0) })
         return workDays.count
     }
-    
-    /// Get number of working days in given period
-    /// - Parameters:
-    ///   - calendar: calendar used for calculation
-    ///   - period: date period (touple of start and finish dates)
-    /// - Returns: number of working days in period
-    private func getNumberOfWorkingDays(using calendar: Calendar = .current, in period: Period) -> Int {
-        guard let numberOfDays = calendar.dateComponents([.day], from: period.0, to: period.1).day else { return 0}
-        let daysInPeriod = Array(0..<numberOfDays).map { i in
-            calendar.date(byAdding: .day, value: i, to: period.0)!
-        }
-        let workingDays = daysInPeriod.filter { !calendar.isDateInWeekend($0) }
-        return workingDays.count
-    }
-    
-    /// Get the number of working days passed since begining of the month
-    /// - Parameters:
-    ///   - calendar: calendar used for calculation
-    ///   - date: date until which working days are counted
-    /// - Returns: number of working days passed
-    private func getNumberOfWorkingDaysPassed(using calendar: Calendar = .current, till date: Date = Date()) -> Int {
-        // calculate how many working days already passed
-        let components = calendar.dateComponents([.month, .year], from: date)
-        let startOfTheMonth = calendar.date(from: components)!
-        
-        guard let numberOfDays = calendar.dateComponents([.day], from: startOfTheMonth, to: date).day else { return 0 }
-        
-        let daysPassed = Array(0..<numberOfDays).map { i in
-            calendar.date(byAdding: .day, value: i, to: startOfTheMonth)!
-        }
-        let workDaysPassed = daysPassed.filter({ !calendar.isDateInWeekend($0) })
-        
-        return workDaysPassed.count
-    }
 }
 
-//MARK: NET PAY FUNCTIONS - FOR NOW UNUSED
+//MARK: - NET PAY FUNCTIONS - FOR NOW UNUSED
 extension PayManager {
     ///Calculate net pay based on gross pay given, using standard polish taxation for work contract
     /// - Parameters:
