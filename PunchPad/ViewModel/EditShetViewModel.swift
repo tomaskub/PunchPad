@@ -29,6 +29,7 @@ final class EditSheetViewModel: ObservableObject {
         TimeInterval(workTimeInSeconds + overTimeInSeconds)
     }
     var breakTime: TimeInterval {
+        guard startDate < finishDate else { return 0 }
         let timeFromDates = DateInterval(start: startDate, end: finishDate).duration
         if timeFromDates > workTimeInSeconds + overTimeInSeconds {
             return timeFromDates - workTimeInSeconds - overTimeInSeconds
