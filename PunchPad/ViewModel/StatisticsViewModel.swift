@@ -70,16 +70,27 @@ class StatisticsViewModel: ObservableObject {
             .removeDuplicates()
             .sink { [weak self] timeRange in
                 guard let self else { return }
-                do {
-                    // when changing to lwoer range date it is not working great - maybe use current date if there is no period change?
-                    let midDate = try self.chartPeriodService.returnPeriodMidDate(for: periodDisplayed)
-                    self.periodDisplayed = try self.chartPeriodService.generatePeriod(for: midDate, in: timeRange)
-                    self.payManager.updatePeriod(with: self.periodDisplayed)
-                } catch ChartPeriodServiceError.attemptedToRetrievePeriodForAll {
-                    //TODO: IMPLEMENT RETRIEVING ALL OF THE DATA
-                    print("Failed to generate chart time period becouse `all` was selected")
-                } catch {
-                    print("Failed to generate chart time period with new range")
+                switch timeRange {
+                case .week, .month, .year:
+                    do {
+                        let midDate = try self.chartPeriodService.returnPeriodMidDate(for: periodDisplayed)
+                        self.periodDisplayed = try self.chartPeriodService.generatePeriod(for: midDate, in: timeRange)
+                        self.payManager.updatePeriod(with: self.periodDisplayed)
+                    } catch ChartPeriodServiceError.attemptedToRetrievePeriodForAll {
+                        print("Failed to generate chart time period becouse `all` was selected")
+                    } catch {
+                        print("Failed to generate chart time period with new range")
+                    }
+                case .all:
+                    if let firstEntry = dataManager.fetchOldestExisting(),
+                       let lastEntry = dataManager.fetchNewestExisting() {
+                        do {
+                            self.periodDisplayed = try self.chartPeriodService.generatePeriod(from: firstEntry, to: lastEntry)
+                            self.payManager.updatePeriod(with: self.periodDisplayed)
+                        } catch {
+                            print("Failed to generate chart time period with new `.all` range")
+                        }
+                    }
                 }
             }.store(in: &subscriptions)
     }
