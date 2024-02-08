@@ -175,6 +175,7 @@ class StatisticsViewModel: ObservableObject {
 extension StatisticsViewModel {
     
     func loadPreviousPeriod() {
+        guard self.chartTimeRange != .all else { return }
         do {
             periodDisplayed = try chartPeriodService.retardPeriod(by: chartTimeRange, from: periodDisplayed)
             payManager.updatePeriod(with: periodDisplayed)
@@ -184,6 +185,7 @@ extension StatisticsViewModel {
     }
     
     func loadNextPeriod() {
+        guard self.chartTimeRange != .all else { return }
         do {
             periodDisplayed = try chartPeriodService.advancePeriod(by: chartTimeRange, from: periodDisplayed)
             payManager.updatePeriod(with: periodDisplayed)
