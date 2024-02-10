@@ -59,7 +59,7 @@ struct ChartFactory {
     }
     
     @ViewBuilder
-    static func buildBarChartForYear(data: [MonthEntrySummary], firstColor: Color, secondColor: Color, axisColor: Color) -> some View {
+    static func buildBarChartForYear(data: [EntrySummary], firstColor: Color, secondColor: Color, axisColor: Color) -> some View {
         Chart(data) { summary in
             BarMark(x: .value("Date", summary.startDate, unit: .month),
                     y: .value("Hours worked", summary.workTimeInSeconds / 3600)

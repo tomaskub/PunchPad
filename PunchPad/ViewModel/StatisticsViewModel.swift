@@ -136,11 +136,11 @@ class StatisticsViewModel: ObservableObject {
         return result
     }
     
-    func createMonthlySummary(entries: [Entry]) -> [MonthEntrySummary] {
+    func createMonthlySummary(entries: [Entry]) -> [EntrySummary] {
         let groupedEntries = groupEntriesByYearMonth(entries)
-        var result = [MonthEntrySummary]()
+        var result = [EntrySummary]()
         for group in groupedEntries {
-            let summary = MonthEntrySummary(fromEntries: group)
+            let summary = EntrySummary(fromEntries: group)
             result.append(summary)
         }
         return result

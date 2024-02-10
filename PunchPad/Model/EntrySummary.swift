@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MonthEntrySummary: Identifiable, Hashable {
+struct EntrySummary: Identifiable, Hashable {
     let id: UUID
     let startDate: Date
     let workTimeInSeconds: Int
