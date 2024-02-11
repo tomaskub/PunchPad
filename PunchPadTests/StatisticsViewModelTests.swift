@@ -22,6 +22,8 @@ final class StatisticsViewModelTests: XCTestCase {
 
     override func tearDown() {
         sut = nil
+        container.dataManager.deleteAll()
+        container = nil
     }
 
     func testEntriesForChart() {
@@ -59,5 +61,25 @@ final class StatisticsViewModelTests: XCTestCase {
         let result = sut.createPlaceholderEntries(for: inputPeriod)
         XCTAssertTrue(result[0].startDate == inputStartDate, "Results should start with entry with input start date")
         XCTAssertTrue(result.last?.startDate == expectedLastEntryDate, "Results should end with entry with input finish date")
+    }
+    
+    func test_createSummaryForAll_with29Entries() {
+        let testEntries = PreviewDataFactory.buildDataForPreviewForMonth(containing: Date(), using: .current)
+        for entry in testEntries {
+            container.dataManager.updateAndSave(entry: entry)
+        }
+        sut.chartTimeRange = .all
+        let result = sut.createSummaryForAll(entries: sut.entriesForChart)
+        XCTAssertEqual(result.count, 5)
+    }
+    
+    func test_createSummaryForAll_with365Entries() {
+        let testEntries = PreviewDataFactory.buildDataForPreviewForYear(containing: Date(), using: .current)
+        for entry in testEntries {
+            container.dataManager.updateAndSave(entry: entry)
+        }
+        sut.chartTimeRange = .all
+        let result = sut.createSummaryForAll(entries: sut.entriesForChart)
+        XCTAssertEqual(result.count, 12)
     }
 }
