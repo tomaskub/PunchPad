@@ -169,6 +169,28 @@ class StatisticsViewModel: ObservableObject {
         }
         return result
     }
+    
+    private func groupEntriesByYearWeek(_ entries: [Entry]) -> [[Entry]] {
+        var result = [[Entry]]()
+        var currentYearWeek: DateComponents?
+        var currentEntries: [Entry] = .init()
+        for entry in entries {
+            let entryDateComponents = Calendar.current.dateComponents([.weekOfYear, .yearForWeekOfYear], from: entry.startDate)
+            if entryDateComponents != currentYearWeek {
+                if !currentEntries.isEmpty {
+                    result.append(currentEntries)
+                }
+                currentEntries = [entry]
+                currentYearWeek = entryDateComponents
+            } else {
+                currentEntries.append(entry)
+            }
+        }
+        if !currentEntries.isEmpty {
+            result.append(currentEntries)
+        }
+        return result
+    }
 }
 
 //MARK: CHART DATA FUNCTIONS
