@@ -138,15 +138,27 @@ extension StatisticsView {
                                        secondColor: .theme.redChart,
                                        axisColor: .theme.buttonLabelGray
             )
-        case .year, .all:
+        case .year:
             ChartFactory.buildBarChartForYear(
                 data: viewModel.createMonthlySummary(entries: viewModel.entriesForChart),
                 firstColor: .theme.primary,
                 secondColor: .theme.redChart,
                 axisColor: .theme.buttonLabelGray
             )
+        case .all:
+            buildChartForAllData()
         }
     } // END OF VAR
+    
+    @ViewBuilder
+    private func buildChartForAllData() -> some View {
+        ChartFactory.buildBarChartForWeeks(
+            data: viewModel.createSummaryForAll(entries: viewModel.entriesForChart),
+            firstColor: .theme.primary,
+            secondColor: .theme.redChart,
+            axisColor: .theme.buttonLabelGray
+        )
+    }
     
     private func makePeriodRangeString(for period: Period, selectedRange: ChartTimeRange) -> String {
         switch selectedRange {
