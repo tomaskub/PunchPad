@@ -90,6 +90,8 @@ class StatisticsViewModel: ObservableObject {
                         } catch {
                             print("Failed to generate chart time period with new `.all` range")
                         }
+                    } else {
+                        print("Failed to generate chart time period with new `.all` range when retrieving first and last entry")
                     }
                 }
             }.store(in: &subscriptions)
@@ -132,6 +134,29 @@ class StatisticsViewModel: ObservableObject {
                 return Calendar.current.dateComponents(dateComponentsToCompare, from: entry.startDate) == Calendar.current.dateComponents(dateComponentsToCompare, from: placeholder.startDate)
             }
             return replacer ?? placeholder
+        }
+        return result
+    }
+    
+    func createSummaryForAll(entries: [Entry]) -> [EntrySummary] {
+        let groupedEntries: [[Entry]] = {
+            var shouldGroupByMonth = false
+            if let startDate = entries.first?.startDate,
+               let finishDate = entries.last?.finishDate,
+               let timeDiff = Calendar.current.dateComponents([.month], from: startDate, to: finishDate).month {
+                shouldGroupByMonth = true
+            }
+            if entries.count > 60 || shouldGroupByMonth {
+                return self.groupEntriesByYearMonth(entries)
+            } else {
+                return self.groupEntriesByYearWeek(entries)
+            }
+        }()
+        
+        var result = [EntrySummary]()
+        for group in groupedEntries {
+            let summary = EntrySummary(fromEntries: group)
+            result.append(summary)
         }
         return result
     }
