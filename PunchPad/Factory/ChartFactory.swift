@@ -98,7 +98,46 @@ struct ChartFactory {
             }
         }
     }
-    
+    @ViewBuilder
+    static func buildBarChartForWeeks(data: [EntrySummary], firstColor: Color, secondColor: Color, axisColor: Color) -> some View {
+        Chart(data) { summary in
+            BarMark(x: .value("Date", summary.startDate, unit: .weekOfYear),
+                    y: .value("Hours worked", summary.workTimeInSeconds / 3600)
+            )
+            .foregroundStyle(firstColor)
+            
+            BarMark(x: .value("Date", summary.startDate, unit: .weekOfYear),
+                    y: .value("Hours overtime", summary.overtimeInSecond / 3600)
+            )
+            .foregroundStyle(secondColor)
+        }
+        .chartXAxis {
+            AxisMarks(values: .automatic) { value in
+                AxisGridLine()
+                    .foregroundStyle(axisColor)
+                
+                AxisValueLabel() {
+                    if let date = value.as(Date.self) {
+                        Text(FormatterFactory.makeMonthDateFormatter().string(from: date))
+                            .foregroundStyle(axisColor)
+                    }
+                }
+            }
+        }
+        .chartYAxis {
+            AxisMarks(values: .automatic) { value in
+                AxisGridLine()
+                    .foregroundStyle(axisColor)
+                
+                AxisValueLabel() {
+                    if let intVal = value.as(Int.self) {
+                        Text("\(intVal)")
+                            .foregroundStyle(axisColor)
+                    }
+                }
+            }
+        }
+    }
     @ViewBuilder
     static func buildChartLegend() -> some View {
         ChartLegendView(chartLegendItems: [
