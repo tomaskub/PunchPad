@@ -9,7 +9,7 @@ import Foundation
 
 //front facing struct that seperates views from the coreData objects 
 
-struct Entry: Identifiable, Hashable {
+struct Entry: ChartableEntry {
     var id: UUID
     var startDate: Date
     var finishDate: Date
