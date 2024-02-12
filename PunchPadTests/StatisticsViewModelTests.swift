@@ -17,7 +17,9 @@ final class StatisticsViewModelTests: XCTestCase {
         container = Container()
         sut = StatisticsViewModel(dataManager: container.dataManager,
                                   payManager: container.payManager,
-                                  settingsStore: container.settingsStore)
+                                  settingsStore: container.settingsStore,
+                                  calendar: .current
+        )
     }
 
     override func tearDown() {

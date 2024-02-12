@@ -48,7 +48,8 @@ struct MainView: View {
         self._statViewModel = .init(wrappedValue:
                                         StatisticsViewModel(dataManager: container.dataManager,
                                                             payManager: container.payManager,
-                                                            settingsStore: container.settingsStore)
+                                                            settingsStore: container.settingsStore,
+                                                            calendar: .current)
         )
         self._historyViewModel = .init(wrappedValue:
                                         HistoryViewModel(dataManager: container.dataManager,

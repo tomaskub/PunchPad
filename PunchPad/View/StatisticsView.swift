@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Charts
+import ThemeKit
 
 struct StatisticsView: View {
     private typealias Identifier = ScreenIdentifier.StatisticsView
@@ -133,32 +134,17 @@ extension StatisticsView {
     var chart: some View {
         switch viewModel.chartTimeRange {
         case .week, .month:
-            ChartFactory.buildBarChart(entries: viewModel.entriesForChart,
-                                       firstColor: .theme.primary,
-                                       secondColor: .theme.redChart,
-                                       axisColor: .theme.buttonLabelGray
-            )
+            ChartFactory.buildBarChartForDays(data: viewModel.entryInPeriod)
         case .year:
-            ChartFactory.buildBarChartForYear(
-                data: viewModel.createMonthlySummary(entries: viewModel.entriesForChart),
-                firstColor: .theme.primary,
-                secondColor: .theme.redChart,
-                axisColor: .theme.buttonLabelGray
-            )
+            ChartFactory.buildBarChartForMonths(data: viewModel.entrySummaryByMonthYear)
         case .all:
-            buildChartForAllData()
+            if let groupedByWeek = viewModel.entriesSummaryByWeekYear {
+                ChartFactory.buildBarChartForWeeks(data: groupedByWeek)
+            } else {
+                ChartFactory.buildBarChartForMonths(data: viewModel.entrySummaryByMonthYear)
+            }
         }
     } // END OF VAR
-    
-    @ViewBuilder
-    private func buildChartForAllData() -> some View {
-        ChartFactory.buildBarChartForWeeks(
-            data: viewModel.createSummaryForAll(entries: viewModel.entriesForChart),
-            firstColor: .theme.primary,
-            secondColor: .theme.redChart,
-            axisColor: .theme.buttonLabelGray
-        )
-    }
     
     private func makePeriodRangeString(for period: Period, selectedRange: ChartTimeRange) -> String {
         switch selectedRange {
@@ -286,7 +272,9 @@ extension StatisticsView {
                             StatisticsViewModel(
                                 dataManager: container.dataManager,
                                 payManager: container.payManager,
-                                settingsStore: container.settingsStore)
+                                settingsStore: container.settingsStore,
+                                calendar: .current
+                            )
             )
             .environmentObject(container)
         }

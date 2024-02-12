@@ -9,57 +9,75 @@ import Foundation
 import Combine
 
 class StatisticsViewModel: ObservableObject {
-    private var chartPeriodService: ChartPeriodService = .init(calendar: .current)
+    private var chartPeriodService: ChartPeriodService
+    private var calendar: Calendar
     @Published private var dataManager: DataManager
     @Published private var payManager: PayManager
     @Published private var settingsStore: SettingsStore
     private var subscriptions = Set<AnyCancellable>()
-    //MARK: RETRIVED PROPERTIES
-    private var maximumOvertimeInSeconds: Int {
-        settingsStore.maximumOvertimeAllowedInSeconds
-    }
-    private var workTimeInSeconds: Int {
-        settingsStore.workTimeInSeconds
-    }
-    
     //MARK: PUBLISHED VARIABLES
     @Published var chartTimeRange: ChartTimeRange = .week
     @Published var periodDisplayed: Period = (Date(), Date())
-
     var grossSalaryData: GrossSalary {
         payManager.grossDataForPeriod
     }
+    
     var workedHoursInPeriod: Int {
-        entriesForChart.map { entry in
+        entryInPeriod.map { entry in
             (entry.workTimeInSeconds + entry.overTimeInSeconds ) / 3600
         }.reduce(0, +)
     }
+    
     var overtimeHoursInPeriod: Int {
-        entriesForChart.map { entry in
+        entryInPeriod.map { entry in
             entry.overTimeInSeconds / 3600
         }.reduce(0, +)
     }
     
-    init(dataManager: DataManager, payManager: PayManager, settingsStore: SettingsStore) {
+    ///Entries for use with a chart - contains empy entries for days without the entry in this monts
+    @Published var entryInPeriod: [Entry]
+    
+    var entrySummaryByMonthYear: [EntrySummary] {
+        groupEntriesByYearMonth(entryInPeriod).map { EntrySummary(fromEntries: $0) }
+    }
+    
+    var entriesSummaryByWeekYear: [EntrySummary]? {
+        guard let startDate = entryInPeriod.first?.startDate,
+              let finishDate = entryInPeriod.last?.finishDate,
+              let timeDiff = Calendar.current.dateComponents([.month], from: startDate, to: finishDate).month,
+              timeDiff > 3,
+              entryInPeriod.count < 60 else { return nil }
+        return groupEntriesByYearWeek(entryInPeriod).map { EntrySummary(fromEntries: $0) }
+    }
+    
+    init(dataManager: DataManager, payManager: PayManager, settingsStore: SettingsStore, calendar: Calendar) {
         self.dataManager = dataManager
         self.payManager = payManager
         self.settingsStore = settingsStore
+        self.calendar = calendar
+        self.chartPeriodService = ChartPeriodService(calendar: calendar)
+        
+        self.entryInPeriod = []
         do {
             self.periodDisplayed = try chartPeriodService.generatePeriod(for: Date(), in: chartTimeRange)
         } catch {
             print("Error while getting initial period")
         }
-        dataManager.objectWillChange.sink(receiveValue: { [weak self] _ in
-            self?.objectWillChange.send()
-        }).store(in: &subscriptions)
         
-        // This causes to update publish changes from withing view updates, for now wrapped in queue
+        setPayManagerSubscriber()
+        setPeriodUpdatingSubscriber()
+        setEntryDataUpdatingSubscribers()
+    }
+    
+    func setPayManagerSubscriber() {
         payManager.objectWillChange.sink { [weak self] _ in
             DispatchQueue.main.async {
                 self?.objectWillChange.send()
             }
         }.store(in: &subscriptions)
-        
+    }
+    
+    func setPeriodUpdatingSubscriber() {
         $chartTimeRange
             .removeDuplicates()
             .sink { [weak self] timeRange in
@@ -91,80 +109,55 @@ class StatisticsViewModel: ObservableObject {
             }.store(in: &subscriptions)
     }
     
-    ///Entries for use with a chart - contains empy entries for days without the entry in this monts
-    var entriesForChart: [Entry] {
-        let placeholderArray: [Entry] = createPlaceholderEntries(for: periodDisplayed)
-        return replacePlaceholderEntries(placeholderArray)
-    }
-    
-    func createPlaceholderEntries(for period: Period) -> [Entry] {
-        var placeholders: [Entry] = []
-        let numberOfDaysInPeriod = Calendar.current.dateComponents([.day], from: period.0, to: period.1).day!
-        let dateComponents = Calendar.current.dateComponents([.day, .month, .year], from: period.0)
-        for day in 0...numberOfDaysInPeriod - 1 {
-            var currentDateComponents = dateComponents
-            currentDateComponents.day = dateComponents.day! + day
-            let date = Calendar.current.date(from: currentDateComponents)!
-            let placeholderEntry = Entry(
-                startDate: date,
-                finishDate: date,
-                workTimeInSec: 0,
-                overTimeInSec: 0,
-                maximumOvertimeAllowedInSeconds: 5*3600,
-                standardWorktimeInSeconds: 8*3600,
-                grossPayPerMonth: 10000,
-                calculatedNetPay: nil
-            )
-            placeholders.append(placeholderEntry)
-        }
-        return placeholders
-    }
-    
-    func replacePlaceholderEntries(_ placeholders: [Entry]) -> [Entry] {
-        guard let fetchedEntries = dataManager.fetch(for: periodDisplayed) else { return placeholders }
-        let result = placeholders.map { placeholder in
-            let replacer = fetchedEntries.first { entry in
-                let dateComponentsToCompare: Set<Calendar.Component> = [.day, .month, .year]
-                return Calendar.current.dateComponents(dateComponentsToCompare, from: entry.startDate) == Calendar.current.dateComponents(dateComponentsToCompare, from: placeholder.startDate)
+    func setEntryDataUpdatingSubscribers() {
+        $periodDisplayed
+            .removeDuplicates { lhs, rhs in
+                return lhs.0 == rhs.0 && lhs.1 == rhs.1
             }
+            .receive(on: RunLoop.main)
+            .map { [weak self] period in
+                guard let self else { return [] }
+                return self.fetchEntriesWithPlaceholders(for: period)
+            }.assign(to: &$entryInPeriod)
+        
+        dataManager.objectWillChange.sink { [weak self] _ in
+            guard let self else { return }
+            self.entryInPeriod = self.fetchEntriesWithPlaceholders(for: periodDisplayed)
+        }.store(in: &subscriptions)
+        
+    }
+}
+
+extension StatisticsViewModel {
+    private func fetchEntriesWithPlaceholders(for period: Period) -> [Entry] {
+        guard let numberOfDaysInPeriod = calendar.dateComponents([.day], from: period.0, to: period.1).day,
+              numberOfDaysInPeriod > 0 else { return [] }
+        let placeholders = [Int](0..<numberOfDaysInPeriod)
+            .compactMap { i in
+                calendar.date(byAdding: .day, value: i, to: period.0)
+            }.map { date in
+                Entry(startDate: date,
+                      finishDate: date,
+                      workTimeInSec: 0,
+                      overTimeInSec: 0,
+                      maximumOvertimeAllowedInSeconds: settingsStore.maximumOvertimeAllowedInSeconds,
+                      standardWorktimeInSeconds: settingsStore.workTimeInSeconds,
+                      grossPayPerMonth: settingsStore.grossPayPerMonth,
+                      calculatedNetPay: nil
+                )
+            }
+        guard let fetchedEntries = dataManager.fetch(for: period) else {
+            return placeholders
+        }
+        return placeholders.map { placeholder in
+            let placeholderDateComponents = self.calendar.dateComponents([.day,.month,.year], from: placeholder.startDate)
+            let replacer = fetchedEntries.first { self.calendar.date($0.startDate, matchesComponents: placeholderDateComponents) }
             return replacer ?? placeholder
         }
-        return result
     }
-    
-    func createSummaryForAll(entries: [Entry]) -> [EntrySummary] {
-        let groupedEntries: [[Entry]] = {
-            var shouldGroupByMonth = false
-            if let startDate = entries.first?.startDate,
-               let finishDate = entries.last?.finishDate,
-               let timeDiff = Calendar.current.dateComponents([.month], from: startDate, to: finishDate).month {
-                shouldGroupByMonth = true
-            }
-            if entries.count > 60 || shouldGroupByMonth {
-                return self.groupEntriesByYearMonth(entries)
-            } else {
-                return self.groupEntriesByYearWeek(entries)
-            }
-        }()
-        
-        var result = [EntrySummary]()
-        for group in groupedEntries {
-            let summary = EntrySummary(fromEntries: group)
-            result.append(summary)
-        }
-        return result
-    }
-    
-    func createMonthlySummary(entries: [Entry]) -> [EntrySummary] {
-        let groupedEntries = groupEntriesByYearMonth(entries)
-        var result = [EntrySummary]()
-        for group in groupedEntries {
-            let summary = EntrySummary(fromEntries: group)
-            result.append(summary)
-        }
-        return result
-    }
-    
+}
+//MARK: DATA GROUPING FUNCTIONS
+extension StatisticsViewModel {
     private func groupEntriesByYearMonth(_ entries: [Entry]) -> [[Entry]] {
         var result: [[Entry]] = .init()
         
