@@ -7,10 +7,12 @@
 
 import XCTest
 import CoreData
+import Combine
+
 @testable import PunchPad
 
 final class StatisticsViewModelTests: XCTestCase {
-
+    private var cancellables = Set<AnyCancellable>()
     var sut: StatisticsViewModel!
     var container: Container!
     override func setUp() {
@@ -21,67 +23,51 @@ final class StatisticsViewModelTests: XCTestCase {
                                   calendar: .current
         )
     }
-
+    
     override func tearDown() {
         sut = nil
         container.dataManager.deleteAll()
         container = nil
     }
-
-    func testEntriesForChart() {
-        
-        let dataManager = DataManager.testing
-        
-        dataManager.updateAndSave(entry: Entry(
-            startDate: Calendar.current.date(byAdding: .hour, value: -8, to: Date())!,
-            finishDate: Date(),
-            workTimeInSec: 8 * 3600,
-            overTimeInSec: 0,
-            maximumOvertimeAllowedInSeconds: 5*3600,
-            standardWorktimeInSeconds: 8*3600,
-            grossPayPerMonth: 10000,
-            calculatedNetPay: nil)
-        )
-        let correctValue: Int = {
-            let components = Calendar.current.dateComponents([.month, .year], from: Date())
-            let startOfTheMonth = Calendar.current.date(from: components)!
-            return Calendar.current.range(of: .day, in: .month, for: startOfTheMonth)!.count
-        }()
-        sut.chartTimeRange = .month
-        let result = sut.entriesForChart
-        XCTAssert(result.count == correctValue, "There should be objects in the array")
+    
+    func test_initialState_withNoData() {
+        XCTAssert(sut.chartTimeRange == .week)
+        XCTAssert(sut.periodDisplayed.0 < Date() && Date() < sut.periodDisplayed.1)
+        XCTAssert(sut.entryInPeriod.isEmpty)
+        XCTAssert(sut.entrySummaryByMonthYear.isEmpty)
+        XCTAssertNil(sut.entriesSummaryByWeekYear)
+        XCTAssert(sut.workedHoursInPeriod == 0)
+        XCTAssert(sut.overtimeHoursInPeriod == 0)
     }
     
-    func test_createPlaceholderEntries() {
-        guard let inputStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 13)),
-              let inputFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 20)),
-              let expectedLastEntryDate = Calendar.current.date(byAdding: .day, value: -1, to: inputFinishDate) else {
-                XCTFail("Failed to generate input and predicted output dates")
-                return
+    func test_entryInPeriod_updates() {
+        let expectation = XCTestExpectation(description: "Published change in entry array")
+        sut.$entryInPeriod
+            .dropFirst()
+            .sink { _ in
+                expectation.fulfill()
             }
-        let inputPeriod = (inputStartDate, inputFinishDate)
-        let result = sut.createPlaceholderEntries(for: inputPeriod)
-        XCTAssertTrue(result[0].startDate == inputStartDate, "Results should start with entry with input start date")
-        XCTAssertTrue(result.last?.startDate == expectedLastEntryDate, "Results should end with entry with input finish date")
+            .store(in: &cancellables)
+        
+        addTestDataForCurrentMonth()
+        
+        wait(for: [expectation])
+        XCTAssertEqual(sut.entryInPeriod.filter({ $0.workTimeInSeconds == 0 }).count, 2, "There should be 2 entries with 0 work time (placeholder entries)")
     }
-    
-    func test_createSummaryForAll_with29Entries() {
+}
+
+extension StatisticsViewModelTests {
+    private func addTestDataForCurrentMonth() {
         let testEntries = PreviewDataFactory.buildDataForPreviewForMonth(containing: Date(), using: .current)
         for entry in testEntries {
             container.dataManager.updateAndSave(entry: entry)
         }
-        sut.chartTimeRange = .all
-        let result = sut.createSummaryForAll(entries: sut.entriesForChart)
-        XCTAssertEqual(result.count, 5)
     }
     
-    func test_createSummaryForAll_with365Entries() {
+    private func addTestDataForCurrentYear() {
         let testEntries = PreviewDataFactory.buildDataForPreviewForYear(containing: Date(), using: .current)
         for entry in testEntries {
             container.dataManager.updateAndSave(entry: entry)
         }
-        sut.chartTimeRange = .all
-        let result = sut.createSummaryForAll(entries: sut.entriesForChart)
-        XCTAssertEqual(result.count, 12)
     }
 }
