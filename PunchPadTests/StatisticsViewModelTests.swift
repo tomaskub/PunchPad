@@ -13,6 +13,7 @@ import Combine
 
 final class StatisticsViewModelTests: XCTestCase {
     private var cancellables = Set<AnyCancellable>()
+    private let calendar = Calendar.current
     var sut: StatisticsViewModel!
     var container: Container!
     override func setUp() {
@@ -40,7 +41,8 @@ final class StatisticsViewModelTests: XCTestCase {
         XCTAssert(sut.overtimeHoursInPeriod == 0)
     }
     
-    func test_entryInPeriod_updates() {
+    func test_entryInPeriod_updates_whenDataSaved() {
+        //Given
         let expectation = XCTestExpectation(description: "Published change in entry array")
         sut.$entryInPeriod
             .dropFirst()
@@ -48,12 +50,49 @@ final class StatisticsViewModelTests: XCTestCase {
                 expectation.fulfill()
             }
             .store(in: &cancellables)
-        
+        //When
         addTestDataForCurrentMonth()
-        
+        //Then
         wait(for: [expectation])
-        XCTAssertEqual(sut.entryInPeriod.filter({ $0.workTimeInSeconds == 0 }).count, 2, "There should be 2 entries with 0 work time (placeholder entries)")
+        XCTAssertEqual(sut.entryInPeriod.filter({ $0.workTimeInSeconds == 0 }).count, 2, "There should be 2 entries with 0 work time (placeholder entries for weekend)")
     }
+    
+    func test_entryInPeriod_updates_whenLoadingNextPeriod() throws {
+        //Given
+        let entriesPublisher = sut.$entryInPeriod
+            .collectNext(2)
+        addTestDataForCurrentMonth()
+        //When
+        sut.loadNextPeriod()
+        //Then
+        let entryArrays = try awaitPublisher(entriesPublisher)
+        XCTAssertEqual(entryArrays.count, 2)
+        guard let oldPeriodFirstEntryStartDate = entryArrays.first?.first?.startDate,
+              let newPeriodFirstEntryFinishDate = entryArrays.last?.first?.finishDate else {
+            XCTFail("Failed to retrieve published data in \(#file), line: \(#line)")
+            return
+        }
+        XCTAssertEqual(calendar.dateComponents([.day], from: oldPeriodFirstEntryStartDate, to: newPeriodFirstEntryFinishDate).day ?? 0, 7)
+    }
+    
+    func test_entryInPeriod_updates_whenLoadingPreviousPeriod() throws {
+        //Given
+        let entriesPublisher = sut.$entryInPeriod
+            .collectNext(2)
+        addTestDataForCurrentMonth()
+        //When
+        sut.loadPreviousPeriod()
+        //Then
+        let entryArrays = try awaitPublisher(entriesPublisher)
+        XCTAssertEqual(entryArrays.count, 2)
+        guard let oldPeriodFirstEntryFinishDate = entryArrays.first?.first?.finishDate,
+              let newPeriodFirstEntryStartDate = entryArrays.last?.first?.startDate else {
+            XCTFail("Failed to retrieve published data in \(#file), line: \(#line)")
+            return
+        }
+        XCTAssertEqual(calendar.dateComponents([.day], from: newPeriodFirstEntryStartDate, to: oldPeriodFirstEntryFinishDate).day ?? 0, 7)
+    }
+    
 }
 
 extension StatisticsViewModelTests {
