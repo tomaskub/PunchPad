@@ -47,6 +47,7 @@
 		D66750EC29D71C8300757F17 /* HistoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66750EB29D71C8300757F17 /* HistoryRow.swift */; };
 		D66A4DF62B7AA72800D16110 /* ChartType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66A4DF52B7AA72800D16110 /* ChartType.swift */; };
 		D66A4DF82B7AA74F00D16110 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66A4DF72B7AA74F00D16110 /* Period.swift */; };
+		D66A4DFA2B7AD3B000D16110 /* XCTestCase+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66A4DF92B7AD3B000D16110 /* XCTestCase+Extension.swift */; };
 		D67332E62AADB8B1005FFE7F /* LaunchArgument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67332E52AADB8B1005FFE7F /* LaunchArgument.swift */; };
 		D67332E72AADB8B1005FFE7F /* LaunchArgument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67332E52AADB8B1005FFE7F /* LaunchArgument.swift */; };
 		D67332EA2AAE3D3D005FFE7F /* StatisticsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67332E92AAE3D3D005FFE7F /* StatisticsUITests.swift */; };
@@ -188,6 +189,7 @@
 		D66750EB29D71C8300757F17 /* HistoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRow.swift; sourceTree = "<group>"; };
 		D66A4DF52B7AA72800D16110 /* ChartType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartType.swift; sourceTree = "<group>"; };
 		D66A4DF72B7AA74F00D16110 /* Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
+		D66A4DF92B7AD3B000D16110 /* XCTestCase+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Extension.swift"; sourceTree = "<group>"; };
 		D67332E52AADB8B1005FFE7F /* LaunchArgument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchArgument.swift; sourceTree = "<group>"; };
 		D67332E92AAE3D3D005FFE7F /* StatisticsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsUITests.swift; sourceTree = "<group>"; };
 		D6799EFB29E1BC0F0080E32A /* HistoryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModelTests.swift; sourceTree = "<group>"; };
@@ -318,6 +320,14 @@
 			path = Style;
 			sourceTree = "<group>";
 		};
+		D66A4DFB2B7AD3C900D16110 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D66A4DF92B7AD3B000D16110 /* XCTestCase+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		D67332E82AAE3C1A005FFE7F /* ScreenHelpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -418,6 +428,7 @@
 			isa = PBXGroup;
 			children = (
 				D61945EB29E7306B0046DE1F /* HomeViewModelTests.swift */,
+				D66A4DFB2B7AD3C900D16110 /* Extensions */,
 				D6799EFB29E1BC0F0080E32A /* HistoryViewModelTests.swift */,
 				D629CEFA2B363B500036579D /* TimerServiceTests.swift */,
 				D65A976A29F2E6B800462D8C /* StatisticsViewModelTests.swift */,
@@ -737,6 +748,7 @@
 				D65A976B29F2E6B800462D8C /* StatisticsViewModelTests.swift in Sources */,
 				D61945EC29E7306B0046DE1F /* HomeViewModelTests.swift in Sources */,
 				D60480D82B122CDA00D6D70D /* ChartPeriodServiceTests.swift in Sources */,
+				D66A4DFA2B7AD3B000D16110 /* XCTestCase+Extension.swift in Sources */,
 				D629CEFB2B363B500036579D /* TimerServiceTests.swift in Sources */,
 				D61945F029E735D80046DE1F /* MockTimer.swift in Sources */,
 				D6C458A529D229230069D89B /* ClockInTests.swift in Sources */,
