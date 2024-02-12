@@ -8,12 +8,6 @@
 import Foundation
 import Combine
 
-enum ChartType {
-    case time, startTime, finishTime
-}
-
-
-typealias Period = (Date, Date)
 class StatisticsViewModel: ObservableObject {
     private var chartPeriodService: ChartPeriodService = .init(calendar: .current)
     @Published private var dataManager: DataManager
