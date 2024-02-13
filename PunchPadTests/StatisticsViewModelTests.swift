@@ -109,7 +109,7 @@ final class StatisticsViewModelTests: XCTestCase {
         XCTAssertEqual(resultArrays.last?.count, expectedNumberOfEntries)
     }
     
-    func test_entryInPeriod_updated_whenUpdatingChartTimeRangeToYear() throws {
+    func test_entryInPeriod_summaryByMonthYear_updated_whenUpdatingChartTimeRangeToYear() throws {
         //Given
         guard let expectedNumberOfEntries = calendar.range(of: .day, in: .year, for: Date())?.count else {
             XCTFail("Failed to construct expected result in \(#file), line: \(#line)")
@@ -123,8 +123,46 @@ final class StatisticsViewModelTests: XCTestCase {
         //Then
         let result = try awaitPublisher(entriesPublisher)
         XCTAssertEqual(result.last?.count, expectedNumberOfEntries)
-        let groupedEntries = sut.entrySummaryByMonthYear
-        XCTAssertEqual(groupedEntries.count, 12)
+        XCTAssertEqual(sut.entrySummaryByMonthYear.count, 12)
+        XCTAssertNil(sut.entriesSummaryByWeekYear)
+    }
+    
+    func test_entryInPeriod_udapted_whenUpdatingChartTimeRangeToAll_withYearOfEntries() throws {
+        //Given
+        guard let expectedNumberOfEntries = calendar.range(of: .day, in: .year, for: Date())?.count else {
+            XCTFail("Failed to construct expected result in \(#file), line: \(#line)")
+            return
+        }
+        let entriesPublisher = sut.$entryInPeriod
+            .collectNext(2)
+        addTestDataForCurrentYear()
+        //When
+        sut.chartTimeRange = .all
+        //Then
+        let result = try awaitPublisher(entriesPublisher)
+        XCTAssertEqual(result.last?.count, expectedNumberOfEntries)
+        XCTAssertEqual(sut.entrySummaryByMonthYear.count, 12)
+        XCTAssertNil(sut.entriesSummaryByWeekYear)
+    }
+    
+    func test_entryInPeriod_updated_whenUpdatingChartTimeRangeToAll_withMonthOfEntries() throws {
+        //Given
+        guard let expectedNumberOfEntries = calendar.range(of: .day, in: .month, for: Date())?.count,
+        let expectedNumberOfWeeks = calendar.range(of: .weekOfMonth, in: .month, for: Date())?.count else {
+            XCTFail("Failed to construct expected result in \(#file), line: \(#line)")
+            return
+        }
+        let entriesPublisher = sut.$entryInPeriod
+            .collectNext(2)
+        addTestDataForCurrentMonth()
+        //When
+        sut.chartTimeRange = .all
+        //Then
+        let result = try awaitPublisher(entriesPublisher)
+        XCTAssertEqual(result.last?.count, expectedNumberOfEntries)
+        XCTAssertEqual(sut.entrySummaryByMonthYear.count, 1)
+        let unwrappedSummaryByWeekYear = try XCTUnwrap(sut.entriesSummaryByWeekYear)
+        XCTAssertEqual(unwrappedSummaryByWeekYear.count, expectedNumberOfWeeks)
     }
 }
 
@@ -141,72 +179,5 @@ extension StatisticsViewModelTests {
         for entry in testEntries {
             container.dataManager.updateAndSave(entry: entry)
         }
-    }
-}
-
-extension StatisticsViewModelTests {
-    func test_createSummaryForAll_with29Entries() throws {
-        let entriesPublisher = sut.$entryInPeriod
-            .dropFirst()
-            .collect(2)
-            .first()
-        
-        let testEntries = PreviewDataFactory.buildDataForPreviewForMonth(containing: Date(), using: .current)
-        for entry in testEntries {
-            container.dataManager.updateAndSave(entry: entry)
-        }
-        sut.loadNextPeriod()
-        let entryArrays = try awaitPublisher(entriesPublisher)
-        XCTAssertEqual(entryArrays.count, 2)
-        //        sut.chartTimeRange = .all
-        //        XCTAssertEqual(sut.entriesSummaryByWeekYear?.count, 5)
-    }
-    func testEntriesForChart() {
-        
-        let dataManager = DataManager.testing
-        
-        dataManager.updateAndSave(entry: Entry(
-            startDate: Calendar.current.date(byAdding: .hour, value: -8, to: Date())!,
-            finishDate: Date(),
-            workTimeInSec: 8 * 3600,
-            overTimeInSec: 0,
-            maximumOvertimeAllowedInSeconds: 5*3600,
-            standardWorktimeInSeconds: 8*3600,
-            grossPayPerMonth: 10000,
-            calculatedNetPay: nil)
-        )
-        let correctValue: Int = {
-            let components = Calendar.current.dateComponents([.month, .year], from: Date())
-            let startOfTheMonth = Calendar.current.date(from: components)!
-            return Calendar.current.range(of: .day, in: .month, for: startOfTheMonth)!.count
-        }()
-        sut.chartTimeRange = .month
-        let result = sut.entryInPeriod
-        XCTAssert(result.count == correctValue, "There should be objects in the array")
-    }
-    
-    //    func test_createPlaceholderEntries() {
-    //        guard let inputStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 13)),
-    //              let inputFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 20)),
-    //              let expectedLastEntryDate = Calendar.current.date(byAdding: .day, value: -1, to: inputFinishDate) else {
-    //                XCTFail("Failed to generate input and predicted output dates")
-    //                return
-    //            }
-    //        let inputPeriod = (inputStartDate, inputFinishDate)
-    //        let result = sut.createPlaceholderEntries(for: inputPeriod)
-    //        XCTAssertTrue(result[0].startDate == inputStartDate, "Results should start with entry with input start date")
-    //        XCTAssertTrue(result.last?.startDate == expectedLastEntryDate, "Results should end with entry with input finish date")
-    //    }
-    
-    
-    
-    func test_createSummaryForAll_with365Entries() {
-        let testEntries = PreviewDataFactory.buildDataForPreviewForYear(containing: Date(), using: .current)
-        for entry in testEntries {
-            container.dataManager.updateAndSave(entry: entry)
-        }
-        sut.chartTimeRange = .all
-        XCTAssertNil(sut.entrySummaryByMonthYear)
-        XCTAssertEqual(sut.entrySummaryByMonthYear.count, 12)
     }
 }
