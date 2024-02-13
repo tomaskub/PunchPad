@@ -41,11 +41,11 @@ class StatisticsViewModel: ObservableObject {
         groupEntriesByYearMonth(entryInPeriod).map { EntrySummary(fromEntries: $0) }
     }
     
-    var entriesSummaryByWeekYear: [EntrySummary]? {
+    var entrySummaryByWeekYear: [EntrySummary]? {
         guard let startDate = entryInPeriod.first?.startDate,
               let finishDate = entryInPeriod.last?.finishDate,
               let timeDiff = Calendar.current.dateComponents([.month], from: startDate, to: finishDate).month,
-              timeDiff > 3,
+              timeDiff < 3,
               entryInPeriod.count < 60 else { return nil }
         return groupEntriesByYearWeek(entryInPeriod).map { EntrySummary(fromEntries: $0) }
     }

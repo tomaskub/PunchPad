@@ -36,7 +36,7 @@ final class StatisticsViewModelTests: XCTestCase {
         XCTAssert(sut.periodDisplayed.0 < Date() && Date() < sut.periodDisplayed.1)
         XCTAssert(sut.entryInPeriod.isEmpty)
         XCTAssert(sut.entrySummaryByMonthYear.isEmpty)
-        XCTAssertNil(sut.entriesSummaryByWeekYear)
+        XCTAssertNil(sut.entrySummaryByWeekYear)
         XCTAssert(sut.workedHoursInPeriod == 0)
         XCTAssert(sut.overtimeHoursInPeriod == 0)
     }
@@ -124,7 +124,7 @@ final class StatisticsViewModelTests: XCTestCase {
         let result = try awaitPublisher(entriesPublisher)
         XCTAssertEqual(result.last?.count, expectedNumberOfEntries)
         XCTAssertEqual(sut.entrySummaryByMonthYear.count, 12)
-        XCTAssertNil(sut.entriesSummaryByWeekYear)
+        XCTAssertNil(sut.entrySummaryByWeekYear)
     }
     
     func test_entryInPeriod_udapted_whenUpdatingChartTimeRangeToAll_withYearOfEntries() throws {
@@ -142,7 +142,7 @@ final class StatisticsViewModelTests: XCTestCase {
         let result = try awaitPublisher(entriesPublisher)
         XCTAssertEqual(result.last?.count, expectedNumberOfEntries)
         XCTAssertEqual(sut.entrySummaryByMonthYear.count, 12)
-        XCTAssertNil(sut.entriesSummaryByWeekYear)
+        XCTAssertNil(sut.entrySummaryByWeekYear)
     }
     
     func test_entryInPeriod_updated_whenUpdatingChartTimeRangeToAll_withMonthOfEntries() throws {
@@ -161,7 +161,7 @@ final class StatisticsViewModelTests: XCTestCase {
         let result = try awaitPublisher(entriesPublisher)
         XCTAssertEqual(result.last?.count, expectedNumberOfEntries)
         XCTAssertEqual(sut.entrySummaryByMonthYear.count, 1)
-        let unwrappedSummaryByWeekYear = try XCTUnwrap(sut.entriesSummaryByWeekYear)
+        let unwrappedSummaryByWeekYear = try XCTUnwrap(sut.entrySummaryByWeekYear)
         XCTAssertEqual(unwrappedSummaryByWeekYear.count, expectedNumberOfWeeks)
     }
 }

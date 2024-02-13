@@ -138,7 +138,7 @@ extension StatisticsView {
         case .year:
             ChartFactory.buildBarChartForMonths(data: viewModel.entrySummaryByMonthYear)
         case .all:
-            if let groupedByWeek = viewModel.entriesSummaryByWeekYear {
+            if let groupedByWeek = viewModel.entrySummaryByWeekYear {
                 ChartFactory.buildBarChartForWeeks(data: groupedByWeek)
             } else {
                 ChartFactory.buildBarChartForMonths(data: viewModel.entrySummaryByMonthYear)
