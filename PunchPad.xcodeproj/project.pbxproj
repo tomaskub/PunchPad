@@ -35,6 +35,7 @@
 		D64574B429D9F16900207168 /* EntryMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64574B229D9F16900207168 /* EntryMO+CoreDataProperties.swift */; };
 		D64574B629D9F37400207168 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64574B529D9F37400207168 /* Entry.swift */; };
 		D64766C52AFEBD9D0013AC9A /* ChartLegendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64766C42AFEBD9D0013AC9A /* ChartLegendView.swift */; };
+		D647BA972B7D48A700B10FC2 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D647BA962B7D48A700B10FC2 /* NotificationView.swift */; };
 		D653FEEC2B320E1600ECFCF2 /* TimeIntervalPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D653FEEB2B320E1600ECFCF2 /* TimeIntervalPicker.swift */; };
 		D65A976B29F2E6B800462D8C /* StatisticsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65A976A29F2E6B800462D8C /* StatisticsViewModelTests.swift */; };
 		D65A976D29F323A900462D8C /* K.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65A976C29F323A900462D8C /* K.swift */; };
@@ -180,6 +181,7 @@
 		D64574B229D9F16900207168 /* EntryMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EntryMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D64574B529D9F37400207168 /* Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
 		D64766C42AFEBD9D0013AC9A /* ChartLegendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLegendView.swift; sourceTree = "<group>"; };
+		D647BA962B7D48A700B10FC2 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		D653FEEB2B320E1600ECFCF2 /* TimeIntervalPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalPicker.swift; sourceTree = "<group>"; };
 		D65A976A29F2E6B800462D8C /* StatisticsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModelTests.swift; sourceTree = "<group>"; };
 		D65A976C29F323A900462D8C /* K.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = K.swift; sourceTree = "<group>"; };
@@ -306,6 +308,7 @@
 				D621C0C92B3B79850065DF8C /* CircleButton.swift */,
 				D6FE20862B46EE0D00F931CD /* ConfirmDeleteRowView.swift */,
 				D621C0CB2B3B8BE40065DF8C /* TimerIndicator.swift */,
+				D647BA962B7D48A700B10FC2 /* NotificationView.swift */,
 				D69C8CDC2B44224100146EFA /* VerticalDivider.swift */,
 				D69C8CD62B43687700146EFA /* CustomDatePickerContainer.swift */,
 			);
@@ -676,6 +679,7 @@
 				D66A4DF62B7AA72800D16110 /* ChartType.swift in Sources */,
 				D6CBB8682B34ACF20074CE8B /* Calendar+Extension.swift in Sources */,
 				D6EA695E2AF8498D00D8F6C3 /* OnboardingOvertimeView.swift in Sources */,
+				D647BA972B7D48A700B10FC2 /* NotificationView.swift in Sources */,
 				D682AF922B3C77F5004EE208 /* ChartTimeRange.swift in Sources */,
 				D69C8CD72B43687700146EFA /* CustomDatePickerContainer.swift in Sources */,
 				D63753B02B45DA5000386482 /* GreenBorderTextFieldStyle.swift in Sources */,
