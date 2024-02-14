@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Charts
+import ThemeKit
 
 struct StatisticsView: View {
     private typealias Identifier = ScreenIdentifier.StatisticsView
@@ -133,18 +134,15 @@ extension StatisticsView {
     var chart: some View {
         switch viewModel.chartTimeRange {
         case .week, .month:
-            ChartFactory.buildBarChart(entries: viewModel.entriesForChart,
-                                       firstColor: .theme.primary,
-                                       secondColor: .theme.redChart,
-                                       axisColor: .theme.buttonLabelGray
-            )
-        case .year, .all:
-            ChartFactory.buildBarChartForYear(
-                data: viewModel.createMonthlySummary(entries: viewModel.entriesForChart),
-                firstColor: .theme.primary,
-                secondColor: .theme.redChart,
-                axisColor: .theme.buttonLabelGray
-            )
+            ChartFactory.buildBarChartForDays(data: viewModel.entryInPeriod)
+        case .year:
+            ChartFactory.buildBarChartForMonths(data: viewModel.entrySummaryByMonthYear)
+        case .all:
+            if let groupedByWeek = viewModel.entrySummaryByWeekYear {
+                ChartFactory.buildBarChartForWeeks(data: groupedByWeek)
+            } else {
+                ChartFactory.buildBarChartForMonths(data: viewModel.entrySummaryByMonthYear)
+            }
         }
     } // END OF VAR
     
@@ -274,7 +272,9 @@ extension StatisticsView {
                             StatisticsViewModel(
                                 dataManager: container.dataManager,
                                 payManager: container.payManager,
-                                settingsStore: container.settingsStore)
+                                settingsStore: container.settingsStore,
+                                calendar: .current
+                            )
             )
             .environmentObject(container)
         }

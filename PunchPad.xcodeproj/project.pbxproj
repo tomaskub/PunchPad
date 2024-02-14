@@ -45,12 +45,16 @@
 		D666ADCC2AC05A0500B74663 /* CaseIterable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D666ADCB2AC05A0500B74663 /* CaseIterable+Extension.swift */; };
 		D66750EA29D713C900757F17 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66750E929D713C900757F17 /* HistoryView.swift */; };
 		D66750EC29D71C8300757F17 /* HistoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66750EB29D71C8300757F17 /* HistoryRow.swift */; };
+		D66A4DF62B7AA72800D16110 /* ChartType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66A4DF52B7AA72800D16110 /* ChartType.swift */; };
+		D66A4DF82B7AA74F00D16110 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66A4DF72B7AA74F00D16110 /* Period.swift */; };
+		D66A4DFA2B7AD3B000D16110 /* XCTestCase+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66A4DF92B7AD3B000D16110 /* XCTestCase+Extension.swift */; };
+		D66A4E002B7AD46100D16110 /* Published+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66A4DFF2B7AD46100D16110 /* Published+Extension.swift */; };
 		D67332E62AADB8B1005FFE7F /* LaunchArgument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67332E52AADB8B1005FFE7F /* LaunchArgument.swift */; };
 		D67332E72AADB8B1005FFE7F /* LaunchArgument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67332E52AADB8B1005FFE7F /* LaunchArgument.swift */; };
 		D67332EA2AAE3D3D005FFE7F /* StatisticsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67332E92AAE3D3D005FFE7F /* StatisticsUITests.swift */; };
 		D6799EFC29E1BC0F0080E32A /* HistoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6799EFB29E1BC0F0080E32A /* HistoryViewModelTests.swift */; };
 		D682AF922B3C77F5004EE208 /* ChartTimeRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AF912B3C77F5004EE208 /* ChartTimeRange.swift */; };
-		D682AF942B3D83A2004EE208 /* MonthEntrySummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AF932B3D83A2004EE208 /* MonthEntrySummary.swift */; };
+		D682AF942B3D83A2004EE208 /* EntrySummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AF932B3D83A2004EE208 /* EntrySummary.swift */; };
 		D68384F929DB25DD00228491 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68384F829DB25DD00228491 /* SettingViewModel.swift */; };
 		D6842EC029EC178000731E84 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6842EBF29EC178000731E84 /* StatisticsView.swift */; };
 		D6842EC229EC179200731E84 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6842EC129EC179200731E84 /* StatisticsViewModel.swift */; };
@@ -94,6 +98,7 @@
 		D6D906B12AA12BDB004E09C9 /* BackgroundFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D906B02AA12BDB004E09C9 /* BackgroundFactory.swift */; };
 		D6E2C15929D6C20E00229286 /* WorkHistory.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15729D6C20E00229286 /* WorkHistory.xcdatamodeld */; };
 		D6E2C15B29D6C31800229286 /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15A29D6C31800229286 /* HistoryViewModel.swift */; };
+		D6E6832E2B79502B009C6CEC /* ChartableEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E6832D2B79502B009C6CEC /* ChartableEntry.swift */; };
 		D6E6B8732AF98A4B0073D911 /* OnboardingNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E6B8722AF98A4B0073D911 /* OnboardingNotificationView.swift */; };
 		D6E6B8752AF98EB40073D911 /* OnboardingSalaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E6B8742AF98EB40073D911 /* OnboardingSalaryView.swift */; };
 		D6E6B8772AF992F90073D911 /* OnboardingFinishView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E6B8762AF992F90073D911 /* OnboardingFinishView.swift */; };
@@ -183,12 +188,16 @@
 		D666ADCB2AC05A0500B74663 /* CaseIterable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CaseIterable+Extension.swift"; sourceTree = "<group>"; };
 		D66750E929D713C900757F17 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		D66750EB29D71C8300757F17 /* HistoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRow.swift; sourceTree = "<group>"; };
+		D66A4DF52B7AA72800D16110 /* ChartType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartType.swift; sourceTree = "<group>"; };
+		D66A4DF72B7AA74F00D16110 /* Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
+		D66A4DF92B7AD3B000D16110 /* XCTestCase+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Extension.swift"; sourceTree = "<group>"; };
+		D66A4DFF2B7AD46100D16110 /* Published+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Published+Extension.swift"; sourceTree = "<group>"; };
 		D67332E52AADB8B1005FFE7F /* LaunchArgument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchArgument.swift; sourceTree = "<group>"; };
 		D67332E92AAE3D3D005FFE7F /* StatisticsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsUITests.swift; sourceTree = "<group>"; };
 		D6799EFB29E1BC0F0080E32A /* HistoryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModelTests.swift; sourceTree = "<group>"; };
 		D6801A142B404F61003F54F9 /* NavigationKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NavigationKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D682AF912B3C77F5004EE208 /* ChartTimeRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartTimeRange.swift; sourceTree = "<group>"; };
-		D682AF932B3D83A2004EE208 /* MonthEntrySummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthEntrySummary.swift; sourceTree = "<group>"; };
+		D682AF932B3D83A2004EE208 /* EntrySummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntrySummary.swift; sourceTree = "<group>"; };
 		D68384F829DB25DD00228491 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		D6842EBF29EC178000731E84 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		D6842EC129EC179200731E84 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
@@ -235,6 +244,7 @@
 		D6D906B02AA12BDB004E09C9 /* BackgroundFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundFactory.swift; sourceTree = "<group>"; };
 		D6E2C15829D6C20E00229286 /* WorkHistory.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WorkHistory.xcdatamodel; sourceTree = "<group>"; };
 		D6E2C15A29D6C31800229286 /* HistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
+		D6E6832D2B79502B009C6CEC /* ChartableEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartableEntry.swift; sourceTree = "<group>"; };
 		D6E6B8722AF98A4B0073D911 /* OnboardingNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingNotificationView.swift; sourceTree = "<group>"; };
 		D6E6B8742AF98EB40073D911 /* OnboardingSalaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSalaryView.swift; sourceTree = "<group>"; };
 		D6E6B8762AF992F90073D911 /* OnboardingFinishView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFinishView.swift; sourceTree = "<group>"; };
@@ -310,6 +320,15 @@
 				D63753AF2B45DA5000386482 /* GreenBorderTextFieldStyle.swift */,
 			);
 			path = Style;
+			sourceTree = "<group>";
+		};
+		D66A4DFB2B7AD3C900D16110 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D66A4DF92B7AD3B000D16110 /* XCTestCase+Extension.swift */,
+				D66A4DFF2B7AD46100D16110 /* Published+Extension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		D67332E82AAE3C1A005FFE7F /* ScreenHelpers */ = {
@@ -412,6 +431,7 @@
 			isa = PBXGroup;
 			children = (
 				D61945EB29E7306B0046DE1F /* HomeViewModelTests.swift */,
+				D66A4DFB2B7AD3C900D16110 /* Extensions */,
 				D6799EFB29E1BC0F0080E32A /* HistoryViewModelTests.swift */,
 				D629CEFA2B363B500036579D /* TimerServiceTests.swift */,
 				D65A976A29F2E6B800462D8C /* StatisticsViewModelTests.swift */,
@@ -497,7 +517,8 @@
 				D65FD53C29D8B259006CC34F /* PersistanceController.swift */,
 				D64574AF29D9E6A000207168 /* DataManager.swift */,
 				D64574B529D9F37400207168 /* Entry.swift */,
-				D682AF932B3D83A2004EE208 /* MonthEntrySummary.swift */,
+				D6E6832D2B79502B009C6CEC /* ChartableEntry.swift */,
+				D682AF932B3D83A2004EE208 /* EntrySummary.swift */,
 				D6842EC329EC62DD00731E84 /* PayManager.swift */,
 				D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */,
 				D60EB9B52AB0D7000053136A /* Container.swift */,
@@ -508,6 +529,8 @@
 				D6CA773E2B40BB4D00C98AF3 /* Route.swift */,
 				D698F3EF2B5C131D00D9DFF4 /* NotificationService.swift */,
 				D698F3F12B5C1F8600D9DFF4 /* AppNotification.swift */,
+				D66A4DF52B7AA72800D16110 /* ChartType.swift */,
+				D66A4DF72B7AA74F00D16110 /* Period.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -648,7 +671,9 @@
 				D6842EC429EC62DE00731E84 /* PayManager.swift in Sources */,
 				D64766C52AFEBD9D0013AC9A /* ChartLegendView.swift in Sources */,
 				D64574B629D9F37400207168 /* Entry.swift in Sources */,
+				D6E6832E2B79502B009C6CEC /* ChartableEntry.swift in Sources */,
 				D6C458C729D36C050069D89B /* RingView.swift in Sources */,
+				D66A4DF62B7AA72800D16110 /* ChartType.swift in Sources */,
 				D6CBB8682B34ACF20074CE8B /* Calendar+Extension.swift in Sources */,
 				D6EA695E2AF8498D00D8F6C3 /* OnboardingOvertimeView.swift in Sources */,
 				D682AF922B3C77F5004EE208 /* ChartTimeRange.swift in Sources */,
@@ -670,7 +695,7 @@
 				D64574B329D9F16900207168 /* EntryMO+CoreDataClass.swift in Sources */,
 				D64574B429D9F16900207168 /* EntryMO+CoreDataProperties.swift in Sources */,
 				D653FEEC2B320E1600ECFCF2 /* TimeIntervalPicker.swift in Sources */,
-				D682AF942B3D83A2004EE208 /* MonthEntrySummary.swift in Sources */,
+				D682AF942B3D83A2004EE208 /* EntrySummary.swift in Sources */,
 				D621C0CA2B3B79850065DF8C /* CircleButton.swift in Sources */,
 				D6D906AE2AA0BEDE004E09C9 /* ScreenIdentifier.swift in Sources */,
 				D61F11342AB3A6FF00902D6D /* ColorScheme+Extension.swift in Sources */,
@@ -683,6 +708,7 @@
 				D60480DA2B122D3F00D6D70D /* ChartPeriodService.swift in Sources */,
 				D66750EA29D713C900757F17 /* HistoryView.swift in Sources */,
 				D64313B82B1E606B003B5DBC /* PreviewDataFactory.swift in Sources */,
+				D66A4DF82B7AA74F00D16110 /* Period.swift in Sources */,
 				D617D43D2B4987480069AA3B /* GrossSalary.swift in Sources */,
 				D6C458C129D2DD4F0069D89B /* HomeViewModel.swift in Sources */,
 				D6C4589629D229210069D89B /* ContentView.swift in Sources */,
@@ -725,11 +751,13 @@
 				D65A976B29F2E6B800462D8C /* StatisticsViewModelTests.swift in Sources */,
 				D61945EC29E7306B0046DE1F /* HomeViewModelTests.swift in Sources */,
 				D60480D82B122CDA00D6D70D /* ChartPeriodServiceTests.swift in Sources */,
+				D66A4DFA2B7AD3B000D16110 /* XCTestCase+Extension.swift in Sources */,
 				D629CEFB2B363B500036579D /* TimerServiceTests.swift in Sources */,
 				D61945F029E735D80046DE1F /* MockTimer.swift in Sources */,
 				D6C458A529D229230069D89B /* ClockInTests.swift in Sources */,
 				D6CBB8662B3443360074CE8B /* EditSheetViewModelTests.swift in Sources */,
 				D6799EFC29E1BC0F0080E32A /* HistoryViewModelTests.swift in Sources */,
+				D66A4E002B7AD46100D16110 /* Published+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

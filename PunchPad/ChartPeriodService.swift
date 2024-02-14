@@ -49,6 +49,15 @@ class ChartPeriodService {
         return (startDate, finishDate)
     }
     
+    func generatePeriod(from startEntry: Entry, to finishEntry: Entry) throws -> Period {
+        let startDate = calendar.startOfDay(for: startEntry.startDate)
+        let startOfFinishEntryDay = calendar.startOfDay(for: finishEntry.finishDate)
+        guard let finishDate = calendar.date(byAdding: .day, value: 1, to: startOfFinishEntryDay) else {
+            throw ChartPeriodServiceError.failedToCreateDateByAddingComponents
+        }
+        return (startDate, finishDate)
+    }
+    
     func retardPeriod(by timeRange: ChartTimeRange, from currentPeriod: Period) throws -> Period {
         guard let dateInPreviousPeriod = calendar.date(byAdding: .day, value: -1, to: currentPeriod.0) else {
             throw ChartPeriodServiceError.failedToCreateDateByAddingComponents

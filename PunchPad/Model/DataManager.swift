@@ -113,10 +113,11 @@ class DataManager: NSObject, ObservableObject {
         }
     }
     ///conv fetch returning the first element or an error if the fetch failed
-    private func fetchFirst<T: NSManagedObject>(_ objectType: T.Type, predicate: NSPredicate?) -> Result<T?, Error> {
+    private func fetchFirst<T: NSManagedObject>(_ objectType: T.Type, predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]? = nil) -> Result<T?, Error> {
         let request = objectType.fetchRequest()
         request.predicate = predicate
         request.fetchLimit = 1
+        request.sortDescriptors = sortDescriptors
         do {
             let result = try managedObjectContext.fetch(request) as? [T]
             return .success(result?.first)
@@ -165,7 +166,6 @@ extension DataManager: NSFetchedResultsControllerDelegate {
 
 //MARK: ENTRY METHODS
 extension Entry {
-    
     fileprivate init(entryMO: EntryMO) {
         self.id = entryMO.id
         self.startDate = entryMO.startDate
@@ -180,7 +180,6 @@ extension Entry {
 }
 
 extension DataManager {
-
     ///Updates and saves an entry to entryMO, if there is no entryMO it will create a corresponding entryMO
     func updateAndSave(entry: Entry) {
         let predicate = NSPredicate(format: "id = %@", entry.id as CVarArg)
@@ -284,6 +283,36 @@ extension DataManager {
             let result = try managedObjectContext.fetch(request)
             return result.map({ Entry(entryMO: $0) })
         } catch {
+            return nil
+        }
+    }
+    
+    func fetchOldestExisting() -> Entry? {
+        let sortDescriptor = NSSortDescriptor(key: "startDate", ascending: true)
+        let result = fetchFirst(EntryMO.self, predicate: nil, sortDescriptors: [sortDescriptor])
+        switch result {
+        case .success(let success):
+            if let entryMO = success {
+                return Entry(entryMO: entryMO)
+            } else {
+                return nil
+            }
+        case .failure(_):
+            return nil
+        }
+    }
+    
+    func fetchNewestExisting() -> Entry? {
+        let sortDescriptor = NSSortDescriptor(key: "startDate", ascending: false)
+        let result = fetchFirst(EntryMO.self, predicate: nil, sortDescriptors: [sortDescriptor])
+        switch result {
+        case .success(let success):
+            if let entryMO = success {
+                return Entry(entryMO: entryMO)
+            } else {
+                return nil
+            }
+        case .failure(_):
             return nil
         }
     }
