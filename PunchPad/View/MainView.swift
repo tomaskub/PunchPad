@@ -70,6 +70,9 @@ struct MainView: View {
             HistoryView(viewModel: historyViewModel, selectedEntry: $selectedEntry, isShowingFiltering: $isShowingFiltering)
                 .tabBarItem(tab: .history, selection: $tabSelection)
         }
+        .overlay(alignment: .top) {
+            notificationBar
+        }
         .navigationBarTitle(generateNavTitle(tabSelection))
         .navigationBarBackground(bg: {
             BackgroundFactory.buildNavBarBackground()
@@ -82,6 +85,16 @@ struct MainView: View {
         .navigationBarTrailingItem {
             trailingToolbar
         }
+    }
+    
+    var notificationBar: some View {
+        NotificationView(isPresented: $homeViewModel.isPresentingNotification,
+                         notificationText: homeViewModel.notificationText) {
+            Image(systemName: "checkmark.circle")
+                .foregroundColor(.theme.primary)
+        }
+                         .padding(.horizontal, 32)
+                         .padding(.top, 10)
     }
     
     @ViewBuilder
@@ -147,10 +160,10 @@ struct MainView: View {
 #Preview("No navigation bar") {
     struct Preview: View {
         @StateObject private var container: Container = .init()
-        
+        @State private var tabSelected: TabBarItem = .home
         var body: some View {
             MainView(navigator: Navigator(Route.main),
-                     tabSelection: .constant(.home),
+                     tabSelection: $tabSelected,
                      container: container
             )
             .environmentObject(container)

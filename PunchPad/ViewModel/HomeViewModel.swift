@@ -22,6 +22,9 @@ class HomeViewModel: NSObject, ObservableObject {
     private var overtimeTimerService: TimerService?
     @Published var state: TimerService.TimerServiceState = .notStarted
     
+    @Published var notificationText: String = "Workday finished!"
+    @Published var isPresentingNotification: Bool = true
+    
     var timerDisplayValue: TimeInterval {
         if let overtimeTimerService = overtimeTimerService {
             if overtimeTimerService.progress > 0 {
