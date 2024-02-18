@@ -11,58 +11,55 @@ import ThemeKit
 
 struct SettingsView: View {
     private typealias Identifier = ScreenIdentifier.SettingsView
-    @Environment(\.colorScheme) var colorScheme
     @StateObject private var viewModel: SettingsViewModel
     @State private var isShowingWorkTimeEditor: Bool = false
     @State private var isShowingOvertimeEditor: Bool = false
-    
-    init(viewModel: SettingsViewModel) {
-        self._viewModel = StateObject.init(wrappedValue: viewModel)
-    }
-    let navigationTitle: AttributedString = {
+    private let navigationTitle: AttributedString = {
         var result = AttributedString("Settings")
         result.font = .title.weight(.medium)
         result.foregroundColor = .theme.black
         return result
     }()
-    let alertTitle: String = "PunchPad needs permission to show notifications"
-    let alertMessage: String = "You need to allow for notification in settings"
-    let alertButtonText: String = "OK"
-    let hoursPickerText: String = "Hours"
-    let minutesPickerText: String = "Minutes"
-    let timerLengthButtonText: String = "Set timer length"
-    let overtimeLengthButtonText: String = "Maximum overtime allowed"
-    let clearDataText: String = "Clear all saved data"
-    let resetPreferencesText: String = "Reset preferences"
-    let keepLogingOvertimeText: String = "Keep logging overtime"
-    let grossPaycheckText: String = "Gross paycheck"
-    let calculateNetPayText: String = "Calculate net pay"
-    let colorSchemeText: String = "Color scheme"
-    let colorSchemeDarkText: String = "Dark"
-    let colorSchemeLightText: String = "Light"
-    let colorSchemeSystemText: String = "System"
-    let currencyText: String = "PLN"
-    let notificationsText: String = "Send notification on finish"
-    // header texts
-    let timerSettingsHeaderText: String = "Timer settings"
-    let overtimeSettingsHeaderText: String = "Overtime"
-    let paycheckSettingsText: String = "Paycheck calculation"
-    let userDataSettingsText: String = "User data"
-    let appearanceText: String = "Appearance"
-    
-    var currencyCode: String {
+    private let trashIconName = "trash"
+    private let arrowCounterClockwiseIconName = "arrow.counterclockwise"
+    private let alertTitle: String = "PunchPad needs permission to show notifications"
+    private let alertMessage: String = "You need to allow for notification in settings"
+    private let alertButtonText: String = "OK"
+    private let hoursPickerText: String = "Hours"
+    private let minutesPickerText: String = "Minutes"
+    private let timerLengthButtonText: String = "Set timer length"
+    private let overtimeLengthButtonText: String = "Maximum overtime allowed"
+    private let clearDataText: String = "Clear all saved data"
+    private let resetPreferencesText: String = "Reset preferences"
+    private let keepLogingOvertimeText: String = "Keep logging overtime"
+    private let grossPaycheckText: String = "Gross paycheck"
+    private let calculateNetPayText: String = "Calculate net pay"
+    private let colorSchemeText: String = "Color scheme"
+    private let colorSchemeDarkText: String = "Dark"
+    private let colorSchemeLightText: String = "Light"
+    private let colorSchemeSystemText: String = "System"
+    private let currencyText: String = "PLN"
+    private let notificationsText: String = "Send notification on finish"
+    private let timerSettingsHeaderText: String = "Timer settings"
+    private let overtimeSettingsHeaderText: String = "Overtime"
+    private let paycheckSettingsText: String = "Paycheck calculation"
+    private let userDataSettingsText: String = "User data"
+    private let appearanceText: String = "Appearance"
+    private var currencyCode: String {
         let locale = Locale.current
         return locale.currencySymbol ?? "PLN"
     }
+    
+    init(viewModel: SettingsViewModel) {
+        self._viewModel = StateObject.init(wrappedValue: viewModel)
+    }
 }
 
-// MARK: BODY
+// MARK: - Body
 extension SettingsView {
     var body: some View {
         ZStack{
-            //BACKGROUND
             background
-            //CONTENT
             List {
                 Section {
                     timerSettings
@@ -74,7 +71,7 @@ extension SettingsView {
                 } header: {
                     TextFactory.buildSectionHeader(timerSettingsHeaderText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.timerSettings.rawValue)
-                } // END OF SECTION
+                }
                 .listRowBackground(Color.theme.white)
                 Section {
                     makeToggleRow(keepLogingOvertimeText,
@@ -85,7 +82,7 @@ extension SettingsView {
                 } header: {
                     TextFactory.buildSectionHeader(overtimeSettingsHeaderText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.overtimeSettings.rawValue)
-                } // END OF SECTION
+                }
                 .listRowBackground(Color.theme.white)
                 Section {
                     grossPaycheckRow
@@ -96,7 +93,7 @@ extension SettingsView {
                 } header: {
                     TextFactory.buildSectionHeader(paycheckSettingsText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.paycheckCalculation.rawValue)
-                } // END OF SECTION
+                }
                 .listRowBackground(Color.theme.white)
                 Section {
                     clearDataButton
@@ -104,28 +101,28 @@ extension SettingsView {
                 } header: {
                     TextFactory.buildSectionHeader(userDataSettingsText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.userData.rawValue)
-                } // END OF SECTION
+                }
                 .listRowBackground(Color.theme.white)
-//                appearanceSection
-            } // END OF LIST
-            
+            }
             .scrollContentBackground(.hidden)
             .listRowSeparatorTint(.theme.primary)
             
-        } // END OF ZSTACK
+        }
         .navigationBarTitle(navigationTitle)
         .navigationBarBackButtonColor(color: .theme.black)
         .alert(alertTitle,
                isPresented: $viewModel.shouldShowNotificationDeniedAlert) {
             Button(alertButtonText) {
-                viewModel.shouldShowNotificationDeniedAlert = false 
+                viewModel.shouldShowNotificationDeniedAlert = false
             }
         } message: {
             Text(alertMessage)
         }
+    }
+}
 
-    } // END OF BODY
-    
+// MARK: - View Components
+private extension SettingsView {
     var timerSettings: some View {
         Group {
             makeChevronListButton(timerLengthButtonText,
@@ -179,7 +176,7 @@ extension SettingsView {
     
     var clearDataButton: some View {
         makeListButton(clearDataText,
-                       systemName: "trash",
+                       systemName: trashIconName,
                        iconForegroundColor: .theme.redLabel,
                        accessibilityIdentifier: Identifier.ButtonCells.clearAllSavedData.rawValue) {
             viewModel.deleteAllData()
@@ -188,43 +185,20 @@ extension SettingsView {
     
     var resetPreferencesButton: some View {
         makeListButton(resetPreferencesText,
-                       systemName: "arrow.counterclockwise",
+                       systemName: arrowCounterClockwiseIconName,
                        iconForegroundColor: .theme.redLabel,
                        accessibilityIdentifier: Identifier.ButtonCells.resetPreferences.rawValue) {
             viewModel.resetUserDefaults()
         }
-
     }
     
-    //Removed color scheme section - crashes the app and right now colors are not supported
-    /*
-    var appearanceSection: some View {
-        Section {
-            VStack{
-                Text(colorSchemeText)
-                Picker("appearance", selection: $viewModel.settingsStore.savedColorScheme) {
-                    Text(colorSchemeSystemText)
-                        .tag(nil as ColorScheme?)
-                        .accessibilityIdentifier(Identifier.SegmentedControlButtons.system.rawValue)
-                    Text(colorSchemeDarkText)
-                        .tag(ColorScheme.dark)
-                        .accessibilityIdentifier(Identifier.SegmentedControlButtons.dark.rawValue)
-                    Text(colorSchemeLightText)
-                        .tag(ColorScheme.light)
-                        .accessibilityIdentifier(Identifier.SegmentedControlButtons.light.rawValue)
-                } // END OF PICKER
-                .accessibilityIdentifier(Identifier.Pickers.appearancePicker.rawValue)
-                .pickerStyle(.segmented)
-            } // END OF VSTACK
-        } header: {
-            TextFactory.buildSectionHeader(appearanceText)
-                .accessibilityIdentifier(Identifier.SectionHeaders.appearance.rawValue)
-        } // END OF SECTION
-         */
+    var background: some View {
+        BackgroundFactory.buildSolidColor(.theme.tertiary)
+    }
 }
 
-// MARK: VIEWBUILDERS
-extension SettingsView {
+// MARK: - View Builders
+private extension SettingsView {
     @ViewBuilder
     private func makeChevronListButton(_ text: String, chevronOrientation: Bool, accessibilityIdentifier: Identifier.ExpandableCells? = nil, onTap: @escaping () -> Void) -> some View {
         HStack {
@@ -309,14 +283,8 @@ extension SettingsView {
     }
 }
 
-//MARK: VIEW COMPONENTS
-extension SettingsView {
-    var background: some View {
-        BackgroundFactory.buildSolidColor(.theme.tertiary)
-    }
-}
-struct SettingsView_Previews: PreviewProvider {
-    private struct ContainerView: View {
+#Preview("SettingsView") {
+    struct ContainerView: View {
         @StateObject private var container = Container()
         var body: some View {
             SettingsView(viewModel: 
@@ -326,8 +294,5 @@ struct SettingsView_Previews: PreviewProvider {
             )
         }
     }
-    static var previews: some View {
-        ContainerView()
-    }
-        
+    return ContainerView()
 }
