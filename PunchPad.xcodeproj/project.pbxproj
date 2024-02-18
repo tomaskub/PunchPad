@@ -40,6 +40,8 @@
 		D65A976B29F2E6B800462D8C /* StatisticsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65A976A29F2E6B800462D8C /* StatisticsViewModelTests.swift */; };
 		D65A976D29F323A900462D8C /* K.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65A976C29F323A900462D8C /* K.swift */; };
 		D65A976F29F3BBDD00462D8C /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65A976E29F3BBDD00462D8C /* OnboardingView.swift */; };
+		D65C39332B80C43A0043E542 /* NotificationModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65C39322B80C43A0043E542 /* NotificationModalView.swift */; };
+		D65C39352B80CABD0043E542 /* NotificationFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65C39342B80CABD0043E542 /* NotificationFeedView.swift */; };
 		D65FD53D29D8B259006CC34F /* PersistanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65FD53C29D8B259006CC34F /* PersistanceController.swift */; };
 		D66451062B56FF47003C537B /* ThemeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D630A53A2B4704EA0098CA86 /* ThemeKit.framework */; };
 		D66451072B56FF47003C537B /* ThemeKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D630A53A2B4704EA0098CA86 /* ThemeKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -186,6 +188,8 @@
 		D65A976A29F2E6B800462D8C /* StatisticsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModelTests.swift; sourceTree = "<group>"; };
 		D65A976C29F323A900462D8C /* K.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = K.swift; sourceTree = "<group>"; };
 		D65A976E29F3BBDD00462D8C /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		D65C39322B80C43A0043E542 /* NotificationModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModalView.swift; sourceTree = "<group>"; };
+		D65C39342B80CABD0043E542 /* NotificationFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationFeedView.swift; sourceTree = "<group>"; };
 		D65FD53C29D8B259006CC34F /* PersistanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistanceController.swift; sourceTree = "<group>"; };
 		D666ADCB2AC05A0500B74663 /* CaseIterable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CaseIterable+Extension.swift"; sourceTree = "<group>"; };
 		D66750E929D713C900757F17 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
@@ -306,6 +310,7 @@
 			isa = PBXGroup;
 			children = (
 				D621C0C92B3B79850065DF8C /* CircleButton.swift */,
+				D65C39322B80C43A0043E542 /* NotificationModalView.swift */,
 				D6FE20862B46EE0D00F931CD /* ConfirmDeleteRowView.swift */,
 				D621C0CB2B3B8BE40065DF8C /* TimerIndicator.swift */,
 				D647BA962B7D48A700B10FC2 /* NotificationView.swift */,
@@ -480,6 +485,7 @@
 				D6FA94FC2B013F060034B16A /* ChartLegendItemView.swift */,
 				D65A976E29F3BBDD00462D8C /* OnboardingView.swift */,
 				D653FEEB2B320E1600ECFCF2 /* TimeIntervalPicker.swift */,
+				D65C39342B80CABD0043E542 /* NotificationFeedView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -673,6 +679,7 @@
 				D684A3882AF6F3E700511E0D /* OnboardingWelcomeView.swift in Sources */,
 				D6842EC429EC62DE00731E84 /* PayManager.swift in Sources */,
 				D64766C52AFEBD9D0013AC9A /* ChartLegendView.swift in Sources */,
+				D65C39352B80CABD0043E542 /* NotificationFeedView.swift in Sources */,
 				D64574B629D9F37400207168 /* Entry.swift in Sources */,
 				D6E6832E2B79502B009C6CEC /* ChartableEntry.swift in Sources */,
 				D6C458C729D36C050069D89B /* RingView.swift in Sources */,
@@ -691,6 +698,7 @@
 				D6D906B12AA12BDB004E09C9 /* BackgroundFactory.swift in Sources */,
 				D6D02FB029EF0B7F006CD0B2 /* EditShetViewModel.swift in Sources */,
 				D68732022B2243C9008CB0D4 /* PaginationState.swift in Sources */,
+				D65C39332B80C43A0043E542 /* NotificationModalView.swift in Sources */,
 				D6FE20872B46EE0D00F931CD /* ConfirmDeleteRowView.swift in Sources */,
 				D698F3F02B5C131D00D9DFF4 /* NotificationService.swift in Sources */,
 				D6FA94FD2B013F060034B16A /* ChartLegendItemView.swift in Sources */,
