@@ -11,35 +11,38 @@ import ThemeKit
 
 struct HistoryView: View {
     private typealias Identifier = ScreenIdentifier.HistoryView
-    let navigationTitleText: String = "History"
-    let placeholderText: String = """
+    private let navigationTitleText: String = "History"
+    private let placeholderText: String = """
                     Ooops! Something went wrong,
                     or you never recorded time...
                     """
-    let deleteRowMessage: String = "Are you sure you want to delete this entry?"
-    let deleteRowIcon: String = "checkmark.circle"
-    let headerFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMMM yyyy"
-        return formatter
-    }()
+    private let deleteRowMessage: String = "Are you sure you want to delete this entry?"
+    private let deleteRowIcon: String = "checkmark.circle"
+    private let headerFormatter: DateFormatter = FormatterFactory.makeFullMonthYearDateFormatter()
     
-    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject private var container: Container
-    @ObservedObject var viewModel: HistoryViewModel
-    @Binding var selectedEntry: Entry?
-    @Binding var isShowingFiltering: Bool
-    @State var entryToBeDeleted: Entry?
+    @ObservedObject private var viewModel: HistoryViewModel
+    @Binding private var selectedEntry: Entry?
+    @Binding private var isShowingFiltering: Bool
+    @State private var entryToBeDeleted: Entry?
     
+    init(viewModel: HistoryViewModel, selectedEntry: Binding<Entry?>, isShowingFiltering: Binding<Bool>) {
+        self.viewModel = viewModel
+        self._selectedEntry = selectedEntry
+        self._isShowingFiltering = isShowingFiltering
+    }
+}
+
+//MARK: - Body
+extension HistoryView {
     var body: some View {
         ZStack {
-            // BACKGROUND LAYER
             background
-            // CONTENT LAYER
+            
             List {
                 makeListConent(viewModel.groupedEntries)
                     .listRowBackground(Color.theme.white)
-            } // END OF LIST
+            }
             .listStyle(.insetGrouped)
             .emptyPlaceholder(viewModel.groupedEntries) {
                 emptyPlaceholderView
@@ -51,14 +54,17 @@ struct HistoryView: View {
                                                    settingsStore: container.settingsStore,
                                                    payService: container.payManager,
                                                    entry: entry))
-            } // END OF SHEET
+            }
             .sheet(isPresented: $isShowingFiltering) {
                 filteringView
                     .presentationDetents([.fraction(0.4)])
             }
-        } // END OF ZSTACK
-    } // END OF BODY
-    
+        }
+    }
+}
+
+//MARK: - Helper functions
+private extension HistoryView {
     func makeSectionHeader(_ entry: Entry?) -> String {
         if let date = entry?.startDate {
             return headerFormatter.string(from: date)
@@ -71,10 +77,10 @@ struct HistoryView: View {
         guard let lastEntry = viewModel.groupedEntries.last?.last else { return true }
         return lastEntry == entry
     }
-} // END OF STRUCT
+}
 
-//MARK: VIEW BUILDER FUNCTIONS
-extension HistoryView {
+//MARK: - List View Builders
+private extension HistoryView {
     @ViewBuilder
     func makeListConent(_ groupedEntries: [[Entry]]) -> some View {
         ForEach(groupedEntries, id: \.self) { groupEntry in
@@ -83,7 +89,7 @@ extension HistoryView {
     }
     @ViewBuilder
     func makeListSection(_ entries: [Entry]) -> some View {
-        Section(/*makeSectionHeader(entries.first)*/) {
+        Section {
             ForEach(entries) { entry in
                 if entry != entryToBeDeleted {
                     HistoryRowView(withEntry: entry)
@@ -97,7 +103,7 @@ extension HistoryView {
                         .swipeActions {
                             makeDeleteButton(entry)
                             makeEditButton(entry)
-                        } // END OF SWIPE ACTIONS
+                        }
                 } else {
                     ConfirmDeleteRowView(deleteRowMessage,
                                          iconSystemName: deleteRowIcon) {
@@ -127,7 +133,7 @@ extension HistoryView {
             }
         } label: {
             Image(systemName: "xmark")
-        } // END OF BUTTON
+        }
         .accessibilityIdentifier(Identifier.deleteEntryButton.rawValue)
         .tint(.red)
     }
@@ -138,13 +144,13 @@ extension HistoryView {
             selectedEntry = entry
         } label: {
             Image(systemName: "pencil")
-        } // END OF BUTTON
+        }
         .accessibilityIdentifier(Identifier.editEntryButton.rawValue)
     }
 }
 
-//MARK: VIEW COMPONENTS
-extension HistoryView {
+//MARK: - View Components
+private extension HistoryView {
     var emptyPlaceholderView: some View {
         VStack {
             Image(systemName: "nosign")
