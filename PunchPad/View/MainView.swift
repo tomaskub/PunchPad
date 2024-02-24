@@ -69,7 +69,9 @@ extension MainView {
             StatisticsView(viewModel: statViewModel)
                 .tabBarItem(tab: .statistics, selection: $tabSelection)
             
-            HistoryView(viewModel: historyViewModel, selectedEntry: $selectedEntry, isShowingFiltering: $isShowingFiltering)
+            HistoryView(viewModel: historyViewModel, 
+                        selectedEntry: $selectedEntry,
+                        isShowingFiltering: $isShowingFiltering)
                 .tabBarItem(tab: .history, selection: $tabSelection)
         }
                       .navigationBarTitle(generateNavTitle(tabSelection))
