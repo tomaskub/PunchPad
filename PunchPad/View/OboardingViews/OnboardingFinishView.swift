@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct OnboardingFinishView: View {
-    let titleText: String = "PunchPad has been succsessfully set up"
-    let descriptionText: String = "You are all ready to go! Enjoy using the app!"
+    private let titleText: String = "PunchPad has been succsessfully set up"
+    private let descriptionText: String = "You are all ready to go! Enjoy using the app!"
     
     var body: some View {
         VStack(spacing: 40) {
