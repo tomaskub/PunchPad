@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct OnboardingWorktimeView: View {
-    
-    let titleText: String = "Workday"
-    let descriptionText: String = "PunchPad needs to know your normal workday length to let you know when you are done or when you enter into overtime"
-    let hoursPickerLabel: String = "Hours"
-    let minutesPickerLabel: String = "Minutes"
+    private let titleText: String = "Workday"
+    private let descriptionText: String = "PunchPad needs to know your normal workday length to let you know when you are done or when you enter into overtime"
+    private let hoursPickerLabel: String = "Hours"
+    private let minutesPickerLabel: String = "Minutes"
     
     private typealias Identifier = ScreenIdentifier.OnboardingView
     @ObservedObject var viewModel: OnboardingViewModel
@@ -60,11 +59,11 @@ struct OnboardingWorktimeView: View {
         .padding(30)
     } // END OF BODY
     
-    var title: some View {
+    private var title: some View {
         TextFactory.buildTitle(titleText)
     }
     
-    var description: some View {
+    private var description: some View {
         TextFactory.buildDescription(descriptionText)
     }
 } // END OF VIEW
