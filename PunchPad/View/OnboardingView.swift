@@ -28,8 +28,8 @@ struct OnboardingView: View {
         }
     }
     
-    @Environment(\.colorScheme) var colorScheme
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: OnboardingViewModel
     @State private var currentStage: OnboardingStage = .welcome
     
