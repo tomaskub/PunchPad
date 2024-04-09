@@ -8,7 +8,12 @@
 import SwiftUI
 
 struct ChartLegendView: View {
-    let chartLegendItems: [ChartLegendItem]
+    private let chartLegendItems: [ChartLegendItem]
+    
+    init(chartLegendItems: [ChartLegendItem]) {
+        self.chartLegendItems = chartLegendItems
+    }
+    
     var body: some View {
         HStack {
             Text("Legend:")
