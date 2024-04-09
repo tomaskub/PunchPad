@@ -10,11 +10,11 @@ import ThemeKit
 
 struct OnboardingNotificationView: View {
     private typealias Identifier = ScreenIdentifier.OnboardingView
-    let titleText: String = "Notifications"
-    let descriptionText: String = "Do you want PunchPad to send you notifications when the work time is finished?"
-    let alertTitle: String = "PunchPad needs permission to show notifications"
-    let alertMessage: String = "You need to allow for notification in settings"
-    let alertButtonText: String = "OK"
+    private let titleText: String = "Notifications"
+    private let descriptionText: String = "Do you want PunchPad to send you notifications when the work time is finished?"
+    private let alertTitle: String = "PunchPad needs permission to show notifications"
+    private let alertMessage: String = "You need to allow for notification in settings"
+    private let alertButtonText: String = "OK"
     @ObservedObject var viewModel: OnboardingViewModel
     
     var body: some View {
