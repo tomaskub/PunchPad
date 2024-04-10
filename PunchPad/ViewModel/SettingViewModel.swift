@@ -8,10 +8,12 @@
 import Combine
 import SwiftUI
 
-class SettingsViewModel: ObservableObject {
+final class SettingsViewModel: ObservableObject {
     private var subscriptions = Set<AnyCancellable>()
     private var notificationService: NotificationService
     private var dataManager: DataManager
+    private let secondsInHour = 3600
+    private let secondsInMinute = 60
     @Published var settingsStore: SettingsStore
     @Published var timerHours: Int
     @Published var timerMinutes: Int
@@ -24,10 +26,10 @@ class SettingsViewModel: ObservableObject {
         self.dataManager = dataManger
         self.notificationService = notificationService
         self.settingsStore = settingsStore
-        self.timerHours = settingsStore.workTimeInSeconds / 3600
-        self.timerMinutes = (settingsStore.workTimeInSeconds % 3600) / 60
-        self.overtimeHours = settingsStore.maximumOvertimeAllowedInSeconds / 3600
-        self.overtimeMinutes = (settingsStore.maximumOvertimeAllowedInSeconds % 3600) / 60
+        self.timerHours = settingsStore.workTimeInSeconds / secondsInHour
+        self.timerMinutes = (settingsStore.workTimeInSeconds % secondsInHour) / secondsInMinute
+        self.overtimeHours = settingsStore.maximumOvertimeAllowedInSeconds / secondsInHour
+        self.overtimeMinutes = (settingsStore.maximumOvertimeAllowedInSeconds % secondsInHour) / secondsInMinute
         self.grossPayPerMonth = settingsStore.grossPayPerMonth
         setSubscribers()
     }
@@ -52,24 +54,24 @@ class SettingsViewModel: ObservableObject {
             .receive(on: RunLoop.main)
             .filter { [weak self] value in
                 guard let self else { return false }
-                return value/3600 != self.timerHours && (value % 3600) / 60 != self.timerMinutes
+                return value/secondsInHour != self.timerHours && (value % secondsInHour) / secondsInMinute != self.timerMinutes
             }
             .sink { [weak self] value in
                 guard let self else { return }
-                self.timerHours = value / 3600
-                self.timerMinutes = (value % 3600) / 60
+                self.timerHours = value / secondsInHour
+                self.timerMinutes = (value % secondsInHour) / secondsInMinute
             }.store(in: &subscriptions)
         
         settingsStore.$maximumOvertimeAllowedInSeconds
             .receive(on: RunLoop.main)
             .filter { [weak self] value in
                 guard let self else { return false }
-                return value/3600 != self.overtimeHours && (value % 3600) / 60 != self.overtimeMinutes
+                return value/secondsInHour != self.overtimeHours && (value % secondsInHour) / secondsInMinute != self.overtimeMinutes
             }
             .sink { [weak self] value in
                 guard let self else { return }
-                self.overtimeHours = value / 3600
-                self.overtimeMinutes = (value % 3600) / 60
+                self.overtimeHours = value / secondsInHour
+                self.overtimeMinutes = (value % secondsInHour) / secondsInMinute
             }.store(in: &subscriptions)
         
         settingsStore.$grossPayPerMonth
@@ -167,6 +169,6 @@ class SettingsViewModel: ObservableObject {
     }
     
     private func calculateTimeInSeconds(hours: Int, minutes: Int) -> Int {
-        return hours * 3600 + minutes * 60
+        hours * secondsInHour + minutes * secondsInMinute
     }
 }
