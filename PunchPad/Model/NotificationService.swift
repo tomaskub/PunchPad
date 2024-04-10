@@ -8,9 +8,9 @@
 import Foundation
 import UserNotifications
 
-class NotificationService {
-    let center: UNUserNotificationCenter
-    var pendingNotificationsIDs: Set<String> = []
+final class NotificationService {
+    private let center: UNUserNotificationCenter
+    private var pendingNotificationsIDs: Set<String> = []
     
     init(center: UNUserNotificationCenter) {
         self.center = center
@@ -26,6 +26,7 @@ class NotificationService {
             }
         }
     }
+    
     func deschedulePendingNotifications() {
         center.removeAllPendingNotificationRequests()
         pendingNotificationsIDs.removeAll()
