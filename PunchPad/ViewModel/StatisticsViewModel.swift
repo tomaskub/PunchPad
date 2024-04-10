@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class StatisticsViewModel: ObservableObject {
+final class StatisticsViewModel: ObservableObject {
     private var chartPeriodService: ChartPeriodService
     private var calendar: Calendar
     @Published private var dataManager: DataManager
@@ -16,6 +16,8 @@ class StatisticsViewModel: ObservableObject {
     @Published private var settingsStore: SettingsStore
     private var subscriptions = Set<AnyCancellable>()
     //MARK: PUBLISHED VARIABLES
+    private let secondsInHour = 3600
+    private let secondsInMinute = 60
     @Published var chartTimeRange: ChartTimeRange = .week
     @Published var periodDisplayed: Period = (Date(), Date())
     var grossSalaryData: GrossSalary {
@@ -24,13 +26,13 @@ class StatisticsViewModel: ObservableObject {
     
     var workedHoursInPeriod: Int {
         entryInPeriod.map { entry in
-            (entry.workTimeInSeconds + entry.overTimeInSeconds ) / 3600
+            (entry.workTimeInSeconds + entry.overTimeInSeconds ) / secondsInHour
         }.reduce(0, +)
     }
     
     var overtimeHoursInPeriod: Int {
         entryInPeriod.map { entry in
-            entry.overTimeInSeconds / 3600
+            entry.overTimeInSeconds / secondsInHour
         }.reduce(0, +)
     }
     
@@ -46,7 +48,7 @@ class StatisticsViewModel: ObservableObject {
               let finishDate = entryInPeriod.last?.finishDate,
               let timeDiff = Calendar.current.dateComponents([.month], from: startDate, to: finishDate).month,
               timeDiff < 3,
-              entryInPeriod.count < 60 else { return nil }
+              entryInPeriod.count < secondsInMinute else { return nil }
         return groupEntriesByYearWeek(entryInPeriod).map { EntrySummary(fromEntries: $0) }
     }
     
