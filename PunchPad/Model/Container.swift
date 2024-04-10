@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class Container: ObservableObject {
+final class Container: ObservableObject {
     private var subscriptions = Set<AnyCancellable>()
     private(set) var dataManager: DataManager
     private(set) var payManager: PayManager
