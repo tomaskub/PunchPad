@@ -35,11 +35,11 @@ class HomeViewModel: NSObject, ObservableObject {
     }
     
     var normalProgress: CGFloat {
-        return workTimerService.progress
+        workTimerService.progress
     }
     
     var overtimeProgress: CGFloat {
-        return overtimeTimerService?.progress ?? 0
+        overtimeTimerService?.progress ?? 0
     }
     
     init(dataManager: DataManager, settingsStore: SettingsStore, payManager: PayManager, notificationService: NotificationService, timerProvider: Timer.Type) {

@@ -20,8 +20,7 @@ class TimerService: ObservableObject {
     private var timer: Timer?
     private let timerLimit: TimeInterval
     
-    //Published progress properties for UI
-    @Published var progress: CGFloat = 0.0
+    @Published private(set) var progress: CGFloat = 0.0
     @Published private(set) var serviceState: TimerServiceState = .notStarted
     @Published private(set) var counter: TimeInterval = 0
     var remainingTime: TimeInterval {
@@ -45,7 +44,7 @@ class TimerService: ObservableObject {
         case .pause:
             if serviceState == .running {
                 serviceState = .paused
-            } // else do nothing
+            }
             
         case .stop:
             if !(serviceState == .notStarted) {

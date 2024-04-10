@@ -8,14 +8,29 @@
 import SwiftUI
 
 struct RingView: View {
-    var startPoint: CGFloat
-    var endPoint: CGFloat
+    private var startPoint: CGFloat
+    private var endPoint: CGFloat
+    private var ringColor: Color
+    private var pointColor: Color?
+    private var ringWidth: CGFloat
+    private var displayPointer: Bool
+    private var pointerDiameter: CGFloat
     
-    var ringColor: Color
-    var pointColor: Color?
-    var ringWidth: CGFloat = 10
-    var displayPointer: Bool = true
-    var pointerDiameter: CGFloat = 30
+    init(startPoint: CGFloat,
+         endPoint: CGFloat,
+         ringColor: Color,
+         pointColor: Color? = nil,
+         ringWidth: CGFloat = 10,
+         displayPointer: Bool = true,
+         pointerDiameter: CGFloat = 30) {
+        self.startPoint = startPoint
+        self.endPoint = endPoint
+        self.ringColor = ringColor
+        self.pointColor = pointColor
+        self.ringWidth = ringWidth
+        self.displayPointer = displayPointer
+        self.pointerDiameter = pointerDiameter
+    }
     
     var body: some View {
         GeometryReader { proxy in

@@ -8,7 +8,12 @@
 import SwiftUI
 
 struct ChartLegendItemView: View {
-    let chartLegendItem: ChartLegendItem
+    private let chartLegendItem: ChartLegendItem
+    
+    init(chartLegendItem: ChartLegendItem) {
+        self.chartLegendItem = chartLegendItem
+    }
+    
     var body: some View {
         HStack {
             chartLegendItem.itemShape

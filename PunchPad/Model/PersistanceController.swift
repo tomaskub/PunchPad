@@ -10,7 +10,7 @@ import CoreData
 
 struct PersistanceController {
 
-    let container: NSPersistentContainer
+    private let container: NSPersistentContainer
     
     var viewContext: NSManagedObjectContext {
         return container.viewContext

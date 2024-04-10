@@ -9,8 +9,8 @@ import SwiftUI
 import ThemeKit
 
 struct OnboardingWelcomeView: View {
-    let logoResource: String = "LaunchLogo"
-    let descriptionText: String = "This app was built to help you track time and make sure you are spending at work exactly the time you want and need. \n\n Plan your workdays and plan your paycheck!"
+    private let logoResource: String = "LaunchLogo"
+    private let descriptionText: String = "This app was built to help you track time and make sure you are spending at work exactly the time you want and need. \n\n Plan your workdays and plan your paycheck!"
     
     var body: some View {
         VStack(spacing: 40){

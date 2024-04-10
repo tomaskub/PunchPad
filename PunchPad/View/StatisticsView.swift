@@ -11,26 +11,28 @@ import ThemeKit
 
 struct StatisticsView: View {
     private typealias Identifier = ScreenIdentifier.StatisticsView
-    //MARK: PROPERTIES
-    @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var container: Container
-    @ObservedObject var viewModel: StatisticsViewModel
-    let currencyFormatter = FormatterFactory.makeCurrencyFormatter(Locale.current)
-    let dateFormatter = FormatterFactory.makeDateFormatter()
-    let salaryCalculationHeaderText: String = "Salary calculation"
-    let chartTitleText: String = "time worked"
+    private let currencyFormatter = FormatterFactory.makeCurrencyFormatter(Locale.current)
+    private let dateFormatter = FormatterFactory.makeDateFormatter()
+    private let salaryCalculationHeaderText: String = "Salary calculation"
+    private let chartTitleText: String = "time worked"
     
-    //MARK: VIEW BODY
+    @ObservedObject private var viewModel: StatisticsViewModel
+    
+    init(viewModel: StatisticsViewModel) {
+        self.viewModel = viewModel
+    }
+}
+
+//MARK: - Body
+extension StatisticsView {
     var body: some View {
         ZStack {
             background
-            // CONTENT LAYER
+            
             List {
-                
                 ChartTimeRangePicker(pickerSelection: $viewModel.chartTimeRange)
                     .padding(.horizontal, -20)
                     .listRowBackground(Color.clear)
-                
                 
                 Section {
                     VStack(alignment: .leading) {
@@ -51,7 +53,7 @@ struct StatisticsView: View {
                                 }
                             }
                         )
-                }//END OF SECTION
+                }
                 .listRowBackground(Color.theme.white)
                 .listRowSeparator(.hidden)
                 
@@ -60,19 +62,20 @@ struct StatisticsView: View {
                 } header: {
                     TextFactory.buildSectionHeader(salaryCalculationHeaderText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.salaryCalculation.rawValue)
-                }// END OF SECTION
+                }
                 .listRowBackground(Color.theme.white)
+                
                 Color.clear.frame(height: 80)
                     .listRowBackground(Color.clear)
-            } //END OF LIST
+            }
             .shadow(color: .black.opacity(0.1), radius: 10, y: 4)
             .scrollContentBackground(.hidden)
-        } // END OF ZSTACK
-    } //END OF VIEW
+        }
+    }
 }
 
-//MARK: SWIPE GESTURES
-extension StatisticsView {
+//MARK: - Swipe Gestures
+private extension StatisticsView {
     enum SwipeDirection: String {
         case left, right, up, down, none
     }
@@ -94,16 +97,16 @@ extension StatisticsView {
     }
 }
 
-//MARK: AUX. UI ELEMENTS
-extension StatisticsView {
+//MARK: - Auxiliary View Components
+private extension StatisticsView {
     var background: some View {
         BackgroundFactory.buildSolidColor()
     }
 }
 
-//MARK: CHART VIEW BUILDERS & VARIABLES
-extension StatisticsView {
-    private struct ChartTimeRangePicker: View {
+//MARK: - Chart Views
+private extension StatisticsView {
+    struct ChartTimeRangePicker: View {
         @Binding var pickerSelection: ChartTimeRange
         
         init(pickerSelection: Binding<ChartTimeRange>) {
@@ -144,9 +147,9 @@ extension StatisticsView {
                 ChartFactory.buildBarChartForMonths(data: viewModel.entrySummaryByMonthYear)
             }
         }
-    } // END OF VAR
+    }
     
-    private func makePeriodRangeString(for period: Period, selectedRange: ChartTimeRange) -> String {
+    func makePeriodRangeString(for period: Period, selectedRange: ChartTimeRange) -> String {
         switch selectedRange {
         case .week:
             return makePeriodRangeForWeek(for: period)
@@ -159,7 +162,7 @@ extension StatisticsView {
         }
     }
     
-    private func makePeriodRangeForWeek(for period: Period) -> String {
+    func makePeriodRangeForWeek(for period: Period) -> String {
         let endDateFormatter = FormatterFactory.makeDateFormatter()
         let endString = endDateFormatter.string(from: period.1)
         let startFormatter: DateFormatter? = {
@@ -179,7 +182,7 @@ extension StatisticsView {
         return startString + " - " + endString
     }
     
-    private func makePeriodRangeFullDatesString(for period: Period) -> String {
+    func makePeriodRangeFullDatesString(for period: Period) -> String {
         let formatter = FormatterFactory.makeDateFormatter()
         let startString = formatter.string(from: period.0)
         let finishString = formatter.string(from: period.1)
@@ -219,8 +222,8 @@ extension StatisticsView {
     }
 }
 
-//MARK: DATA VIEW BUILDERS
-extension StatisticsView {
+//MARK: - Salary Views
+private extension StatisticsView {
     var newGrossData: some View {
         Group {
             SalaryListRowView(propertyName: "Period",
@@ -246,7 +249,7 @@ extension StatisticsView {
             )
         }
     }
-    private struct SalaryListRowView: View {
+    struct SalaryListRowView: View {
         let propertyName: String
         let propertyValue: String
         

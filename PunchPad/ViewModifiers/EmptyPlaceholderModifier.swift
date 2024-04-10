@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct EmptyPlaceholderModifier<T: Collection>: ViewModifier {
-    let items: T
-    let placeholder: AnyView
+    private let items: T
+    private let placeholder: AnyView
+    
+    init(items: T, placeholder: AnyView) {
+        self.items = items
+        self.placeholder = placeholder
+    }
     
     @ViewBuilder
     func body(content: Content) -> some View {

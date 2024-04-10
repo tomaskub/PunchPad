@@ -9,18 +9,18 @@ import SwiftUI
 import ThemeKit
 
 struct HistoryRowView: View {
-    let timeIntervalFormatter: DateComponentsFormatter = FormatterFactory.makeHourAndMinuteDateComponentFormatter()
-    let timeFormatter: DateFormatter = FormatterFactory.makeTimeFormatter()
-    let dateFormatter: DateFormatter = FormatterFactory.makeDateFormatter()
-    let hoursText = "hours"
-    let minutesText = "min"
+    private let timeIntervalFormatter: DateComponentsFormatter = FormatterFactory.makeHourAndMinuteDateComponentFormatter()
+    private let timeFormatter: DateFormatter = FormatterFactory.makeTimeFormatter()
+    private let dateFormatter: DateFormatter = FormatterFactory.makeDateFormatter()
+    private let hoursText = "hours"
+    private let minutesText = "min"
     
-    let startDate: Date
-    let finishDate: Date
-    let workTimeInSeconds: Int
-    let overTimeInSeconds: Int
-    let maximumOvertimeAllowedInSeconds: Int
-    let standardWorktimeInSeconds: Int
+    private let startDate: Date
+    private let finishDate: Date
+    private let workTimeInSeconds: Int
+    private let overTimeInSeconds: Int
+    private let maximumOvertimeAllowedInSeconds: Int
+    private let standardWorktimeInSeconds: Int
     
     init(startDate: Date, finishDate: Date, workTimeInSeconds: Int, overTimeInSeconds: Int, maximumOvertimeAllowedInSeconds: Int, standardWorktimeInSecons: Int) {
         self.startDate = startDate
@@ -40,10 +40,10 @@ struct HistoryRowView: View {
         self.standardWorktimeInSeconds = entry.standardWorktimeInSeconds
     }
     
-    var timeInterval: TimeInterval {
+    private var timeInterval: TimeInterval {
         TimeInterval(workTimeInSeconds + overTimeInSeconds)
     }
-    var maximumTime: Int {
+    private var maximumTime: Int {
         maximumOvertimeAllowedInSeconds + standardWorktimeInSeconds
     }
     

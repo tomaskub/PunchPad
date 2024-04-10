@@ -10,6 +10,11 @@ import Charts
 import ThemeKit
 
 struct ChartFactory {
+    private static let xAxisDateLabelTitle = "Date"
+    private static let yAxisHoursWorkedLabelTitle = "Hours worked"
+    private static let legendHoursWorkedLabelTitle = "Hours worked"
+    private static let legendOvertimeLabelTitle = "Overtime"
+    
     /// Build chart using buildBarChart function with default colors from theme kit, x axis unis set to day and x axis value labels formatter to 2 digit days and 3 letter description of month (such as `21 Jun`)
     /// - Parameter data: array of chartableEntry data
     /// - Returns: Chart view
@@ -65,12 +70,12 @@ struct ChartFactory {
     @ViewBuilder static func buildBarChart<T: ChartableEntry>(data: [T], firstColor: Color, secondColor: Color, axisColor: Color, xUnit: Calendar.Component, xFormatter: DateFormatter, yScale: ClosedRange<Int>? = nil) -> some View {
             Chart(data) {
                 BarMark(
-                    x: .value("Date", $0.startDate, unit: xUnit),
-                    y: .value("Hours worked", $0.workTimeInSeconds / 3600))
+                    x: .value(xAxisDateLabelTitle, $0.startDate, unit: xUnit),
+                    y: .value(yAxisHoursWorkedLabelTitle, $0.workTimeInSeconds / 3600))
                 .foregroundStyle(firstColor)
                 
-                BarMark(x: .value("Date", $0.startDate,unit: xUnit),
-                        y: .value("Hours worked", $0.overTimeInSeconds / 3600))
+                BarMark(x: .value(xAxisDateLabelTitle, $0.startDate,unit: xUnit),
+                        y: .value(yAxisHoursWorkedLabelTitle, $0.overTimeInSeconds / 3600))
                 .foregroundStyle(secondColor)
             }
             .chartXAxis {
@@ -108,8 +113,8 @@ struct ChartFactory {
     /// - Returns: ChartLegendView
     @ViewBuilder static func buildChartLegend() -> some View {
         ChartLegendView(chartLegendItems: [
-            ChartLegendItem(itemName: "Hours worked", itemShape: Rectangle(), itemShapeColor: .blue),
-            ChartLegendItem(itemName: "Overtime", itemShape: Circle(), itemShapeColor: .green)])
+            ChartLegendItem(itemName: legendHoursWorkedLabelTitle, itemShape: Rectangle(), itemShapeColor: .blue),
+            ChartLegendItem(itemName: legendOvertimeLabelTitle, itemShape: Circle(), itemShapeColor: .green)])
         .font(.caption)
     }
     
@@ -123,8 +128,8 @@ struct ChartFactory {
     @ViewBuilder static func buildPointChartForPunchTime(entries: [Entry], property: KeyPath<Entry, Date>, color: Color, displayName: String) -> some View {
         Chart(entries) {
             PointMark(
-                x: .value("Date", $0.startDate),
-                y: .value("Date", Calendar.current.dateComponents([.hour, .minute], from: $0[keyPath: property]).hour!)
+                x: .value(xAxisDateLabelTitle, $0.startDate),
+                y: .value(xAxisDateLabelTitle, Calendar.current.dateComponents([.hour, .minute], from: $0[keyPath: property]).hour!)
             )
             .foregroundStyle($0.workTimeInSeconds == 0 ? .clear : color)
         }

@@ -9,12 +9,12 @@ import SwiftUI
 import ThemeKit
 
 struct OnboardingSalaryView: View {
-    let titleText: String = "Salary"
-    let description1Text: String = "To let PunchPad calculate your salary you need to enter your gross montly income"
-    let description2Text: String = "Do you want to PunchPad to calculate your net salary based on Polish tax law?"
-    let paycheckText: String = "Gross paycheck"
-    let netSalaryToggleText: String = "Calculate net salary"
-    let localCurrencyCode: String = {
+    private let titleText: String = "Salary"
+    private let description1Text: String = "To let PunchPad calculate your salary you need to enter your gross montly income"
+    private let description2Text: String = "Do you want to PunchPad to calculate your net salary based on Polish tax law?"
+    private let paycheckText: String = "Gross paycheck"
+    private let netSalaryToggleText: String = "Calculate net salary"
+    private let localCurrencyCode: String = {
         return Locale.current.currency?.identifier ?? "USD"
     }()
     private typealias Identifier = ScreenIdentifier.OnboardingView
@@ -31,16 +31,16 @@ struct OnboardingSalaryView: View {
         .padding(30)
     }
     
-    var title: some View {
+    private var title: some View {
         TextFactory.buildTitle(titleText)
     }
-    var description1: some View {
+    private var description1: some View {
         TextFactory.buildDescription(description1Text)
     }
-    var description2: some View {
+    private var description2: some View {
         TextFactory.buildDescription(description2Text)
     }
-    var grossPaycheckTextField: some View {
+    private var grossPaycheckTextField: some View {
         HStack {
             Text(paycheckText)
                 .foregroundStyle(Color.theme.blackLabel)
@@ -55,7 +55,7 @@ struct OnboardingSalaryView: View {
         .background()
         .cornerRadius(20)
     }
-    var netSalaryToggle: some View {
+    private var netSalaryToggle: some View {
         Toggle(netSalaryToggleText,
                isOn: $viewModel.settingsStore.isCalculatingNetPay)
         .foregroundColor(.theme.blackLabel)

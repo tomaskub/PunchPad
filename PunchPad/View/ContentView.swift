@@ -10,10 +10,14 @@ import TabViewKit
 import NavigationKit
 
 struct ContentView: View {
-    let navigator: Navigator<Route>
+    private let navigator: Navigator<Route>
     @State private var tabSelection: TabBarItem = .home
-    @EnvironmentObject var container: Container
-    @AppStorage(SettingsStore.SettingKey.isRunFirstTime.rawValue) var isRunFirstTime: Bool = true 
+    @EnvironmentObject private var container: Container
+    @AppStorage(SettingsStore.SettingKey.isRunFirstTime.rawValue) private var isRunFirstTime: Bool = true
+    
+    init(navigator: Navigator<Route>) {
+        self.navigator = navigator
+    }
     
     var body: some View {
         NavHost(navigator: navigator) { route in
@@ -25,11 +29,10 @@ struct ContentView: View {
                 )
             case .settings:
                 SettingsView(viewModel:
-                                SettingsViewModel(
-                                    dataManger: container.dataManager,
-                                    notificationService: container.notificationService,
-                                    settingsStore: container.settingsStore
-                                )
+                                SettingsViewModel(dataManger: container.dataManager,
+                                                  notificationService: container.notificationService,
+                                                  settingsStore: container.settingsStore
+                                                 )
                 )
             }
         }
@@ -41,13 +44,15 @@ struct ContentView: View {
                                                 settingsStore: container.settingsStore)
             )
         }
-        
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView(navigator: Navigator(Route.main))
-            .environmentObject(Container())
+#Preview("ContentView") {
+    struct ContainerView: View {
+        var body: some View {
+            ContentView(navigator: Navigator(Route.main))
+                .environmentObject(Container())
+        }
     }
+    return ContainerView()
 }

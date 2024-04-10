@@ -11,15 +11,15 @@ import NavigationKit
 import ThemeKit
 
 struct MainView: View {
-    let navigator: Navigator<Route>
+    private let navigator: Navigator<Route>
     @StateObject private var homeViewModel: HomeViewModel
     @StateObject private var statViewModel: StatisticsViewModel
     @StateObject private var historyViewModel: HistoryViewModel
     @State private var isShowingFiltering: Bool = false
     @State private var selectedEntry: Entry? = nil
-    @Binding var tabSelection: TabBarItem
-    @EnvironmentObject var container: Container
-    let mainTitle: AttributedString = {
+    @Binding private var tabSelection: TabBarItem
+    @EnvironmentObject private var container: Container
+    private let mainTitle: AttributedString = {
         var result = AttributedString("PunchPad")
         result.font = .title
         result.foregroundColor = .theme.black
@@ -28,11 +28,10 @@ struct MainView: View {
         }
         return result
     }()
-    
-    let tabBarColorConfiguration = TabBarColorConfiguration(activeColor: .theme.primary,
-                                                            inactiveColor: .theme.secondaryLabel,
-                                                            shadowColor: .theme.black.opacity(0.3),
-                                                            backgroundColor: .theme.white)
+    private let tabBarColorConfiguration = TabBarColorConfiguration(activeColor: .theme.primary,
+                                                                    inactiveColor: .theme.secondaryLabel,
+                                                                    shadowColor: .theme.black.opacity(0.3),
+                                                                    backgroundColor: .theme.white)
     
     init(navigator: Navigator<Route>, tabSelection: Binding<TabBarItem>, container: Container) {
         self.navigator = navigator
@@ -57,7 +56,10 @@ struct MainView: View {
         )
         self._tabSelection = tabSelection
     }
-    
+}
+
+//MARK: - Body
+extension MainView {
     var body: some View {
         CustomTabView(selection: $tabSelection,
                       tabBarColorConfiguration: tabBarColorConfiguration) {
@@ -67,23 +69,28 @@ struct MainView: View {
             StatisticsView(viewModel: statViewModel)
                 .tabBarItem(tab: .statistics, selection: $tabSelection)
             
-            HistoryView(viewModel: historyViewModel, selectedEntry: $selectedEntry, isShowingFiltering: $isShowingFiltering)
+            HistoryView(viewModel: historyViewModel, 
+                        selectedEntry: $selectedEntry,
+                        isShowingFiltering: $isShowingFiltering)
                 .tabBarItem(tab: .history, selection: $tabSelection)
         }
-        .navigationBarTitle(generateNavTitle(tabSelection))
-        .navigationBarBackground(bg: {
-            BackgroundFactory.buildNavBarBackground()
-        })
-        .navigationBarItems {
-            leadingToolbar
-        } trailing: {
-            trailingToolbar
-        }
-        .navigationBarTrailingItem {
-            trailingToolbar
-        }
+                      .navigationBarTitle(generateNavTitle(tabSelection))
+                      .navigationBarBackground(bg: {
+                          BackgroundFactory.buildNavBarBackground()
+                      })
+                      .navigationBarItems {
+                          leadingToolbar
+                      } trailing: {
+                          trailingToolbar
+                      }
+                      .navigationBarTrailingItem {
+                          trailingToolbar
+                      }
     }
-    
+}
+
+//MARK: - View Builders
+private extension MainView {
     @ViewBuilder
     var leadingToolbar: some View {
         switch tabSelection {
@@ -102,6 +109,7 @@ struct MainView: View {
             EmptyView()
         }
     }
+    
     @ViewBuilder
     var trailingToolbar: some View {
         switch tabSelection {
@@ -127,7 +135,7 @@ struct MainView: View {
     }
     
     @ViewBuilder
-    private func makeToolBarItemIcon(_ sysName: String) -> some View {
+    func makeToolBarItemIcon(_ sysName: String) -> some View {
         Image(systemName: sysName)
             .resizable()
             .aspectRatio(contentMode: .fit)

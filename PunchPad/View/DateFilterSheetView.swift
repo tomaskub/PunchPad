@@ -8,16 +8,24 @@
 import SwiftUI
 
 struct DateFilterSheetView: View {
-    let title: String = "Filter"
-    let toLabel: String = "To:"
-    let fromLabel: String = "From:"
-    let sortLabel: String = "Oldest entries first"
-    @Environment(\.dismiss) var dismiss
+    private let title: String = "Filter"
+    private let toLabel: String = "To:"
+    private let fromLabel: String = "From:"
+    private let sortLabel: String = "Oldest entries first"
+    @Environment(\.dismiss) private var dismiss
     @Binding var fromDate: Date
     @Binding var toDate: Date
     @Binding var sortAscending: Bool
-    let cancelAction: () -> Void
-    let confirmAction: () -> Void
+    private let cancelAction: () -> Void
+    private let confirmAction: () -> Void
+    
+    init(fromDate: Binding<Date>, toDate: Binding<Date>, sortAscending: Binding<Bool>, cancelAction: @escaping () -> Void, confirmAction: @escaping () -> Void) {
+        self._fromDate = fromDate
+        self._toDate = toDate
+        self._sortAscending = sortAscending
+        self.cancelAction = cancelAction
+        self.confirmAction = confirmAction
+    }
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -39,7 +47,7 @@ struct DateFilterSheetView: View {
         .padding(.horizontal, 32)
     }
     
-    var buttonPanel: some View {
+    private var buttonPanel: some View {
         HStack {
             Button(role: .cancel) {
                 cancelAction()

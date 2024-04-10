@@ -9,29 +9,36 @@ import SwiftUI
 import ThemeKit
 
 struct EditSheetView: View {
-    @Environment(\.colorScheme) var colorScheme
-    @Environment(\.dismiss) var dismiss
-    @StateObject var viewModel: EditSheetViewModel
+    @Environment(\.dismiss) private var dismiss
+    @StateObject private var viewModel: EditSheetViewModel
     @State private var isShowingOverrideControls: Bool = false
     private typealias Identifier = ScreenIdentifier.EditSheetView
-    let regularTimeText: String = "Regular time"
-    let overtimeText: String = "Overtime"
-    let breaktimeText: String = "Break time"
-    let titleText: String = "Edit entry"
-    let timeIndicatorText: String = "work time"
-    let overrideSettingsHeaderText: String = "Override settings"
-    let startDateText: String = "Start"
-    let finishDateText: String = "Finish"
-    let saveButtonText: String = "save"
-    let cancelButtonText: String = "cancel"
-    let maximumOvertimeText = "Maximum overtime"
-    let standardWorkTimeText = "Standard work time"
-    let grossPayPerMonthText = "Gross pay per month"
-    let calculateNetPayText = "Calculate net pay"
-    let dateComponentFormatter = FormatterFactory.makeHourAndMinuteDateComponentFormatter()
-} // END OF STRUCT
+    private let regularTimeText: String = "Regular time"
+    private let overtimeText: String = "Overtime"
+    private let breaktimeText: String = "Break time"
+    private let titleText: String = "Edit entry"
+    private let timeIndicatorText: String = "work time"
+    private let overrideSettingsHeaderText: String = "Override settings"
+    private let startDateText: String = "Start"
+    private let finishDateText: String = "Finish"
+    private let saveButtonText: String = "save"
+    private let cancelButtonText: String = "cancel"
+    private let maximumOvertimeText = "Maximum overtime"
+    private let standardWorkTimeText = "Standard work time"
+    private let grossPayPerMonthText = "Gross pay per month"
+    private let calculateNetPayText = "Calculate net pay"
+    private let dateComponentFormatter = FormatterFactory.makeHourAndMinuteDateComponentFormatter()
+    private let editControlsId = "editControls"
+    private let chevronUpIconName = "chevron.up"
+    private let chevronDownIconName = "chevron.down"
+    private let currencyCode = "PLN"
+    
+    init(viewModel: EditSheetViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
+}
 
-//MARK: BODY
+//MARK: - Body
 extension EditSheetView {
     var body: some View {
         ZStack {
@@ -56,12 +63,12 @@ extension EditSheetView {
                 }
             }
             .padding(.top)
-        } // END OF ZSTACK
-    } // END OF BODY
+        }
+    }
 }
 
-//MARK: TIME INDICATOR & LABELS
-extension EditSheetView {
+//MARK: - Time Indicator, Labels
+private extension EditSheetView {
     var infoSection: some View {
         Group {
             timeIndicator
@@ -114,13 +121,13 @@ extension EditSheetView {
         .foregroundColor(.theme.black)
     }
     
-    private func generateTimeIntervalLabel(value: TimeInterval) -> String {
+    func generateTimeIntervalLabel(value: TimeInterval) -> String {
         return dateComponentFormatter.string(from: value) ?? "00:00"
     }
 }
 
-//MARK: DATE CONTROLS
-extension EditSheetView {
+//MARK: - Date Controls
+private extension EditSheetView {
     @ViewBuilder
     var dateControls: some View {
         if !viewModel.shouldDisplayFullDates {
@@ -199,8 +206,8 @@ extension EditSheetView {
     }
 }
 
-//MARK: OVERRIDE SETTINGS CONTROLS
-extension EditSheetView {
+//MARK: - Override Settings Controls
+private extension EditSheetView {
     @ViewBuilder
     func overrideControls(_ proxy: ScrollViewProxy) -> some View {
         overrideSettingsHeader(proxy)
@@ -210,9 +217,10 @@ extension EditSheetView {
          
     }
     
-    @ViewBuilder func overrideSettingsHeader(_ proxy: ScrollViewProxy) -> some View {
+    @ViewBuilder 
+    func overrideSettingsHeader(_ proxy: ScrollViewProxy) -> some View {
         HStack {
-            Image(systemName: isShowingOverrideControls ? "chevron.up" : "chevron.down")
+            Image(systemName: isShowingOverrideControls ? chevronUpIconName : chevronDownIconName)
                 .foregroundColor(.theme.primary)
                 .fontWeight(.bold)
                 .onTapGesture {
@@ -223,7 +231,7 @@ extension EditSheetView {
                         }
                         
                         await animate(duration: duration, animation: .spring(duration: duration)) {
-                            proxy.scrollTo("editControls", anchor: .top)
+                            proxy.scrollTo(editControlsId, anchor: .top)
                         }
                     }
                 }
@@ -253,9 +261,9 @@ extension EditSheetView {
             divider
             GridRow {
                 Text(grossPayPerMonthText)
-                TextField("PLN",
+                TextField(currencyCode,
                           value: $viewModel.grossPayPerMonth,
-                          format: .currency(code: "PLN"))
+                          format: .currency(code: currencyCode))
                 .textFieldStyle(.roundedBorder)
                 .foregroundColor(.black)
             }
@@ -289,8 +297,8 @@ extension EditSheetView {
                 }
                 .buttonStyle(ConfirmButtonStyle())
                 .accessibilityIdentifier(Identifier.Button.save.rawValue)
-            } // END OF HSTACK
-            .id("editControls")
+            }
+            .id(editControlsId)
         }
     }
 }
@@ -341,7 +349,7 @@ extension EditSheetView {
     }
 }
 
-#Preview("Signle date controls") {
+#Preview("Single date controls") {
     struct ContainerView: View {
         @StateObject private var container: Container = .init()
         private let entry: Entry = {
@@ -376,7 +384,7 @@ extension EditSheetView {
     
     return ContainerView()
     
-} // END OF PREVIEW
+}
 
 #Preview("Two date controls") {
     struct ContainerView: View {
@@ -413,4 +421,4 @@ extension EditSheetView {
     
     return ContainerView()
     
-} // END OF PREVIEW
+}
