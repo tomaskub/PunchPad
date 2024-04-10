@@ -44,15 +44,13 @@ final class HistoryViewModel: ObservableObject {
             })
             .map { [weak self] array in
                 guard let self,
-                      let lastEntry = array.last?.last else { return false }
-                if let _ = self.dataManager.fetch(from: nil, 
-                                                  to: lastEntry.startDate,
-                                                  ascendingOrder: false,
-                                                  fetchLimit: 1) {
-                    return true
-                } else {
-                    return false
-                }
+                      let lastEntry = array.last?.last,
+                      self.dataManager.fetch(from: nil,
+                                                        to: lastEntry.startDate,
+                                                        ascendingOrder: false,
+                                                        fetchLimit: 1) != nil
+                else { return false }
+                return true
             }.assign(to: &self.$isMoreEntriesAvaliable)
             
         self.groupedEntries = loadInitialEntries()
