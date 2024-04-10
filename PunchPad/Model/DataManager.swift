@@ -12,19 +12,16 @@ enum DataManagerType {
     case normal, preview, testing
 }
 
-class DataManager: NSObject, ObservableObject {
+final class DataManager: NSObject, ObservableObject {
     
     //MARK: STATIC INSTANCES
     static let shared = DataManager(type: .normal)
     static let preview = DataManager(type: .preview)
     static let testing = DataManager(type: .testing)
     
-    //TODO: THINK ABOUT REMOVING THE VALUES TO NOT GET ALL OF THE OBJECTS AT THE START OF THE APPLICATION
-    //MARK: PUBLISHED PROPERTIES
-    @Published var entryArray = [Entry]()
-    @Published var entryThisMonth = [Entry]()
+    @Published private(set) var entryArray = [Entry]()
+    @Published private(set) var entryThisMonth = [Entry]()
     
-    //MARK: PRIVATE PROPERTIES
     fileprivate var managedObjectContext: NSManagedObjectContext
     private let entryFetchResultsController: NSFetchedResultsController<EntryMO>
     private let entryThisMonthFetchResultsController: NSFetchedResultsController<EntryMO>
