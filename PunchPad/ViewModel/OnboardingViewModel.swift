@@ -9,8 +9,9 @@ import Foundation
 import Combine
 import UserNotifications
 
-class OnboardingViewModel: ObservableObject {
-    
+final class OnboardingViewModel: ObservableObject {
+    private let secondsInHour = 3600
+    private let secondsInMinute = 60
     private var subscriptions = Set<AnyCancellable>()
     private var notificationService: NotificationService
     @Published var settingsStore: SettingsStore
@@ -25,10 +26,10 @@ class OnboardingViewModel: ObservableObject {
     init(notificationService: NotificationService, settingsStore: SettingsStore) {
         self.notificationService = notificationService
         self.settingsStore = settingsStore
-        self.hoursWorking = settingsStore.workTimeInSeconds / 3600
-        self.minutesWorking = (settingsStore.workTimeInSeconds % 3600) / 60
-        self.hoursOvertime = settingsStore.maximumOvertimeAllowedInSeconds / 3600
-        self.minutesOvertime = (settingsStore.maximumOvertimeAllowedInSeconds % 3600) / 60
+        self.hoursWorking = settingsStore.workTimeInSeconds / secondsInHour
+        self.minutesWorking = (settingsStore.workTimeInSeconds % secondsInHour) / secondsInMinute
+        self.hoursOvertime = settingsStore.maximumOvertimeAllowedInSeconds / secondsInHour
+        self.minutesOvertime = (settingsStore.maximumOvertimeAllowedInSeconds % secondsInHour) / secondsInMinute
         self.grossPayPerMonthText = settingsStore.grossPayPerMonth
         setPublishers()
     }
@@ -100,7 +101,7 @@ class OnboardingViewModel: ObservableObject {
     }
     
     private func calculateTimeInSeconds(hours: Int, minutes: Int) -> Int {
-        return hours * 3600 + minutes * 60
+        hours * secondsInHour + minutes * secondsInMinute
     }
     
     func requestAuthorizationForNotifications() {
