@@ -27,6 +27,7 @@
 		D629CEF92B3613660036579D /* TimerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D629CEF82B3613660036579D /* TimerService.swift */; };
 		D629CEFB2B363B500036579D /* TimerServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D629CEFA2B363B500036579D /* TimerServiceTests.swift */; };
 		D630A53F2B473A320098CA86 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D630A53E2B473A320098CA86 /* LaunchScreen.storyboard */; };
+		D63719442BCDC060006536DA /* ContainerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63719432BCDC060006536DA /* ContainerProtocol.swift */; };
 		D63753AE2B45DA2000386482 /* TextFieldStyle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63753AD2B45DA2000386482 /* TextFieldStyle+Extension.swift */; };
 		D63753B02B45DA5000386482 /* GreenBorderTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63753AF2B45DA5000386482 /* GreenBorderTextFieldStyle.swift */; };
 		D64313B82B1E606B003B5DBC /* PreviewDataFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64313B72B1E606B003B5DBC /* PreviewDataFactory.swift */; };
@@ -172,6 +173,7 @@
 		D629CEFA2B363B500036579D /* TimerServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerServiceTests.swift; sourceTree = "<group>"; };
 		D630A53A2B4704EA0098CA86 /* ThemeKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ThemeKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D630A53E2B473A320098CA86 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		D63719432BCDC060006536DA /* ContainerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerProtocol.swift; sourceTree = "<group>"; };
 		D63753AD2B45DA2000386482 /* TextFieldStyle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextFieldStyle+Extension.swift"; sourceTree = "<group>"; };
 		D63753AF2B45DA5000386482 /* GreenBorderTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreenBorderTextFieldStyle.swift; sourceTree = "<group>"; };
 		D64313B72B1E606B003B5DBC /* PreviewDataFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewDataFactory.swift; sourceTree = "<group>"; };
@@ -304,6 +306,7 @@
 			isa = PBXGroup;
 			children = (
 				D60EB9B52AB0D7000053136A /* Container.swift */,
+				D63719432BCDC060006536DA /* ContainerProtocol.swift */,
 			);
 			path = ContainerService;
 			sourceTree = "<group>";
@@ -924,6 +927,7 @@
 				D6D906AE2AA0BEDE004E09C9 /* ScreenIdentifier.swift in Sources */,
 				D61F11342AB3A6FF00902D6D /* ColorScheme+Extension.swift in Sources */,
 				D684A38A2AF6F54B00511E0D /* ButtonFactory.swift in Sources */,
+				D63719442BCDC060006536DA /* ContainerProtocol.swift in Sources */,
 				D6C458C529D35EAA0069D89B /* SettingsView.swift in Sources */,
 				D6FA94FB2B013C770034B16A /* ChartLegendItem.swift in Sources */,
 				D666ADCC2AC05A0500B74663 /* CaseIterable+Extension.swift in Sources */,
