@@ -164,7 +164,7 @@
 		D61945EB29E7306B0046DE1F /* HomeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
 		D61945EF29E735D80046DE1F /* MockTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTimer.swift; sourceTree = "<group>"; };
 		D61F11302AB38F8700902D6D /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
-		D61F11332AB3A6FF00902D6D /* ColorScheme+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "ColorScheme+Extension.swift"; path = "../Utilities/Extensions/ColorScheme+Extension.swift"; sourceTree = "<group>"; };
+		D61F11332AB3A6FF00902D6D /* ColorScheme+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ColorScheme+Extension.swift"; sourceTree = "<group>"; };
 		D621C0C92B3B79850065DF8C /* CircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButton.swift; sourceTree = "<group>"; };
 		D621C0CB2B3B8BE40065DF8C /* TimerIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerIndicator.swift; sourceTree = "<group>"; };
 		D62286732B40A04B00B41004 /* TabViewKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TabViewKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -172,9 +172,9 @@
 		D629CEFA2B363B500036579D /* TimerServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerServiceTests.swift; sourceTree = "<group>"; };
 		D630A53A2B4704EA0098CA86 /* ThemeKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ThemeKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D630A53E2B473A320098CA86 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		D63753AD2B45DA2000386482 /* TextFieldStyle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "TextFieldStyle+Extension.swift"; path = "../Utilities/Extensions/TextFieldStyle+Extension.swift"; sourceTree = "<group>"; };
-		D63753AF2B45DA5000386482 /* GreenBorderTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GreenBorderTextFieldStyle.swift; path = ../Utilities/Style/GreenBorderTextFieldStyle.swift; sourceTree = "<group>"; };
-		D64313B72B1E606B003B5DBC /* PreviewDataFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PreviewDataFactory.swift; path = ../Utilities/Factory/PreviewDataFactory.swift; sourceTree = "<group>"; };
+		D63753AD2B45DA2000386482 /* TextFieldStyle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextFieldStyle+Extension.swift"; sourceTree = "<group>"; };
+		D63753AF2B45DA5000386482 /* GreenBorderTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreenBorderTextFieldStyle.swift; sourceTree = "<group>"; };
+		D64313B72B1E606B003B5DBC /* PreviewDataFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewDataFactory.swift; sourceTree = "<group>"; };
 		D64574AF29D9E6A000207168 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		D64574B129D9F16900207168 /* EntryMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EntryMO+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D64574B229D9F16900207168 /* EntryMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EntryMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -185,7 +185,7 @@
 		D65A976C29F323A900462D8C /* K.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = K.swift; sourceTree = "<group>"; };
 		D65A976E29F3BBDD00462D8C /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		D65FD53C29D8B259006CC34F /* PersistanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistanceController.swift; sourceTree = "<group>"; };
-		D666ADCB2AC05A0500B74663 /* CaseIterable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "CaseIterable+Extension.swift"; path = "../Utilities/Extensions/CaseIterable+Extension.swift"; sourceTree = "<group>"; };
+		D666ADCB2AC05A0500B74663 /* CaseIterable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CaseIterable+Extension.swift"; sourceTree = "<group>"; };
 		D66750E929D713C900757F17 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		D66750EB29D71C8300757F17 /* HistoryRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRowView.swift; sourceTree = "<group>"; };
 		D66A4DF52B7AA72800D16110 /* ChartType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartType.swift; sourceTree = "<group>"; };
@@ -204,20 +204,20 @@
 		D6842EC329EC62DD00731E84 /* PayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayManager.swift; sourceTree = "<group>"; };
 		D6842EC529EC6FDE00731E84 /* PayManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayManagerTests.swift; sourceTree = "<group>"; };
 		D684A3872AF6F3E700511E0D /* OnboardingWelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingWelcomeView.swift; sourceTree = "<group>"; };
-		D684A3892AF6F54B00511E0D /* ButtonFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ButtonFactory.swift; path = ../Utilities/Factory/ButtonFactory.swift; sourceTree = "<group>"; };
+		D684A3892AF6F54B00511E0D /* ButtonFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonFactory.swift; sourceTree = "<group>"; };
 		D68732012B2243C9008CB0D4 /* PaginationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationState.swift; sourceTree = "<group>"; };
 		D698F3EF2B5C131D00D9DFF4 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		D698F3F12B5C1F8600D9DFF4 /* AppNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNotification.swift; sourceTree = "<group>"; };
 		D69C8CD62B43687700146EFA /* CustomDatePickerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePickerContainer.swift; sourceTree = "<group>"; };
-		D69C8CD82B44208C00146EFA /* ConfirmButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConfirmButtonStyle.swift; path = ../Utilities/Style/ConfirmButtonStyle.swift; sourceTree = "<group>"; };
-		D69C8CDA2B4420D600146EFA /* CancelButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CancelButtonStyle.swift; path = ../Utilities/Style/CancelButtonStyle.swift; sourceTree = "<group>"; };
+		D69C8CD82B44208C00146EFA /* ConfirmButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmButtonStyle.swift; sourceTree = "<group>"; };
+		D69C8CDA2B4420D600146EFA /* CancelButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelButtonStyle.swift; sourceTree = "<group>"; };
 		D69C8CDC2B44224100146EFA /* VerticalDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalDivider.swift; sourceTree = "<group>"; };
 		D6AB736F29F562E600D5DE82 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		D6B2BDF12B27810700CB4FA7 /* DateFilterSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFilterSheetView.swift; sourceTree = "<group>"; };
-		D6B2BDF32B27C22400CB4FA7 /* EmptyPlaceholderModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EmptyPlaceholderModifier.swift; path = ../Utilities/ViewModifiers/EmptyPlaceholderModifier.swift; sourceTree = "<group>"; };
+		D6B2BDF32B27C22400CB4FA7 /* EmptyPlaceholderModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyPlaceholderModifier.swift; sourceTree = "<group>"; };
 		D6B3B2652ABA237800101A1F /* SettingsViewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewUITests.swift; sourceTree = "<group>"; };
 		D6B7D1C72B0EB41A00E6F7A8 /* ContentViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewScreen.swift; sourceTree = "<group>"; };
-		D6C3567A2B44AAB4007C23A3 /* ButtonStyle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "ButtonStyle+Extension.swift"; path = "../Utilities/Extensions/ButtonStyle+Extension.swift"; sourceTree = "<group>"; };
+		D6C3567A2B44AAB4007C23A3 /* ButtonStyle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ButtonStyle+Extension.swift"; sourceTree = "<group>"; };
 		D6C4589029D229210069D89B /* PunchPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PunchPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6C4589329D229210069D89B /* ClockInApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockInApp.swift; sourceTree = "<group>"; };
 		D6C4589529D229210069D89B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -234,14 +234,14 @@
 		D6C458C629D36C050069D89B /* RingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingView.swift; sourceTree = "<group>"; };
 		D6CA773C2B40B68900C98AF3 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		D6CA773E2B40BB4D00C98AF3 /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
-		D6CB2A7B2B05629200F3030C /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "View+Extension.swift"; path = "../Utilities/Extensions/View+Extension.swift"; sourceTree = "<group>"; };
+		D6CB2A7B2B05629200F3030C /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		D6CBB8652B3443360074CE8B /* EditSheetViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSheetViewModelTests.swift; sourceTree = "<group>"; };
-		D6CBB8672B34ACF20074CE8B /* Calendar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Calendar+Extension.swift"; path = "../Utilities/Extensions/Calendar+Extension.swift"; sourceTree = "<group>"; };
-		D6CBB8692B34C7150074CE8B /* FormatterFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FormatterFactory.swift; path = ../Utilities/Factory/FormatterFactory.swift; sourceTree = "<group>"; };
+		D6CBB8672B34ACF20074CE8B /* Calendar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Extension.swift"; sourceTree = "<group>"; };
+		D6CBB8692B34C7150074CE8B /* FormatterFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterFactory.swift; sourceTree = "<group>"; };
 		D6D02FAD29EF0B13006CD0B2 /* EditSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSheetView.swift; sourceTree = "<group>"; };
 		D6D02FAF29EF0B7F006CD0B2 /* EditSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSheetViewModel.swift; sourceTree = "<group>"; };
 		D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenIdentifier.swift; sourceTree = "<group>"; };
-		D6D906B02AA12BDB004E09C9 /* BackgroundFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BackgroundFactory.swift; path = ../Utilities/Factory/BackgroundFactory.swift; sourceTree = "<group>"; };
+		D6D906B02AA12BDB004E09C9 /* BackgroundFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundFactory.swift; sourceTree = "<group>"; };
 		D6E2C15829D6C20E00229286 /* WorkHistory.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WorkHistory.xcdatamodel; sourceTree = "<group>"; };
 		D6E2C15A29D6C31800229286 /* HistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
 		D6E6832D2B79502B009C6CEC /* ChartableEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartableEntry.swift; sourceTree = "<group>"; };
@@ -249,13 +249,13 @@
 		D6E6B8742AF98EB40073D911 /* OnboardingSalaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSalaryView.swift; sourceTree = "<group>"; };
 		D6E6B8762AF992F90073D911 /* OnboardingFinishView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFinishView.swift; sourceTree = "<group>"; };
 		D6EA69592AF83E7800D8F6C3 /* OnboardingWorktimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingWorktimeView.swift; sourceTree = "<group>"; };
-		D6EA695B2AF8452A00D8F6C3 /* TextFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TextFactory.swift; path = ../Utilities/Factory/TextFactory.swift; sourceTree = "<group>"; };
+		D6EA695B2AF8452A00D8F6C3 /* TextFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFactory.swift; sourceTree = "<group>"; };
 		D6EA695D2AF8498D00D8F6C3 /* OnboardingOvertimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingOvertimeView.swift; sourceTree = "<group>"; };
 		D6ED26BC2AA3B739001E2390 /* StatisticsViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewScreen.swift; sourceTree = "<group>"; };
 		D6ED26BE2AA3BA05001E2390 /* OnboardingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingUITests.swift; sourceTree = "<group>"; };
 		D6FA94FA2B013C770034B16A /* ChartLegendItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLegendItem.swift; sourceTree = "<group>"; };
 		D6FA94FC2B013F060034B16A /* ChartLegendItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLegendItemView.swift; sourceTree = "<group>"; };
-		D6FA94FE2B0145FE0034B16A /* ChartFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ChartFactory.swift; path = ../Utilities/Factory/ChartFactory.swift; sourceTree = "<group>"; };
+		D6FA94FE2B0145FE0034B16A /* ChartFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartFactory.swift; sourceTree = "<group>"; };
 		D6FE20862B46EE0D00F931CD /* ConfirmDeleteRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDeleteRowView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -297,8 +297,15 @@
 				D6C3567A2B44AAB4007C23A3 /* ButtonStyle+Extension.swift */,
 				D63753AD2B45DA2000386482 /* TextFieldStyle+Extension.swift */,
 			);
-			name = Extensions;
-			path = ../Extensions;
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		D63719422BCDBEAC006536DA /* ContainerService */ = {
+			isa = PBXGroup;
+			children = (
+				D60EB9B52AB0D7000053136A /* Container.swift */,
+			);
+			path = ContainerService;
 			sourceTree = "<group>";
 		};
 		D63753B12B45E05700386482 /* Style */ = {
@@ -308,8 +315,7 @@
 				D69C8CDA2B4420D600146EFA /* CancelButtonStyle.swift */,
 				D63753AF2B45DA5000386482 /* GreenBorderTextFieldStyle.swift */,
 			);
-			name = Style;
-			path = ../Style;
+			path = Style;
 			sourceTree = "<group>";
 		};
 		D66A4DFB2B7AD3C900D16110 /* Extensions */ = {
@@ -350,8 +356,7 @@
 			children = (
 				D6B2BDF32B27C22400CB4FA7 /* EmptyPlaceholderModifier.swift */,
 			);
-			name = ViewModifiers;
-			path = ../ViewModifiers;
+			path = ViewModifiers;
 			sourceTree = "<group>";
 		};
 		D6C4588729D229200069D89B = {
@@ -438,8 +443,7 @@
 				D6FA94FE2B0145FE0034B16A /* ChartFactory.swift */,
 				D6CBB8692B34C7150074CE8B /* FormatterFactory.swift */,
 			);
-			name = Factory;
-			path = ../Factory;
+			path = Factory;
 			sourceTree = "<group>";
 		};
 		D6FD09332BCAE09200AD8989 /* Utilities */ = {
@@ -453,7 +457,6 @@
 				D65A976C29F323A900462D8C /* K.swift */,
 				D67332E52AADB8B1005FFE7F /* LaunchArgument.swift */,
 				D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */,
-				D60EB9B52AB0D7000053136A /* Container.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -461,6 +464,7 @@
 		D6FD09342BCC266600AD8989 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				D63719422BCDBEAC006536DA /* ContainerService */,
 				D6FD09532BCC4A7A00AD8989 /* PayService */,
 				D6FD09512BCC49ED00AD8989 /* NotificationService */,
 				D6FD09502BCC49C100AD8989 /* TimerService */,
