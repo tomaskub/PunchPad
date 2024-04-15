@@ -18,7 +18,7 @@ struct MainView: View {
     @State private var isShowingFiltering: Bool = false
     @State private var selectedEntry: Entry? = nil
     @Binding private var tabSelection: TabBarItem
-    @EnvironmentObject private var container: Container
+    @ObservedObject var container: Container
     private let mainTitle: AttributedString = {
         var result = AttributedString("PunchPad")
         result.font = .title
@@ -55,6 +55,7 @@ struct MainView: View {
                                                          settingsStore: container.settingsStore)
         )
         self._tabSelection = tabSelection
+        self.container = container
     }
 }
 
@@ -71,7 +72,8 @@ extension MainView {
             
             HistoryView(viewModel: historyViewModel, 
                         selectedEntry: $selectedEntry,
-                        isShowingFiltering: $isShowingFiltering)
+                        isShowingFiltering: $isShowingFiltering,
+                        container: container)
                 .tabBarItem(tab: .history, selection: $tabSelection)
         }
                       .navigationBarTitle(generateNavTitle(tabSelection))
@@ -161,7 +163,6 @@ private extension MainView {
                      tabSelection: .constant(.home),
                      container: container
             )
-            .environmentObject(container)
         }
     }
     return Preview()

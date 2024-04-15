@@ -15,7 +15,6 @@ import TabViewKit
 struct HomeView: View {
     private typealias Identifier = ScreenIdentifier.HomeView
     @ObservedObject var viewModel: HomeViewModel
-    @EnvironmentObject private var container: Container
     private let timerIndicatorHourAndMinuteFormatter = FormatterFactory.makeHourAndMinuteDateComponentFormatter()
     private let timerIndicatorMinuteAndSecondFormatter = FormatterFactory.makeMinuteAndSecondDateComponetFormatter()
     private let settingText: String = "Settings"

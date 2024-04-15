@@ -25,8 +25,9 @@ struct ClockInApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView(navigator: appNavigator)
-                .environmentObject(container)
+            ContentView(navigator: appNavigator,
+                        container: container
+            )
                 .preferredColorScheme(colorScheme)
         }
     }

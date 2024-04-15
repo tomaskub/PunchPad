@@ -12,11 +12,12 @@ import NavigationKit
 struct ContentView: View {
     private let navigator: Navigator<Route>
     @State private var tabSelection: TabBarItem = .home
-    @EnvironmentObject private var container: Container
+    @ObservedObject var container: Container
     @AppStorage(SettingsStore.SettingKey.isRunFirstTime.rawValue) private var isRunFirstTime: Bool = true
     
-    init(navigator: Navigator<Route>) {
+    init(navigator: Navigator<Route>, container: Container) {
         self.navigator = navigator
+        self.container = container
     }
     
     var body: some View {
@@ -50,8 +51,9 @@ struct ContentView: View {
 #Preview("ContentView") {
     struct ContainerView: View {
         var body: some View {
-            ContentView(navigator: Navigator(Route.main))
-                .environmentObject(Container())
+            ContentView(navigator: Navigator(Route.main),
+                        container: Container()
+            )
         }
     }
     return ContainerView()
