@@ -18,7 +18,7 @@ struct MainView: View {
     @State private var isShowingFiltering: Bool = false
     @State private var selectedEntry: Entry? = nil
     @Binding private var tabSelection: TabBarItem
-    private let container: Container
+    private let container: ContainerProtocol
     private let mainTitle: AttributedString = {
         var result = AttributedString("PunchPad")
         result.font = .title
@@ -33,7 +33,7 @@ struct MainView: View {
                                                                     shadowColor: .theme.black.opacity(0.3),
                                                                     backgroundColor: .theme.white)
     
-    init(navigator: Navigator<Route>, tabSelection: Binding<TabBarItem>, container: Container) {
+    init(navigator: Navigator<Route>, tabSelection: Binding<TabBarItem>, container: ContainerProtocol) {
         self.navigator = navigator
         
         self._homeViewModel = .init(wrappedValue:

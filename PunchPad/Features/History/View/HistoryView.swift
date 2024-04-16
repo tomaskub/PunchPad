@@ -20,13 +20,13 @@ struct HistoryView: View {
     private let deleteRowIcon: String = "checkmark.circle"
     private let headerFormatter: DateFormatter = FormatterFactory.makeFullMonthYearDateFormatter()
     
-    private let container: Container
+    private let container: ContainerProtocol
     @ObservedObject private var viewModel: HistoryViewModel
     @Binding private var selectedEntry: Entry?
     @Binding private var isShowingFiltering: Bool
     @State private var entryToBeDeleted: Entry?
     
-    init(viewModel: HistoryViewModel, selectedEntry: Binding<Entry?>, isShowingFiltering: Binding<Bool>, container: Container) {
+    init(viewModel: HistoryViewModel, selectedEntry: Binding<Entry?>, isShowingFiltering: Binding<Bool>, container: ContainerProtocol) {
         self.viewModel = viewModel
         self._selectedEntry = selectedEntry
         self._isShowingFiltering = isShowingFiltering
