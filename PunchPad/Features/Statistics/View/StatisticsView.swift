@@ -15,7 +15,6 @@ struct StatisticsView: View {
     private let dateFormatter = FormatterFactory.makeDateFormatter()
     private let salaryCalculationHeaderText: String = "Salary calculation"
     private let chartTitleText: String = "time worked"
-    
     @ObservedObject private var viewModel: StatisticsViewModel
     
     init(viewModel: StatisticsViewModel) {
@@ -269,7 +268,7 @@ private extension StatisticsView {
 
 #Preview {
     struct Preview: View {
-        @State private var container = Container()
+        private let container = Container()
         var body: some View {
             StatisticsView(viewModel:
                             StatisticsViewModel(
@@ -279,7 +278,6 @@ private extension StatisticsView {
                                 calendar: .current
                             )
             )
-            .environmentObject(container)
         }
     }
     return Preview()

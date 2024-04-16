@@ -351,7 +351,7 @@ extension EditSheetView {
 
 #Preview("Single date controls") {
     struct ContainerView: View {
-        @StateObject private var container: Container = .init()
+        private let container: Container = .init()
         private let entry: Entry = {
             let startOfDay = Calendar.current.startOfDay(for: Date())
             let startDate = Calendar.current.date(byAdding: .hour, value: 6, to: startOfDay)!
@@ -388,7 +388,7 @@ extension EditSheetView {
 
 #Preview("Two date controls") {
     struct ContainerView: View {
-        @StateObject private var container: Container = .init()
+        private let container: Container = .init()
         private let entry: Entry = {
             let startOfDay = Calendar.current.startOfDay(for: Date())
             let startDate = Calendar.current.date(byAdding: .hour, value: 16, to: startOfDay)!

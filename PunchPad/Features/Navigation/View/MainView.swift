@@ -18,7 +18,7 @@ struct MainView: View {
     @State private var isShowingFiltering: Bool = false
     @State private var selectedEntry: Entry? = nil
     @Binding private var tabSelection: TabBarItem
-    @ObservedObject var container: Container
+    private let container: Container
     private let mainTitle: AttributedString = {
         var result = AttributedString("PunchPad")
         result.font = .title
@@ -156,7 +156,7 @@ private extension MainView {
 
 #Preview("No navigation bar") {
     struct Preview: View {
-        @StateObject private var container: Container = .init()
+        private let container: Container = .init()
         
         var body: some View {
             MainView(navigator: Navigator(Route.main),

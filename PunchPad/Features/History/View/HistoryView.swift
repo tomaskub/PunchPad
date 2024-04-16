@@ -20,7 +20,7 @@ struct HistoryView: View {
     private let deleteRowIcon: String = "checkmark.circle"
     private let headerFormatter: DateFormatter = FormatterFactory.makeFullMonthYearDateFormatter()
     
-    @ObservedObject private var container: Container
+    private let container: Container
     @ObservedObject private var viewModel: HistoryViewModel
     @Binding private var selectedEntry: Entry?
     @Binding private var isShowingFiltering: Bool
@@ -198,7 +198,7 @@ private extension HistoryView {
 
 #Preview {
     struct ContainerView: View {
-        @StateObject private var container: Container = .init()
+        private let container: Container = .init()
         @State private var selectedEntry: Entry? = nil
         @State private var filter: Bool = false
         var body: some View {

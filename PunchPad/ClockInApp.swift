@@ -10,12 +10,12 @@ import NavigationKit
 
 @main
 struct ClockInApp: App {
-    let appNavigator: Navigator = Navigator(Route.main)
-    @StateObject private var container: Container
+    private let appNavigator: Navigator = Navigator(Route.main)
+    private let container: Container
     @AppStorage(SettingsStore.SettingKey.savedColorScheme.rawValue) var preferredColorScheme: String?
     
     init() {
-        self._container = StateObject(wrappedValue: Container())
+        self.container = Container()
     }
     
     var colorScheme: ColorScheme? {

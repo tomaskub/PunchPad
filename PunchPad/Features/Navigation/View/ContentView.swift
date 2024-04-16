@@ -11,8 +11,8 @@ import NavigationKit
 
 struct ContentView: View {
     private let navigator: Navigator<Route>
+    private let container: Container
     @State private var tabSelection: TabBarItem = .home
-    @ObservedObject var container: Container
     @AppStorage(SettingsStore.SettingKey.isRunFirstTime.rawValue) private var isRunFirstTime: Bool = true
     
     init(navigator: Navigator<Route>, container: Container) {

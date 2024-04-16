@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol ContainerProtocol: ObservableObject {
+protocol ContainerProtocol {
     var dataManager: DataManager { get }
     var payManager: PayManager { get }
     var timerProvider: Timer.Type { get }
