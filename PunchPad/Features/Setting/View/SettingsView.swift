@@ -285,7 +285,7 @@ private extension SettingsView {
 
 #Preview("SettingsView") {
     struct ContainerView: View {
-        private let container = Container()
+        private let container = PreviewContainer()
         var body: some View {
             SettingsView(viewModel: 
                             SettingsViewModel(dataManger: container.dataManager,

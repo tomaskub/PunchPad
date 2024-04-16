@@ -156,7 +156,7 @@ private extension MainView {
 
 #Preview("No navigation bar") {
     struct Preview: View {
-        private let container: Container = .init()
+        private let container = PreviewContainer()
         
         var body: some View {
             MainView(navigator: Navigator(Route.main),

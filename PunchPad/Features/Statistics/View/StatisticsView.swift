@@ -268,7 +268,7 @@ private extension StatisticsView {
 
 #Preview {
     struct Preview: View {
-        private let container = Container()
+        private let container = PreviewContainer()
         var body: some View {
             StatisticsView(viewModel:
                             StatisticsViewModel(

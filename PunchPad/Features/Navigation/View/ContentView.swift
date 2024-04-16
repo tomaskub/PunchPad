@@ -52,7 +52,7 @@ struct ContentView: View {
     struct ContainerView: View {
         var body: some View {
             ContentView(navigator: Navigator(Route.main),
-                        container: Container()
+                        container: PreviewContainer()
             )
         }
     }

@@ -105,7 +105,7 @@ extension OnboardingView {
 
 #Preview {
     struct ContainerView: View {
-        private let container: Container = Container()
+        private let container = PreviewContainer()
         var body: some View {
             OnboardingView(viewModel:
                             OnboardingViewModel(notificationService: container.notificationService,

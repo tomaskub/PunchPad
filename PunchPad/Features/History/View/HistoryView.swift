@@ -198,7 +198,7 @@ private extension HistoryView {
 
 #Preview {
     struct ContainerView: View {
-        private let container: Container = .init()
+        private let container = PreviewContainer()
         @State private var selectedEntry: Entry? = nil
         @State private var filter: Bool = false
         var body: some View {

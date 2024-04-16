@@ -149,7 +149,7 @@ private extension HomeView {
 //MARK: - Preview
 struct Home_Previews: PreviewProvider {
     private struct ContainerView: View {
-        private let container: Container = .init()
+        private let container = PreviewContainer()
         
         var body: some View {
             HomeView(viewModel:

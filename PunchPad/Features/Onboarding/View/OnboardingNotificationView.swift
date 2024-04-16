@@ -46,11 +46,11 @@ struct OnboardingNotificationView: View {
 struct OnboardingNotification_Preview: PreviewProvider {
     private struct PreviewContainerView: View {
         @StateObject private var vm: OnboardingViewModel
-        private let container: Container
+        private let container: PreviewContainer
         @Environment(\.colorScheme) private var colorScheme
         
         init() {
-            let container = Container()
+            let container = PreviewContainer()
             self.container = container
             self._vm = StateObject(wrappedValue: 
                                     OnboardingViewModel(
