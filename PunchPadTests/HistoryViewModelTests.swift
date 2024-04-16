@@ -12,7 +12,7 @@ import CoreData
 final class HistoryViewModelTests: XCTestCase {
 
     var sut: HistoryViewModel!
-    var container: Container!
+    var container: TestContainer!
     
     override func setUp() {
         super.setUp()
