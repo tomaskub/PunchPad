@@ -20,16 +20,17 @@ struct HistoryView: View {
     private let deleteRowIcon: String = "checkmark.circle"
     private let headerFormatter: DateFormatter = FormatterFactory.makeFullMonthYearDateFormatter()
     
-    @EnvironmentObject private var container: Container
+    private let container: ContainerProtocol
     @ObservedObject private var viewModel: HistoryViewModel
     @Binding private var selectedEntry: Entry?
     @Binding private var isShowingFiltering: Bool
     @State private var entryToBeDeleted: Entry?
     
-    init(viewModel: HistoryViewModel, selectedEntry: Binding<Entry?>, isShowingFiltering: Binding<Bool>) {
+    init(viewModel: HistoryViewModel, selectedEntry: Binding<Entry?>, isShowingFiltering: Binding<Bool>, container: ContainerProtocol) {
         self.viewModel = viewModel
         self._selectedEntry = selectedEntry
         self._isShowingFiltering = isShowingFiltering
+        self.container = container
     }
 }
 
@@ -197,7 +198,7 @@ private extension HistoryView {
 
 #Preview {
     struct ContainerView: View {
-        @StateObject private var container: Container = .init()
+        private let container = PreviewContainer()
         @State private var selectedEntry: Entry? = nil
         @State private var filter: Bool = false
         var body: some View {
@@ -206,7 +207,8 @@ private extension HistoryView {
                                     dataManager: container.dataManager,
                                     settingsStore: container.settingsStore),
                             selectedEntry: $selectedEntry,
-                            isShowingFiltering: $filter
+                            isShowingFiltering: $filter,
+                            container: container
                 )
                 .overlay(alignment: .topTrailing) {
                         Image(systemName: "line.3.horizontal.decrease.circle")
@@ -217,7 +219,6 @@ private extension HistoryView {
                                 filter.toggle()
                             }
                 }
-            .environmentObject(container)
         }
     }
     return ContainerView()

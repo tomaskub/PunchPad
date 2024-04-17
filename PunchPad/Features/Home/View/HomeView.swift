@@ -15,7 +15,6 @@ import TabViewKit
 struct HomeView: View {
     private typealias Identifier = ScreenIdentifier.HomeView
     @ObservedObject var viewModel: HomeViewModel
-    @EnvironmentObject private var container: Container
     private let timerIndicatorHourAndMinuteFormatter = FormatterFactory.makeHourAndMinuteDateComponentFormatter()
     private let timerIndicatorMinuteAndSecondFormatter = FormatterFactory.makeMinuteAndSecondDateComponetFormatter()
     private let settingText: String = "Settings"
@@ -150,7 +149,7 @@ private extension HomeView {
 //MARK: - Preview
 struct Home_Previews: PreviewProvider {
     private struct ContainerView: View {
-        @StateObject private var container: Container = .init()
+        private let container = PreviewContainer()
         
         var body: some View {
             HomeView(viewModel:
@@ -159,10 +158,8 @@ struct Home_Previews: PreviewProvider {
                             settingsStore: container.settingsStore,
                             payManager: container.payManager, 
                             notificationService: container.notificationService,
-                            timerProvider: container.timerProvider
-                        )
+                            timerProvider: container.timerProvider)
             )
-            .environmentObject(Container())
         }
     }
     

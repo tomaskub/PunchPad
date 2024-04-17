@@ -10,9 +10,13 @@ import NavigationKit
 
 @main
 struct ClockInApp: App {
-    let appNavigator: Navigator = Navigator(Route.main)
-    @StateObject private var container = Container()
+    private let appNavigator: Navigator = Navigator(Route.main)
+    private let container: ContainerProtocol
     @AppStorage(SettingsStore.SettingKey.savedColorScheme.rawValue) var preferredColorScheme: String?
+    
+    init() {
+        self.container = Container()
+    }
     
     var colorScheme: ColorScheme? {
         switch preferredColorScheme {
@@ -25,8 +29,9 @@ struct ClockInApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView(navigator: appNavigator)
-                .environmentObject(container)
+            ContentView(navigator: appNavigator,
+                        container: container
+            )
                 .preferredColorScheme(colorScheme)
         }
     }

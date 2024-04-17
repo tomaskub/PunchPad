@@ -97,11 +97,11 @@ struct OnbardingOvertime_Previews: PreviewProvider {
     private struct PreviewContainerView: View {
         @Environment(\.colorScheme) private var colorScheme
         @StateObject private var vm: OnboardingViewModel
-        @StateObject private var container: Container
+        private let container: PreviewContainer
         
         init() {
-            let container = Container()
-            self._container = StateObject(wrappedValue: container)
+            let container = PreviewContainer()
+            self.container = container
             self._vm = StateObject(wrappedValue: OnboardingViewModel(notificationService: container.notificationService, 
                                                                      settingsStore: container.settingsStore))
         }

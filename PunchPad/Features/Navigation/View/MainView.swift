@@ -18,7 +18,7 @@ struct MainView: View {
     @State private var isShowingFiltering: Bool = false
     @State private var selectedEntry: Entry? = nil
     @Binding private var tabSelection: TabBarItem
-    @EnvironmentObject private var container: Container
+    private let container: ContainerProtocol
     private let mainTitle: AttributedString = {
         var result = AttributedString("PunchPad")
         result.font = .title
@@ -33,7 +33,7 @@ struct MainView: View {
                                                                     shadowColor: .theme.black.opacity(0.3),
                                                                     backgroundColor: .theme.white)
     
-    init(navigator: Navigator<Route>, tabSelection: Binding<TabBarItem>, container: Container) {
+    init(navigator: Navigator<Route>, tabSelection: Binding<TabBarItem>, container: ContainerProtocol) {
         self.navigator = navigator
         
         self._homeViewModel = .init(wrappedValue:
@@ -55,6 +55,7 @@ struct MainView: View {
                                                          settingsStore: container.settingsStore)
         )
         self._tabSelection = tabSelection
+        self.container = container
     }
 }
 
@@ -71,7 +72,8 @@ extension MainView {
             
             HistoryView(viewModel: historyViewModel, 
                         selectedEntry: $selectedEntry,
-                        isShowingFiltering: $isShowingFiltering)
+                        isShowingFiltering: $isShowingFiltering,
+                        container: container)
                 .tabBarItem(tab: .history, selection: $tabSelection)
         }
                       .navigationBarTitle(generateNavTitle(tabSelection))
@@ -154,14 +156,13 @@ private extension MainView {
 
 #Preview("No navigation bar") {
     struct Preview: View {
-        @StateObject private var container: Container = .init()
+        private let container = PreviewContainer()
         
         var body: some View {
             MainView(navigator: Navigator(Route.main),
                      tabSelection: .constant(.home),
                      container: container
             )
-            .environmentObject(container)
         }
     }
     return Preview()

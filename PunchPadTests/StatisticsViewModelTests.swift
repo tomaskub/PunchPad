@@ -15,9 +15,9 @@ final class StatisticsViewModelTests: XCTestCase {
     private var cancellables = Set<AnyCancellable>()
     private let calendar = Calendar.current
     var sut: StatisticsViewModel!
-    var container: Container!
+    var container: TestContainer!
     override func setUp() {
-        container = Container()
+        container = TestContainer()
         sut = StatisticsViewModel(dataManager: container.dataManager,
                                   payManager: container.payManager,
                                   settingsStore: container.settingsStore,
