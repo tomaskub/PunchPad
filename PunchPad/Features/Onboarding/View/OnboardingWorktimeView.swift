@@ -31,10 +31,10 @@ struct OnboardingWorktimeView: View {
                                 .foregroundColor(.theme.primary)
                                 .tag(i)
                         }
-                    } // END OF PICKER
+                    }
                     .accessibilityIdentifier(Identifier.Pickers.workingHours.rawValue)
                     .pickerStyle(.wheel)
-                } // END OF VSTACK
+                }
                 VStack {
                     Text(minutesPickerLabel)
                         .foregroundColor(.theme.primary)
@@ -45,19 +45,18 @@ struct OnboardingWorktimeView: View {
                                 .foregroundColor(.theme.primary)
                                 .tag(i)
                         }
-                    } // END OF PICKER
+                    }
                     .accessibilityIdentifier(Identifier.Pickers.workingMinutes.rawValue)
                     .pickerStyle(.wheel)
-                } // END OF VSTACK
-            } // END OF HSTACK
-
+                }
+            }
             .padding()
             .padding(.top)
             .background(Color.theme.white)
             .cornerRadius(20)
-        } // END OF VSTACK
+        }
         .padding(30)
-    } // END OF BODY
+    }
     
     private var title: some View {
         TextFactory.buildTitle(titleText)
@@ -66,7 +65,7 @@ struct OnboardingWorktimeView: View {
     private var description: some View {
         TextFactory.buildDescription(descriptionText)
     }
-} // END OF VIEW
+}
 
 struct OnbardingWorktime_Previews: PreviewProvider {
     
@@ -94,11 +93,11 @@ struct OnbardingWorktime_Previews: PreviewProvider {
                         
                     }
                     .buttonStyle(.confirming)
-                } // END OF VSTACK
+                }
                 .padding(30)
-            } // END OF ZSTACK
-        } // END OF BODY
-    } // END OF VIEW
+            }
+        }
+    }
     
     static var previews: some View {
         PreviewContainerView()

@@ -34,20 +34,15 @@ struct RingView: View {
     
     var body: some View {
         GeometryReader { proxy in
-            
-            //Calculate the leading dimension
             let size = min(proxy.size.width, proxy.size.height)
             
             ZStack(alignment: .center) {
-                
-                //Ring circle
                     Circle()
                         .trim(from: startPoint, to: endPoint)
                         .stroke(ringColor, lineWidth: ringWidth)
                         .rotationEffect(.degrees(-90))
                         .opacity(startPoint <= endPoint ? 1 : 0)
                         .frame(width: size, height: size)
-                    //Ring begining circle
                     Circle()
                         .fill(ringColor)
                         .frame(width: ringWidth)
@@ -55,7 +50,6 @@ struct RingView: View {
                         .opacity(startPoint <= endPoint ? 1: 0)
                         .rotationEffect(.degrees(startPoint*360))
                 
-                //Leading point circle
                 if displayPointer {
                     Circle()
                         .fill(ringColor)

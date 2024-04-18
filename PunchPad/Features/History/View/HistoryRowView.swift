@@ -14,7 +14,6 @@ struct HistoryRowView: View {
     private let dateFormatter: DateFormatter = FormatterFactory.makeDateFormatter()
     private let hoursText = "hours"
     private let minutesText = "min"
-    
     private let startDate: Date
     private let finishDate: Date
     private let workTimeInSeconds: Int

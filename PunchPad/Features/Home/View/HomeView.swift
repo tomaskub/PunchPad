@@ -14,7 +14,6 @@ import TabViewKit
 
 struct HomeView: View {
     private typealias Identifier = ScreenIdentifier.HomeView
-    @ObservedObject var viewModel: HomeViewModel
     private let timerIndicatorHourAndMinuteFormatter = FormatterFactory.makeHourAndMinuteDateComponentFormatter()
     private let timerIndicatorMinuteAndSecondFormatter = FormatterFactory.makeMinuteAndSecondDateComponetFormatter()
     private let settingText: String = "Settings"
@@ -22,6 +21,7 @@ struct HomeView: View {
     private let stopIconName = "stop.fill"
     private let playIconName = "play.fill"
     private let pauseIconName = "pause.fill"
+    @ObservedObject var viewModel: HomeViewModel
     
     var body: some View {
         ZStack {

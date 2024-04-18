@@ -24,9 +24,7 @@ struct ConfirmButtonStyle: ButtonStyle {
 }
 
 #Preview {
-    Button {
-        //do nothing
-    } label: {
+    Button { } label: {
         Text("ConfirmButtonStyle")
     }
     .buttonStyle(ConfirmButtonStyle())

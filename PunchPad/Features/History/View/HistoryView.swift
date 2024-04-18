@@ -19,7 +19,6 @@ struct HistoryView: View {
     private let deleteRowMessage: String = "Are you sure you want to delete this entry?"
     private let deleteRowIcon: String = "checkmark.circle"
     private let headerFormatter: DateFormatter = FormatterFactory.makeFullMonthYearDateFormatter()
-    
     private let container: ContainerProtocol
     @ObservedObject private var viewModel: HistoryViewModel
     @Binding private var selectedEntry: Entry?

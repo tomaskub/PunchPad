@@ -8,7 +8,6 @@
 import Foundation
 
 extension Calendar.Component {
-    
     /// A writable key path to date component property of Int? type, corresponsing with given calendar component
     /// If the keypath contains propety of diffferent type (like Bool), the var will return nil
     /// Not implemented calendar components will return nil as well.

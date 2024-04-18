@@ -9,15 +9,10 @@ import SwiftUI
 import ThemeKit
 
 struct OnboardingView: View {
-    private enum OnboardingStage: Equatable, CaseIterable {
-        case welcome // Logo and welcome message
-        case worktime // Set the work time
-        case overtime // Ask if doing overtime and set maximum overtime
-        case notifications // Ask if send notifications on finish
-        case salary // Ask user for salary and if to calculate net salary (after taxes)
-        case exit // Inform setup complete, allow to finish onboarding
-    }
     private typealias Identifier = ScreenIdentifier.OnboardingView
+    private enum OnboardingStage: Equatable, CaseIterable {
+        case welcome, worktime, overtime, notifications, salary, exit
+    }
     
     let backButtonText: String = "Back"
     private var bottomButtonText: String {
@@ -27,7 +22,6 @@ struct OnboardingView: View {
         default: "Next"
         }
     }
-    
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: OnboardingViewModel
@@ -41,7 +35,6 @@ struct OnboardingView: View {
         
         ZStack{
             background
-            //CONTENT
                 switch currentStage {
                 case .welcome:
                     OnboardingWelcomeView()

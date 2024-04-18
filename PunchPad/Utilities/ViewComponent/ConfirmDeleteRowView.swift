@@ -48,12 +48,7 @@ struct ConfirmDeleteRowView: View {
 #Preview("ConfirmDeleteRowView") {
     List {
         ConfirmDeleteRowView("Are you sure you want to delete this item?", 
-                             iconSystemName: "checkmark.circle") {
-            // confirmation action
-        } cancelAction: {
-            // cancel action
-        }
-
+                             iconSystemName: "checkmark.circle") { } cancelAction: { }
     }
     .listStyle(.insetGrouped)
     .scrollContentBackground(.hidden)
