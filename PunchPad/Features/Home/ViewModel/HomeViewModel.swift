@@ -21,7 +21,6 @@ class HomeViewModel: NSObject, ObservableObject {
     private var workTimerService: TimerService
     private var overtimeTimerService: TimerService?
     @Published var state: TimerService.TimerServiceState = .notStarted
-    
     var timerDisplayValue: TimeInterval {
         if let overtimeTimerService = overtimeTimerService {
             if overtimeTimerService.progress > 0 {
@@ -33,11 +32,9 @@ class HomeViewModel: NSObject, ObservableObject {
             return workTimerService.counter
         }
     }
-    
     var normalProgress: CGFloat {
         workTimerService.progress
     }
-    
     var overtimeProgress: CGFloat {
         overtimeTimerService?.progress ?? 0
     }
@@ -226,7 +223,7 @@ extension HomeViewModel {
     
     func resumeFromBackground(_ appDidEnterBackgroundDate: Date) {
         let timePassedInBackground = DateInterval(start: appDidEnterBackgroundDate, end: Date()).duration
-        // Handle update of timer when no overtime is allowed
+        
         guard let overtimeTimerService else {
             if workTimerService.serviceState == .running {
                 if timePassedInBackground < workTimerService.remainingTime {
@@ -238,7 +235,7 @@ extension HomeViewModel {
             }
             return
         }
-        // Handle update of timer when there is overtime
+        // TODO: INVESTIGATE IF OVERTIME IS REGISTERING WHEN WAKING UP IN OVERTIME
         if workTimerService.serviceState == .running {
             if workTimerService.remainingTime < timePassedInBackground {
                 let worktimePassedInBackground = workTimerService.remainingTime

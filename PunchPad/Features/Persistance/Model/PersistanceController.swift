@@ -23,7 +23,7 @@ struct PersistanceController {
         }
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
-                //Implement error handling - below is not appropriate to use in shiped code
+                //TODO: Implement error handling - below is not appropriate to use in shiped code
                 fatalError("Fatal error: \(error), \(error.userInfo)")
             }
         })

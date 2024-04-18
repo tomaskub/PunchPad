@@ -9,9 +9,6 @@ import SwiftUI
 import Combine
 
 final class SettingsStore: ObservableObject {
-    private var subscriptions = Set<AnyCancellable>()
-    private let defaults = UserDefaults.standard
-    
     enum SettingKey: String, CaseIterable {
         case isRunFirstTime
         case isLoggingOvertime
@@ -22,7 +19,8 @@ final class SettingsStore: ObservableObject {
         case grossPayPerMonth
         case savedColorScheme
     }
-    
+    private var subscriptions = Set<AnyCancellable>()
+    private let defaults = UserDefaults.standard
     @Published var isRunFirstTime: Bool
     @Published var isLoggingOvertime: Bool
     @Published var isCalculatingNetPay: Bool

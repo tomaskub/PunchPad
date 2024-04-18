@@ -138,7 +138,7 @@ private extension SettingsView {
                               hoursAccessibilityIdentifier: .timeHoursPicker,
                               minutesAccessibilityIdentifier: .timeMinutesPicker
                 )
-            } // END OF IF
+            }
         }
     }
     
@@ -206,14 +206,14 @@ private extension SettingsView {
                 .foregroundStyle(Color.theme.blackLabel)
             Spacer()
             Image(systemName: chevronOrientation ? "chevron.up" : "chevron.down")
-        } // END OF HSTACK
+        }
         .contentShape(Rectangle())
         .ifLet(accessibilityIdentifier) { view, identifier in
             view.accessibilityIdentifier(identifier.rawValue)
         }
         .onTapGesture {
             onTap()
-        } // END OF TAP GESTURE
+        }
     }
     @ViewBuilder
     private func makeListButton(_ text: String, systemName: String, iconForegroundColor: Color? = nil, accessibilityIdentifier: String? = nil, onTap: @escaping () -> Void) -> some View {
@@ -225,14 +225,14 @@ private extension SettingsView {
                 .ifLet(iconForegroundColor) { image, color in
                     image.foregroundColor(color)
                 }
-        } // END OF HSTACK
+        }
         .contentShape(Rectangle())
         .ifLet(accessibilityIdentifier) { view, identifier in
             view.accessibilityIdentifier(identifier)
         }
         .onTapGesture {
             onTap()
-        } // END OF TAP GESTURE
+        }
     }
     
     @ViewBuilder

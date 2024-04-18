@@ -11,7 +11,6 @@ import CoreData
 
 
 extension EntryMO {
-
     @nonobjc public class func fetchRequest() -> NSFetchRequest<EntryMO> {
         return NSFetchRequest<EntryMO>(entityName: "EntryMO")
     }

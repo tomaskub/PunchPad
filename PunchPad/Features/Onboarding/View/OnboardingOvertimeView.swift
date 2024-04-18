@@ -41,8 +41,8 @@ struct OnboardingOvertimeView: View {
                                     .foregroundColor(.theme.primary).tag(i)
                             }
                         }
-                        .accessibilityIdentifier(Identifier.Pickers.overtimeHours.rawValue)
-                        .pickerStyle(.wheel)
+                               .accessibilityIdentifier(Identifier.Pickers.overtimeHours.rawValue)
+                               .pickerStyle(.wheel)
                     }
                     VStack {
                         Text(minutesPickerLabel)
@@ -53,8 +53,8 @@ struct OnboardingOvertimeView: View {
                                 Text("\(i)").foregroundColor(.theme.primary).tag(i)
                             }
                         }
-                        .accessibilityIdentifier(Identifier.Pickers.overtimeMinutes.rawValue)
-                        .pickerStyle(.wheel)
+                               .accessibilityIdentifier(Identifier.Pickers.overtimeMinutes.rawValue)
+                               .pickerStyle(.wheel)
                     }
                 }
                 .foregroundColor(.theme.primary)
@@ -66,7 +66,7 @@ struct OnboardingOvertimeView: View {
             
         }
         .padding(30)
-    } // END OF BODY
+    }
     
     var title: some View {
         TextFactory.buildTitle(titleText)
@@ -90,7 +90,7 @@ struct OnboardingOvertimeView: View {
     }
     
     
-} // END OF VIEW
+}
 
 struct OnbardingOvertime_Previews: PreviewProvider {
     
@@ -116,11 +116,11 @@ struct OnbardingOvertime_Previews: PreviewProvider {
                         
                     }
                     .buttonStyle(.confirming)
-                } // END OF VSTACK
+                }
                 .padding(30)
-            } // END OF ZSTACK
-        } // END OF BODY
-    } // END OF VIEW
+            }
+        }
+    }
     
     static var previews: some View {
         PreviewContainerView()

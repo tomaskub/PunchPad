@@ -9,19 +9,12 @@ import Foundation
 import Combine
 
 final class PayManager: ObservableObject {
-    ///Data manager used to retrieve existing data
     private var dataManager: DataManager
-    ///Setting store used to retrieve user settings
     private var settingsStore: SettingsStore
-    ///Calendar service used to perform date calculations and comparisions
     private var calendar: Calendar
-    ///Temporary overtime pay coeficcient implementation
     private var overtimePayCoef: Double = 1.5
-    ///Set of all combine subscribers
     private var subscriptions = Set<AnyCancellable>()
-    ///Current period driving gross salary data
     @Published private var currentPeriod: Period
-    ///Gross salary data generated for a given period of time
     @Published private(set) var grossDataForPeriod: GrossSalary
     
     init(dataManager: DataManager, settingsStore: SettingsStore, currentPeriod: Period = (Date(), Date()), calendar: Calendar) {
@@ -39,7 +32,6 @@ final class PayManager: ObservableObject {
         currentPeriod = period
     }
     
-    /// Set subscribers to settingStore and dataManager changes
     private func setStoreSubscribers() {
         settingsStore.objectWillChange.sink { [weak self] _ in
             self?.objectWillChange.send()
@@ -50,7 +42,6 @@ final class PayManager: ObservableObject {
         }.store(in: &subscriptions)
     }
     
-    /// Set subscriber responsible for updating gross data for period on current period change
     private func setCurrentPeriodSubscriber() {
         $currentPeriod
             .removeDuplicates { lhs, rhs in
@@ -65,8 +56,6 @@ final class PayManager: ObservableObject {
 //MARK: GROSS PAY DISPLAY DATA GENERATING FUNCTIONS
 private extension PayManager {
     /// Generate salary data based on given period
-    /// - Parameter period: period for which salary data should be generated
-    /// - Returns: generated gross salary data
     func generateGrossDataForPeriod(_ period: Period) -> GrossSalary {
         let entryData = dataManager.fetch(for: period)
         let averageWorktime: Int? = calculateAverage(from: entryData, keypath: \.workTimeInSeconds)
@@ -96,14 +85,6 @@ private extension PayManager {
     }
     
     /// Process avaliable entry data for the given period by adding empty entries before today and standard entries in future
-    /// - Parameters:
-    ///   - period: start and finish date touple
-    ///   - entryData: existing retrieved entry data
-    ///   - averageWorktime: average worktime to use for entries in the future
-    ///   - averageOvertime: average overtime to use for entries in the future
-    ///   - calendar: calendar used for comparisions and date generation
-    ///   - store: store with default values
-    /// - Returns: an array with existing entries and predicted future entries
     func processEntryData(in period: Period, from entryData: [Entry]?, averageWorktime: Int?, averageOvertime: Int?, calendar: Calendar, store: SettingsStore) -> [Entry] {
         return getWorkDaysInPeriod(using: calendar, in: period).map { date in
             if let retrievedEntry = entryData?.first(where: { calendar.isDate($0.startDate, inSameDayAs: date) }) {
@@ -126,13 +107,7 @@ private extension PayManager {
 
 //MARK: GROSS PAY CALCULATION
 private extension PayManager {
-    /// Calculate gross pay for given entry
-    /// - Parameters:
-    ///  - entry: entry for which the gross pay is calculated
-    ///  - overtimePayCoef: overtime adjustment coefficient - standard 150% is 1.5
-    /// - Returns: gross pay amount
-    ///
-    /// Function returns gross pay for given entry based on the time work, overtime worked, and gross pay per month set for the entry. Included overtime pay coefficient of 1.5 extra for overtime.
+    /// Calculate gross pay for given entry -  returns gross pay for given entry based on the time work, overtime worked, and gross pay per month set for the entry. Included overtime pay coefficient of 1.5 extra for overtime.
     func calculateGrossPayFor(entry: Entry, overtimePayCoef: Double, using calendar: Calendar) -> Double {
         let payPerHour = calculateGrossPayPerHour(for: entry, using: calendar)
         return calculateGrossPay(worktime: Double(entry.workTimeInSeconds),
@@ -142,12 +117,6 @@ private extension PayManager {
     }
     
     /// Calculate gross pay based on the input parameters
-    /// - Parameters:
-    ///   - worktime: standard work in seconds
-    ///   - overtime: overtime in seconds
-    ///   - grossPayPerHour: gross pay  per hour
-    ///   - overtimePayCoef: overtime adjustment coefficient
-    /// - Returns: gross pay
     func calculateGrossPay(worktime: Double, overtime: Double, grossPayPerHour: Double, overtimePayCoef: Double) -> Double {
         let worktimeHours = worktime / 3600
         let overtimeHours = overtime / 3600
@@ -158,8 +127,6 @@ private extension PayManager {
 //MARK: AVERAGE GROSS PAY PER HOUR
 private extension PayManager {
     /// Calculate average gross pay per hour based on gross monthly pay in entry
-    /// - Parameter entries: an  array of entries
-    /// - Returns: Average of gross pay per hour in entries
     func calculateAverageGrossPayPerHour(from entries: [Entry], using calendar: Calendar) -> Double {
         let payPerHourInEntries = entries.map { entry in
             calculateGrossPayPerHour(for: entry, using: calendar)
@@ -169,10 +136,6 @@ private extension PayManager {
     }
     
     /// Calculate average of an Int property based on entry array
-    /// - Parameters:
-    ///   - input: optional entry array
-    ///   - keypath: property keypath
-    /// - Returns: average of the values for keypath propery in given array of entries, or nil if input is nil
     func calculateAverage(from input: [Entry]?, keypath: KeyPath<Entry, Int>) -> Int? {
         if let input, !input.isEmpty {
             return input.map { $0[keyPath: keypath] }.reduce(0, +) / input.count
@@ -183,10 +146,6 @@ private extension PayManager {
 
 //MARK: GROSS PAY PER HOUR FUNCTIONS
 private extension PayManager {
-    /// Calculate gross pay per hour for given entry, based on data in entry
-    /// - Parameter entry: entry for which to perform calculation
-    /// - Returns: gross pay per hour
-    ///
     /// Calculate gross pay per hour based on the provided entry, The gross pay per month stored in entry is used, with the number of working days in month retrived based on entry start date.
     func calculateGrossPayPerHour(for entry: Entry, using calendar: Calendar) -> Double {
         let numberOfWorkingHoursInDay = Double(entry.standardWorktimeInSeconds) / 3600
@@ -198,10 +157,6 @@ private extension PayManager {
 //MARK: CALENDAR FUNCTIONS
 private extension PayManager {
     /// Return an array containing start of the day dates of working days in input period
-    /// - Parameters:
-    ///   - calendar: calendar used for calculation
-    ///   - period: date period (touple of start and finish dates)
-    /// - Returns: an array of dates in period
     func getWorkDaysInPeriod(using calendar: Calendar, in period: Period) -> [Date] {
         guard let numberOfDays = calendar.dateComponents([.day], from: period.0, to: period.1).day,
               numberOfDays > 0 else { return [] }
@@ -214,11 +169,6 @@ private extension PayManager {
     }
     
     /// Get the number of working days in month containing given date
-    /// - Parameters:
-    ///   - calendar: calendar used for calculation
-    ///   - date: date contained in month
-    /// - Returns: number of working days in month
-    ///
     /// Function checks for weekend days only. Holidays are counting as working days, as they are normally paid as standard length working days. Default calendar used is the current instance of calendar, while default date is now.
     func getNumberOfWorkingDays(using calendar: Calendar, inMonthOfDate date: Date = Date()) -> Int {
         let components = calendar.dateComponents([.month, .year], from: date)
@@ -235,9 +185,6 @@ private extension PayManager {
 //MARK: - NET PAY FUNCTIONS - FOR NOW UNUSED
 extension PayManager {
     ///Calculate net pay based on gross pay given, using standard polish taxation for work contract
-    /// - Parameters:
-    /// - gross - the gross pay to be taxed as a Double
-    /// - Returns: net pay calculated
     func calculateNetPay(gross: Double) -> Double {
         let skladkaEmerytalna = 0.0976 * gross
         let skladkaRentowa = 0.015 * gross

@@ -8,8 +8,6 @@
 import Foundation
 
 struct EntrySummary: ChartableEntry {
-    
-    
     let id: UUID
     let startDate: Date
     let workTimeInSeconds: Int

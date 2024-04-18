@@ -16,7 +16,6 @@ enum ChartPeriodServiceError: Error {
 }
 
 class ChartPeriodService {
-    
     let calendar: Calendar
     
     init(calendar: Calendar) {
@@ -83,15 +82,8 @@ class ChartPeriodService {
         return calendar.date(from: dateComponents)!
     }
     
-    /**
-     Get a number of days in a given ChartTimeRange in which the given date exists
-      - Parameters:
-         - calendar: Calendar used to calculate ranges
-         - timeRange: time range on which to calculate the number of days
-         - date: date thats in time range
-      - Throws: `ChartPeriodServiceError.failedToRetrieveChartTimeRangeCount` if calendar fails to calculate a range of days in time range,  or`ChartPeriodServiceError.attemptedToRetrievePeriodForAll` if time range is set to `.all`
-      - Returns: number of days
-     */
+    
+    /// Get a number of days in a given ChartTimeRange in which the given date exists
     private func getNumberOfDays(in timeRange: ChartTimeRange, for date: Date) throws -> Int {
         let range: Range<Int>?
         switch timeRange {

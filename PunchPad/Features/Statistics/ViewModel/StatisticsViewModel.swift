@@ -15,7 +15,6 @@ final class StatisticsViewModel: ObservableObject {
     @Published private var payManager: PayManager
     @Published private var settingsStore: SettingsStore
     private var subscriptions = Set<AnyCancellable>()
-    //MARK: PUBLISHED VARIABLES
     private let secondsInHour = 3600
     private let secondsInMinute = 60
     @Published var chartTimeRange: ChartTimeRange = .week
@@ -23,26 +22,21 @@ final class StatisticsViewModel: ObservableObject {
     var grossSalaryData: GrossSalary {
         payManager.grossDataForPeriod
     }
-    
     var workedHoursInPeriod: Int {
         entryInPeriod.map { entry in
             (entry.workTimeInSeconds + entry.overTimeInSeconds ) / secondsInHour
         }.reduce(0, +)
     }
-    
     var overtimeHoursInPeriod: Int {
         entryInPeriod.map { entry in
             entry.overTimeInSeconds / secondsInHour
         }.reduce(0, +)
     }
-    
     ///Entries for use with a chart - contains empy entries for days without the entry in this monts
     @Published var entryInPeriod: [Entry]
-    
     var entrySummaryByMonthYear: [EntrySummary] {
         groupEntriesByYearMonth(entryInPeriod).map { EntrySummary(fromEntries: $0) }
     }
-    
     var entrySummaryByWeekYear: [EntrySummary]? {
         guard let startDate = entryInPeriod.first?.startDate,
               let finishDate = entryInPeriod.last?.finishDate,
