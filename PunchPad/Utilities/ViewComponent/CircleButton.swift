@@ -30,9 +30,7 @@ struct CircleButton: ButtonStyle {
     ZStack{
         BackgroundFactory.buildSolidColor()
         HStack {
-            Button {
-                //nothing
-            } label: {
+            Button { } label: {
                 Image(systemName: "play.fill")
                     .resizable()
                     .frame(width: 50, height: 50)
@@ -40,9 +38,7 @@ struct CircleButton: ButtonStyle {
                     .frame(width: 100, height: 100)
             }
             .buttonStyle(CircleButton())
-            Button {
-                // do nothing
-            } label: {
+            Button { } label: {
                 Image(systemName: "pause.fill")
                     .resizable()
                     .frame(width: 30, height: 30)

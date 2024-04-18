@@ -77,6 +77,7 @@ struct FormatterFactory {
         return formatter
     }
     
+    /// Returns `NumberFormatter` with given local and currency number style
     static func makeCurrencyFormatter(_ locale: Locale) -> NumberFormatter {
         let formatter = NumberFormatter()
         formatter.locale = locale

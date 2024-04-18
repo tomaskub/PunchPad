@@ -20,9 +20,7 @@ struct CancelButtonStyle: ButtonStyle {
 }
 
 #Preview {
-    Button {
-        //do nothing
-    } label: {
+    Button { } label: {
         Text("CancelButtonStyle")
     }
     .buttonStyle(CancelButtonStyle())
