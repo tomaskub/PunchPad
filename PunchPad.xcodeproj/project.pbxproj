@@ -40,7 +40,6 @@
 		D64766C52AFEBD9D0013AC9A /* ChartLegendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64766C42AFEBD9D0013AC9A /* ChartLegendView.swift */; };
 		D653FEEC2B320E1600ECFCF2 /* TimeIntervalPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D653FEEB2B320E1600ECFCF2 /* TimeIntervalPicker.swift */; };
 		D65A976B29F2E6B800462D8C /* StatisticsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65A976A29F2E6B800462D8C /* StatisticsViewModelTests.swift */; };
-		D65A976D29F323A900462D8C /* K.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65A976C29F323A900462D8C /* K.swift */; };
 		D65A976F29F3BBDD00462D8C /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65A976E29F3BBDD00462D8C /* OnboardingView.swift */; };
 		D65FD53D29D8B259006CC34F /* PersistanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65FD53C29D8B259006CC34F /* PersistanceController.swift */; };
 		D66451062B56FF47003C537B /* ThemeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D630A53A2B4704EA0098CA86 /* ThemeKit.framework */; };
@@ -188,7 +187,6 @@
 		D64766C42AFEBD9D0013AC9A /* ChartLegendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLegendView.swift; sourceTree = "<group>"; };
 		D653FEEB2B320E1600ECFCF2 /* TimeIntervalPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalPicker.swift; sourceTree = "<group>"; };
 		D65A976A29F2E6B800462D8C /* StatisticsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModelTests.swift; sourceTree = "<group>"; };
-		D65A976C29F323A900462D8C /* K.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = K.swift; sourceTree = "<group>"; };
 		D65A976E29F3BBDD00462D8C /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		D65FD53C29D8B259006CC34F /* PersistanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistanceController.swift; sourceTree = "<group>"; };
 		D666ADCB2AC05A0500B74663 /* CaseIterable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CaseIterable+Extension.swift"; sourceTree = "<group>"; };
@@ -463,7 +461,6 @@
 				D63753B12B45E05700386482 /* Style */,
 				D61F11322AB3A6E700902D6D /* Extensions */,
 				D6B2BDF52B27C42800CB4FA7 /* ViewModifiers */,
-				D65A976C29F323A900462D8C /* K.swift */,
 				D67332E52AADB8B1005FFE7F /* LaunchArgument.swift */,
 				D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */,
 			);
@@ -961,7 +958,6 @@
 				D629CEF92B3613660036579D /* TimerService.swift in Sources */,
 				D66750EC29D71C8300757F17 /* HistoryRowView.swift in Sources */,
 				D6EA695A2AF83E7800D8F6C3 /* OnboardingWorktimeView.swift in Sources */,
-				D65A976D29F323A900462D8C /* K.swift in Sources */,
 				D6E6B8732AF98A4B0073D911 /* OnboardingNotificationView.swift in Sources */,
 				D6D02FAE29EF0B13006CD0B2 /* EditSheetView.swift in Sources */,
 				D6AB737029F562E600D5DE82 /* OnboardingViewModel.swift in Sources */,
