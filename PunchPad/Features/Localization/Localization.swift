@@ -28,4 +28,13 @@ struct Localization {
         static let minutes = String(localized: "Minutes")
         static let description = String(localized: "PunchPad needs to know your normal workday length to let you know when you are done or when you enter into overtime")
     }
+    
+    struct OnboardingOvertime {
+        static let overtime = String(localized: "Overtime")
+        static let letMeasureOvertime = "Let PunchPad know wheter you want to measure overtime"
+        static let letKnowMaximumOvertime = String(localized: "Let the app know maximum overtime you can work for.")
+        static let hours = String(localized: "Hours")
+        static let minutes = String(localized: "Minutes")
+        static let keepLoggingOvertime = String(localized: "Keep logging overtime")
+    }
 }
