@@ -17,7 +17,15 @@ struct Localization {
             static let next = String(localized: "Next")
         }
     }
+    
     struct OnboardingWelcome {
         static let description = String(localized: "This app was built to help you track time and make sure you are spending at work exactly the time you want and need. \n\n Plan your workdays and plan your paycheck!")
+    }
+    
+    struct OnbardingWorktime {
+        static let workday = String(localized: "Workday")
+        static let hours = String(localized: "Hours")
+        static let minutes = String(localized: "Minutes")
+        static let description = String(localized: "PunchPad needs to know your normal workday length to let you know when you are done or when you enter into overtime")
     }
 }
