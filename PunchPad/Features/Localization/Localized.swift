@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+protocol Localized {
+    associatedtype Strings
+}
