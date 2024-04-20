@@ -10,20 +10,15 @@ import ThemeKit
 
 struct OnboardingNotificationView: View {
     private typealias Identifier = ScreenIdentifier.OnboardingView
-    private let titleText: String = "Notifications"
-    private let descriptionText: String = "Do you want PunchPad to send you notifications when the work time is finished?"
-    private let alertTitle: String = "PunchPad needs permission to show notifications"
-    private let alertMessage: String = "You need to allow for notification in settings"
-    private let alertButtonText: String = "OK"
     @ObservedObject var viewModel: OnboardingViewModel
     
     var body: some View {
-        VStack(spacing: 40) {
-            TextFactory.buildTitle(titleText)
+        VStack(spacing: 40) { 
+            TextFactory.buildTitle(Strings.titleText)
             
-            TextFactory.buildDescription(descriptionText)
+            TextFactory.buildDescription(Strings.descriptionText)
             
-            Toggle("Send notifications on finish", isOn: $viewModel.settingsStore.isSendingNotification)
+            Toggle(Strings.toggleText, isOn: $viewModel.settingsStore.isSendingNotification)
                 .foregroundColor(.theme.blackLabel)
                 .tint(.theme.primary)
                 .accessibilityIdentifier(Identifier.Toggles.notifications.rawValue)
@@ -32,14 +27,26 @@ struct OnboardingNotificationView: View {
                 .cornerRadius(20)
         }
         .padding(30)
-        .alert(alertTitle,
+        .alert(Strings.alertTitle,
                isPresented: $viewModel.shouldShowNotificationDeniedAlert) {
-            Button(alertButtonText) {
+            Button(Strings.alertButtonText) {
                 viewModel.shouldShowNotificationDeniedAlert = false
             }
         } message: {
-            Text(alertMessage)
+            Text(Strings.alertMessage)
         }
+    }
+}
+
+//MARK: - Localization
+extension OnboardingNotificationView: Localized {
+    struct Strings {
+        static let titleText = Localization.OnboardingNotification.notifications
+        static let descriptionText = Localization.OnboardingNotification.descriptionText
+        static let toggleText = Localization.OnboardingNotification.sendNotificationsOnFinish
+        static let alertTitle = Localization.OnboardingNotification.needsPermission
+        static let alertMessage = Localization.OnboardingNotification.allowForNotifications
+        static let alertButtonText = Localization.OnboardingNotification.ok
     }
 }
 
