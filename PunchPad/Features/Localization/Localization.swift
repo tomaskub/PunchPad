@@ -17,4 +17,7 @@ struct Localization {
             static let next = String(localized: "Next")
         }
     }
+    struct OnboardingWelcome {
+        static let description = String(localized: "This app was built to help you track time and make sure you are spending at work exactly the time you want and need. \n\n Plan your workdays and plan your paycheck!")
+    }
 }
