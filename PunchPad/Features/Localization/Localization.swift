@@ -46,4 +46,12 @@ struct Localization {
         static let allowForNotifications = String(localized: "You need to allow for notification in settings")
         static let ok = String(localized: "OK")
     }
+    
+    struct OnboardingSalary {
+        static let salary = String(localized: "Salary")
+        static let letKnowIncome = String(localized: "To let PunchPad calculate your salary you need to enter your gross montly income")
+        static let wantTocalculateNetSalaru = String(localized: "Do you want to PunchPad to calculate your net salary based on Polish tax law?")
+        static let grossPaycheck = String(localized: "Gross paycheck")
+        static let calculateNetSalary = String(localized: "Calculate net salary")
+    }
 }
