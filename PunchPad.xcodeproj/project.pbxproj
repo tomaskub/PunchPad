@@ -94,6 +94,7 @@
 		D6CBB8662B3443360074CE8B /* EditSheetViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CBB8652B3443360074CE8B /* EditSheetViewModelTests.swift */; };
 		D6CBB8682B34ACF20074CE8B /* Calendar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CBB8672B34ACF20074CE8B /* Calendar+Extension.swift */; };
 		D6CBB86A2B34C7150074CE8B /* FormatterFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CBB8692B34C7150074CE8B /* FormatterFactory.swift */; };
+		D6CE83F12BD431FE00DA0882 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D6CE83F02BD431FE00DA0882 /* Localizable.xcstrings */; };
 		D6D02FAE29EF0B13006CD0B2 /* EditSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D02FAD29EF0B13006CD0B2 /* EditSheetView.swift */; };
 		D6D02FB029EF0B7F006CD0B2 /* EditSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D02FAF29EF0B7F006CD0B2 /* EditSheetViewModel.swift */; };
 		D6D906AE2AA0BEDE004E09C9 /* ScreenIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */; };
@@ -242,6 +243,7 @@
 		D6CBB8652B3443360074CE8B /* EditSheetViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSheetViewModelTests.swift; sourceTree = "<group>"; };
 		D6CBB8672B34ACF20074CE8B /* Calendar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Extension.swift"; sourceTree = "<group>"; };
 		D6CBB8692B34C7150074CE8B /* FormatterFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterFactory.swift; sourceTree = "<group>"; };
+		D6CE83F02BD431FE00DA0882 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = Localizable.xcstrings; path = PunchPad/Localizable.xcstrings; sourceTree = "<group>"; };
 		D6D02FAD29EF0B13006CD0B2 /* EditSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSheetView.swift; sourceTree = "<group>"; };
 		D6D02FAF29EF0B7F006CD0B2 /* EditSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSheetViewModel.swift; sourceTree = "<group>"; };
 		D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenIdentifier.swift; sourceTree = "<group>"; };
@@ -369,6 +371,7 @@
 		D6C4588729D229200069D89B = {
 			isa = PBXGroup;
 			children = (
+				D6CE83F02BD431FE00DA0882 /* Localizable.xcstrings */,
 				D6C4589229D229210069D89B /* PunchPad */,
 				D6C458A329D229230069D89B /* PunchPadTests */,
 				D6C458AD29D229230069D89B /* PunchPadUITests */,
@@ -872,6 +875,7 @@
 			files = (
 				D630A53F2B473A320098CA86 /* LaunchScreen.storyboard in Resources */,
 				D6C4589B29D229230069D89B /* Preview Assets.xcassets in Resources */,
+				D6CE83F12BD431FE00DA0882 /* Localizable.xcstrings in Resources */,
 				D6C4589829D229230069D89B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
