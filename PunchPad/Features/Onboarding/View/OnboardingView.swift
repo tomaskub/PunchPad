@@ -14,12 +14,11 @@ struct OnboardingView: View {
         case welcome, worktime, overtime, notifications, salary, exit
     }
     
-    let backButtonText: String = "Back"
     private var bottomButtonText: String {
         switch currentStage {
-        case .welcome: "Let's start!"
-        case .exit: "Finish set up!"
-        default: "Next"
+        case .welcome: Strings.bottomButtonWelcomeText
+        case .exit: Strings.bottomButtonExitText
+        default: Strings.bottomButtonDefaultText
         }
     }
     @Environment(\.colorScheme) private var colorScheme
@@ -71,7 +70,7 @@ extension OnboardingView {
     }
     
     private var topButton: some View {
-        Label(backButtonText, systemImage: "chevron.left")
+        Label(Strings.backButtonText, systemImage: "chevron.left")
             .accessibilityIdentifier(Identifier.Buttons.regressStage.rawValue)
             .foregroundColor(.theme.blackLabel)
             .onTapGesture {
@@ -93,6 +92,16 @@ extension OnboardingView {
         }
         .buttonStyle(.confirming)
         .accessibilityIdentifier(Identifier.Buttons.advanceStage.rawValue)
+    }
+}
+
+//MARK: - Localization
+extension OnboardingView: Localized {
+    struct Strings {
+        static let backButtonText = Localization.Onboarding.backButtonTitleText
+        static let bottomButtonWelcomeText = Localization.Onboarding.BottomButton.letsStart
+        static let bottomButtonExitText = Localization.Onboarding.BottomButton.finish
+        static let bottomButtonDefaultText = Localization.Onboarding.BottomButton.next
     }
 }
 

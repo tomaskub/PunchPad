@@ -6,3 +6,15 @@
 //
 
 import Foundation
+
+struct Localization {
+    struct Onboarding {
+        static let backButtonTitleText = String(localized: "Back")
+        
+        struct BottomButton {
+            static let letsStart = String(localized: "Let's start!")
+            static let finish = String(localized: "Finish set up!")
+            static let next = String(localized: "Next")
+        }
+    }
+}
