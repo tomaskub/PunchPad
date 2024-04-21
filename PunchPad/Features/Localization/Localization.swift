@@ -76,4 +76,30 @@ struct Localization {
         static let grossPayPredicted = String(localized: "Gross pay predicted")
         static let numberOfWorkingDays = String(localized: "Number of working days")
     }
+    
+    struct Settings {
+        static let settings = String(localized: "Settings")
+        static let needsPermissionToShowNotifications = String(localized: "PunchPad needs permission to show notifications")
+        static let youNeedToAllowForNotifications = String(localized: "You need to allow for notification in settings")
+        static let ok = String(localized: "OK")
+        static let hours = String(localized: "Hours")
+        static let minutes = String(localized: "Minutes")
+        static let setTimerLength = String(localized: "Set timer length")
+        static let maximumOvertimeAllowed = String(localized: "Maximum overtime allowed")
+        static let clearAllSavedData = String(localized: "Clear all saved data")
+        static let resetPreferences = String(localized: "Reset preferences")
+        static let keepLogingOvertime = String(localized: "Keep logging overtime")
+        static let grossPaycheck = String(localized: "Gross paycheck")
+        static let calculateNetPay = String(localized: "Calculate net pay")
+        static let colorScheme = String(localized: "Color scheme")
+        static let dark = String(localized: "Dark")
+        static let light = String(localized: "Light")
+        static let system = String(localized: "System")
+        static let sendNotificationsOnFinish = String(localized: "Send notification on finish")
+        static let timerSettings = String(localized: "Timer settings")
+        static let overtime = String(localized: "Overtime")
+        static let paycheckCalculation = String(localized: "Paycheck calculation")
+        static let userData = String(localized: "User data")
+        static let appearance = String(localized: "Appearance")
+    }
 }
