@@ -117,4 +117,22 @@ struct Localization {
         static let hours = String(localized: "hours")
         static let minutesShort = String(localized: "min")
     }
+    
+    struct EditSheet {
+        static let regularTime = String(localized: "Regular time")
+        static let overtime = String(localized: "Overtime")
+        static let breaktime = String(localized: "Break time")
+        static let editEntry = String(localized: "Edit entry")
+        static let workTime = String(localized: "work time")
+        static let overrideSettings = String(localized: "Override settings")
+        static let start = String(localized: "Start")
+        static let finish = String(localized: "Finish")
+        static let date = String(localized: "Date")
+        static let save = String(localized: "save")
+        static let cancel = String(localized: "cancel")
+        static let maximumOvertime = String(localized: "Maximum overtime")
+        static let standardWorkTime = String(localized: "Standard work time")
+        static let grossPayPerMonth = String(localized: "Gross pay per month")
+        static let calculateNetPay = String(localized: "Calculate net pay")
+    }
 }
