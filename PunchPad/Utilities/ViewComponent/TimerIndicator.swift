@@ -8,15 +8,17 @@
 import SwiftUI
 
 struct TimerIndicator: View {
-    let firstProgressLabel: String = "worktime".uppercased()
-    let secondProgressLabel: String = "overtime".uppercased()
+    let firstProgressLabel: String
+    let secondProgressLabel: String
     let timerLabel: String
     let firstProgress: CGFloat
     let secondProgress: CGFloat
     let useOnlyWorkLabel: Bool
     
-    init(timerLabel: String, firstProgress: CGFloat, secondProgress: CGFloat, useOnlyWorkLabel: Bool = false) {
+    init(timerLabel: String, firstProgress: CGFloat, firstTimerLabel: String, secondProgress: CGFloat, secondTimerLabel: String, useOnlyWorkLabel: Bool = false) {
         self.timerLabel = timerLabel
+        self.firstProgressLabel = firstTimerLabel
+        self.secondProgressLabel = secondTimerLabel
         self.firstProgress = firstProgress
         self.secondProgress = secondProgress
         self.useOnlyWorkLabel = useOnlyWorkLabel
@@ -73,7 +75,9 @@ struct TimerIndicator: View {
         TimerIndicator(
             timerLabel: "00:00",
             firstProgress: 0,
-            secondProgress: 0)
+            firstTimerLabel: "WORKTIME",
+            secondProgress: 0,
+            secondTimerLabel: "overtime".capitalized)
         .frame(width: 260, height: 260)
     }
 }
@@ -83,7 +87,9 @@ struct TimerIndicator: View {
         TimerIndicator(
             timerLabel: "04:20",
             firstProgress: 0.6,
-            secondProgress: 0)
+            firstTimerLabel: "WORKTIME",
+            secondProgress: 0,
+            secondTimerLabel: "overtime".capitalized)
         .frame(width: 260, height: 260)
     }
 }
@@ -94,7 +100,9 @@ struct TimerIndicator: View {
             TimerIndicator(
                 timerLabel: "08:00",
                 firstProgress: 1,
-                secondProgress: 0)
+                firstTimerLabel: "WORKTIME",
+                secondProgress: 0,
+                secondTimerLabel: "overtime".capitalized)
             .frame(width: 260, height: 260)
         }
 }
@@ -105,7 +113,9 @@ struct TimerIndicator: View {
         TimerIndicator(
             timerLabel: "01:40",
             firstProgress: 1,
-            secondProgress: 0.3)
+            firstTimerLabel: "WORKTIME",
+            secondProgress: 0.3,
+            secondTimerLabel: "overtime".capitalized)
         .frame(width: 260, height: 260)
     }
 }

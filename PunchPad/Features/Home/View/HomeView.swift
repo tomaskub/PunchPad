@@ -16,8 +16,6 @@ struct HomeView: View {
     private typealias Identifier = ScreenIdentifier.HomeView
     private let timerIndicatorHourAndMinuteFormatter = FormatterFactory.makeHourAndMinuteDateComponentFormatter()
     private let timerIndicatorMinuteAndSecondFormatter = FormatterFactory.makeMinuteAndSecondDateComponetFormatter()
-    private let settingText: String = "Settings"
-    private let bottomMessageText: String = "Start your work day!".capitalized
     private let stopIconName = "stop.fill"
     private let playIconName = "play.fill"
     private let pauseIconName = "pause.fill"
@@ -31,14 +29,16 @@ struct HomeView: View {
                     TimerIndicator(
                         timerLabel: formatTimeInterval(viewModel.timerDisplayValue),
                         firstProgress: viewModel.normalProgress,
-                        secondProgress: viewModel.overtimeProgress
+                        firstTimerLabel: Strings.firstTimerLabelText,
+                        secondProgress: viewModel.overtimeProgress,
+                        secondTimerLabel: Strings.secondTimerLabelText
                     )
                     .frame(width: 260, height: 260)
                     makeControls(viewModel.state)
                 }
                 .frame(height: 480, alignment: .top)
                 
-                Text(bottomMessageText)
+                Text(Strings.bottomMessageText)
                     .foregroundColor(.theme.white)
                     .opacity(viewModel.state == .notStarted ? 1 : 0)
                     .font(.system(size: 24))
@@ -60,7 +60,14 @@ struct HomeView: View {
         }
     }
 }
-
+//MARK: - Localization
+extension HomeView: Localized {
+    struct Strings {
+        static let bottomMessageText = Localization.Home.startYourWorkDay.capitalized
+        static let firstTimerLabelText = Localization.Home.worktime.uppercased()
+        static let secondTimerLabelText = Localization.Home.overtime.uppercased()
+    }
+}
 //MARK: - Timer Controls
 private extension HomeView {
     @ViewBuilder

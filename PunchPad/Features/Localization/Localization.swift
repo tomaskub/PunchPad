@@ -144,4 +144,10 @@ struct Localization {
         static let cancel = String(localized: "Cancel")
         static let apply = String(localized: "Apply")
     }
+    
+    struct Home {
+        static let startYourWorkDay = String(localized: "Start your work day")
+        static let worktime = String(localized: "worktime")
+        static let overtime = String(localized: "overtime")
+    }
 }
