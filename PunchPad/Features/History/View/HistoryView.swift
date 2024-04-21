@@ -11,12 +11,6 @@ import ThemeKit
 
 struct HistoryView: View {
     private typealias Identifier = ScreenIdentifier.HistoryView
-    private let navigationTitleText: String = "History"
-    private let placeholderText: String = """
-                    Ooops! Something went wrong,
-                    or you never recorded time...
-                    """
-    private let deleteRowMessage: String = "Are you sure you want to delete this entry?"
     private let deleteRowIcon: String = "checkmark.circle"
     private let headerFormatter: DateFormatter = FormatterFactory.makeFullMonthYearDateFormatter()
     private let container: ContainerProtocol
@@ -105,7 +99,7 @@ private extension HistoryView {
                             makeEditButton(entry)
                         }
                 } else {
-                    ConfirmDeleteRowView(deleteRowMessage,
+                    ConfirmDeleteRowView(Strings.deleteRowMessage,
                                          iconSystemName: deleteRowIcon) {
                         viewModel.deleteEntry(entry: entry)
                     } cancelAction: {
@@ -154,7 +148,7 @@ private extension HistoryView {
     var emptyPlaceholderView: some View {
         VStack {
             Image(systemName: "nosign")
-            Text(placeholderText)
+            Text(Strings.placeholderText)
                 .multilineTextAlignment(.center)
         }
     }
@@ -180,7 +174,7 @@ private extension HistoryView {
             case .idle:
                 EmptyView()
             case .error:
-                Text("Something went wrong")
+                Text(Strings.errorRowText)
             }
                 
         }
@@ -195,6 +189,14 @@ private extension HistoryView {
     }
 }
 
+extension HistoryView: Localized {
+    struct Strings {
+        static let navigationTitleText = Localization.History.history
+        static let placeholderText = Localization.History.opsSomethingWentWrong
+        static let deleteRowMessage = Localization.History.areYouSure
+        static let errorRowText = Localization.History.somethingWentWrong
+    }
+}
 #Preview {
     struct ContainerView: View {
         private let container = PreviewContainer()

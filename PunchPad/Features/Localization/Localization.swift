@@ -102,4 +102,19 @@ struct Localization {
         static let userData = String(localized: "User data")
         static let appearance = String(localized: "Appearance")
     }
+    
+    struct History {
+        static let history = String(localized: "History")
+        static let opsSomethingWentWrong = String(localized: """
+                    Ooops! Something went wrong,
+                    or you never recorded time...
+                    """ )
+        static let somethingWentWrong = String(localized: "Something went wrong")
+        static let areYouSure = String(localized: "Are you sure you want to delete this entry?")
+    }
+    
+    struct HistoryRow {
+        static let hours = String(localized: "hours")
+        static let minutesShort = String(localized: "min")
+    }
 }
