@@ -15,9 +15,9 @@ enum AppNotification {
     var title: String {
         switch self {
         case .workTime:
-            return "Work finished!"
+            return Strings.titleWorktime
         case .overTime:
-            return "Overtime finished!"
+            return Strings.titleOvertime
         }
     }
     
@@ -25,9 +25,18 @@ enum AppNotification {
     var body: String {
         switch self {
         case .workTime:
-            return "Congratulations! You are finished with your normal hours!"
+            return Strings.bodyWorktime
         case .overTime:
-            return "Congratulations! You finished with your overtime!"
+            return Strings.bodyOvertime
         }
+    }
+}
+
+extension AppNotification: Localized {
+    struct Strings {
+        static let titleWorktime = Localization.AppNotification.worktimeFinished
+        static let titleOvertime = Localization.AppNotification.overtimeFinished
+        static let bodyWorktime = Localization.AppNotification.congratulationsYouFinishedNormalHours
+        static let bodyOvertime = Localization.AppNotification.congratulationsYouFinishedOvertime
     }
 }

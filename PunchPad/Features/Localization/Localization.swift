@@ -8,6 +8,7 @@
 import Foundation
 
 struct Localization {
+    //TODO: FIX TYPOS WITH REBASE
     struct Onboarding {
         static let backButtonTitleText = String(localized: "Back")
         
@@ -53,5 +54,12 @@ struct Localization {
         static let wantTocalculateNetSalaru = String(localized: "Do you want to PunchPad to calculate your net salary based on Polish tax law?")
         static let grossPaycheck = String(localized: "Gross paycheck")
         static let calculateNetSalary = String(localized: "Calculate net salary")
+    }
+    
+    struct AppNotification {
+        static let worktimeFinished = String(localized: "Work finished!")
+        static let overtimeFinished = String(localized: "Overtime finished!")
+        static let congratulationsYouFinishedNormalHours = String(localized: "Congratulations! You are finished with your normal hours!")
+        static let congratulationsYouFinishedOvertime = String(localized: "Congratulations! You finished with your overtime!")
     }
 }
