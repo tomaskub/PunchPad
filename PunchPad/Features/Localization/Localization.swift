@@ -135,4 +135,13 @@ struct Localization {
         static let grossPayPerMonth = String(localized: "Gross pay per month")
         static let calculateNetPay = String(localized: "Calculate net pay")
     }
+    
+    struct DateFilterSheet {
+        static let filter = String(localized: "Filter")
+        static let to = String(localized: "To:")
+        static let from = String(localized: "From:")
+        static let oldestEntriesFirst = String(localized: "Oldest entries first")
+        static let cancel = String(localized: "Cancel")
+        static let apply = String(localized: "Apply")
+    }
 }

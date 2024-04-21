@@ -8,10 +8,6 @@
 import SwiftUI
 
 struct DateFilterSheetView: View {
-    private let title: String = "Filter"
-    private let toLabel: String = "To:"
-    private let fromLabel: String = "From:"
-    private let sortLabel: String = "Oldest entries first"
     @Environment(\.dismiss) private var dismiss
     @Binding var fromDate: Date
     @Binding var toDate: Date
@@ -29,16 +25,16 @@ struct DateFilterSheetView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text(title)
+            Text(Strings.title)
                 .font(.title)
                 .fontWeight(.semibold)
-            DatePicker(fromLabel, 
+            DatePicker(Strings.fromLabel,
                        selection: $fromDate,
                        displayedComponents: .date)
-            DatePicker(toLabel, 
+            DatePicker(Strings.toLabel,
                        selection: $toDate,
                        displayedComponents: .date)
-            Toggle(sortLabel, isOn: $sortAscending)
+            Toggle(Strings.sortLabel, isOn: $sortAscending)
                 .tint(.theme.primary)
                 .padding(.vertical)
             buttonPanel
@@ -53,7 +49,7 @@ struct DateFilterSheetView: View {
                 cancelAction()
                 dismiss()
             } label: {
-                Text("Cancel")
+                Text(Strings.cancelButtonLabelText)
                     
             }
             .buttonStyle(CancelButtonStyle())
@@ -62,10 +58,20 @@ struct DateFilterSheetView: View {
                 confirmAction()
                 dismiss()
             } label: {
-                Text("Apply")
+                Text(Strings.applyButtonLabelText)
             }
             .buttonStyle(ConfirmButtonStyle())
         }
+    }
+}
+extension DateFilterSheetView: Localized {
+    struct Strings {
+        static let title = Localization.DateFilterSheet.filter
+        static let toLabel = Localization.DateFilterSheet.to
+        static let fromLabel = Localization.DateFilterSheet.from
+        static let sortLabel = Localization.DateFilterSheet.oldestEntriesFirst
+        static let applyButtonLabelText = Localization.DateFilterSheet.apply
+        static let cancelButtonLabelText = Localization.DateFilterSheet.cancel
     }
 }
 
