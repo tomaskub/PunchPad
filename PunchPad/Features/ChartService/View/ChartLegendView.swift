@@ -16,11 +16,18 @@ struct ChartLegendView: View {
     
     var body: some View {
         HStack {
-            Text("Legend:")
+            Text(Strings.title)
             ForEach(chartLegendItems) { item in
                 ChartLegendItemView(chartLegendItem: item)
             }
         }
+    }
+}
+
+//MARK: - Localization
+extension ChartLegendView: Localized {
+    struct Strings {
+        static let title = Localization.ChartLegend.legend
     }
 }
 

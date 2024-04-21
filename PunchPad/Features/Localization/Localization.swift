@@ -62,4 +62,8 @@ struct Localization {
         static let congratulationsYouFinishedNormalHours = String(localized: "Congratulations! You are finished with your normal hours!")
         static let congratulationsYouFinishedOvertime = String(localized: "Congratulations! You finished with your overtime!")
     }
+    
+    struct ChartLegend {
+        static let legend = String(localized: "Legend:")
+    }
 }
