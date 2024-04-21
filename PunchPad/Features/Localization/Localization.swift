@@ -66,4 +66,14 @@ struct Localization {
     struct ChartLegend {
         static let legend = String(localized: "Legend:")
     }
+    
+    struct Statistics {
+        static let salaryCalculation = String(localized: "Salary calculation")
+        static let timeWorked = String(localized: "time worked")
+        static let period = String(localized: "Period")
+        static let grossPayPerHour = String(localized: "Gross pay per hour")
+        static let grossPay = String(localized: "Gross pay")
+        static let grossPayPredicted = String(localized: "Gross pay predicted")
+        static let numberOfWorkingDays = String(localized: "Number of working days")
+    }
 }
