@@ -147,7 +147,10 @@ struct Localization {
     
     struct Home {
         static let startYourWorkDay = String(localized: "Start your work day")
+<<<<<<< HEAD
         static let worktime = String(localized: "worktime")
         static let overtime = String(localized: "overtime")
+=======
+>>>>>>> 325bbe2ee48343d4c18b8f18e6b0855a7a088efa
     }
 }
