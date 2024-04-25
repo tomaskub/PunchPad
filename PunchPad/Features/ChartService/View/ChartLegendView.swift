@@ -27,7 +27,7 @@ struct ChartLegendView: View {
 //MARK: - Localization
 extension ChartLegendView: Localized {
     struct Strings {
-        static let title = Localization.ChartLegend.legend
+        static let title = Localization.ChartLegendScreen.legend
     }
 }
 

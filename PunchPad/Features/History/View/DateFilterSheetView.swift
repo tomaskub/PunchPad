@@ -70,8 +70,8 @@ extension DateFilterSheetView: Localized {
         static let toLabel = Localization.DateFilterSheetScreen.to
         static let fromLabel = Localization.DateFilterSheetScreen.from
         static let sortLabel = Localization.DateFilterSheetScreen.oldestEntriesFirst
-        static let applyButtonLabelText = Localization.DateFilterSheetScreen.apply
-        static let cancelButtonLabelText = Localization.DateFilterSheetScreen.cancel
+        static let applyButtonLabelText = Localization.Common.apply.capitalized
+        static let cancelButtonLabelText = Localization.Common.cancel.capitalized
     }
 }
 

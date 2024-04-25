@@ -341,16 +341,16 @@ extension EditSheetView {
 extension EditSheetView: Localized {
     struct Strings {
         static let regularTimeText = Localization.EditSheetScreen.regularTime
-        static let overtimeText = Localization.EditSheetScreen.overtime
+        static let overtimeText = Localization.Common.overtime.capitalized
         static let breaktimeText = Localization.EditSheetScreen.breaktime
         static let titleText = Localization.EditSheetScreen.editEntry
-        static let timeIndicatorText = Localization.EditSheetScreen.workTime
-        static let overrideSettingsHeaderText = Localization.EditSheetScreen.overtime
-        static let startDateText = Localization.EditSheetScreen.start
-        static let finishDateText = Localization.EditSheetScreen.finish
+        static let timeIndicatorText = Localization.Common.worktime
+        static let overrideSettingsHeaderText = Localization.Common.overtime
+        static let startDateText = Localization.Common.start.capitalized
+        static let finishDateText = Localization.Common.finish.capitalized
         static let dateText = Localization.EditSheetScreen.date
-        static let saveButtonText = Localization.EditSheetScreen.save
-        static let cancelButtonText = Localization.EditSheetScreen.cancel
+        static let saveButtonText = Localization.Common.save
+        static let cancelButtonText = Localization.Common.cancel
         static let maximumOvertimeText = Localization.EditSheetScreen.maximumOvertime
         static let standardWorkTimeText = Localization.EditSheetScreen.standardWorkTime
         static let grossPayPerMonthText = Localization.EditSheetScreen.grossPayPerMonth

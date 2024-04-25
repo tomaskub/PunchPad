@@ -84,9 +84,6 @@ struct Localization {
         static let settings = String(localized: "Settings")
         static let needsPermissionToShowNotifications = String(localized: "PunchPad needs permission to show notifications")
         static let youNeedToAllowForNotifications = String(localized: "You need to allow for notification in settings")
-        static let ok = String(localized: "OK")
-        static let hours = String(localized: "Hours")
-        static let minutes = String(localized: "Minutes")
         static let setTimerLength = String(localized: "Set timer length")
         static let maximumOvertimeAllowed = String(localized: "Maximum overtime allowed")
         static let clearAllSavedData = String(localized: "Clear all saved data")
@@ -100,7 +97,6 @@ struct Localization {
         static let system = String(localized: "System")
         static let sendNotificationsOnFinish = String(localized: "Send notification on finish")
         static let timerSettings = String(localized: "Timer settings")
-        static let overtime = String(localized: "Overtime")
         static let paycheckCalculation = String(localized: "Paycheck calculation")
         static let userData = String(localized: "User data")
         static let appearance = String(localized: "Appearance")
@@ -118,16 +114,10 @@ struct Localization {
     
     struct EditSheetScreen {
         static let regularTime = String(localized: "Regular time")
-        static let overtime = String(localized: "Overtime")
         static let breaktime = String(localized: "Break time")
         static let editEntry = String(localized: "Edit entry")
-        static let workTime = String(localized: "work time")
-        static let overrideSettings = String(localized: "Override settings")
-        static let start = String(localized: "Start")
-        static let finish = String(localized: "Finish")
+        static let overrideSettings = String(localized: "Override settings") 
         static let date = String(localized: "Date")
-        static let save = String(localized: "save")
-        static let cancel = String(localized: "cancel")
         static let maximumOvertime = String(localized: "Maximum overtime")
         static let standardWorkTime = String(localized: "Standard work time")
         static let grossPayPerMonth = String(localized: "Gross pay per month")
@@ -139,13 +129,9 @@ struct Localization {
         static let to = String(localized: "To:")
         static let from = String(localized: "From:")
         static let oldestEntriesFirst = String(localized: "Oldest entries first")
-        static let cancel = String(localized: "Cancel")
-        static let apply = String(localized: "Apply")
     }
     
     struct HomeScreen {
         static let startYourWorkDay = String(localized: "Start your work day")
-        static let worktime = String(localized: "worktime")
-        static let overtime = String(localized: "overtime")
     }
 }

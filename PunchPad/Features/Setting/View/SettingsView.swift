@@ -267,9 +267,9 @@ extension SettingsView: Localized {
         static let title = Localization.SettingsScreen.settings
         static let alertTitle = Localization.SettingsScreen.needsPermissionToShowNotifications
         static let alertMessage = Localization.SettingsScreen.youNeedToAllowForNotifications
-        static let alertButtonText = Localization.SettingsScreen.ok
-        static let hoursPickerText = Localization.SettingsScreen.hours
-        static let minutesPickerText = Localization.SettingsScreen.minutes
+        static let alertButtonText = Localization.Common.ok.uppercased()
+        static let hoursPickerText = Localization.Common.hours.capitalized
+        static let minutesPickerText = Localization.Common.minutes.capitalized
         static let timerLengthButtonText = Localization.SettingsScreen.setTimerLength
         static let overtimeLengthButtonText = Localization.SettingsScreen.maximumOvertimeAllowed
         static let clearDataText = Localization.SettingsScreen.clearAllSavedData
@@ -283,7 +283,7 @@ extension SettingsView: Localized {
         static let colorSchemeSystemText = Localization.SettingsScreen.system
         static let notificationsText = Localization.SettingsScreen.sendNotificationsOnFinish
         static let timerSettingsHeaderText = Localization.SettingsScreen.timerSettings
-        static let overtimeSettingsHeaderText = Localization.SettingsScreen.overtime
+        static let overtimeSettingsHeaderText = Localization.Common.overtime.capitalized
         static let paycheckSettingsText = Localization.SettingsScreen.paycheckCalculation
         static let userDataSettingsText = Localization.SettingsScreen.userData
         static let appearanceText = Localization.SettingsScreen.appearance
