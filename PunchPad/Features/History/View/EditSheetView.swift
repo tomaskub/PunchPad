@@ -72,7 +72,9 @@ private extension EditSheetView {
         TimerIndicator(
             timerLabel: generateTimeIntervalLabel(value: viewModel.totalTimeInSeconds),
             firstProgress: viewModel.workTimeFraction,
+            firstTimerLabel: Strings.timeIndicatorText,
             secondProgress: viewModel.overTimeFraction,
+            secondTimerLabel: Strings.overtimeText,
             useOnlyWorkLabel: true)
         .frame(width: 250, height: 250)
     }
