@@ -13,20 +13,6 @@ struct EditSheetView: View {
     @StateObject private var viewModel: EditSheetViewModel
     @State private var isShowingOverrideControls: Bool = false
     private typealias Identifier = ScreenIdentifier.EditSheetView
-    private let regularTimeText: String = "Regular time"
-    private let overtimeText: String = "Overtime"
-    private let breaktimeText: String = "Break time"
-    private let titleText: String = "Edit entry"
-    private let timeIndicatorText: String = "work time"
-    private let overrideSettingsHeaderText: String = "Override settings"
-    private let startDateText: String = "Start"
-    private let finishDateText: String = "Finish"
-    private let saveButtonText: String = "save"
-    private let cancelButtonText: String = "cancel"
-    private let maximumOvertimeText = "Maximum overtime"
-    private let standardWorkTimeText = "Standard work time"
-    private let grossPayPerMonthText = "Gross pay per month"
-    private let calculateNetPayText = "Calculate net pay"
     private let dateComponentFormatter = FormatterFactory.makeHourAndMinuteDateComponentFormatter()
     private let editControlsId = "editControls"
     private let chevronUpIconName = "chevron.up"
@@ -86,7 +72,9 @@ private extension EditSheetView {
         TimerIndicator(
             timerLabel: generateTimeIntervalLabel(value: viewModel.totalTimeInSeconds),
             firstProgress: viewModel.workTimeFraction,
+            firstTimerLabel: Strings.timeIndicatorText,
             secondProgress: viewModel.overTimeFraction,
+            secondTimerLabel: Strings.overtimeText,
             useOnlyWorkLabel: true)
         .frame(width: 250, height: 250)
     }
@@ -95,7 +83,7 @@ private extension EditSheetView {
             VStack {
                 Text(generateTimeIntervalLabel(value: viewModel.overTimeInSeconds))
                     .font(.title)
-                Text(overtimeText)
+                Text(Strings.overtimeText)
                     .font(.caption)
             }
             .foregroundColor(.theme.black)
@@ -105,7 +93,7 @@ private extension EditSheetView {
             VStack {
                 Text(generateTimeIntervalLabel(value: viewModel.workTimeInSeconds))
                     .font(.title)
-                Text(regularTimeText)
+                Text(Strings.regularTimeText)
                     .font(.caption)
             }
             .foregroundColor(.theme.black)
@@ -115,7 +103,7 @@ private extension EditSheetView {
         VStack {
             Text(generateTimeIntervalLabel(value: viewModel.breakTime))
                 .font(.title)
-            Text(breaktimeText)
+            Text(Strings.breaktimeText)
                 .font(.caption)
         }
         .foregroundColor(.theme.black)
@@ -139,8 +127,8 @@ private extension EditSheetView {
     
     var diffDayDateControls: some View {
         Group {
-            CustomDatePickerContainer(labelText: startDateText) {
-                DatePicker(startDateText, selection: $viewModel.startDate, in: PartialRangeThrough(viewModel.finishDate))
+            CustomDatePickerContainer(labelText: Strings.startDateText) {
+                DatePicker(Strings.startDateText, selection: $viewModel.startDate, in: PartialRangeThrough(viewModel.finishDate))
                     .labelsHidden()
                     .accessibilityIdentifier(Identifier.DatePicker.startDate.rawValue)
             } trailing: {
@@ -150,8 +138,8 @@ private extension EditSheetView {
             .padding(.top)
             .padding(.bottom, 2)
             
-            CustomDatePickerContainer(labelText: finishDateText) {
-                DatePicker(finishDateText, selection: $viewModel.finishDate, in: PartialRangeFrom(viewModel.startDate))
+            CustomDatePickerContainer(labelText: Strings.finishDateText) {
+                DatePicker(Strings.finishDateText, selection: $viewModel.finishDate, in: PartialRangeFrom(viewModel.startDate))
                     .labelsHidden()
                     .accessibilityIdentifier(Identifier.DatePicker.finishDate.rawValue)
             } trailing: {
@@ -165,7 +153,7 @@ private extension EditSheetView {
     
     var sameDayDateControls: some View {
         Group {
-            CustomDatePickerContainer(labelText: "Date") {
+            CustomDatePickerContainer(labelText: Strings.dateText) {
                 DatePicker(selection: $viewModel.startDate,
                            displayedComponents: .date) {
                     EmptyView()
@@ -178,7 +166,7 @@ private extension EditSheetView {
             .padding(.top)
             .padding(.bottom, 2)
             HStack {
-                CustomDatePickerContainer(labelText: startDateText) {
+                CustomDatePickerContainer(labelText: Strings.startDateText) {
                     DatePicker(selection: $viewModel.startDate,
                                in: PartialRangeThrough(viewModel.finishDate),
                                displayedComponents: .hourAndMinute) {
@@ -189,7 +177,7 @@ private extension EditSheetView {
                     imageClock
                 }
                 .frame(height: 50)
-                CustomDatePickerContainer(labelText: finishDateText) {
+                CustomDatePickerContainer(labelText: Strings.finishDateText) {
                     DatePicker(selection: $viewModel.finishDate,
                                in: PartialRangeFrom(viewModel.startDate),
                                displayedComponents: .hourAndMinute) {
@@ -235,7 +223,7 @@ private extension EditSheetView {
                         }
                     }
                 }
-            Text(overrideSettingsHeaderText)
+            Text(Strings.overrideSettingsHeaderText)
                 .font(.system(size: 24))
             Spacer()
         }
@@ -246,21 +234,21 @@ private extension EditSheetView {
         Grid(alignment: .leading) {
             divider
             GridRow {
-                Text(maximumOvertimeText)
+                Text(Strings.maximumOvertimeText)
                 TimeIntervalPicker(buttonLabelText: generateTimeIntervalLabel(value: viewModel.currentMaximumOvertime),
                                    value: $viewModel.currentMaximumOvertime
                 )
             }
             divider
             GridRow {
-                Text(standardWorkTimeText)
+                Text(Strings.standardWorkTimeText)
                 TimeIntervalPicker(buttonLabelText: generateTimeIntervalLabel(value: viewModel.currentStandardWorkTime),
                                    value: $viewModel.currentStandardWorkTime
                 )
             }
             divider
             GridRow {
-                Text(grossPayPerMonthText)
+                Text(Strings.grossPayPerMonthText)
                 TextField(currencyCode,
                           value: $viewModel.grossPayPerMonth,
                           format: .currency(code: currencyCode))
@@ -269,7 +257,7 @@ private extension EditSheetView {
             }
             divider
             Toggle(isOn: $viewModel.calculateNetPay) {
-                Text(calculateNetPayText)
+                Text(Strings.calculateNetPayText)
              
             }
             .tint(.theme.primary)
@@ -280,18 +268,18 @@ private extension EditSheetView {
     }
 }
 
-//MARK: SAVE CONTROLS
+//MARK: - Save Controls
 extension EditSheetView {
     var editControls: some View {
         Group {
             HStack {
-                Button(cancelButtonText.uppercased()) {
+                Button(Strings.cancelButtonText.uppercased()) {
                     dismiss()
                 }
                 .buttonStyle(CancelButtonStyle())
                 .accessibilityIdentifier(Identifier.Button.cancel.rawValue)
                 
-                Button(saveButtonText.uppercased()) {
+                Button(Strings.saveButtonText.uppercased()) {
                     viewModel.saveEntry()
                     dismiss()
                 }
@@ -303,11 +291,11 @@ extension EditSheetView {
     }
 }
 
-//MARK: VIEW COMPONENTS
+//MARK: - View Components
 extension EditSheetView {
     var title: some View {
         HStack {
-            Text(titleText)
+            Text(Strings.titleText)
                 .font(.title)
                 .foregroundColor(.theme.black)
             Spacer()
@@ -349,6 +337,26 @@ extension EditSheetView {
     }
 }
 
+//MARK: - Localization
+extension EditSheetView: Localized {
+    struct Strings {
+        static let regularTimeText = Localization.EditSheetScreen.regularTime
+        static let overtimeText = Localization.Common.overtime.capitalized
+        static let breaktimeText = Localization.EditSheetScreen.breaktime
+        static let titleText = Localization.EditSheetScreen.editEntry
+        static let timeIndicatorText = Localization.Common.worktime
+        static let overrideSettingsHeaderText = Localization.Common.overtime
+        static let startDateText = Localization.Common.start.capitalized
+        static let finishDateText = Localization.Common.finish.capitalized
+        static let dateText = Localization.EditSheetScreen.date
+        static let saveButtonText = Localization.Common.save
+        static let cancelButtonText = Localization.Common.cancel
+        static let maximumOvertimeText = Localization.EditSheetScreen.maximumOvertime
+        static let standardWorkTimeText = Localization.EditSheetScreen.standardWorkTime
+        static let grossPayPerMonthText = Localization.EditSheetScreen.grossPayPerMonth
+        static let calculateNetPayText = Localization.EditSheetScreen.calculateNetPay
+    }
+}
 #Preview("Single date controls") {
     struct ContainerView: View {
         private let container = PreviewContainer()

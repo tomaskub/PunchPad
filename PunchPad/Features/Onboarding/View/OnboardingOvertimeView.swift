@@ -9,12 +9,6 @@ import SwiftUI
 import ThemeKit
 
 struct OnboardingOvertimeView: View {
-    let titleText: String = "Overtime"
-    let toggleDescriptionText: String = "Let PunchPad know wheter you want to measure overtime"
-    let pickerDescriptionText: String = "Let the app know maximum overtime you can work for."
-    let hoursPickerLabel: String = "Hours"
-    let minutesPickerLabel: String = "Minutes"
-    let toggleLabel: String = "Keep logging overtime"
     private typealias Identifier = ScreenIdentifier.OnboardingView
     @ObservedObject var viewModel: OnboardingViewModel
     
@@ -32,9 +26,9 @@ struct OnboardingOvertimeView: View {
                 pickerDescription
                 HStack {
                     VStack {
-                        Text(hoursPickerLabel)
+                        Text(Strings.hoursPickerLabel)
                             .foregroundColor(.theme.primary)
-                        Picker(hoursPickerLabel,
+                        Picker(Strings.hoursPickerLabel,
                                selection: $viewModel.hoursOvertime) {
                             ForEach(0..<25){ i in
                                 Text("\(i)")
@@ -45,9 +39,9 @@ struct OnboardingOvertimeView: View {
                                .pickerStyle(.wheel)
                     }
                     VStack {
-                        Text(minutesPickerLabel)
+                        Text(Strings.minutesPickerLabel)
                             .foregroundColor(.theme.primary)
-                        Picker(minutesPickerLabel,
+                        Picker(Strings.minutesPickerLabel,
                                selection: $viewModel.minutesOvertime) {
                             ForEach(0..<60) { i in
                                 Text("\(i)").foregroundColor(.theme.primary).tag(i)
@@ -69,17 +63,17 @@ struct OnboardingOvertimeView: View {
     }
     
     var title: some View {
-        TextFactory.buildTitle(titleText)
+        TextFactory.buildTitle(Strings.titleText)
     }
     private var toggleDescription: some View {
-        TextFactory.buildDescription(toggleDescriptionText)
+        TextFactory.buildDescription(Strings.toggleDescriptionText)
     }
     private var pickerDescription: some View {
-        TextFactory.buildDescription(pickerDescriptionText)
+        TextFactory.buildDescription(Strings.pickerDescriptionText)
     }
     
     private var overtimeToggle: some View {
-        Toggle(toggleLabel,
+        Toggle(Strings.toggleLabel,
                isOn: $viewModel.settingsStore.isLoggingOvertime.animation(.easeInOut))
         .foregroundColor(.theme.blackLabel)
         .tint(.theme.primary)
@@ -88,8 +82,18 @@ struct OnboardingOvertimeView: View {
             .background()
             .cornerRadius(16)
     }
-    
-    
+}
+
+//MARK: - Localization
+extension OnboardingOvertimeView: Localized {
+    struct Strings {
+        static let titleText = Localization.Common.overtime.capitalized
+        static let toggleDescriptionText = Localization.OnboardingOvertimeScreen.letMeasureOvertime
+        static let pickerDescriptionText = Localization.OnboardingOvertimeScreen.letKnowMaximumOvertime
+        static let hoursPickerLabel = Localization.Common.hours.capitalized
+        static let minutesPickerLabel = Localization.Common.minutes.capitalized
+        static let toggleLabel = Localization.OnboardingOvertimeScreen.keepLoggingOvertime
+    }
 }
 
 struct OnbardingOvertime_Previews: PreviewProvider {

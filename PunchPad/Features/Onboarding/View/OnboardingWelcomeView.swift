@@ -10,7 +10,6 @@ import ThemeKit
 
 struct OnboardingWelcomeView: View {
     private let logoResource: String = "LaunchLogo"
-    private let descriptionText: String = "This app was built to help you track time and make sure you are spending at work exactly the time you want and need. \n\n Plan your workdays and plan your paycheck!"
     
     var body: some View {
         VStack(spacing: 40){
@@ -18,13 +17,19 @@ struct OnboardingWelcomeView: View {
             Image(logoResource)
                  .resizable()
                  .aspectRatio(contentMode: .fit)
-            
-            TextFactory.buildDescription(descriptionText)
+    
+            TextFactory.buildDescription(Strings.descriptionText)
                 .padding()
             
             Spacer()
         }
         .padding(30)
+    }
+}
+// MARK: - Localization
+extension OnboardingWelcomeView: Localized {
+    struct Strings {
+        static let descriptionText =  Localization.OnboardingWelcomeScreen.description
     }
 }
 

@@ -12,8 +12,6 @@ struct HistoryRowView: View {
     private let timeIntervalFormatter: DateComponentsFormatter = FormatterFactory.makeHourAndMinuteDateComponentFormatter()
     private let timeFormatter: DateFormatter = FormatterFactory.makeTimeFormatter()
     private let dateFormatter: DateFormatter = FormatterFactory.makeDateFormatter()
-    private let hoursText = "hours"
-    private let minutesText = "min"
     private let startDate: Date
     private let finishDate: Date
     private let workTimeInSeconds: Int
@@ -118,8 +116,8 @@ struct HistoryRowView: View {
         let startIndex = result.index(result.startIndex, offsetBy: 2)
         let endIndex = result.index(after: startIndex)
         result.removeSubrange(startIndex..<endIndex)
-        result.insert(contentsOf: " \(hoursText) ", at: startIndex)
-        result.append(" \(minutesText)")
+        result.insert(contentsOf: " \(Strings.hoursText) ", at: startIndex)
+        result.append(" \(Strings.minutesText)")
         return result
     }
     
@@ -128,7 +126,13 @@ struct HistoryRowView: View {
     }
 }
 
-
+//MARK: - Localization
+extension HistoryRowView: Localized {
+    struct Strings {
+        static let hoursText = Localization.Common.hours
+        static let minutesText = Localization.Common.minutesShort
+    }
+}
 #Preview {
     struct Preview: View {
         

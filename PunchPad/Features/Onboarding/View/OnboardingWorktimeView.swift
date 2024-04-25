@@ -8,11 +8,6 @@
 import SwiftUI
 
 struct OnboardingWorktimeView: View {
-    private let titleText: String = "Workday"
-    private let descriptionText: String = "PunchPad needs to know your normal workday length to let you know when you are done or when you enter into overtime"
-    private let hoursPickerLabel: String = "Hours"
-    private let minutesPickerLabel: String = "Minutes"
-    
     private typealias Identifier = ScreenIdentifier.OnboardingView
     @ObservedObject var viewModel: OnboardingViewModel
     
@@ -22,9 +17,9 @@ struct OnboardingWorktimeView: View {
             description
             HStack {
                 VStack {
-                    Text(hoursPickerLabel)
+                    Text(Strings.hoursPickerLabel)
                         .foregroundColor(.theme.primary)
-                    Picker(hoursPickerLabel,
+                    Picker(Strings.hoursPickerLabel,
                            selection: $viewModel.hoursWorking) {
                         ForEach(0..<25){ i in
                             Text("\(i)")
@@ -36,9 +31,9 @@ struct OnboardingWorktimeView: View {
                     .pickerStyle(.wheel)
                 }
                 VStack {
-                    Text(minutesPickerLabel)
+                    Text(Strings.minutesPickerLabel)
                         .foregroundColor(.theme.primary)
-                    Picker(minutesPickerLabel,
+                    Picker(Strings.minutesPickerLabel,
                            selection: $viewModel.minutesWorking) {
                         ForEach(0..<60) { i in
                             Text("\(i)")
@@ -59,11 +54,21 @@ struct OnboardingWorktimeView: View {
     }
     
     private var title: some View {
-        TextFactory.buildTitle(titleText)
+        TextFactory.buildTitle(Strings.titleText)
     }
     
     private var description: some View {
-        TextFactory.buildDescription(descriptionText)
+        TextFactory.buildDescription(Strings.descriptionText)
+    }
+}
+
+//MARK: - Localization
+extension OnboardingWorktimeView: Localized {
+    struct Strings {
+        static let titleText = Localization.OnboardingWorktimeScreen.workday.capitalized
+        static let descriptionText = Localization.OnboardingWorktimeScreen.description
+        static let hoursPickerLabel = Localization.Common.hours.capitalized
+        static let minutesPickerLabel = Localization.Common.minutes.capitalized
     }
 }
 

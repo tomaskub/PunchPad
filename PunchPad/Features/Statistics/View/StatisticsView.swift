@@ -13,8 +13,6 @@ struct StatisticsView: View {
     private typealias Identifier = ScreenIdentifier.StatisticsView
     private let currencyFormatter = FormatterFactory.makeCurrencyFormatter(Locale.current)
     private let dateFormatter = FormatterFactory.makeDateFormatter()
-    private let salaryCalculationHeaderText: String = "Salary calculation"
-    private let chartTitleText: String = "time worked"
     @ObservedObject private var viewModel: StatisticsViewModel
     
     init(viewModel: StatisticsViewModel) {
@@ -59,7 +57,7 @@ extension StatisticsView {
                 Section {
                     newGrossData
                 } header: {
-                    TextFactory.buildSectionHeader(salaryCalculationHeaderText)
+                    TextFactory.buildSectionHeader(Strings.salaryCalculationHeaderText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.salaryCalculation.rawValue)
                 }
                 .listRowBackground(Color.theme.white)
@@ -225,24 +223,24 @@ private extension StatisticsView {
 private extension StatisticsView {
     var newGrossData: some View {
         Group {
-            SalaryListRowView(propertyName: "Period",
+            SalaryListRowView(propertyName: Strings.periodListRowTitle,
                               propertyValue: makePeriodRangeString(
                                 for: viewModel.grossSalaryData.period,
                                 selectedRange: viewModel.chartTimeRange
                               )
             )
-            SalaryListRowView(propertyName: "Gross pay per hour",
+            SalaryListRowView(propertyName: Strings.grossPayPerHourListRowTitle,
                               propertyValue: currencyFormatter.string(from: viewModel.grossSalaryData.payPerHour as NSNumber) ?? String()
             )
-            SalaryListRowView(propertyName: "Gross pay",
+            SalaryListRowView(propertyName: Strings.grossPayListRowTitle,
                               propertyValue: currencyFormatter.string(from: viewModel.grossSalaryData.payUpToDate as NSNumber) ?? String()
             )
             if let payPredicted = viewModel.grossSalaryData.payPredicted {
-                SalaryListRowView(propertyName: "Gross pay predicted",
+                SalaryListRowView(propertyName: Strings.grossPayPredictedListRowTitle,
                                   propertyValue: currencyFormatter.string(from: payPredicted as NSNumber) ?? String()
                 )
             }
-            SalaryListRowView(propertyName: "Number of working days",
+            SalaryListRowView(propertyName: Strings.numberOfWorkingDaysListRowTitle,
                               propertyValue: String(viewModel.grossSalaryData.numberOfWorkingDays)
                                 
             )
@@ -266,6 +264,17 @@ private extension StatisticsView {
     }
 }
 
+extension StatisticsView: Localized {
+    struct Strings {
+        static let salaryCalculationHeaderText = Localization.StatisticsScreen.salaryCalculation
+        static let chartTitleText = Localization.StatisticsScreen.timeWorked
+        static let periodListRowTitle = Localization.StatisticsScreen.period
+        static let grossPayPerHourListRowTitle = Localization.StatisticsScreen.grossPayPerHour
+        static let grossPayListRowTitle = Localization.StatisticsScreen.grossPay
+        static let grossPayPredictedListRowTitle = Localization.StatisticsScreen.grossPayPredicted
+        static let numberOfWorkingDaysListRowTitle = Localization.StatisticsScreen.numberOfWorkingDays
+    }
+}
 #Preview {
     struct Preview: View {
         private let container = PreviewContainer()

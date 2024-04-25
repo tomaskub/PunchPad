@@ -94,6 +94,9 @@
 		D6CBB8662B3443360074CE8B /* EditSheetViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CBB8652B3443360074CE8B /* EditSheetViewModelTests.swift */; };
 		D6CBB8682B34ACF20074CE8B /* Calendar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CBB8672B34ACF20074CE8B /* Calendar+Extension.swift */; };
 		D6CBB86A2B34C7150074CE8B /* FormatterFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CBB8692B34C7150074CE8B /* FormatterFactory.swift */; };
+		D6CE83F12BD431FE00DA0882 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D6CE83F02BD431FE00DA0882 /* Localizable.xcstrings */; };
+		D6CE83F62BD443CD00DA0882 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CE83F52BD443CD00DA0882 /* Localization.swift */; };
+		D6CE83F82BD4443300DA0882 /* Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CE83F72BD4443300DA0882 /* Localized.swift */; };
 		D6D02FAE29EF0B13006CD0B2 /* EditSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D02FAD29EF0B13006CD0B2 /* EditSheetView.swift */; };
 		D6D02FB029EF0B7F006CD0B2 /* EditSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D02FAF29EF0B7F006CD0B2 /* EditSheetViewModel.swift */; };
 		D6D906AE2AA0BEDE004E09C9 /* ScreenIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */; };
@@ -242,6 +245,9 @@
 		D6CBB8652B3443360074CE8B /* EditSheetViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSheetViewModelTests.swift; sourceTree = "<group>"; };
 		D6CBB8672B34ACF20074CE8B /* Calendar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Extension.swift"; sourceTree = "<group>"; };
 		D6CBB8692B34C7150074CE8B /* FormatterFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterFactory.swift; sourceTree = "<group>"; };
+		D6CE83F02BD431FE00DA0882 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		D6CE83F52BD443CD00DA0882 /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
+		D6CE83F72BD4443300DA0882 /* Localized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localized.swift; sourceTree = "<group>"; };
 		D6D02FAD29EF0B13006CD0B2 /* EditSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSheetView.swift; sourceTree = "<group>"; };
 		D6D02FAF29EF0B7F006CD0B2 /* EditSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSheetViewModel.swift; sourceTree = "<group>"; };
 		D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenIdentifier.swift; sourceTree = "<group>"; };
@@ -390,6 +396,7 @@
 		D6C4589229D229210069D89B /* PunchPad */ = {
 			isa = PBXGroup;
 			children = (
+				D6CE83F02BD431FE00DA0882 /* Localizable.xcstrings */,
 				D6FD09342BCC266600AD8989 /* Features */,
 				D6FD09332BCAE09200AD8989 /* Utilities */,
 				D6C4589329D229210069D89B /* ClockInApp.swift */,
@@ -440,6 +447,15 @@
 			path = PunchPadUITests;
 			sourceTree = "<group>";
 		};
+		D6CE83F42BD443B200DA0882 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				D6CE83F52BD443CD00DA0882 /* Localization.swift */,
+				D6CE83F72BD4443300DA0882 /* Localized.swift */,
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
 		D6D906AF2AA12BBD004E09C9 /* Factory */ = {
 			isa = PBXGroup;
 			children = (
@@ -470,6 +486,7 @@
 		D6FD09342BCC266600AD8989 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				D6CE83F42BD443B200DA0882 /* Localization */,
 				D63719422BCDBEAC006536DA /* ContainerService */,
 				D6FD09532BCC4A7A00AD8989 /* PayService */,
 				D6FD09512BCC49ED00AD8989 /* NotificationService */,
@@ -872,6 +889,7 @@
 			files = (
 				D630A53F2B473A320098CA86 /* LaunchScreen.storyboard in Resources */,
 				D6C4589B29D229230069D89B /* Preview Assets.xcassets in Resources */,
+				D6CE83F12BD431FE00DA0882 /* Localizable.xcstrings in Resources */,
 				D6C4589829D229230069D89B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -923,6 +941,7 @@
 				D6FA94FD2B013F060034B16A /* ChartLegendItemView.swift in Sources */,
 				D6E2C15B29D6C31800229286 /* HistoryViewModel.swift in Sources */,
 				D6EA695C2AF8452A00D8F6C3 /* TextFactory.swift in Sources */,
+				D6CE83F82BD4443300DA0882 /* Localized.swift in Sources */,
 				D64574B329D9F16900207168 /* EntryMO+CoreDataClass.swift in Sources */,
 				D64574B429D9F16900207168 /* EntryMO+CoreDataProperties.swift in Sources */,
 				D653FEEC2B320E1600ECFCF2 /* TimeIntervalPicker.swift in Sources */,
@@ -935,6 +954,7 @@
 				D6C458C529D35EAA0069D89B /* SettingsView.swift in Sources */,
 				D6FA94FB2B013C770034B16A /* ChartLegendItem.swift in Sources */,
 				D666ADCC2AC05A0500B74663 /* CaseIterable+Extension.swift in Sources */,
+				D6CE83F62BD443CD00DA0882 /* Localization.swift in Sources */,
 				D65FD53D29D8B259006CC34F /* PersistanceController.swift in Sources */,
 				D6B2BDF42B27C22400CB4FA7 /* EmptyPlaceholderModifier.swift in Sources */,
 				D60480DA2B122D3F00D6D70D /* ChartPeriodService.swift in Sources */,

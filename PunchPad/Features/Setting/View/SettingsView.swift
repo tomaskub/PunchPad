@@ -15,36 +15,13 @@ struct SettingsView: View {
     @State private var isShowingWorkTimeEditor: Bool = false
     @State private var isShowingOvertimeEditor: Bool = false
     private let navigationTitle: AttributedString = {
-        var result = AttributedString("Settings")
+        var result = AttributedString(Strings.title)
         result.font = .title.weight(.medium)
         result.foregroundColor = .theme.black
         return result
     }()
     private let trashIconName = "trash"
     private let arrowCounterClockwiseIconName = "arrow.counterclockwise"
-    private let alertTitle: String = "PunchPad needs permission to show notifications"
-    private let alertMessage: String = "You need to allow for notification in settings"
-    private let alertButtonText: String = "OK"
-    private let hoursPickerText: String = "Hours"
-    private let minutesPickerText: String = "Minutes"
-    private let timerLengthButtonText: String = "Set timer length"
-    private let overtimeLengthButtonText: String = "Maximum overtime allowed"
-    private let clearDataText: String = "Clear all saved data"
-    private let resetPreferencesText: String = "Reset preferences"
-    private let keepLogingOvertimeText: String = "Keep logging overtime"
-    private let grossPaycheckText: String = "Gross paycheck"
-    private let calculateNetPayText: String = "Calculate net pay"
-    private let colorSchemeText: String = "Color scheme"
-    private let colorSchemeDarkText: String = "Dark"
-    private let colorSchemeLightText: String = "Light"
-    private let colorSchemeSystemText: String = "System"
-    private let currencyText: String = "PLN"
-    private let notificationsText: String = "Send notification on finish"
-    private let timerSettingsHeaderText: String = "Timer settings"
-    private let overtimeSettingsHeaderText: String = "Overtime"
-    private let paycheckSettingsText: String = "Paycheck calculation"
-    private let userDataSettingsText: String = "User data"
-    private let appearanceText: String = "Appearance"
     private var currencyCode: String {
         let locale = Locale.current
         return locale.currencySymbol ?? "PLN"
@@ -64,34 +41,35 @@ extension SettingsView {
                 Section {
                     timerSettings
                     
-                    makeToggleRow(notificationsText,
+                    makeToggleRow(Strings.notificationsText,
                                   isOn: $viewModel.settingsStore.isSendingNotification,
                                   identifier: .sendNotificationsOnFinish
                     )
                 } header: {
-                    TextFactory.buildSectionHeader(timerSettingsHeaderText)
+                    TextFactory.buildSectionHeader(Strings.timerSettingsHeaderText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.timerSettings.rawValue)
                 }
                 .listRowBackground(Color.theme.white)
                 Section {
-                    makeToggleRow(keepLogingOvertimeText,
+                    makeToggleRow(Strings.keepLogingOvertimeText,
                                   isOn: $viewModel.settingsStore.isLoggingOvertime,
                                   identifier: .keepLoggingOvertime
                     )
                     overtimeSettings
                 } header: {
-                    TextFactory.buildSectionHeader(overtimeSettingsHeaderText)
+                    TextFactory.buildSectionHeader(Strings.overtimeSettingsHeaderText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.overtimeSettings.rawValue)
                 }
                 .listRowBackground(Color.theme.white)
                 Section {
                     grossPaycheckRow
                     
-                    makeToggleRow(calculateNetPayText, isOn: $viewModel.settingsStore.isCalculatingNetPay,
+                    makeToggleRow(Strings.calculateNetPayText,
+                                  isOn: $viewModel.settingsStore.isCalculatingNetPay,
                                   identifier: .calculateNetPay
                     )
                 } header: {
-                    TextFactory.buildSectionHeader(paycheckSettingsText)
+                    TextFactory.buildSectionHeader(Strings.paycheckSettingsText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.paycheckCalculation.rawValue)
                 }
                 .listRowBackground(Color.theme.white)
@@ -99,7 +77,7 @@ extension SettingsView {
                     clearDataButton
                     resetPreferencesButton
                 } header: {
-                    TextFactory.buildSectionHeader(userDataSettingsText)
+                    TextFactory.buildSectionHeader(Strings.userDataSettingsText)
                         .accessibilityIdentifier(Identifier.SectionHeaders.userData.rawValue)
                 }
                 .listRowBackground(Color.theme.white)
@@ -110,13 +88,13 @@ extension SettingsView {
         }
         .navigationBarTitle(navigationTitle)
         .navigationBarBackButtonColor(color: .theme.black)
-        .alert(alertTitle,
+        .alert(Strings.alertTitle,
                isPresented: $viewModel.shouldShowNotificationDeniedAlert) {
-            Button(alertButtonText) {
+            Button(Strings.alertButtonText) {
                 viewModel.shouldShowNotificationDeniedAlert = false
             }
         } message: {
-            Text(alertMessage)
+            Text(Strings.alertMessage)
         }
     }
 }
@@ -125,7 +103,7 @@ extension SettingsView {
 private extension SettingsView {
     var timerSettings: some View {
         Group {
-            makeChevronListButton(timerLengthButtonText,
+            makeChevronListButton(Strings.timerLengthButtonText,
                                   chevronOrientation: isShowingWorkTimeEditor,
                                   accessibilityIdentifier: .setTimerLength) {
                 withAnimation(.spring()) {
@@ -144,7 +122,7 @@ private extension SettingsView {
     
     var overtimeSettings: some View {
         Group {
-            makeChevronListButton(overtimeLengthButtonText,
+            makeChevronListButton(Strings.overtimeLengthButtonText,
                                   chevronOrientation: isShowingOvertimeEditor,
                                   accessibilityIdentifier: .setOvertimeLength) {
                 withAnimation(.spring()) {
@@ -163,7 +141,7 @@ private extension SettingsView {
     
     var grossPaycheckRow: some View {
         HStack {
-            Text(grossPaycheckText)
+            Text(Strings.grossPaycheckText)
                 .foregroundStyle(Color.theme.blackLabel)
             TextField(String(),
                       value: $viewModel.grossPayPerMonth,
@@ -175,7 +153,7 @@ private extension SettingsView {
     }
     
     var clearDataButton: some View {
-        makeListButton(clearDataText,
+        makeListButton(Strings.clearDataText,
                        systemName: trashIconName,
                        iconForegroundColor: .theme.redLabel,
                        accessibilityIdentifier: Identifier.ButtonCells.clearAllSavedData.rawValue) {
@@ -184,7 +162,7 @@ private extension SettingsView {
     }
     
     var resetPreferencesButton: some View {
-        makeListButton(resetPreferencesText,
+        makeListButton(Strings.resetPreferencesText,
                        systemName: arrowCounterClockwiseIconName,
                        iconForegroundColor: .theme.redLabel,
                        accessibilityIdentifier: Identifier.ButtonCells.resetPreferences.rawValue) {
@@ -248,10 +226,10 @@ private extension SettingsView {
     private func makePickerRow(hours: Binding<Int>, minutes: Binding<Int>, hoursAccessibilityIdentifier: Identifier.Pickers? = nil, minutesAccessibilityIdentifier: Identifier.Pickers? = nil) -> some View {
         HStack {
             VStack {
-                Text(hoursPickerText)
+                Text(Strings.hoursPickerText)
                     .foregroundColor(.theme.primary)
                 
-                Picker(hoursPickerText, selection: hours) {
+                Picker(Strings.hoursPickerText, selection: hours) {
                     ForEach(0..<25) { i in
                         Text("\(i)").tag(i)
                             .foregroundColor(.theme.primary)
@@ -264,10 +242,10 @@ private extension SettingsView {
                 }
             }
             VStack {
-                Text(minutesPickerText)
+                Text(Strings.minutesPickerText)
                     .foregroundColor(.theme.primary)
                 
-                Picker(minutesPickerText, selection: minutes) {
+                Picker(Strings.minutesPickerText, selection: minutes) {
                     ForEach(0..<60) { i in
                         Text("\(i)").tag(i)
                             .foregroundColor(.theme.primary)
@@ -280,6 +258,35 @@ private extension SettingsView {
                 }
             }
         }
+    }
+}
+
+//MARK: -Localization
+extension SettingsView: Localized {
+    struct Strings {
+        static let title = Localization.SettingsScreen.settings
+        static let alertTitle = Localization.SettingsScreen.needsPermissionToShowNotifications
+        static let alertMessage = Localization.SettingsScreen.youNeedToAllowForNotifications
+        static let alertButtonText = Localization.Common.ok.uppercased()
+        static let hoursPickerText = Localization.Common.hours.capitalized
+        static let minutesPickerText = Localization.Common.minutes.capitalized
+        static let timerLengthButtonText = Localization.SettingsScreen.setTimerLength
+        static let overtimeLengthButtonText = Localization.SettingsScreen.maximumOvertimeAllowed
+        static let clearDataText = Localization.SettingsScreen.clearAllSavedData
+        static let resetPreferencesText = Localization.SettingsScreen.resetPreferences
+        static let keepLogingOvertimeText = Localization.SettingsScreen.keepLogingOvertime
+        static let grossPaycheckText = Localization.SettingsScreen.grossPaycheck
+        static let calculateNetPayText = Localization.SettingsScreen.calculateNetPay
+        static let colorSchemeText = Localization.SettingsScreen.colorScheme
+        static let colorSchemeDarkText = Localization.SettingsScreen.dark
+        static let colorSchemeLightText = Localization.SettingsScreen.light
+        static let colorSchemeSystemText = Localization.SettingsScreen.system
+        static let notificationsText = Localization.SettingsScreen.sendNotificationsOnFinish
+        static let timerSettingsHeaderText = Localization.SettingsScreen.timerSettings
+        static let overtimeSettingsHeaderText = Localization.Common.overtime.capitalized
+        static let paycheckSettingsText = Localization.SettingsScreen.paycheckCalculation
+        static let userDataSettingsText = Localization.SettingsScreen.userData
+        static let appearanceText = Localization.SettingsScreen.appearance
     }
 }
 
