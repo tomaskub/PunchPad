@@ -65,10 +65,10 @@ struct OnboardingWorktimeView: View {
 //MARK: - Localization
 extension OnboardingWorktimeView: Localized {
     struct Strings {
-        static let titleText = Localization.OnbardingWorktime.workday
-        static let descriptionText = Localization.OnbardingWorktime.description
-        static let hoursPickerLabel = Localization.OnbardingWorktime.hours
-        static let minutesPickerLabel = Localization.OnbardingWorktime.minutes
+        static let titleText = Localization.OnboardingWorktime.workday
+        static let descriptionText = Localization.OnboardingWorktime.description
+        static let hoursPickerLabel = Localization.OnboardingWorktime.hours
+        static let minutesPickerLabel = Localization.OnboardingWorktime.minutes
     }
 }
 

@@ -8,7 +8,21 @@
 import Foundation
 
 struct Localization {
-    //TODO: FIX TYPOS WITH REBASE
+    struct Common {
+        static let hours = String(localized: "hours")
+        static let minutes = String(localized: "minutes")
+        static let minutesShort = String(localized: "min")
+        static let overtime = String(localized: "overtime")
+        static let worktime = String(localized: "worktime")
+        static let ok = String(localized: "ok")
+        static let cancel = String(localized: "cancel")
+        static let apply = String(localized: "apply")
+        static let save = String(localized: "save")
+        static let next = String(localized: "next")
+        static let back = String(localized: "back")
+        static let start = String(localized: "start")
+        static let finish = String(localized: "finish")
+    }
     struct Onboarding {
         static let backButtonTitleText = String(localized: "Back")
         
@@ -23,7 +37,7 @@ struct Localization {
         static let description = String(localized: "This app was built to help you track time and make sure you are spending at work exactly the time you want and need. \n\n Plan your workdays and plan your paycheck!")
     }
     
-    struct OnbardingWorktime {
+    struct OnboardingWorktime {
         static let workday = String(localized: "Workday")
         static let hours = String(localized: "Hours")
         static let minutes = String(localized: "Minutes")
