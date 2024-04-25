@@ -1,5 +1,255 @@
 {
   "sourceLanguage" : "en",
-  "strings" : {},
+  "strings" : {
+    "" : {
+
+    },
+    "%lld" : {
+
+    },
+    "Appearance" : {
+
+    },
+    "apply" : {
+
+    },
+    "Are you sure you want to delete this entry?" : {
+
+    },
+    "back" : {
+
+    },
+    "Break time" : {
+
+    },
+    "Calculate net pay" : {
+
+    },
+    "Calculate net salary" : {
+
+    },
+    "cancel" : {
+
+    },
+    "Cancel" : {
+
+    },
+    "CancelButtonStyle" : {
+
+    },
+    "Clear all saved data" : {
+
+    },
+    "Color scheme" : {
+
+    },
+    "ConfirmButtonStyle" : {
+
+    },
+    "Congratulations! You are finished with your normal hours!" : {
+
+    },
+    "Congratulations! You finished with your overtime!" : {
+
+    },
+    "Dark" : {
+
+    },
+    "Date" : {
+
+    },
+    "Do you want PunchPad to send you notifications when the work time is finished?" : {
+
+    },
+    "Do you want to PunchPad to calculate your net salary based on Polish tax law?" : {
+
+    },
+    "Edit entry" : {
+
+    },
+    "Filter" : {
+
+    },
+    "finish" : {
+
+    },
+    "Finish set up!" : {
+
+    },
+    "From:" : {
+
+    },
+    "Gross pay" : {
+
+    },
+    "Gross pay per hour" : {
+
+    },
+    "Gross pay per month" : {
+
+    },
+    "Gross pay predicted" : {
+
+    },
+    "Gross paycheck" : {
+
+    },
+    "History" : {
+
+    },
+    "hours" : {
+
+    },
+    "hours overtime" : {
+
+    },
+    "hours worked" : {
+
+    },
+    "Keep logging overtime" : {
+
+    },
+    "Legend:" : {
+
+    },
+    "Let the app know maximum overtime you can work for." : {
+
+    },
+    "Let's start!" : {
+
+    },
+    "Light" : {
+
+    },
+    "Maximum overtime" : {
+
+    },
+    "Maximum overtime allowed" : {
+
+    },
+    "min" : {
+
+    },
+    "minutes" : {
+
+    },
+    "next" : {
+
+    },
+    "Notifications" : {
+
+    },
+    "Number of working days" : {
+
+    },
+    "ok" : {
+
+    },
+    "Ok" : {
+
+    },
+    "Oldest entries first" : {
+
+    },
+    "Ooops! Something went wrong,\nor you never recorded time..." : {
+
+    },
+    "Override settings" : {
+
+    },
+    "overtime" : {
+
+    },
+    "Overtime finished!" : {
+
+    },
+    "Paycheck calculation" : {
+
+    },
+    "Period" : {
+
+    },
+    "Preview button" : {
+
+    },
+    "PunchPad needs permission to show notifications" : {
+
+    },
+    "PunchPad needs to know your normal workday length to let you know when you are done or when you enter into overtime" : {
+
+    },
+    "Regular time" : {
+
+    },
+    "Reset preferences" : {
+
+    },
+    "Salary" : {
+
+    },
+    "Salary calculation" : {
+
+    },
+    "save" : {
+
+    },
+    "Send notification on finish" : {
+
+    },
+    "Send notifications on finish" : {
+
+    },
+    "Set timer length" : {
+
+    },
+    "Settings" : {
+
+    },
+    "Something went wrong" : {
+
+    },
+    "Standard work time" : {
+
+    },
+    "start" : {
+
+    },
+    "Start your work day" : {
+
+    },
+    "System" : {
+
+    },
+    "This app was built to help you track time and make sure you are spending at work exactly the time you want and need. \n\n Plan your workdays and plan your paycheck!" : {
+
+    },
+    "time worked" : {
+
+    },
+    "Timer settings" : {
+
+    },
+    "To let PunchPad calculate your salary you need to enter your gross montly income" : {
+
+    },
+    "To:" : {
+
+    },
+    "User data" : {
+
+    },
+    "Work finished!" : {
+
+    },
+    "workday" : {
+
+    },
+    "worktime" : {
+
+    },
+    "You need to allow for notification in settings" : {
+
+    }
+  },
   "version" : "1.0"
 }
