@@ -29,7 +29,7 @@ struct OnboardingWelcomeView: View {
 // MARK: - Localization
 extension OnboardingWelcomeView: Localized {
     struct Strings {
-        static let descriptionText =  Localization.OnboardingWelcome.description
+        static let descriptionText =  Localization.OnboardingWelcomeScreen.description
     }
 }
 

@@ -28,14 +28,12 @@ struct Localization {
         static let finishSetUp = String(localized: "Finish set up!")
     }
     
-    struct OnboardingWelcome {
+    struct OnboardingWelcomeScreen {
         static let description = String(localized: "This app was built to help you track time and make sure you are spending at work exactly the time you want and need. \n\n Plan your workdays and plan your paycheck!")
     }
     
-    struct OnboardingWorktime {
-        static let workday = String(localized: "Workday")
-        static let hours = String(localized: "Hours")
-        static let minutes = String(localized: "Minutes")
+    struct OnboardingWorktimeScreen {
+        static let workday = String(localized: "workday")
         static let description = String(localized: "PunchPad needs to know your normal workday length to let you know when you are done or when you enter into overtime")
     }
     
