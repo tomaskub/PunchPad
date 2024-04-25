@@ -98,10 +98,10 @@ extension OnboardingView {
 //MARK: - Localization
 extension OnboardingView: Localized {
     struct Strings {
-        static let backButtonText = Localization.Onboarding.backButtonTitleText
-        static let bottomButtonWelcomeText = Localization.Onboarding.BottomButton.letsStart
-        static let bottomButtonExitText = Localization.Onboarding.BottomButton.finish
-        static let bottomButtonDefaultText = Localization.Onboarding.BottomButton.next
+        static let backButtonText = Localization.Common.back.capitalized
+        static let bottomButtonWelcomeText = Localization.OnboardingScreen.letsStart
+        static let bottomButtonExitText = Localization.OnboardingScreen.finishSetUp
+        static let bottomButtonDefaultText = Localization.Common.next.capitalized
     }
 }
 

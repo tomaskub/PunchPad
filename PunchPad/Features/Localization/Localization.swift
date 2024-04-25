@@ -23,14 +23,9 @@ struct Localization {
         static let start = String(localized: "start")
         static let finish = String(localized: "finish")
     }
-    struct Onboarding {
-        static let backButtonTitleText = String(localized: "Back")
-        
-        struct BottomButton {
-            static let letsStart = String(localized: "Let's start!")
-            static let finish = String(localized: "Finish set up!")
-            static let next = String(localized: "Next")
-        }
+    struct OnboardingScreen {
+        static let letsStart = String(localized: "Let's start!")
+        static let finishSetUp = String(localized: "Finish set up!")
     }
     
     struct OnboardingWelcome {
