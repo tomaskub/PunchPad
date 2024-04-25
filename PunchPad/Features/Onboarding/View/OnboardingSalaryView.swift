@@ -65,11 +65,11 @@ struct OnboardingSalaryView: View {
 //MARK: - Localization
 extension OnboardingSalaryView: Localized {
     struct Strings {
-        static let titleText = Localization.OnboardingSalary.salary
-        static let description1Text = Localization.OnboardingSalary.letKnowIncome
-        static let description2Text = Localization.OnboardingSalary.wantTocalculateNetSalaru
-        static let paycheckText = Localization.OnboardingSalary.grossPaycheck
-        static let netSalaryToggleText = Localization.OnboardingSalary.calculateNetSalary
+        static let titleText = Localization.OnboardingSalaryScreen.salary
+        static let description1Text = Localization.OnboardingSalaryScreen.letKnowIncome
+        static let description2Text = Localization.OnboardingSalaryScreen.wantTocalculateNetSalaru
+        static let paycheckText = Localization.OnboardingSalaryScreen.grossPaycheck
+        static let netSalaryToggleText = Localization.OnboardingSalaryScreen.calculateNetSalary
     }
 }
 

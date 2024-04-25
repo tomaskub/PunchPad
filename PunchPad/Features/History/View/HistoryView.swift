@@ -191,10 +191,10 @@ private extension HistoryView {
 
 extension HistoryView: Localized {
     struct Strings {
-        static let navigationTitleText = Localization.History.history
-        static let placeholderText = Localization.History.opsSomethingWentWrong
-        static let deleteRowMessage = Localization.History.areYouSure
-        static let errorRowText = Localization.History.somethingWentWrong
+        static let navigationTitleText = Localization.HistoryScreen.history
+        static let placeholderText = Localization.HistoryScreen.opsSomethingWentWrong
+        static let deleteRowMessage = Localization.HistoryScreen.areYouSure
+        static let errorRowText = Localization.HistoryScreen.somethingWentWrong
     }
 }
 #Preview {

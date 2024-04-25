@@ -66,12 +66,12 @@ struct DateFilterSheetView: View {
 }
 extension DateFilterSheetView: Localized {
     struct Strings {
-        static let title = Localization.DateFilterSheet.filter
-        static let toLabel = Localization.DateFilterSheet.to
-        static let fromLabel = Localization.DateFilterSheet.from
-        static let sortLabel = Localization.DateFilterSheet.oldestEntriesFirst
-        static let applyButtonLabelText = Localization.DateFilterSheet.apply
-        static let cancelButtonLabelText = Localization.DateFilterSheet.cancel
+        static let title = Localization.DateFilterSheetScreen.filter
+        static let toLabel = Localization.DateFilterSheetScreen.to
+        static let fromLabel = Localization.DateFilterSheetScreen.from
+        static let sortLabel = Localization.DateFilterSheetScreen.oldestEntriesFirst
+        static let applyButtonLabelText = Localization.DateFilterSheetScreen.apply
+        static let cancelButtonLabelText = Localization.DateFilterSheetScreen.cancel
     }
 }
 

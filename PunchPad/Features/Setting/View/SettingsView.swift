@@ -264,29 +264,29 @@ private extension SettingsView {
 //MARK: -Localization
 extension SettingsView: Localized {
     struct Strings {
-        static let title = Localization.Settings.settings
-        static let alertTitle = Localization.Settings.needsPermissionToShowNotifications
-        static let alertMessage = Localization.Settings.youNeedToAllowForNotifications
-        static let alertButtonText = Localization.Settings.ok
-        static let hoursPickerText = Localization.Settings.hours
-        static let minutesPickerText = Localization.Settings.minutes
-        static let timerLengthButtonText = Localization.Settings.setTimerLength
-        static let overtimeLengthButtonText = Localization.Settings.maximumOvertimeAllowed
-        static let clearDataText = Localization.Settings.clearAllSavedData
-        static let resetPreferencesText = Localization.Settings.resetPreferences
-        static let keepLogingOvertimeText = Localization.Settings.keepLogingOvertime
-        static let grossPaycheckText = Localization.Settings.grossPaycheck
-        static let calculateNetPayText = Localization.Settings.calculateNetPay
-        static let colorSchemeText = Localization.Settings.colorScheme
-        static let colorSchemeDarkText = Localization.Settings.dark
-        static let colorSchemeLightText = Localization.Settings.light
-        static let colorSchemeSystemText = Localization.Settings.system
-        static let notificationsText = Localization.Settings.sendNotificationsOnFinish
-        static let timerSettingsHeaderText = Localization.Settings.timerSettings
-        static let overtimeSettingsHeaderText = Localization.Settings.overtime
-        static let paycheckSettingsText = Localization.Settings.paycheckCalculation
-        static let userDataSettingsText = Localization.Settings.userData
-        static let appearanceText = Localization.Settings.appearance
+        static let title = Localization.SettingsScreen.settings
+        static let alertTitle = Localization.SettingsScreen.needsPermissionToShowNotifications
+        static let alertMessage = Localization.SettingsScreen.youNeedToAllowForNotifications
+        static let alertButtonText = Localization.SettingsScreen.ok
+        static let hoursPickerText = Localization.SettingsScreen.hours
+        static let minutesPickerText = Localization.SettingsScreen.minutes
+        static let timerLengthButtonText = Localization.SettingsScreen.setTimerLength
+        static let overtimeLengthButtonText = Localization.SettingsScreen.maximumOvertimeAllowed
+        static let clearDataText = Localization.SettingsScreen.clearAllSavedData
+        static let resetPreferencesText = Localization.SettingsScreen.resetPreferences
+        static let keepLogingOvertimeText = Localization.SettingsScreen.keepLogingOvertime
+        static let grossPaycheckText = Localization.SettingsScreen.grossPaycheck
+        static let calculateNetPayText = Localization.SettingsScreen.calculateNetPay
+        static let colorSchemeText = Localization.SettingsScreen.colorScheme
+        static let colorSchemeDarkText = Localization.SettingsScreen.dark
+        static let colorSchemeLightText = Localization.SettingsScreen.light
+        static let colorSchemeSystemText = Localization.SettingsScreen.system
+        static let notificationsText = Localization.SettingsScreen.sendNotificationsOnFinish
+        static let timerSettingsHeaderText = Localization.SettingsScreen.timerSettings
+        static let overtimeSettingsHeaderText = Localization.SettingsScreen.overtime
+        static let paycheckSettingsText = Localization.SettingsScreen.paycheckCalculation
+        static let userDataSettingsText = Localization.SettingsScreen.userData
+        static let appearanceText = Localization.SettingsScreen.appearance
     }
 }
 

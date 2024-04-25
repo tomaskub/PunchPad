@@ -129,8 +129,8 @@ struct HistoryRowView: View {
 //MARK: - Localization
 extension HistoryRowView: Localized {
     struct Strings {
-        static let hoursText = "hours"
-        static let minutesText = "min"
+        static let hoursText = Localization.Common.hours
+        static let minutesText = Localization.Common.minutesShort
     }
 }
 #Preview {

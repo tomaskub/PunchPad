@@ -34,9 +34,9 @@ enum AppNotification {
 
 extension AppNotification: Localized {
     struct Strings {
-        static let titleWorktime = Localization.AppNotification.worktimeFinished
-        static let titleOvertime = Localization.AppNotification.overtimeFinished
-        static let bodyWorktime = Localization.AppNotification.congratulationsYouFinishedNormalHours
-        static let bodyOvertime = Localization.AppNotification.congratulationsYouFinishedOvertime
+        static let titleWorktime = Localization.AppNotificationScreen.worktimeFinished
+        static let titleOvertime = Localization.AppNotificationScreen.overtimeFinished
+        static let bodyWorktime = Localization.AppNotificationScreen.congratulationsYouFinishedNormalHours
+        static let bodyOvertime = Localization.AppNotificationScreen.congratulationsYouFinishedOvertime
     }
 }

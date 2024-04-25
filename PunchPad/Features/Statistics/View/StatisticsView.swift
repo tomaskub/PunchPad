@@ -266,13 +266,13 @@ private extension StatisticsView {
 
 extension StatisticsView: Localized {
     struct Strings {
-        static let salaryCalculationHeaderText = Localization.Statistics.salaryCalculation
-        static let chartTitleText = Localization.Statistics.timeWorked
-        static let periodListRowTitle = Localization.Statistics.period
-        static let grossPayPerHourListRowTitle = Localization.Statistics.grossPayPerHour
-        static let grossPayListRowTitle = Localization.Statistics.grossPay
-        static let grossPayPredictedListRowTitle = Localization.Statistics.grossPayPredicted
-        static let numberOfWorkingDaysListRowTitle = Localization.Statistics.numberOfWorkingDays
+        static let salaryCalculationHeaderText = Localization.StatisticsScreen.salaryCalculation
+        static let chartTitleText = Localization.StatisticsScreen.timeWorked
+        static let periodListRowTitle = Localization.StatisticsScreen.period
+        static let grossPayPerHourListRowTitle = Localization.StatisticsScreen.grossPayPerHour
+        static let grossPayListRowTitle = Localization.StatisticsScreen.grossPay
+        static let grossPayPredictedListRowTitle = Localization.StatisticsScreen.grossPayPredicted
+        static let numberOfWorkingDaysListRowTitle = Localization.StatisticsScreen.numberOfWorkingDays
     }
 }
 #Preview {

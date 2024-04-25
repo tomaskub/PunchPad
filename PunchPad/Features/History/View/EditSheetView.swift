@@ -340,21 +340,21 @@ extension EditSheetView {
 //MARK: - Localization
 extension EditSheetView: Localized {
     struct Strings {
-        static let regularTimeText = Localization.EditSheet.regularTime
-        static let overtimeText = Localization.EditSheet.overtime
-        static let breaktimeText = Localization.EditSheet.breaktime
-        static let titleText = Localization.EditSheet.editEntry
-        static let timeIndicatorText = Localization.EditSheet.workTime
-        static let overrideSettingsHeaderText = Localization.EditSheet.overtime
-        static let startDateText = Localization.EditSheet.start
-        static let finishDateText = Localization.EditSheet.finish
-        static let dateText = Localization.EditSheet.date
-        static let saveButtonText = Localization.EditSheet.save
-        static let cancelButtonText = Localization.EditSheet.cancel
-        static let maximumOvertimeText = Localization.EditSheet.maximumOvertime
-        static let standardWorkTimeText = Localization.EditSheet.standardWorkTime
-        static let grossPayPerMonthText = Localization.EditSheet.grossPayPerMonth
-        static let calculateNetPayText = Localization.EditSheet.calculateNetPay
+        static let regularTimeText = Localization.EditSheetScreen.regularTime
+        static let overtimeText = Localization.EditSheetScreen.overtime
+        static let breaktimeText = Localization.EditSheetScreen.breaktime
+        static let titleText = Localization.EditSheetScreen.editEntry
+        static let timeIndicatorText = Localization.EditSheetScreen.workTime
+        static let overrideSettingsHeaderText = Localization.EditSheetScreen.overtime
+        static let startDateText = Localization.EditSheetScreen.start
+        static let finishDateText = Localization.EditSheetScreen.finish
+        static let dateText = Localization.EditSheetScreen.date
+        static let saveButtonText = Localization.EditSheetScreen.save
+        static let cancelButtonText = Localization.EditSheetScreen.cancel
+        static let maximumOvertimeText = Localization.EditSheetScreen.maximumOvertime
+        static let standardWorkTimeText = Localization.EditSheetScreen.standardWorkTime
+        static let grossPayPerMonthText = Localization.EditSheetScreen.grossPayPerMonth
+        static let calculateNetPayText = Localization.EditSheetScreen.calculateNetPay
     }
 }
 #Preview("Single date controls") {

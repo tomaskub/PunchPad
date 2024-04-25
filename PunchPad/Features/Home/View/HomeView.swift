@@ -63,9 +63,9 @@ struct HomeView: View {
 //MARK: - Localization
 extension HomeView: Localized {
     struct Strings {
-        static let bottomMessageText = Localization.Home.startYourWorkDay.capitalized
-        static let firstTimerLabelText = Localization.Home.worktime.uppercased()
-        static let secondTimerLabelText = Localization.Home.overtime.uppercased()
+        static let bottomMessageText = Localization.HomeScreen.startYourWorkDay.capitalized
+        static let firstTimerLabelText = Localization.HomeScreen.worktime.uppercased()
+        static let secondTimerLabelText = Localization.HomeScreen.overtime.uppercased()
     }
 }
 //MARK: - Timer Controls

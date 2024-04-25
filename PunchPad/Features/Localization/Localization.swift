@@ -51,7 +51,7 @@ struct Localization {
         static let allowForNotifications = String(localized: "You need to allow for notification in settings")
     }
     
-    struct OnboardingSalary {
+    struct OnboardingSalaryScreen {
         static let salary = String(localized: "Salary")
         static let letKnowIncome = String(localized: "To let PunchPad calculate your salary you need to enter your gross montly income")
         static let wantTocalculateNetSalaru = String(localized: "Do you want to PunchPad to calculate your net salary based on Polish tax law?")
@@ -59,18 +59,18 @@ struct Localization {
         static let calculateNetSalary = String(localized: "Calculate net salary")
     }
     
-    struct AppNotification {
+    struct AppNotificationScreen {
         static let worktimeFinished = String(localized: "Work finished!")
         static let overtimeFinished = String(localized: "Overtime finished!")
         static let congratulationsYouFinishedNormalHours = String(localized: "Congratulations! You are finished with your normal hours!")
         static let congratulationsYouFinishedOvertime = String(localized: "Congratulations! You finished with your overtime!")
     }
     
-    struct ChartLegend {
+    struct ChartLegendScreen {
         static let legend = String(localized: "Legend:")
     }
     
-    struct Statistics {
+    struct StatisticsScreen {
         static let salaryCalculation = String(localized: "Salary calculation")
         static let timeWorked = String(localized: "time worked")
         static let period = String(localized: "Period")
@@ -80,7 +80,7 @@ struct Localization {
         static let numberOfWorkingDays = String(localized: "Number of working days")
     }
     
-    struct Settings {
+    struct SettingsScreen {
         static let settings = String(localized: "Settings")
         static let needsPermissionToShowNotifications = String(localized: "PunchPad needs permission to show notifications")
         static let youNeedToAllowForNotifications = String(localized: "You need to allow for notification in settings")
@@ -106,7 +106,7 @@ struct Localization {
         static let appearance = String(localized: "Appearance")
     }
     
-    struct History {
+    struct HistoryScreen {
         static let history = String(localized: "History")
         static let opsSomethingWentWrong = String(localized: """
                     Ooops! Something went wrong,
@@ -116,12 +116,7 @@ struct Localization {
         static let areYouSure = String(localized: "Are you sure you want to delete this entry?")
     }
     
-    struct HistoryRow {
-        static let hours = String(localized: "hours")
-        static let minutesShort = String(localized: "min")
-    }
-    
-    struct EditSheet {
+    struct EditSheetScreen {
         static let regularTime = String(localized: "Regular time")
         static let overtime = String(localized: "Overtime")
         static let breaktime = String(localized: "Break time")
@@ -139,7 +134,7 @@ struct Localization {
         static let calculateNetPay = String(localized: "Calculate net pay")
     }
     
-    struct DateFilterSheet {
+    struct DateFilterSheetScreen {
         static let filter = String(localized: "Filter")
         static let to = String(localized: "To:")
         static let from = String(localized: "From:")
@@ -148,7 +143,7 @@ struct Localization {
         static let apply = String(localized: "Apply")
     }
     
-    struct Home {
+    struct HomeScreen {
         static let startYourWorkDay = String(localized: "Start your work day")
         static let worktime = String(localized: "worktime")
         static let overtime = String(localized: "overtime")
