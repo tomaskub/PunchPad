@@ -87,12 +87,12 @@ struct OnboardingOvertimeView: View {
 //MARK: - Localization
 extension OnboardingOvertimeView: Localized {
     struct Strings {
-        static let titleText = Localization.OnboardingOvertime.overtime
-        static let toggleDescriptionText = Localization.OnboardingOvertime.letMeasureOvertime
-        static let pickerDescriptionText = Localization.OnboardingOvertime.letKnowMaximumOvertime
-        static let hoursPickerLabel = Localization.OnboardingOvertime.hours
-        static let minutesPickerLabel = Localization.OnboardingOvertime.minutes
-        static let toggleLabel = Localization.OnboardingOvertime.keepLoggingOvertime
+        static let titleText = Localization.Common.overtime.capitalized
+        static let toggleDescriptionText = Localization.OnboardingOvertimeScreen.letMeasureOvertime
+        static let pickerDescriptionText = Localization.OnboardingOvertimeScreen.letKnowMaximumOvertime
+        static let hoursPickerLabel = Localization.Common.hours.capitalized
+        static let minutesPickerLabel = Localization.Common.minutes.capitalized
+        static let toggleLabel = Localization.OnboardingOvertimeScreen.keepLoggingOvertime
     }
 }
 
