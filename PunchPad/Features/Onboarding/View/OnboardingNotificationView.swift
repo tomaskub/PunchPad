@@ -41,12 +41,12 @@ struct OnboardingNotificationView: View {
 //MARK: - Localization
 extension OnboardingNotificationView: Localized {
     struct Strings {
-        static let titleText = Localization.OnboardingNotification.notifications
-        static let descriptionText = Localization.OnboardingNotification.descriptionText
-        static let toggleText = Localization.OnboardingNotification.sendNotificationsOnFinish
-        static let alertTitle = Localization.OnboardingNotification.needsPermission
-        static let alertMessage = Localization.OnboardingNotification.allowForNotifications
-        static let alertButtonText = Localization.OnboardingNotification.ok
+        static let titleText = Localization.OnboardingNotificationScreen.notifications
+        static let descriptionText = Localization.OnboardingNotificationScreen.descriptionText
+        static let toggleText = Localization.OnboardingNotificationScreen.sendNotificationsOnFinish
+        static let alertTitle = Localization.OnboardingNotificationScreen.needsPermission
+        static let alertMessage = Localization.OnboardingNotificationScreen.allowForNotifications
+        static let alertButtonText = Localization.Common.ok.uppercased()
     }
 }
 

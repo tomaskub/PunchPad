@@ -43,13 +43,12 @@ struct Localization {
         static let keepLoggingOvertime = String(localized: "Keep logging overtime")
     }
     
-    struct OnboardingNotification {
+    struct OnboardingNotificationScreen {
         static let notifications = String(localized: "Notifications")
         static let descriptionText = String(localized: "Do you want PunchPad to send you notifications when the work time is finished?")
         static let sendNotificationsOnFinish = String(localized: "Send notifications on finish")
         static let needsPermission = String(localized: "PunchPad needs permission to show notifications")
         static let allowForNotifications = String(localized: "You need to allow for notification in settings")
-        static let ok = String(localized: "OK")
     }
     
     struct OnboardingSalary {
