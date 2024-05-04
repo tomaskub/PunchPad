@@ -103,12 +103,14 @@ struct HistoryRowView: View {
     
     func getWorkTimeIndicatorWidth(in width: CGFloat) -> CGFloat {
         let fraction: Double = Double(workTimeInSeconds) / Double(maximumTime)
-        return width * CGFloat(fraction)
+        let result = width * CGFloat(fraction)
+        return result.isNaN ? 0 : result
     }
     
     func getOvertimeIndicatorWidth(in width: CGFloat) -> CGFloat {
         let fraction: Double = Double(overTimeInSeconds) / Double(maximumTime)
-        return width * CGFloat(fraction)
+        let result = width * CGFloat(fraction)
+        return result.isNaN ? 0 : result
     }
     
     private func makeTimeIntervalLabel(for timeInterval: TimeInterval) -> String {
