@@ -38,6 +38,7 @@
 		D64574B429D9F16900207168 /* EntryMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64574B229D9F16900207168 /* EntryMO+CoreDataProperties.swift */; };
 		D64574B629D9F37400207168 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64574B529D9F37400207168 /* Entry.swift */; };
 		D64766C52AFEBD9D0013AC9A /* ChartLegendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64766C42AFEBD9D0013AC9A /* ChartLegendView.swift */; };
+		D64E6B112BE6B42000E961B6 /* DataManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64E6B102BE6B42000E961B6 /* DataManaging.swift */; };
 		D653FEEC2B320E1600ECFCF2 /* TimeIntervalPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D653FEEB2B320E1600ECFCF2 /* TimeIntervalPicker.swift */; };
 		D65A976B29F2E6B800462D8C /* StatisticsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65A976A29F2E6B800462D8C /* StatisticsViewModelTests.swift */; };
 		D65A976F29F3BBDD00462D8C /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65A976E29F3BBDD00462D8C /* OnboardingView.swift */; };
@@ -188,6 +189,7 @@
 		D64574B229D9F16900207168 /* EntryMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EntryMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D64574B529D9F37400207168 /* Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
 		D64766C42AFEBD9D0013AC9A /* ChartLegendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLegendView.swift; sourceTree = "<group>"; };
+		D64E6B102BE6B42000E961B6 /* DataManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DataManaging.swift; path = /Users/tomaszkubiak/xcode/PunchPad/PunchPad/Features/Persistance/Model/DataManaging.swift; sourceTree = "<absolute>"; };
 		D653FEEB2B320E1600ECFCF2 /* TimeIntervalPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalPicker.swift; sourceTree = "<group>"; };
 		D65A976A29F2E6B800462D8C /* StatisticsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModelTests.swift; sourceTree = "<group>"; };
 		D65A976E29F3BBDD00462D8C /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -716,6 +718,7 @@
 		D6FD094E2BCC490B00AD8989 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D64E6B102BE6B42000E961B6 /* DataManaging.swift */,
 				D64574B129D9F16900207168 /* EntryMO+CoreDataClass.swift */,
 				D64574B229D9F16900207168 /* EntryMO+CoreDataProperties.swift */,
 				D65FD53C29D8B259006CC34F /* PersistanceController.swift */,
@@ -918,6 +921,7 @@
 				D684A3882AF6F3E700511E0D /* OnboardingWelcomeView.swift in Sources */,
 				D6842EC429EC62DE00731E84 /* PayManager.swift in Sources */,
 				D64766C52AFEBD9D0013AC9A /* ChartLegendView.swift in Sources */,
+				D64E6B112BE6B42000E961B6 /* DataManaging.swift in Sources */,
 				D64574B629D9F37400207168 /* Entry.swift in Sources */,
 				D6E6832E2B79502B009C6CEC /* ChartableEntry.swift in Sources */,
 				D6C458C729D36C050069D89B /* RingView.swift in Sources */,
