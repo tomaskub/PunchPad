@@ -6,35 +6,28 @@
 //
 
 import Foundation
+import Combine
 import CoreData
 
 enum DataManagerType {
     case normal, preview, testing
 }
 
-final class DataManager: NSObject, ObservableObject {
+final class DataManager: NSObject, DataManaging {
     
     //MARK: STATIC INSTANCES
     static let shared = DataManager(type: .normal)
     static let preview = DataManager(type: .preview)
     static let testing = DataManager(type: .testing)
-    
-    @Published private(set) var entryArray = [Entry]()
-    @Published private(set) var entryThisMonth = [Entry]()
-    
+    private var cancellables = Set<AnyCancellable>()
     fileprivate var managedObjectContext: NSManagedObjectContext
-    private let entryFetchResultsController: NSFetchedResultsController<EntryMO>
-    private let entryThisMonthFetchResultsController: NSFetchedResultsController<EntryMO>
     
     //MARK: INIT
     private init(type: DataManagerType) {
-        
         switch type {
-        
         case .normal:
             let persistanceController = PersistanceController()
             self.managedObjectContext = persistanceController.viewContext
-        
         case .preview:
             let persistanceController = PersistanceController(inMemory: true)
             self.managedObjectContext = persistanceController.viewContext
@@ -42,36 +35,14 @@ final class DataManager: NSObject, ObservableObject {
             let persistanceController = PersistanceController(inMemory: true)
             self.managedObjectContext = persistanceController.viewContext
         }
-        
-        //Build FRCs
-        let fetchRequest: NSFetchRequest<EntryMO> = EntryMO.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "startDate", ascending: false)]
-        entryFetchResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                                                 managedObjectContext: managedObjectContext,
-                                                                 sectionNameKeyPath: nil,
-                                                                 cacheName: nil)
-        
-        let fetchRequestThisMonth: NSFetchRequest<EntryMO> = EntryMO.fetchRequest()
-        fetchRequestThisMonth.sortDescriptors = [NSSortDescriptor(key: "startDate", ascending: false)]
-        
-        let dateComponents = Calendar.current.dateComponents([.month,.year], from: Date())
-        let startDate = Calendar.current.date(from: dateComponents)!
-        let finishDate = Calendar.current.date(byAdding: .month, value: 1, to: startDate)!
-            
-        let startPredicate = NSPredicate(format: "finishDate > %@", startDate as CVarArg)
-        let finishPredicate = NSPredicate(format: "finishDate < %@", finishDate as CVarArg)
-        let compPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [startPredicate, finishPredicate])
-        fetchRequestThisMonth.predicate = compPredicate
-        
-        entryThisMonthFetchResultsController = NSFetchedResultsController(
-            fetchRequest: fetchRequestThisMonth,
-            managedObjectContext: managedObjectContext,
-            sectionNameKeyPath: nil,
-            cacheName: nil
-        )
-        
-        
         super.init()
+        
+        //Notify of change anytime CD changes
+        NotificationCenter.default.publisher(for: Notification.Name.NSManagedObjectContextDidSave)
+            .sink { [weak self] _ in
+                self?.objectWillChange.send()
+            }
+            .store(in: &cancellables)
         
         switch type {
         case .normal:
@@ -80,21 +51,6 @@ final class DataManager: NSObject, ObservableObject {
             addPreviewDataFromFactory()
         case .testing:
             addTestingData()
-        }
-        
-        entryFetchResultsController.delegate = self
-        entryThisMonthFetchResultsController.delegate = self
-        
-        try? entryFetchResultsController.performFetch()
-        if let newEntries = entryFetchResultsController.fetchedObjects {
-            self.entryArray = newEntries.map({
-                Entry(entryMO: $0)
-            })
-        }
-        
-        try? entryThisMonthFetchResultsController.performFetch()
-        if let newEntries = entryThisMonthFetchResultsController.fetchedObjects {
-            self.entryThisMonth = newEntries.map({ Entry(entryMO: $0)})
         }
     }
     
@@ -144,20 +100,6 @@ final class DataManager: NSObject, ObservableObject {
         entry.standardWorktimeInSeconds = 8 * 3600
         entry.grossPayPerMonth = 10000
         saveContext()
-    }
-}
-extension DataManager: NSFetchedResultsControllerDelegate {
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        if controller == entryFetchResultsController {
-            guard let fetchedObjects = controller.fetchedObjects else { return }
-            let newEntries = fetchedObjects.compactMap({$0 as? EntryMO})
-            self.entryArray = newEntries.map { Entry(entryMO: $0) }
-        } else {
-            guard let fetchedObjects = controller.fetchedObjects else { return }
-            let newEntries = fetchedObjects.compactMap({$0 as? EntryMO})
-            self.entryThisMonth = newEntries.map { Entry(entryMO: $0) }
-        }
-        
     }
 }
 
