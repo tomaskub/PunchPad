@@ -14,7 +14,7 @@ enum DataManagerType {
 }
 
 final class DataManager: NSObject, DataManaging {
-    
+    let dataDidChange = PassthroughSubject<Void, Never>()
     //MARK: STATIC INSTANCES
     static let shared = DataManager(type: .normal)
     static let preview = DataManager(type: .preview)
@@ -40,7 +40,7 @@ final class DataManager: NSObject, DataManaging {
         //Notify of change anytime CD changes
         NotificationCenter.default.publisher(for: Notification.Name.NSManagedObjectContextDidSave)
             .sink { [weak self] _ in
-                self?.objectWillChange.send()
+                self?.dataDidChange.send()
             }
             .store(in: &cancellables)
         

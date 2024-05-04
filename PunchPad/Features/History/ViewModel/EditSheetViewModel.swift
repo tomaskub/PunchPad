@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 final class EditSheetViewModel: ObservableObject {
-    private var dataManager: DataManager
+    private var dataManager: any DataManaging
     private var settingsStore: SettingsStore
     private var payService: PayManager
     private var entry: Entry
@@ -43,7 +43,7 @@ final class EditSheetViewModel: ObservableObject {
         CGFloat(overTimeInSeconds / currentMaximumOvertime)
     }
     
-    init(dataManager: DataManager,  settingsStore: SettingsStore, payService: PayManager, calendar: Calendar = .current, entry: Entry) {
+    init(dataManager: any DataManaging,  settingsStore: SettingsStore, payService: PayManager, calendar: Calendar = .current, entry: Entry) {
         self.dataManager = dataManager
         self.settingsStore = settingsStore
         self.payService = payService

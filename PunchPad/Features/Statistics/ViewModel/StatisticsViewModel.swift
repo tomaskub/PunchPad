@@ -11,7 +11,7 @@ import Combine
 final class StatisticsViewModel: ObservableObject {
     private var chartPeriodService: ChartPeriodService
     private var calendar: Calendar
-    @Published private var dataManager: DataManager
+    private var dataManager: any DataManaging
     @Published private var payManager: PayManager
     @Published private var settingsStore: SettingsStore
     private var subscriptions = Set<AnyCancellable>()
@@ -46,7 +46,7 @@ final class StatisticsViewModel: ObservableObject {
         return groupEntriesByYearWeek(entryInPeriod).map { EntrySummary(fromEntries: $0) }
     }
     
-    init(dataManager: DataManager, payManager: PayManager, settingsStore: SettingsStore, calendar: Calendar) {
+    init(dataManager: any DataManaging, payManager: PayManager, settingsStore: SettingsStore, calendar: Calendar) {
         self.dataManager = dataManager
         self.payManager = payManager
         self.settingsStore = settingsStore
@@ -116,7 +116,7 @@ final class StatisticsViewModel: ObservableObject {
                 return self.fetchEntriesWithPlaceholders(for: period)
             }.assign(to: &$entryInPeriod)
         
-        dataManager.objectWillChange.sink { [weak self] _ in
+        dataManager.dataDidChange.sink { [weak self] _ in
             guard let self else { return }
             self.entryInPeriod = self.fetchEntriesWithPlaceholders(for: periodDisplayed)
         }.store(in: &subscriptions)

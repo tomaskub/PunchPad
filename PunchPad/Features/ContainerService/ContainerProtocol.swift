@@ -8,7 +8,7 @@
 import Foundation
 
 protocol ContainerProtocol {
-    var dataManager: DataManager { get }
+    var dataManager: any DataManaging { get }
     var payManager: PayManager { get }
     var timerProvider: Timer.Type { get }
     var settingsStore: SettingsStore { get }

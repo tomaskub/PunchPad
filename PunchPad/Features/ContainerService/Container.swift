@@ -8,7 +8,7 @@
 import Foundation
 
 final class Container: ContainerProtocol {
-    private(set) var dataManager: DataManager
+    private(set) var dataManager: any DataManaging
     private(set) var payManager: PayManager
     private(set) var timerProvider: Timer.Type
     private(set) var settingsStore: SettingsStore
@@ -17,8 +17,8 @@ final class Container: ContainerProtocol {
     init() {
         self.timerProvider = Timer.self
         self.settingsStore = SettingsStore()
-        self.dataManager = .shared
-        self.payManager = PayManager(dataManager: .shared, settingsStore: settingsStore, calendar: .current)
+        self.dataManager = DataManager.shared
+        self.payManager = PayManager(dataManager: DataManager.shared, settingsStore: settingsStore, calendar: .current)
         self.notificationService = NotificationService(center: .current())
     }
 }

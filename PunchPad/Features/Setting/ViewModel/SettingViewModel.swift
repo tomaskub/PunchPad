@@ -11,7 +11,7 @@ import SwiftUI
 final class SettingsViewModel: ObservableObject {
     private var subscriptions = Set<AnyCancellable>()
     private var notificationService: NotificationService
-    private var dataManager: DataManager
+    private var dataManager: any DataManaging
     private let secondsInHour = 3600
     private let secondsInMinute = 60
     @Published var settingsStore: SettingsStore
@@ -22,7 +22,7 @@ final class SettingsViewModel: ObservableObject {
     @Published var grossPayPerMonth: Int
     @Published var shouldShowNotificationDeniedAlert: Bool = false
     
-    init(dataManger: DataManager, notificationService: NotificationService, settingsStore: SettingsStore) {
+    init(dataManger: any DataManaging, notificationService: NotificationService, settingsStore: SettingsStore) {
         self.dataManager = dataManger
         self.notificationService = notificationService
         self.settingsStore = settingsStore

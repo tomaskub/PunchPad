@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 final class PayManager: ObservableObject {
-    private var dataManager: DataManager
+    private var dataManager: any DataManaging
     private var settingsStore: SettingsStore
     private var calendar: Calendar
     private var overtimePayCoef: Double = 1.5
@@ -17,7 +17,7 @@ final class PayManager: ObservableObject {
     @Published private var currentPeriod: Period
     @Published private(set) var grossDataForPeriod: GrossSalary
     
-    init(dataManager: DataManager, settingsStore: SettingsStore, currentPeriod: Period = (Date(), Date()), calendar: Calendar) {
+    init(dataManager: any DataManaging, settingsStore: SettingsStore, currentPeriod: Period = (Date(), Date()), calendar: Calendar) {
         self.settingsStore = settingsStore
         self.dataManager = dataManager
         self.currentPeriod = currentPeriod
@@ -37,7 +37,7 @@ final class PayManager: ObservableObject {
             self?.objectWillChange.send()
         }.store(in: &subscriptions)
         
-        dataManager.objectWillChange.sink { [weak self] _ in
+        dataManager.dataDidChange.sink { [weak self] _ in
             self?.objectWillChange.send()
         }.store(in: &subscriptions)
     }

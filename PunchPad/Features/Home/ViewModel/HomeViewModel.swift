@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 class HomeViewModel: NSObject, ObservableObject {
-    private var dataManager: DataManager
+    private var dataManager: any DataManaging
     private var settingsStore: SettingsStore
     private var payManager: PayManager
     private var notificationService: NotificationService
@@ -39,7 +39,7 @@ class HomeViewModel: NSObject, ObservableObject {
         overtimeTimerService?.progress ?? 0
     }
     
-    init(dataManager: DataManager, settingsStore: SettingsStore, payManager: PayManager, notificationService: NotificationService, timerProvider: Timer.Type) {
+    init(dataManager: any DataManaging, settingsStore: SettingsStore, payManager: PayManager, notificationService: NotificationService, timerProvider: Timer.Type) {
         self.dataManager = dataManager
         self.settingsStore = settingsStore
         self.timerProvider = timerProvider
