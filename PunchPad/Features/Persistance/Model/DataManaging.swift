@@ -10,7 +10,6 @@ import Combine
 
 protocol DataManaging: NSObject {
     var dataDidChange: PassthroughSubject<Void, Never> { get }
-    func saveContext()
     func updateAndSave(entry: Entry)
     func delete(entry: Entry)
     func deleteAll()

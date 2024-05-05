@@ -56,7 +56,7 @@ final class DataManager: NSObject, DataManaging {
     
     //MARK: HELPER METHODS
     ///Checks for changes in the managed object context and saves if uncommited changes are present
-    func saveContext() {
+    private func saveContext() {
         if managedObjectContext.hasChanges {
             do {
                 try managedObjectContext.save()
