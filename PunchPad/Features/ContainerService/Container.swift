@@ -17,8 +17,10 @@ final class Container: ContainerProtocol {
     init() {
         self.timerProvider = Timer.self
         self.settingsStore = SettingsStore()
-        self.dataManager = DataManager.shared
-        self.payManager = PayManager(dataManager: DataManager.shared, settingsStore: settingsStore, calendar: .current)
+        self.dataManager = DataManager()
+        self.payManager = PayManager(dataManager: dataManager,
+                                     settingsStore: settingsStore,
+                                     calendar: .current)
         self.notificationService = NotificationService(center: .current())
     }
 }

@@ -9,116 +9,25 @@ import Foundation
 import Combine
 import CoreData
 
-enum DataManagerType {
-    case normal, preview, testing
-}
-
-final class DataManager: NSObject, DataManaging {
+final class DataManager: NSObject {
     let dataDidChange = PassthroughSubject<Void, Never>()
-    //MARK: STATIC INSTANCES
-    static let shared = DataManager(type: .normal)
-    static let preview = DataManager(type: .preview)
-    static let testing = DataManager(type: .testing)
     private var cancellables = Set<AnyCancellable>()
     fileprivate var managedObjectContext: NSManagedObjectContext
     
-    //MARK: INIT
-    private init(type: DataManagerType) {
-        switch type {
-        case .normal:
-            let persistanceController = PersistanceController()
-            self.managedObjectContext = persistanceController.viewContext
-        case .preview:
-            let persistanceController = PersistanceController(inMemory: true)
-            self.managedObjectContext = persistanceController.viewContext
-        case .testing:
-            let persistanceController = PersistanceController(inMemory: true)
-            self.managedObjectContext = persistanceController.viewContext
-        }
+    override init() {
+        let persistanceController = PersistanceController()
+        self.managedObjectContext = persistanceController.viewContext
         super.init()
-        
         //Notify of change anytime CD changes
         NotificationCenter.default.publisher(for: Notification.Name.NSManagedObjectContextDidSave)
             .sink { [weak self] _ in
                 self?.dataDidChange.send()
             }
             .store(in: &cancellables)
-        
-        switch type {
-        case .normal:
-            break
-        case .preview:
-            addPreviewDataFromFactory()
-        case .testing:
-            addTestingData()
-        }
-    }
-    
-    //MARK: HELPER METHODS
-    ///Checks for changes in the managed object context and saves if uncommited changes are present
-    private func saveContext() {
-        if managedObjectContext.hasChanges {
-            do {
-                try managedObjectContext.save()
-            } catch let error {
-                print("Error saving: \(error) - \(error.localizedDescription)")
-            }
-        }
-    }
-    ///conv fetch returning the first element or an error if the fetch failed
-    private func fetchFirst<T: NSManagedObject>(_ objectType: T.Type, predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]? = nil) -> Result<T?, Error> {
-        let request = objectType.fetchRequest()
-        request.predicate = predicate
-        request.fetchLimit = 1
-        request.sortDescriptors = sortDescriptors
-        do {
-            let result = try managedObjectContext.fetch(request) as? [T]
-            return .success(result?.first)
-        } catch {
-            return .failure(error)
-        }
-    }
-    
-    private func addPreviewDataFromFactory() {
-        let entryToAdd = PreviewDataFactory.buildDataForPreviewForYear()
-        for entry in entryToAdd {
-            self.updateAndSave(entry: entry)
-        }
-    }
-    
-    private func addTestingData() {
-        var dateComponents = Calendar.current.dateComponents([.month,.year], from: Date())
-        dateComponents.day = 1
-        let date = Calendar.current.date(from: dateComponents)!
-        let entry = EntryMO(context: managedObjectContext)
-        entry.id = UUID()
-        entry.startDate = Calendar.current.date(byAdding: .hour, value: 6, to: date)!
-        entry.finishDate = Calendar.current.date(byAdding: DateComponents(hour: 14, minute: 30), to: date)!
-        entry.overTime = Int64(1 * 1800)
-        entry.workTime = 8 * 3600
-        entry.maximumOvertimeAllowedInSeconds = 5 * 3600
-        entry.standardWorktimeInSeconds = 8 * 3600
-        entry.grossPayPerMonth = 10000
-        saveContext()
     }
 }
 
-//MARK: ENTRY METHODS
-extension Entry {
-    fileprivate init(entryMO: EntryMO) {
-        self.id = entryMO.id
-        self.startDate = entryMO.startDate
-        self.finishDate = entryMO.finishDate
-        self.workTimeInSeconds = Int(entryMO.workTime)
-        self.overTimeInSeconds = Int(entryMO.overTime)
-        self.maximumOvertimeAllowedInSeconds = Int(entryMO.maximumOvertimeAllowedInSeconds)
-        self.standardWorktimeInSeconds = Int(entryMO.standardWorktimeInSeconds)
-        self.grossPayPerMonth = Int(entryMO.grossPayPerMonth)
-        self.calculatedNetPay = Double(entryMO.calculatedNetPay)
-    }
-}
-
-extension DataManager {
+extension DataManager: DataManaging {
     ///Updates and saves an entry to entryMO, if there is no entryMO it will create a corresponding entryMO
     func updateAndSave(entry: Entry) {
         let predicate = NSPredicate(format: "id = %@", entry.id as CVarArg)
@@ -255,14 +164,40 @@ extension DataManager {
             return nil
         }
     }
+}
+
+//MARK: - Core Data Helper Functions
+private extension DataManager {
+    func saveContext() {
+        if managedObjectContext.hasChanges {
+            do {
+                try managedObjectContext.save()
+            } catch let error {
+                print("Error saving: \(error) - \(error.localizedDescription)")
+            }
+        }
+    }
     
-    private func entryMO(from entry: Entry) {
+    func fetchFirst<T: NSManagedObject>(_ objectType: T.Type, predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]? = nil) -> Result<T?, Error> {
+        let request = objectType.fetchRequest()
+        request.predicate = predicate
+        request.fetchLimit = 1
+        request.sortDescriptors = sortDescriptors
+        do {
+            let result = try managedObjectContext.fetch(request) as? [T]
+            return .success(result?.first)
+        } catch {
+            return .failure(error)
+        }
+    }
+    
+    func entryMO(from entry: Entry) {
         let entryMO = EntryMO(context: managedObjectContext)
         entryMO.id = entry.id
         update(entryMO: entryMO, from: entry)
     }
     
-    private func update(entryMO: EntryMO, from entry: Entry) {
+    func update(entryMO: EntryMO, from entry: Entry) {
         entryMO.startDate = entry.startDate
         entryMO.finishDate = entry.finishDate
         entryMO.workTime = Int64(entry.workTimeInSeconds)
@@ -273,5 +208,20 @@ extension DataManager {
         if let netPay = entry.calculatedNetPay {
             entryMO.calculatedNetPay = Double(netPay)
         }
+    }
+}
+
+//MARK: - Entry Conv Init
+extension Entry {
+    fileprivate init(entryMO: EntryMO) {
+        self.id = entryMO.id
+        self.startDate = entryMO.startDate
+        self.finishDate = entryMO.finishDate
+        self.workTimeInSeconds = Int(entryMO.workTime)
+        self.overTimeInSeconds = Int(entryMO.overTime)
+        self.maximumOvertimeAllowedInSeconds = Int(entryMO.maximumOvertimeAllowedInSeconds)
+        self.standardWorktimeInSeconds = Int(entryMO.standardWorktimeInSeconds)
+        self.grossPayPerMonth = Int(entryMO.grossPayPerMonth)
+        self.calculatedNetPay = Double(entryMO.calculatedNetPay)
     }
 }
