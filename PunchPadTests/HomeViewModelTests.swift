@@ -9,21 +9,21 @@ import XCTest
 @testable import PunchPad
 
 final class HomeViewModelModelTests: XCTestCase {
-    
     var sut: HomeViewModel!
-    var settingsStore: SettingsStore!
+    var testContainer: TestContainer!
+
     var workTimerLimit: Int = 100
     var overtimeTimerLimit: Int = 100
     
     override func setUp() {
         super.setUp()
         SettingsStore.setTestUserDefaults()
-        self.settingsStore = SettingsStore()
-        DataManager.testing.deleteAll()
-        sut = .init(HomeViewModel(dataManager: DataManager.testing,
-                                  settingsStore: settingsStore,
-                                  payManager: PayManager(dataManager: DataManager.testing,
-                                                         settingsStore: settingsStore,
+        testContainer = TestContainer()
+        testContainer.dataManager.deleteAll()
+        sut = .init(HomeViewModel(dataManager: testContainer.dataManager,
+                                  settingsStore: testContainer.settingsStore,
+                                  payManager: PayManager(dataManager: testContainer.dataManager,
+                                                         settingsStore: testContainer.settingsStore,
                                                          calendar: .current),
                                   notificationService: NotificationService(center: .current()),
                                   timerProvider: MockTimer.self)
@@ -150,9 +150,9 @@ extension HomeViewModelModelTests {
         XCTAssertEqual(sut.overtimeProgress, expectedOvertimeProgressValue, accuracy: 0.01, "Overtime progress should be equal to \(expectedOvertimeProgressValue)")
     }
     
-    func test_stopTimerService_stopsServiceAndSavesEntry_noOvertime() {
+    func test_stopTimerService_stopsServiceAndSavesEntry_noOvertime() throws {
         //Given
-        let numberOfExistingEntries = DataManager.testing.entryArray.count
+        let numberOfExistingEntries = try numberOfEntries()
         let numberOfFires = 10
         setUpWithOneTimer()
         //When
@@ -161,12 +161,12 @@ extension HomeViewModelModelTests {
         sut.stopTimerService()
         //Then
         XCTAssertEqual(sut.state, .finished, "Service state should be finished")
-        XCTAssertEqual(DataManager.testing.entryArray.count, numberOfExistingEntries + 1, "Additional entry should be saved")
+        XCTAssertEqual(try numberOfEntries(), numberOfExistingEntries + 1, "Additional entry should be saved")
     }
     
-    func test_timerFinished_stopsServiceAndSavesEntry_noOvertime() {
+    func test_timerFinished_stopsServiceAndSavesEntry_noOvertime() throws {
         //Given
-        let expectedNumberOfEntries = DataManager.testing.entryArray.count + 1
+        let expectedNumberOfEntries = try numberOfEntries() + 1
         let numberOfFires = workTimerLimit + 1
         setUpWithOneTimer()
         //When
@@ -174,7 +174,7 @@ extension HomeViewModelModelTests {
         fireTimer(numberOfFires)
         //Then
         XCTAssertEqual(sut.state, .finished, "Service state should be finished")
-        XCTAssertEqual(DataManager.testing.entryArray.count, expectedNumberOfEntries, "Additional entry should be saved")
+        XCTAssertEqual(try numberOfEntries(), expectedNumberOfEntries, "Additional entry should be saved")
     }
     
     func test_startSecondTimer_whenFirstIsFinished_firstRun() {
@@ -336,27 +336,27 @@ extension HomeViewModelModelTests {
         XCTAssertEqual(sut.overtimeProgress, expectedOvertimeProgressValue, accuracy: 0.01, "Overtime progress should be equal to \(expectedOvertimeProgressValue)")
     }
     
-    func test_stopTimerService_stopsSecondTimerAndSavesEntry() {
+    func test_stopTimerService_stopsSecondTimerAndSavesEntry() throws {
         let numberOfFires = workTimerLimit + overtimeTimerLimit
         let expectedDisplayValue = TimeInterval(overtimeTimerLimit)
         let expectedNormalProgressValue = CGFloat(1)
         let expectedOvertimeProgressValue = CGFloat(1)
-        let expectedNumberOfEntries = DataManager.testing.entryArray.count + 1
+        let expectedNumberOfEntries = try numberOfEntries()/*DataManager.testing.entryArray.count*/ + 1
         setUpWithTwoTimers()
         //When
         sut.startTimerService()
         fireTimer(numberOfFires)
         sut.stopTimerService()
         //Then
-        XCTAssertEqual(DataManager.testing.entryArray.count, expectedNumberOfEntries, "Number of entries should be equal to \(expectedNumberOfEntries)")
+        XCTAssertEqual(try numberOfEntries(), expectedNumberOfEntries, "Number of entries should be equal to \(expectedNumberOfEntries)")
         XCTAssertEqual(sut.timerDisplayValue, expectedDisplayValue, accuracy: 0.01, "Timer display value should be equal to \(expectedDisplayValue)")
         XCTAssertEqual(sut.normalProgress, expectedNormalProgressValue, "Normal progress should be equal to \(expectedNormalProgressValue)")
         XCTAssertEqual(sut.overtimeProgress, expectedOvertimeProgressValue, accuracy: 0.01, "Overtime progress should be equal to \(expectedOvertimeProgressValue)")
     }
     
-    func test_secondTimerFinished_stopsServiceAndSavesEntry() {
+    func test_secondTimerFinished_stopsServiceAndSavesEntry() throws {
         //Given
-        let expectedNumberOfEntries = DataManager.testing.entryArray.count + 1
+        let expectedNumberOfEntries = try numberOfEntries() + 1
         let numberOfFires = workTimerLimit + overtimeTimerLimit + 1
         setUpWithTwoTimers()
         //When
@@ -364,7 +364,7 @@ extension HomeViewModelModelTests {
         fireTimer(numberOfFires)
         //Then
         XCTAssertEqual(sut.state, .finished, "Service state should be finished")
-        XCTAssertEqual(DataManager.testing.entryArray.count, expectedNumberOfEntries, "Additional entry should be saved")
+        XCTAssertEqual(try numberOfEntries(), expectedNumberOfEntries, "Additional entry should be saved")
     }
 }
 
@@ -394,9 +394,10 @@ extension HomeViewModelModelTests {
         //Then
         XCTAssertEqual(sut.normalProgress, 1, accuracy: 0.01)
     }
-    func test_resumeFromBackground_withOneTimer_exceedingTimerLimit_savesEntry() {
+    
+    func test_resumeFromBackground_withOneTimer_exceedingTimerLimit_savesEntry() throws {
         //Given
-        let expectedEntriesCount = DataManager.testing.entryArray.count + 1
+        let expectedEntriesCount = try numberOfEntries() + 1
         workTimerLimit = 2
         setUpWithOneTimer()
         let expectedStartTime = Date().timeIntervalSince1970
@@ -407,8 +408,8 @@ extension HomeViewModelModelTests {
         //When
         NotificationCenter.default.post(name: UIApplication.willEnterForegroundNotification, object: nil)
         //Then
-        XCTAssertEqual(expectedEntriesCount, DataManager.testing.entryArray.count, "There should be additional entry in array")
-        guard let addedEntry = DataManager.testing.entryArray.first else {
+        XCTAssertEqual(expectedEntriesCount, try numberOfEntries(), "There should be additional entry in array")
+        guard let addedEntry = testContainer.dataManager.fetchOldestExisting() else {
             XCTFail("Failed to retrieve expected entry in \(#function)")
             return
         }
@@ -416,7 +417,7 @@ extension HomeViewModelModelTests {
         XCTAssertEqual(addedEntry.finishDate.timeIntervalSince1970, expectedFinishTimer, accuracy: 0.01)
     }
     
-    func test_resumeFromBackground_withTwoTimers_notExceedingFirstTimerLimit() {
+    func test_resumeFromBackground_withTwoTimers_notExceedingFirstTimerLimit() throws {
         //Given
         workTimerLimit = 10
         setUpWithTwoTimers()
@@ -428,7 +429,7 @@ extension HomeViewModelModelTests {
         //Then
         XCTAssertEqual(sut.normalProgress, 0.3, accuracy: 0.01)
         XCTAssertEqual(sut.overtimeProgress, 0, accuracy: 0.01)
-        XCTAssertEqual(DataManager.testing.entryArray.count, 0)
+        XCTAssertEqual(try numberOfEntries(), 0)
     }
     
     func test_resumeFromBackground_withTwoTimers_exceedingFirstTimerLimit() {
@@ -445,14 +446,14 @@ extension HomeViewModelModelTests {
         XCTAssertEqual(sut.overtimeProgress, 0.01, accuracy: 0.01)
     }
     
-    func test_resumeFromBackground_withTwoTimers_exceedingSecondTimer() {
+    func test_resumeFromBackground_withTwoTimers_exceedingSecondTimer() throws {
         //Given
         workTimerLimit = 2
         overtimeTimerLimit = 2
         setUpWithTwoTimers()
         let expectedStartTimeInterval = Date().timeIntervalSince1970
         let expectedFinishTimeInterval = expectedStartTimeInterval + 4
-        let expectedEntriesCount = DataManager.testing.entryArray.count + 1
+        let expectedEntriesCount = try numberOfEntries() + 1
         sut.startTimerService()
         NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: nil)
         sleep(5)
@@ -461,8 +462,8 @@ extension HomeViewModelModelTests {
         //Then
         XCTAssertEqual(sut.normalProgress, 1, accuracy: 0.01)
         XCTAssertEqual(sut.overtimeProgress, 1, accuracy: 0.01)
-        XCTAssertEqual(expectedEntriesCount, DataManager.testing.entryArray.count, "There should be additional entry in array")
-        guard let addedEntry = DataManager.testing.entryArray.first else {
+        XCTAssertEqual(expectedEntriesCount, try numberOfEntries(), "There should be additional entry in array")
+        guard let addedEntry = testContainer.dataManager.fetchOldestExisting() else {
             XCTFail("Failed to retrieve expected entry in \(#function)")
             return
         }
@@ -472,14 +473,14 @@ extension HomeViewModelModelTests {
         XCTAssertEqual(addedEntry.overTimeInSeconds, 2)
     }
     
-    func test_resumeFromBackground_whenEnteredDuringSecondTimer_withTwoTimers_exceedingSecondTimer() {
+    func test_resumeFromBackground_whenEnteredDuringSecondTimer_withTwoTimers_exceedingSecondTimer() throws {
         //Given
         workTimerLimit = 2
         overtimeTimerLimit = 2
         setUpWithTwoTimers()
         let expectedStartTimeInterval = Date().timeIntervalSince1970
         let expectedFinishTimeInterval = expectedStartTimeInterval + 4
-        let expectedEntriesCount = DataManager.testing.entryArray.count + 1
+        let expectedEntriesCount = try numberOfEntries() + 1
         sut.startTimerService()
         fireTimer(3)
         NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: nil)
@@ -489,8 +490,8 @@ extension HomeViewModelModelTests {
         //Then
         XCTAssertEqual(sut.normalProgress, 1, accuracy: 0.01)
         XCTAssertEqual(sut.overtimeProgress, 1, accuracy: 0.01)
-        XCTAssertEqual(expectedEntriesCount, DataManager.testing.entryArray.count, "There should be additional entry in array")
-        guard let addedEntry = DataManager.testing.entryArray.first else {
+        XCTAssertEqual(expectedEntriesCount, try numberOfEntries(), "There should be additional entry in array")
+        guard let addedEntry = testContainer.dataManager.fetchOldestExisting() else {
             XCTFail("Failed to retrieve expected entry in \(#function)")
             return
         }
@@ -504,12 +505,12 @@ extension HomeViewModelModelTests {
 //MARK: HELPERS
 extension HomeViewModelModelTests {
     private func setUpWithOneTimer() {
-        settingsStore.isLoggingOvertime = false
-        settingsStore.workTimeInSeconds = workTimerLimit
-        sut = .init(HomeViewModel(dataManager: DataManager.testing,
-                                  settingsStore: settingsStore,
-                                  payManager: PayManager(dataManager: DataManager.testing, 
-                                                         settingsStore: settingsStore,
+        testContainer.settingsStore.isLoggingOvertime = false
+        testContainer.settingsStore.workTimeInSeconds = workTimerLimit
+        sut = .init(HomeViewModel(dataManager: testContainer.dataManager,
+                                  settingsStore: testContainer.settingsStore,
+                                  payManager: PayManager(dataManager: testContainer.dataManager,
+                                                         settingsStore: testContainer.settingsStore,
                                                          calendar: .current),
                                   notificationService: NotificationService(center: .current()),
                                   timerProvider: MockTimer.self)
@@ -517,13 +518,13 @@ extension HomeViewModelModelTests {
     }
     
     private func setUpWithTwoTimers() {
-        settingsStore.isLoggingOvertime = true
-        settingsStore.workTimeInSeconds = workTimerLimit
-        settingsStore.maximumOvertimeAllowedInSeconds = overtimeTimerLimit
-        sut = .init(dataManager: DataManager.testing,
-                    settingsStore: settingsStore,
-                    payManager: PayManager(dataManager: .testing, 
-                                           settingsStore: settingsStore,
+        testContainer.settingsStore.isLoggingOvertime = true
+        testContainer.settingsStore.workTimeInSeconds = workTimerLimit
+        testContainer.settingsStore.maximumOvertimeAllowedInSeconds = overtimeTimerLimit
+        sut = .init(dataManager: testContainer.dataManager,
+                    settingsStore: testContainer.settingsStore,
+                    payManager: PayManager(dataManager: testContainer.dataManager,
+                                           settingsStore: testContainer.settingsStore,
                                            calendar: .current),
                     notificationService: NotificationService(center: .current()),
                     timerProvider: MockTimer.self)
@@ -534,4 +535,14 @@ extension HomeViewModelModelTests {
             MockTimer.currentTimer.fire()
         }
     }
+    
+    private func numberOfEntries() throws -> Int {
+        guard let manager = testContainer.dataManager as? TestDataManager else { throw TestError.failedToCast }
+        return manager.numberOfEntries()
+    }
+    
+    enum TestError: Error {
+        case failedToCast
+    }
 }
+
