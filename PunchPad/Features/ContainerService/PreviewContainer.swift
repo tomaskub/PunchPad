@@ -18,7 +18,7 @@ final class PreviewContainer: ContainerProtocol {
         self.timerProvider = Timer.self
         SettingsStore.setTestUserDefaults()
         self.settingsStore = SettingsStore()
-        self.dataManager = DataManager.preview
+        self.dataManager = PreviewDataManager()
         self.payManager = PayManager(dataManager: DataManager.preview, settingsStore: settingsStore, calendar: .current)
         self.notificationService = NotificationService(center: .current())
     }
