@@ -15,11 +15,13 @@ final class PreviewContainer: ContainerProtocol {
     private(set) var notificationService: NotificationService
     
     init() {
-        self.timerProvider = Timer.self
         SettingsStore.setTestUserDefaults()
+        self.timerProvider = Timer.self
         self.settingsStore = SettingsStore()
         self.dataManager = PreviewDataManager()
-        self.payManager = PayManager(dataManager: DataManager.preview, settingsStore: settingsStore, calendar: .current)
+        self.payManager = PayManager(dataManager: dataManager,
+                                     settingsStore: settingsStore,
+                                     calendar: .current)
         self.notificationService = NotificationService(center: .current())
     }
 }

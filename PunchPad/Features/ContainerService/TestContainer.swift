@@ -15,11 +15,13 @@ final class TestContainer: ContainerProtocol {
     private(set) var notificationService: NotificationService
     
     init() {
-        self.timerProvider = Timer.self
         SettingsStore.setTestUserDefaults()
+        self.timerProvider = Timer.self
         self.settingsStore = SettingsStore()
-        self.dataManager = DataManager.testing
-        self.payManager = PayManager(dataManager: DataManager.testing, settingsStore: settingsStore, calendar: .current)
+        self.dataManager = TestDataManager()
+        self.payManager = PayManager(dataManager: dataManager, 
+                                     settingsStore: settingsStore,
+                                     calendar: .current)
         self.notificationService = NotificationService(center: .current())
     }
 }
