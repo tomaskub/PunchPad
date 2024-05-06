@@ -538,7 +538,7 @@ extension HomeViewModelModelTests {
     
     private func numberOfEntries() throws -> Int {
         guard let manager = testContainer.dataManager as? TestDataManager else { throw TestError.failedToCast }
-        return manager.numberOfEntries()
+        return try manager.numberOfEntries()
     }
     
     enum TestError: Error {

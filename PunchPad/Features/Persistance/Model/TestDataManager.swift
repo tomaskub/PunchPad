@@ -42,6 +42,11 @@ final class TestDataManager: NSObject {
         entry.grossPayPerMonth = 10000
         saveContext()
     }
+    
+    func numberOfEntries() throws -> Int {
+        let request: NSFetchRequest<EntryMO> = EntryMO.fetchRequest()
+        return try managedObjectContext.count(for: request)
+    }
 }
 
 extension TestDataManager: DataManaging {
