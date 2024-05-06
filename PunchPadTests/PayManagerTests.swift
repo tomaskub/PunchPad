@@ -11,18 +11,16 @@ import CoreData
 
 final class PayManagerTests: XCTestCase {
     var sut: PayManager!
-    var settingsStore: SettingsStore!
-    var dataManager: DataManager!
+    var testContainer: TestContainer!
     var periodService: ChartPeriodService!
     
     override func setUp() {
         super.setUp()
-        dataManager = DataManager.testing
-        dataManager.deleteAll()
         SettingsStore.setTestUserDefaults()
-        settingsStore = SettingsStore()
-        sut = .init(dataManager: dataManager,
-                    settingsStore: settingsStore,
+        testContainer = TestContainer()
+        testContainer.dataManager.deleteAll()
+        sut = .init(dataManager: testContainer.dataManager,
+                    settingsStore: testContainer.settingsStore,
                     calendar: .current)
         periodService = ChartPeriodService(calendar: .current)
     }
@@ -30,8 +28,7 @@ final class PayManagerTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         sut = nil
-        settingsStore = nil
-        dataManager = nil
+        testContainer = nil
     }
 }
 
@@ -45,14 +42,14 @@ extension PayManagerTests {
             XCTFail("Failed to prepare test data in \(#function)")
             return
         }
-        let expectedPayHour = Double(settingsStore.grossPayPerMonth) / Double(numberOfDayInMonth * 8)
+        let expectedPayHour = Double(testContainer.settingsStore.grossPayPerMonth) / Double(numberOfDayInMonth * 8)
         let expectedNumberOfWorkingDays = 5
         let expectedPayToDate = expectedPayHour * 40
         _ = addTestData(forPeriod: testPeriod,
-                    workTimeInSec: 8 * 3600,
-                    overtimeInSec: 0, standardWorkTimeInSec: 8 * 3600,
-                    maximumOvertimeInSec: 5 * 3600,
-                    grossPayPerMonth: settingsStore.grossPayPerMonth
+                        workTimeInSec: 8 * 3600,
+                        overtimeInSec: 0, standardWorkTimeInSec: 8 * 3600,
+                        maximumOvertimeInSec: 5 * 3600,
+                        grossPayPerMonth: testContainer.settingsStore.grossPayPerMonth
         )
         //When
         sut.updatePeriod(with: testPeriod)
@@ -72,15 +69,15 @@ extension PayManagerTests {
             XCTFail("Failed to prepare test data in \(#function)")
             return
         }
-        let expectedPayHour = Double(settingsStore.grossPayPerMonth) / Double(numberOfWorkingDays * 8)
+        let expectedPayHour = Double(testContainer.settingsStore.grossPayPerMonth) / Double(numberOfWorkingDays * 8)
         let expectedNumberOfWorkingDays = numberOfWorkingDays
-        let expectedPayToDate = Double(settingsStore.grossPayPerMonth)
+        let expectedPayToDate = Double(testContainer.settingsStore.grossPayPerMonth)
         _ = addTestData(forPeriod: testPeriod,
                     workTimeInSec: 8 * 3600,
                     overtimeInSec: 0,
                     standardWorkTimeInSec: 8 * 3600,
                     maximumOvertimeInSec: 5 * 3600,
-                    grossPayPerMonth: settingsStore.grossPayPerMonth
+                    grossPayPerMonth: testContainer.settingsStore.grossPayPerMonth
         )
         //When
         sut.updatePeriod(with: testPeriod)
@@ -100,14 +97,14 @@ extension PayManagerTests {
             return
         }
         let expectedNumberOfWorkingDays = numberOfWorkingDays(in: testPeriod)
-        let expectedPayHour = Double(12 * settingsStore.grossPayPerMonth) / Double(expectedNumberOfWorkingDays * 8)
-        let expectedPayToDate = Double(12 * settingsStore.grossPayPerMonth)
+        let expectedPayHour = Double(12 * testContainer.settingsStore.grossPayPerMonth) / Double(expectedNumberOfWorkingDays * 8)
+        let expectedPayToDate = Double(12 * testContainer.settingsStore.grossPayPerMonth)
         _ = addTestData(forPeriod: testPeriod,
                     workTimeInSec: 8 * 3600,
                     overtimeInSec: 0,
                     standardWorkTimeInSec: 8 * 3600,
                     maximumOvertimeInSec: 5 * 3600,
-                    grossPayPerMonth: settingsStore.grossPayPerMonth
+                    grossPayPerMonth: testContainer.settingsStore.grossPayPerMonth
         )
         //When
         sut.updatePeriod(with: testPeriod)
@@ -133,7 +130,7 @@ extension PayManagerTests {
         }
         let dataPeriod = (initialPeriod.0, endOfToday)
         let expectedNumberOfWorkingDaysInPeriod = numberOfWorkingDays(in: initialPeriod)
-        let expectedPayPerHour = Double(settingsStore.grossPayPerMonth) / Double(numberOfWorkingDaysInMonth * 8)
+        let expectedPayPerHour = Double(testContainer.settingsStore.grossPayPerMonth) / Double(numberOfWorkingDaysInMonth * 8)
         let expectedPayPrediced = expectedPayPerHour * Double(expectedNumberOfWorkingDaysInPeriod) * 8
         let expectedPayUpToDate = Double(numberOfWorkingDays(in: dataPeriod)) * 8 * expectedPayPerHour
         _ = addTestData(forPeriod: dataPeriod,
@@ -141,7 +138,7 @@ extension PayManagerTests {
                     overtimeInSec: 0,
                     standardWorkTimeInSec: 8 * 3600,
                     maximumOvertimeInSec: 5 * 3600,
-                    grossPayPerMonth: settingsStore.grossPayPerMonth
+                    grossPayPerMonth: testContainer.settingsStore.grossPayPerMonth
         )
         //When
         sut.updatePeriod(with: initialPeriod)
@@ -163,7 +160,7 @@ extension PayManagerTests {
         }
         let dataPeriod = (initialPeriod.0, endOfToday)
         let expectedNumberOfWorkingDaysInPeriod = numberOfWorkingDays(in: initialPeriod)
-        let expectedPayPerHour = Double(settingsStore.grossPayPerMonth) / Double(expectedNumberOfWorkingDaysInPeriod * 8)
+        let expectedPayPerHour = Double(testContainer.settingsStore.grossPayPerMonth) / Double(expectedNumberOfWorkingDaysInPeriod * 8)
         let expectedPayPrediced = expectedPayPerHour * Double(expectedNumberOfWorkingDaysInPeriod * 8)
         let expectedPayUpToDate = Double(numberOfWorkingDays(in: dataPeriod)) * 8 * expectedPayPerHour
         _ = addTestData(forPeriod: dataPeriod,
@@ -171,7 +168,7 @@ extension PayManagerTests {
                     overtimeInSec: 0,
                     standardWorkTimeInSec: 8 * 3600,
                     maximumOvertimeInSec: 5 * 3600,
-                    grossPayPerMonth: settingsStore.grossPayPerMonth
+                    grossPayPerMonth: testContainer.settingsStore.grossPayPerMonth
         )
         //When
         sut.updatePeriod(with: initialPeriod)
@@ -193,14 +190,14 @@ extension PayManagerTests {
         }
         let dataPeriod = (initialPeriod.0, endOfToday)
         let expectedNumberOfWorkingDaysInPeriod = numberOfWorkingDays(in: initialPeriod)
-        let expectedPayPerHour = Double(12 * settingsStore.grossPayPerMonth) / Double(expectedNumberOfWorkingDaysInPeriod * 8)
-        let expectedPayPrediced = Double(12 * settingsStore.grossPayPerMonth)
+        let expectedPayPerHour = Double(12 * testContainer.settingsStore.grossPayPerMonth) / Double(expectedNumberOfWorkingDaysInPeriod * 8)
+        let expectedPayPrediced = Double(12 * testContainer.settingsStore.grossPayPerMonth)
         let addedEntries = addTestData(forPeriod: dataPeriod,
                     workTimeInSec: 8 * 3600,
                     overtimeInSec: 0,
                     standardWorkTimeInSec: 8 * 3600,
                     maximumOvertimeInSec: 5 * 3600,
-                    grossPayPerMonth: settingsStore.grossPayPerMonth
+                    grossPayPerMonth: testContainer.settingsStore.grossPayPerMonth
         )
         let expectedPayUpToDate: Double =
             addedEntries.map { [weak self] entry in
@@ -232,7 +229,7 @@ extension PayManagerTests {
             return
         }
         let expectedNumberOfWorkingDays = 5
-        let expectedPayPerHour = Double(settingsStore.grossPayPerMonth) / Double(numberOfWorkingDaysInMonth * 8)
+        let expectedPayPerHour = Double(testContainer.settingsStore.grossPayPerMonth) / Double(numberOfWorkingDaysInMonth * 8)
         let expectedPayUpToDate: Double = 0
         //When
         sut.updatePeriod(with: period)
@@ -253,7 +250,7 @@ extension PayManagerTests {
             XCTFail("FAILED TO PREPARE INPUT DATA")
             return
         }
-        let expectedPayPerHour = Double(settingsStore.grossPayPerMonth) / (Double(numberOfWorkingDaysInMonth) * 8)
+        let expectedPayPerHour = Double(testContainer.settingsStore.grossPayPerMonth) / (Double(numberOfWorkingDaysInMonth) * 8)
         let expectedNumberOfWorkingDays = numberOfWorkingDaysInMonth
         let expectedPayUpToDate: Double = 0
         //When
@@ -275,7 +272,7 @@ extension PayManagerTests {
             return
         }
         let expectedNumberOfWorkingDays = numberOfWorkingDays(in: period)
-        let expectedPayPerHour = Double(12 * settingsStore.grossPayPerMonth) / Double(expectedNumberOfWorkingDays * 8)
+        let expectedPayPerHour = Double(12 * testContainer.settingsStore.grossPayPerMonth) / Double(expectedNumberOfWorkingDays * 8)
         let expectedPayUpToDate: Double = 0
         //When
         sut.updatePeriod(with: period)
@@ -342,7 +339,7 @@ extension PayManagerTests {
             )
         }
         for entry in resultArray {
-            DataManager.testing.updateAndSave(entry: entry)
+            testContainer.dataManager.updateAndSave(entry: entry)
         }
         return resultArray
     }
