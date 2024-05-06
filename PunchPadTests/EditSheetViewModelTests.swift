@@ -9,8 +9,8 @@ import XCTest
 @testable import PunchPad
 
 final class EditSheetViewModelTests: XCTestCase {
-    
     var sut: EditSheetViewModel!
+    var testContainer: TestContainer!
     let entry: Entry = {
         let startOfDay = Calendar.current.startOfDay(for: Date())
         let startDate = Calendar.current.date(byAdding: .hour, value: 6, to: startOfDay)!
@@ -28,13 +28,13 @@ final class EditSheetViewModelTests: XCTestCase {
     }()
     
     override func setUp() {
-        
+        testContainer = TestContainer()
         SettingsStore.setTestUserDefaults()
-        let settingStore = SettingsStore()
-        
-        sut = .init(dataManager: .testing,
-                    settingsStore: settingStore,
-                    payService: PayManager(dataManager: .testing, settingsStore: settingStore, calendar: .current),
+        sut = .init(dataManager: testContainer.dataManager,
+                    settingsStore: testContainer.settingsStore,
+                    payService: PayManager(dataManager: testContainer.dataManager,
+                                           settingsStore: testContainer.settingsStore,
+                                           calendar: .current),
                     calendar: .current,
                     entry: entry)
     }
@@ -42,6 +42,7 @@ final class EditSheetViewModelTests: XCTestCase {
     override func tearDown() {
         SettingsStore.clearUserDefaults()
         sut = nil
+        testContainer = nil
     }
 
     func test_adjustToEqualDateComponents() throws {

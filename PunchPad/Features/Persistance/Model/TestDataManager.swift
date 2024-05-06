@@ -1,54 +1,71 @@
 //
-//  DataManager.swift
-//  ClockIn
+//  TestDataManager.swift
+//  PunchPad
 //
-//  Created by Tomasz Kubiak on 4/2/23.
+//  Created by Tomasz Kubiak on 05/05/2024.
 //
 
 import Foundation
-import Combine
 import CoreData
+import Combine
 
-final class DataManager: NSObject {
+final class TestDataManager: NSObject {
     let dataDidChange = PassthroughSubject<Void, Never>()
     private var cancellables = Set<AnyCancellable>()
-    fileprivate var managedObjectContext: NSManagedObjectContext
+    private var managedObjectContext: NSManagedObjectContext
     
     override init() {
-        let persistanceController = PersistanceController()
+        let persistanceController = PersistanceController(inMemory: true)
         self.managedObjectContext = persistanceController.viewContext
         super.init()
-        //Notify of change anytime CD changes
+        
         NotificationCenter.default.publisher(for: Notification.Name.NSManagedObjectContextDidSave)
             .sink { [weak self] _ in
                 self?.dataDidChange.send()
-            }
-            .store(in: &cancellables)
+            }.store(in: &cancellables)
+        
+        addTestingData()
+    }
+    
+    private func addTestingData() {
+        var dateComponents = Calendar.current.dateComponents([.month,.year], from: Date())
+        dateComponents.day = 1
+        let date = Calendar.current.date(from: dateComponents)!
+        let entry = EntryMO(context: managedObjectContext)
+        entry.id = UUID()
+        entry.startDate = Calendar.current.date(byAdding: .hour, value: 6, to: date)!
+        entry.finishDate = Calendar.current.date(byAdding: DateComponents(hour: 14, minute: 30), to: date)!
+        entry.overTime = Int64(1 * 1800)
+        entry.workTime = 8 * 3600
+        entry.maximumOvertimeAllowedInSeconds = 5 * 3600
+        entry.standardWorktimeInSeconds = 8 * 3600
+        entry.grossPayPerMonth = 10000
+        saveContext()
+    }
+    
+    func numberOfEntries() throws -> Int {
+        let request: NSFetchRequest<EntryMO> = EntryMO.fetchRequest()
+        return try managedObjectContext.count(for: request)
     }
 }
 
-extension DataManager: DataManaging {
-    ///Updates and saves an entry to entryMO, if there is no entryMO it will create a corresponding entryMO
+extension TestDataManager: DataManaging {
     func updateAndSave(entry: Entry) {
         let predicate = NSPredicate(format: "id = %@", entry.id as CVarArg)
         let result = fetchFirst(EntryMO.self, predicate: predicate)
         switch result {
         case .success(let managedObject):
             if let entryMO = managedObject {
-                //update
                 update(entryMO: entryMO, from: entry)
             } else {
-                // create entryMO from entry
                 entryMO(from: entry)
             }
         case .failure(let error):
             print("Could not fetch Entry to save - \(error): \(error.localizedDescription)")
         }
-        
         saveContext()
-        
     }
-    //Add documentation and handle failure better?
+    
     func delete(entry: Entry) {
         let predicate = NSPredicate(format: "id = %@", entry.id as CVarArg)
         let result = fetchFirst(EntryMO.self, predicate: predicate)
@@ -104,10 +121,7 @@ extension DataManager: DataManaging {
         return fetch(from: period.0, to: period.1)
     }
     
-    func fetch(from startDate: Date?, 
-               to finishDate: Date?,
-               ascendingOrder: Bool = false,
-               fetchLimit: Int? = nil) -> [Entry]? {
+    func fetch(from startDate: Date?, to finishDate: Date?, ascendingOrder: Bool = false, fetchLimit: Int? = nil) -> [Entry]? {
         let request: NSFetchRequest<EntryMO> = EntryMO.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "startDate", ascending: ascendingOrder)]
         var subpredicates = [NSPredicate]()
@@ -167,7 +181,7 @@ extension DataManager: DataManaging {
 }
 
 //MARK: - Core Data Helper Functions
-private extension DataManager {
+private extension TestDataManager {
     func saveContext() {
         if managedObjectContext.hasChanges {
             do {
@@ -212,8 +226,8 @@ private extension DataManager {
 }
 
 //MARK: - Entry Conv Init
-extension Entry {
-    fileprivate init(entryMO: EntryMO) {
+fileprivate extension Entry {
+    init(entryMO: EntryMO) {
         self.id = entryMO.id
         self.startDate = entryMO.startDate
         self.finishDate = entryMO.finishDate

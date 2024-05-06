@@ -38,6 +38,7 @@
 		D64574B429D9F16900207168 /* EntryMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64574B229D9F16900207168 /* EntryMO+CoreDataProperties.swift */; };
 		D64574B629D9F37400207168 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64574B529D9F37400207168 /* Entry.swift */; };
 		D64766C52AFEBD9D0013AC9A /* ChartLegendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64766C42AFEBD9D0013AC9A /* ChartLegendView.swift */; };
+		D64E6B112BE6B42000E961B6 /* DataManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64E6B102BE6B42000E961B6 /* DataManaging.swift */; };
 		D653FEEC2B320E1600ECFCF2 /* TimeIntervalPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D653FEEB2B320E1600ECFCF2 /* TimeIntervalPicker.swift */; };
 		D65A976B29F2E6B800462D8C /* StatisticsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65A976A29F2E6B800462D8C /* StatisticsViewModelTests.swift */; };
 		D65A976F29F3BBDD00462D8C /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65A976E29F3BBDD00462D8C /* OnboardingView.swift */; };
@@ -112,6 +113,8 @@
 		D6EA695E2AF8498D00D8F6C3 /* OnboardingOvertimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EA695D2AF8498D00D8F6C3 /* OnboardingOvertimeView.swift */; };
 		D6ED26BD2AA3B739001E2390 /* StatisticsViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED26BC2AA3B739001E2390 /* StatisticsViewScreen.swift */; };
 		D6ED26BF2AA3BA05001E2390 /* OnboardingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED26BE2AA3BA05001E2390 /* OnboardingUITests.swift */; };
+		D6EF97922BE7FB6900AD719C /* PreviewDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EF97912BE7FB6900AD719C /* PreviewDataManager.swift */; };
+		D6EF97942BE81A4D00AD719C /* TestDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EF97932BE81A4D00AD719C /* TestDataManager.swift */; };
 		D6FA94FB2B013C770034B16A /* ChartLegendItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FA94FA2B013C770034B16A /* ChartLegendItem.swift */; };
 		D6FA94FD2B013F060034B16A /* ChartLegendItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FA94FC2B013F060034B16A /* ChartLegendItemView.swift */; };
 		D6FA94FF2B0145FF0034B16A /* ChartFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FA94FE2B0145FE0034B16A /* ChartFactory.swift */; };
@@ -188,6 +191,7 @@
 		D64574B229D9F16900207168 /* EntryMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EntryMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D64574B529D9F37400207168 /* Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
 		D64766C42AFEBD9D0013AC9A /* ChartLegendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLegendView.swift; sourceTree = "<group>"; };
+		D64E6B102BE6B42000E961B6 /* DataManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DataManaging.swift; path = /Users/tomaszkubiak/xcode/PunchPad/PunchPad/Features/Persistance/Model/DataManaging.swift; sourceTree = "<absolute>"; };
 		D653FEEB2B320E1600ECFCF2 /* TimeIntervalPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalPicker.swift; sourceTree = "<group>"; };
 		D65A976A29F2E6B800462D8C /* StatisticsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModelTests.swift; sourceTree = "<group>"; };
 		D65A976E29F3BBDD00462D8C /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -263,6 +267,8 @@
 		D6EA695D2AF8498D00D8F6C3 /* OnboardingOvertimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingOvertimeView.swift; sourceTree = "<group>"; };
 		D6ED26BC2AA3B739001E2390 /* StatisticsViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewScreen.swift; sourceTree = "<group>"; };
 		D6ED26BE2AA3BA05001E2390 /* OnboardingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingUITests.swift; sourceTree = "<group>"; };
+		D6EF97912BE7FB6900AD719C /* PreviewDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewDataManager.swift; sourceTree = "<group>"; };
+		D6EF97932BE81A4D00AD719C /* TestDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDataManager.swift; sourceTree = "<group>"; };
 		D6FA94FA2B013C770034B16A /* ChartLegendItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLegendItem.swift; sourceTree = "<group>"; };
 		D6FA94FC2B013F060034B16A /* ChartLegendItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLegendItemView.swift; sourceTree = "<group>"; };
 		D6FA94FE2B0145FE0034B16A /* ChartFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartFactory.swift; sourceTree = "<group>"; };
@@ -716,10 +722,13 @@
 		D6FD094E2BCC490B00AD8989 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D64E6B102BE6B42000E961B6 /* DataManaging.swift */,
 				D64574B129D9F16900207168 /* EntryMO+CoreDataClass.swift */,
 				D64574B229D9F16900207168 /* EntryMO+CoreDataProperties.swift */,
 				D65FD53C29D8B259006CC34F /* PersistanceController.swift */,
 				D64574AF29D9E6A000207168 /* DataManager.swift */,
+				D6EF97912BE7FB6900AD719C /* PreviewDataManager.swift */,
+				D6EF97932BE81A4D00AD719C /* TestDataManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -918,7 +927,9 @@
 				D684A3882AF6F3E700511E0D /* OnboardingWelcomeView.swift in Sources */,
 				D6842EC429EC62DE00731E84 /* PayManager.swift in Sources */,
 				D64766C52AFEBD9D0013AC9A /* ChartLegendView.swift in Sources */,
+				D64E6B112BE6B42000E961B6 /* DataManaging.swift in Sources */,
 				D64574B629D9F37400207168 /* Entry.swift in Sources */,
+				D6EF97942BE81A4D00AD719C /* TestDataManager.swift in Sources */,
 				D6E6832E2B79502B009C6CEC /* ChartableEntry.swift in Sources */,
 				D6C458C729D36C050069D89B /* RingView.swift in Sources */,
 				D66A4DF62B7AA72800D16110 /* ChartType.swift in Sources */,
@@ -933,6 +944,7 @@
 				D6C3567B2B44AAB4007C23A3 /* ButtonStyle+Extension.swift in Sources */,
 				D6CB2A7C2B05629200F3030C /* View+Extension.swift in Sources */,
 				D64574B029D9E6A000207168 /* DataManager.swift in Sources */,
+				D6EF97922BE7FB6900AD719C /* PreviewDataManager.swift in Sources */,
 				D6D906B12AA12BDB004E09C9 /* BackgroundFactory.swift in Sources */,
 				D6D02FB029EF0B7F006CD0B2 /* EditSheetViewModel.swift in Sources */,
 				D68732022B2243C9008CB0D4 /* PaginationState.swift in Sources */,

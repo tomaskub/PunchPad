@@ -10,7 +10,7 @@ import CoreData
 import Combine
 
 final class HistoryViewModel: ObservableObject {
-    @Published private var dataManager: DataManager
+    private var dataManager: any DataManaging
     private var settingsStore: SettingsStore
     private var periodService: ChartPeriodService = .init(calendar: .current)
     private var sizeOfChunk: Int?
@@ -23,12 +23,12 @@ final class HistoryViewModel: ObservableObject {
     @Published var sortAscending: Bool = false
     @Published var isSortingActive: Bool = false
     
-    init(dataManager: DataManager, settingsStore: SettingsStore, sizeOfChunk: Int? = 15) {
+    init(dataManager: any DataManaging, settingsStore: SettingsStore, sizeOfChunk: Int? = 15) {
         self.dataManager = dataManager
         self.settingsStore = settingsStore
         self.sizeOfChunk = sizeOfChunk
         
-        dataManager.objectWillChange.sink(receiveValue: { [weak self] value in
+        dataManager.dataDidChange.sink(receiveValue: { [weak self] value in
             guard let self else { return }
             if !self.isSortingActive {
                 self.groupedEntries = self.loadInitialEntries()
@@ -90,7 +90,8 @@ extension HistoryViewModel {
         let finishDate = Calendar.current.startOfDay(for: filterToDate)
         guard let entries = dataManager.fetch(from: startDate,
                                               to: finishDate,
-                                              ascendingOrder: sortAscending) else {
+                                              ascendingOrder: sortAscending,
+                                              fetchLimit: nil) else {
             groupedEntries = []
             return
         }
@@ -98,7 +99,7 @@ extension HistoryViewModel {
     }
     
     func loadInitialEntries() -> [[Entry]] {
-        guard let entries = dataManager.fetch(from: nil, to: nil, fetchLimit: sizeOfChunk) else { return [[]] }
+        guard let entries = dataManager.fetch(from: nil, to: nil, ascendingOrder: false, fetchLimit: sizeOfChunk) else { return [[]] }
         return groupEntriesByYearMonth(entries)
     }
     
@@ -112,7 +113,7 @@ extension HistoryViewModel {
         }
         
         let currentStartDate = lastDateEntry.startDate
-        guard let fetchedEntries = dataManager.fetch(from: nil, to: currentStartDate, fetchLimit: sizeOfChunk) else { return }
+        guard let fetchedEntries = dataManager.fetch(from: nil, to: currentStartDate, ascendingOrder: false, fetchLimit: sizeOfChunk) else { return }
         var entryPool = groupedEntries.flatMap({ $0 })
         entryPool.append(contentsOf: fetchedEntries)
         groupedEntries = groupEntriesByYearMonth(entryPool)
