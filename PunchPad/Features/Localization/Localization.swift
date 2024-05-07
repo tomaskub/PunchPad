@@ -116,7 +116,7 @@ struct Localization {
         static let regularTime = String(localized: "Regular time")
         static let breaktime = String(localized: "Break time")
         static let editEntry = String(localized: "Edit entry")
-        static let overrideSettings = String(localized: "Override settings") 
+        static let overrideSettings = String(localized: "override settings") 
         static let date = String(localized: "Date")
         static let maximumOvertime = String(localized: "Maximum overtime")
         static let standardWorkTime = String(localized: "Standard work time")
