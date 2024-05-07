@@ -345,7 +345,7 @@ extension EditSheetView: Localized {
         static let breaktimeText = Localization.EditSheetScreen.breaktime
         static let titleText = Localization.EditSheetScreen.editEntry
         static let timeIndicatorText = Localization.Common.worktime
-        static let overrideSettingsHeaderText = Localization.Common.overtime
+        static let overrideSettingsHeaderText = Localization.EditSheetScreen.overrideSettings.capitalized
         static let startDateText = Localization.Common.start.capitalized
         static let finishDateText = Localization.Common.finish.capitalized
         static let dateText = Localization.EditSheetScreen.date
