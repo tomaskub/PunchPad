@@ -124,7 +124,7 @@ private extension HomeView {
         Button {
             viewModel.pauseTimerService()
         } label: {
-            makeLargeButtonLabel(systemName: playIconName)
+            makeLargeButtonLabel(systemName: pauseIconName)
         }
         .buttonStyle(CircleButton())
         .accessibilityIdentifier(Identifier.pauseButton.rawValue)
