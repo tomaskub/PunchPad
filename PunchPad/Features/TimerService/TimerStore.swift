@@ -6,9 +6,11 @@
 //
 
 import Foundation
+
 enum TimerStoreError: Error {
     case failedToRetrieveData
 }
+
 struct TimerStore {
     let storageKey = "timerModel"
     let defaults: UserDefaults
