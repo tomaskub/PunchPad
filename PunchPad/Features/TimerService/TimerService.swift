@@ -9,13 +9,6 @@ import Foundation
 import SwiftUI
 
 class TimerService: ObservableObject {
-    enum TimerServiceState {
-        case running, paused, notStarted, finished
-    }
-    enum TimerServiceEvent {
-        case start, stop, pause, resumeWith(TimeInterval?)
-    }
-    
     private let timerProvider: Timer.Type
     private var timer: Timer?
     private let timerLimit: TimeInterval

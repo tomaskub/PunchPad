@@ -20,7 +20,7 @@ class HomeViewModel: NSObject, ObservableObject {
     private var timerProvider: Timer.Type = Timer.self
     private var workTimerService: TimerService
     private var overtimeTimerService: TimerService?
-    @Published var state: TimerService.TimerServiceState = .notStarted
+    @Published var state: TimerServiceState = .notStarted
     var timerDisplayValue: TimeInterval {
         if let overtimeTimerService = overtimeTimerService {
             if overtimeTimerService.progress > 0 {

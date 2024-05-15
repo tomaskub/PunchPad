@@ -55,6 +55,10 @@
 		D67332E62AADB8B1005FFE7F /* LaunchArgument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67332E52AADB8B1005FFE7F /* LaunchArgument.swift */; };
 		D67332E72AADB8B1005FFE7F /* LaunchArgument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67332E52AADB8B1005FFE7F /* LaunchArgument.swift */; };
 		D67332EA2AAE3D3D005FFE7F /* StatisticsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67332E92AAE3D3D005FFE7F /* StatisticsUITests.swift */; };
+		D67633F92BF54E4300D45163 /* TimerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67633F82BF54E4300D45163 /* TimerModel.swift */; };
+		D67633FB2BF54F7F00D45163 /* TimerServiceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67633FA2BF54F7F00D45163 /* TimerServiceState.swift */; };
+		D67633FD2BF5500500D45163 /* TimerServiceEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67633FC2BF5500500D45163 /* TimerServiceEvent.swift */; };
+		D67633FF2BF5536600D45163 /* TimerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67633FE2BF5536600D45163 /* TimerStore.swift */; };
 		D6799EFC29E1BC0F0080E32A /* HistoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6799EFB29E1BC0F0080E32A /* HistoryViewModelTests.swift */; };
 		D682AF922B3C77F5004EE208 /* ChartTimeRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AF912B3C77F5004EE208 /* ChartTimeRange.swift */; };
 		D682AF942B3D83A2004EE208 /* EntrySummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682AF932B3D83A2004EE208 /* EntrySummary.swift */; };
@@ -205,6 +209,10 @@
 		D66A4DFF2B7AD46100D16110 /* Published+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Published+Extension.swift"; sourceTree = "<group>"; };
 		D67332E52AADB8B1005FFE7F /* LaunchArgument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchArgument.swift; sourceTree = "<group>"; };
 		D67332E92AAE3D3D005FFE7F /* StatisticsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsUITests.swift; sourceTree = "<group>"; };
+		D67633F82BF54E4300D45163 /* TimerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerModel.swift; sourceTree = "<group>"; };
+		D67633FA2BF54F7F00D45163 /* TimerServiceState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerServiceState.swift; sourceTree = "<group>"; };
+		D67633FC2BF5500500D45163 /* TimerServiceEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerServiceEvent.swift; sourceTree = "<group>"; };
+		D67633FE2BF5536600D45163 /* TimerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerStore.swift; sourceTree = "<group>"; };
 		D6799EFB29E1BC0F0080E32A /* HistoryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModelTests.swift; sourceTree = "<group>"; };
 		D6801A142B404F61003F54F9 /* NavigationKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NavigationKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D682AF912B3C77F5004EE208 /* ChartTimeRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartTimeRange.swift; sourceTree = "<group>"; };
@@ -746,6 +754,10 @@
 			isa = PBXGroup;
 			children = (
 				D629CEF82B3613660036579D /* TimerService.swift */,
+				D67633FC2BF5500500D45163 /* TimerServiceEvent.swift */,
+				D67633FA2BF54F7F00D45163 /* TimerServiceState.swift */,
+				D67633F82BF54E4300D45163 /* TimerModel.swift */,
+				D67633FE2BF5536600D45163 /* TimerStore.swift */,
 			);
 			path = TimerService;
 			sourceTree = "<group>";
@@ -947,10 +959,12 @@
 				D6EF97922BE7FB6900AD719C /* PreviewDataManager.swift in Sources */,
 				D6D906B12AA12BDB004E09C9 /* BackgroundFactory.swift in Sources */,
 				D6D02FB029EF0B7F006CD0B2 /* EditSheetViewModel.swift in Sources */,
+				D67633FB2BF54F7F00D45163 /* TimerServiceState.swift in Sources */,
 				D68732022B2243C9008CB0D4 /* PaginationState.swift in Sources */,
 				D6FE20872B46EE0D00F931CD /* ConfirmDeleteRowView.swift in Sources */,
 				D698F3F02B5C131D00D9DFF4 /* NotificationService.swift in Sources */,
 				D6FA94FD2B013F060034B16A /* ChartLegendItemView.swift in Sources */,
+				D67633F92BF54E4300D45163 /* TimerModel.swift in Sources */,
 				D6E2C15B29D6C31800229286 /* HistoryViewModel.swift in Sources */,
 				D6EA695C2AF8452A00D8F6C3 /* TextFactory.swift in Sources */,
 				D6CE83F82BD4443300DA0882 /* Localized.swift in Sources */,
@@ -965,6 +979,7 @@
 				D63719442BCDC060006536DA /* ContainerProtocol.swift in Sources */,
 				D6C458C529D35EAA0069D89B /* SettingsView.swift in Sources */,
 				D6FA94FB2B013C770034B16A /* ChartLegendItem.swift in Sources */,
+				D67633FD2BF5500500D45163 /* TimerServiceEvent.swift in Sources */,
 				D666ADCC2AC05A0500B74663 /* CaseIterable+Extension.swift in Sources */,
 				D6CE83F62BD443CD00DA0882 /* Localization.swift in Sources */,
 				D65FD53D29D8B259006CC34F /* PersistanceController.swift in Sources */,
@@ -994,6 +1009,7 @@
 				D6D02FAE29EF0B13006CD0B2 /* EditSheetView.swift in Sources */,
 				D6AB737029F562E600D5DE82 /* OnboardingViewModel.swift in Sources */,
 				D6C4589429D229210069D89B /* ClockInApp.swift in Sources */,
+				D67633FF2BF5536600D45163 /* TimerStore.swift in Sources */,
 				D6E2C15929D6C20E00229286 /* WorkHistory.xcdatamodeld in Sources */,
 				D60EB9B62AB0D7000053136A /* Container.swift in Sources */,
 				D6B2BDF22B27810700CB4FA7 /* DateFilterSheetView.swift in Sources */,

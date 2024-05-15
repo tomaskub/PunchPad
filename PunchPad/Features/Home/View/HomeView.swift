@@ -71,7 +71,7 @@ extension HomeView: Localized {
 //MARK: - Timer Controls
 private extension HomeView {
     @ViewBuilder
-    func makeControls(_ state: TimerService.TimerServiceState) -> some View {
+    func makeControls(_ state: TimerServiceState) -> some View {
         switch state {
         case .running:
             HStack {
