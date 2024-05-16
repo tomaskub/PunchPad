@@ -7,11 +7,7 @@
 
 import Foundation
 
-enum TimerStoreError: Error {
-    case failedToRetrieveData
-}
-
-struct TimerStore {
+struct TimerStore: TimerStoring {
     let storageKey = "timerModel"
     let defaults: UserDefaults
     
@@ -22,7 +18,6 @@ struct TimerStore {
     func retrieve() throws -> TimerModel {
         let decoder = JSONDecoder()
         let data = defaults.data(forKey: storageKey)
-        defaults.removeObject(forKey: storageKey)
         if let data {
             let model = try decoder.decode(TimerModel.self, from: data)
             return model
@@ -35,5 +30,9 @@ struct TimerStore {
         let encoder = JSONEncoder()
         let data = try encoder.encode(timerModel)
         defaults.set(data, forKey: storageKey)
+    }
+    
+    func delete() {
+        defaults.removeObject(forKey: storageKey)
     }
 }
