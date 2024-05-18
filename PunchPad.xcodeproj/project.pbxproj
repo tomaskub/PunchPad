@@ -11,6 +11,7 @@
 		D60480DA2B122D3F00D6D70D /* ChartPeriodService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60480D92B122D3F00D6D70D /* ChartPeriodService.swift */; };
 		D60594DC2AA7A2C400B8B264 /* SettingsViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60594DB2AA7A2C400B8B264 /* SettingsViewScreen.swift */; };
 		D606361B2BF8F9210026FC00 /* TimerManagerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D606361A2BF8F9210026FC00 /* TimerManagerConfiguration.swift */; };
+		D606361D2BF925760026FC00 /* TimerManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D606361C2BF925760026FC00 /* TimerManagerTests.swift */; };
 		D60D21F22AA30F310055BE34 /* HomeViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60D21F12AA30F310055BE34 /* HomeViewScreen.swift */; };
 		D60D21F32AA330BC0055BE34 /* ScreenIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */; };
 		D60D21F52AA357BA0055BE34 /* OnboardingViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60D21F42AA357BA0055BE34 /* OnboardingViewScreen.swift */; };
@@ -171,6 +172,7 @@
 		D60480D92B122D3F00D6D70D /* ChartPeriodService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartPeriodService.swift; sourceTree = "<group>"; };
 		D60594DB2AA7A2C400B8B264 /* SettingsViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewScreen.swift; sourceTree = "<group>"; };
 		D606361A2BF8F9210026FC00 /* TimerManagerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TimerManagerConfiguration.swift; path = PunchPad/Features/TimerService/TimerManagerConfiguration.swift; sourceTree = "<group>"; };
+		D606361C2BF925760026FC00 /* TimerManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManagerTests.swift; sourceTree = "<group>"; };
 		D60D21F12AA30F310055BE34 /* HomeViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewScreen.swift; sourceTree = "<group>"; };
 		D60D21F42AA357BA0055BE34 /* OnboardingViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewScreen.swift; sourceTree = "<group>"; };
 		D60EB9B52AB0D7000053136A /* Container.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Container.swift; sourceTree = "<group>"; };
@@ -443,6 +445,7 @@
 			isa = PBXGroup;
 			children = (
 				D61945EB29E7306B0046DE1F /* HomeViewModelTests.swift */,
+				D606361C2BF925760026FC00 /* TimerManagerTests.swift */,
 				D66A4DFB2B7AD3C900D16110 /* Extensions */,
 				D6799EFB29E1BC0F0080E32A /* HistoryViewModelTests.swift */,
 				D629CEFA2B363B500036579D /* TimerServiceTests.swift */,
@@ -1052,6 +1055,7 @@
 				D61945F029E735D80046DE1F /* MockTimer.swift in Sources */,
 				D6C458A529D229230069D89B /* ClockInTests.swift in Sources */,
 				D6CBB8662B3443360074CE8B /* EditSheetViewModelTests.swift in Sources */,
+				D606361D2BF925760026FC00 /* TimerManagerTests.swift in Sources */,
 				D6799EFC29E1BC0F0080E32A /* HistoryViewModelTests.swift in Sources */,
 				D66A4E002B7AD46100D16110 /* Published+Extension.swift in Sources */,
 			);
