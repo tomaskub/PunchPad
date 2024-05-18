@@ -40,7 +40,7 @@ final class HomeViewModelModelTests: XCTestCase {
 extension HomeViewModelModelTests {
     func test_startTimerService_when_noOvertime_firstRun() {
         //Given
-        let expectedState: TimerService.TimerServiceState = .running
+        let expectedState: TimerServiceState = .running
         setUpWithOneTimer()
         //When
         sut.startTimerService()
@@ -50,7 +50,7 @@ extension HomeViewModelModelTests {
     
     func test_startTimerService_when_noOvertime_secondRun() {
         //Given
-        let expectedState: TimerService.TimerServiceState = .running
+        let expectedState: TimerServiceState = .running
         let expectedProgress = CGFloat(0.2)
         let expectedDisplayValue = TimeInterval(integerLiteral: 20)
         setUpWithOneTimer()
@@ -192,7 +192,7 @@ extension HomeViewModelModelTests {
     }
     func test_startSecondTimer_whenFirstIsFinished_secondRun() {
         //Given
-        let expectedState: TimerService.TimerServiceState = .running
+        let expectedState: TimerServiceState = .running
         let expectedProgress = CGFloat(0.2)
         let expectedDisplayValue = TimeInterval(integerLiteral: 20)
         setUpWithTwoTimers()
