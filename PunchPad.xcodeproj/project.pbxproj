@@ -10,6 +10,7 @@
 		D60480D82B122CDA00D6D70D /* ChartPeriodServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60480D72B122CDA00D6D70D /* ChartPeriodServiceTests.swift */; };
 		D60480DA2B122D3F00D6D70D /* ChartPeriodService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60480D92B122D3F00D6D70D /* ChartPeriodService.swift */; };
 		D60594DC2AA7A2C400B8B264 /* SettingsViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60594DB2AA7A2C400B8B264 /* SettingsViewScreen.swift */; };
+		D606361B2BF8F9210026FC00 /* TimerManagerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D606361A2BF8F9210026FC00 /* TimerManagerConfiguration.swift */; };
 		D60D21F22AA30F310055BE34 /* HomeViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60D21F12AA30F310055BE34 /* HomeViewScreen.swift */; };
 		D60D21F32AA330BC0055BE34 /* ScreenIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */; };
 		D60D21F52AA357BA0055BE34 /* OnboardingViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60D21F42AA357BA0055BE34 /* OnboardingViewScreen.swift */; };
@@ -169,6 +170,7 @@
 		D60480D72B122CDA00D6D70D /* ChartPeriodServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartPeriodServiceTests.swift; sourceTree = "<group>"; };
 		D60480D92B122D3F00D6D70D /* ChartPeriodService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartPeriodService.swift; sourceTree = "<group>"; };
 		D60594DB2AA7A2C400B8B264 /* SettingsViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewScreen.swift; sourceTree = "<group>"; };
+		D606361A2BF8F9210026FC00 /* TimerManagerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TimerManagerConfiguration.swift; path = PunchPad/Features/TimerService/TimerManagerConfiguration.swift; sourceTree = "<group>"; };
 		D60D21F12AA30F310055BE34 /* HomeViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewScreen.swift; sourceTree = "<group>"; };
 		D60D21F42AA357BA0055BE34 /* OnboardingViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewScreen.swift; sourceTree = "<group>"; };
 		D60EB9B52AB0D7000053136A /* Container.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Container.swift; sourceTree = "<group>"; };
@@ -395,6 +397,7 @@
 		D6C4588729D229200069D89B = {
 			isa = PBXGroup;
 			children = (
+				D606361A2BF8F9210026FC00 /* TimerManagerConfiguration.swift */,
 				D6C4589229D229210069D89B /* PunchPad */,
 				D6C458A329D229230069D89B /* PunchPadTests */,
 				D6C458AD29D229230069D89B /* PunchPadUITests */,
@@ -959,6 +962,7 @@
 				D63719462BCE5B5C006536DA /* PreviewContainer.swift in Sources */,
 				D682AF922B3C77F5004EE208 /* ChartTimeRange.swift in Sources */,
 				D69C8CD72B43687700146EFA /* CustomDatePickerContainer.swift in Sources */,
+				D606361B2BF8F9210026FC00 /* TimerManagerConfiguration.swift in Sources */,
 				D63753B02B45DA5000386482 /* GreenBorderTextFieldStyle.swift in Sources */,
 				D6E6B8772AF992F90073D911 /* OnboardingFinishView.swift in Sources */,
 				D6CA773F2B40BB4D00C98AF3 /* Route.swift in Sources */,
