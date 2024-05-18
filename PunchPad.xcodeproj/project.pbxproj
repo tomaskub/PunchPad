@@ -106,6 +106,7 @@
 		D6D02FB029EF0B7F006CD0B2 /* EditSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D02FAF29EF0B7F006CD0B2 /* EditSheetViewModel.swift */; };
 		D6D51BC02BF65B4F00C9A0E1 /* TimerStoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D51BBF2BF65B4F00C9A0E1 /* TimerStoring.swift */; };
 		D6D51BC22BF65C2F00C9A0E1 /* TimerStoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D51BC12BF65C2F00C9A0E1 /* TimerStoreError.swift */; };
+		D6D51BC42BF65E6700C9A0E1 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D51BC32BF65E6700C9A0E1 /* TimerManager.swift */; };
 		D6D906AE2AA0BEDE004E09C9 /* ScreenIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */; };
 		D6D906B12AA12BDB004E09C9 /* BackgroundFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D906B02AA12BDB004E09C9 /* BackgroundFactory.swift */; };
 		D6E2C15929D6C20E00229286 /* WorkHistory.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15729D6C20E00229286 /* WorkHistory.xcdatamodeld */; };
@@ -266,6 +267,7 @@
 		D6D02FAF29EF0B7F006CD0B2 /* EditSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSheetViewModel.swift; sourceTree = "<group>"; };
 		D6D51BBF2BF65B4F00C9A0E1 /* TimerStoring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerStoring.swift; sourceTree = "<group>"; };
 		D6D51BC12BF65C2F00C9A0E1 /* TimerStoreError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerStoreError.swift; sourceTree = "<group>"; };
+		D6D51BC32BF65E6700C9A0E1 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
 		D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenIdentifier.swift; sourceTree = "<group>"; };
 		D6D906B02AA12BDB004E09C9 /* BackgroundFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundFactory.swift; sourceTree = "<group>"; };
 		D6E2C15829D6C20E00229286 /* WorkHistory.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WorkHistory.xcdatamodel; sourceTree = "<group>"; };
@@ -764,6 +766,7 @@
 				D67633FE2BF5536600D45163 /* TimerStore.swift */,
 				D6D51BBF2BF65B4F00C9A0E1 /* TimerStoring.swift */,
 				D6D51BC12BF65C2F00C9A0E1 /* TimerStoreError.swift */,
+				D6D51BC32BF65E6700C9A0E1 /* TimerManager.swift */,
 			);
 			path = TimerService;
 			sourceTree = "<group>";
@@ -984,6 +987,7 @@
 				D684A38A2AF6F54B00511E0D /* ButtonFactory.swift in Sources */,
 				D63719442BCDC060006536DA /* ContainerProtocol.swift in Sources */,
 				D6C458C529D35EAA0069D89B /* SettingsView.swift in Sources */,
+				D6D51BC42BF65E6700C9A0E1 /* TimerManager.swift in Sources */,
 				D6FA94FB2B013C770034B16A /* ChartLegendItem.swift in Sources */,
 				D67633FD2BF5500500D45163 /* TimerServiceEvent.swift in Sources */,
 				D666ADCC2AC05A0500B74663 /* CaseIterable+Extension.swift in Sources */,
