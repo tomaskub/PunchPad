@@ -8,11 +8,10 @@
 import Foundation
 
 struct TimerModel: Codable {
-    let workTime: TimeInterval
-    let overtime: TimeInterval?
+    let configuration: TimerManagerConfiguration
     let workTimeCounter: TimeInterval
     let overtimeCounter: TimeInterval?
     let workTimerState: TimerServiceState
-    let overtimeTimerState: TimerServiceState
+    let overtimeTimerState: TimerServiceState?
     let timeStamp: Date
 }
