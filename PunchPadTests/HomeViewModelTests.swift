@@ -8,7 +8,7 @@
 import XCTest
 @testable import PunchPad
 
-final class HomeViewModelModelTests: XCTestCase {
+final class HomeViewModelTests: XCTestCase {
     var sut: HomeViewModel!
     var testContainer: TestContainer!
 
@@ -37,7 +37,7 @@ final class HomeViewModelModelTests: XCTestCase {
 }
 
 //MARK: TIMER STATE CHANGE FUNCTIONS
-extension HomeViewModelModelTests {
+extension HomeViewModelTests {
     func test_startTimerService_when_noOvertime_firstRun() {
         //Given
         let expectedState: TimerServiceState = .running
@@ -111,43 +111,6 @@ extension HomeViewModelModelTests {
         XCTAssertEqual(sut.timerDisplayValue, TimeInterval(2 * numberOfFires), "Timer display value should be equal to \(2 * numberOfFires)")
         XCTAssertEqual(sut.normalProgress, expectedNormalProgressValue, "Normal progress should be equal to \(expectedNormalProgressValue)")
         XCTAssertEqual(sut.overtimeProgress, expectedOvertimeProgressValue, "Overtime progress should be equal to \(expectedOvertimeProgressValue)")
-    }
-    
-    func test_resumeFromBackground_when_timerServiceWasStarted_noOvertime() {
-        //Given
-        let numberOfSecondsPassedInBackground = 10
-        let expectedDisplayValue = TimeInterval(numberOfSecondsPassedInBackground)
-        let expectedNormalProgressValue = CGFloat(numberOfSecondsPassedInBackground) / CGFloat(workTimerLimit)
-        let expectedOvertimeProgressValue = CGFloat(0)
-        var enterBackgroundDate: Date {
-            Calendar.current.date(byAdding: .second, value: -numberOfSecondsPassedInBackground, to: Date())!
-        }
-        setUpWithOneTimer()
-        //When
-        sut.startTimerService()
-        sut.resumeFromBackground(enterBackgroundDate)
-        //Then
-        XCTAssertEqual(sut.timerDisplayValue, expectedDisplayValue, accuracy: 0.01, "Timer display value should be equal to \(expectedDisplayValue)")
-        XCTAssertEqual(sut.normalProgress, expectedNormalProgressValue, accuracy: 0.01, "Normal progress should be equal to \(expectedNormalProgressValue)")
-        XCTAssertEqual(sut.overtimeProgress, expectedOvertimeProgressValue, accuracy: 0.01, "Overtime progress should be equal to \(expectedOvertimeProgressValue)")
-    }
-    
-    func test_resumeFromBackground_when_timerServiceWasNotStarted_noOvertime() {
-        //Given
-        let numberOfSecondsPassedInBackground = 10
-        let expectedDisplayValue = TimeInterval(0)
-        let expectedNormalProgressValue = CGFloat(0)
-        let expectedOvertimeProgressValue = CGFloat(0)
-        var enterBackgroundDate: Date {
-            Calendar.current.date(byAdding: .second, value: -numberOfSecondsPassedInBackground, to: Date())!
-        }
-        setUpWithOneTimer()
-        //When
-        sut.resumeFromBackground(enterBackgroundDate)
-        //Then
-        XCTAssertEqual(sut.timerDisplayValue, expectedDisplayValue, accuracy: 0.01, "Timer display value should be equal to \(numberOfSecondsPassedInBackground)")
-        XCTAssertEqual(sut.normalProgress, expectedNormalProgressValue, accuracy: 0.01, "Normal progress should be equal to \(expectedNormalProgressValue)")
-        XCTAssertEqual(sut.overtimeProgress, expectedOvertimeProgressValue, accuracy: 0.01, "Overtime progress should be equal to \(expectedOvertimeProgressValue)")
     }
     
     func test_stopTimerService_stopsServiceAndSavesEntry_noOvertime() throws {
@@ -276,66 +239,6 @@ extension HomeViewModelModelTests {
         XCTAssertEqual(sut.overtimeProgress, expectedOvertimeProgressValue, "Overtime progress should be equal to \(expectedOvertimeProgressValue)")
     }
     
-    func test_resumeFromBackground_whenSecondTimerWasStarted() {
-        //Given
-        let numberOfSecondsPassedInBackground = 11
-        let expectedDisplayValue = TimeInterval(numberOfSecondsPassedInBackground)
-        let expectedNormalProgressValue = CGFloat(1)
-        let expectedOvertimeProgressValue = CGFloat(numberOfSecondsPassedInBackground) / CGFloat(overtimeTimerLimit)
-        var enterBackgroundDate: Date {
-            Calendar.current.date(byAdding: .second, value: -numberOfSecondsPassedInBackground, to: Date())!
-        }
-        setUpWithTwoTimers()
-        //When
-        sut.startTimerService()
-        fireTimer(workTimerLimit)
-        sut.resumeFromBackground(enterBackgroundDate)
-        //Then
-        XCTAssertEqual(sut.timerDisplayValue, expectedDisplayValue, accuracy: 0.01, "Timer display value should be equal to \(expectedDisplayValue)")
-        XCTAssertEqual(sut.normalProgress, expectedNormalProgressValue, "Normal progress should be equal to \(expectedNormalProgressValue)")
-        XCTAssertEqual(sut.overtimeProgress, expectedOvertimeProgressValue, accuracy: 0.01, "Overtime progress should be equal to \(expectedOvertimeProgressValue)")
-    }
-    
-    func test_resumeFromBackground_whenTimeInBackgroundExceedsFirstTimeLimit() {
-        //Given
-        let numberOfSecondsPassedInBackground = workTimerLimit + 10
-        let expectedDisplayValue = TimeInterval(numberOfSecondsPassedInBackground - workTimerLimit)
-        let expectedNormalProgressValue = CGFloat(1)
-        let expectedOvertimeProgressValue = CGFloat(numberOfSecondsPassedInBackground - workTimerLimit) / CGFloat(overtimeTimerLimit)
-        var enterBackgroundDate: Date {
-            Calendar.current.date(byAdding: .second, value: -numberOfSecondsPassedInBackground, to: Date())!
-        }
-        setUpWithTwoTimers()
-        //When
-        sut.startTimerService()
-        
-        sut.resumeFromBackground(enterBackgroundDate)
-        //Then
-        XCTAssertEqual(sut.timerDisplayValue, expectedDisplayValue, accuracy: 0.01, "Timer display value should be equal to \(expectedDisplayValue)")
-        XCTAssertEqual(sut.normalProgress, expectedNormalProgressValue, "Normal progress should be equal to \(expectedNormalProgressValue)")
-        XCTAssertEqual(sut.overtimeProgress, expectedOvertimeProgressValue, accuracy: 0.01, "Overtime progress should be equal to \(expectedOvertimeProgressValue)")
-    }
-    
-    func test_resumeFromBackground_whenTimeInBackgroundExceedsSumOfTimeLimits() {
-        //Given
-        let numberOfSecondsPassedInBackground = workTimerLimit + overtimeTimerLimit
-        let expectedDisplayValue = TimeInterval(numberOfSecondsPassedInBackground - workTimerLimit)
-        let expectedNormalProgressValue = CGFloat(1)
-        let expectedOvertimeProgressValue = CGFloat(1)
-        var enterBackgroundDate: Date {
-            Calendar.current.date(byAdding: .second, value: -numberOfSecondsPassedInBackground - 20, to: Date())!
-        }
-        setUpWithTwoTimers()
-        //When
-        sut.startTimerService()
-        
-        sut.resumeFromBackground(enterBackgroundDate)
-        //Then
-        XCTAssertEqual(sut.timerDisplayValue, expectedDisplayValue, accuracy: 0.01, "Timer display value should be equal to \(expectedDisplayValue)")
-        XCTAssertEqual(sut.normalProgress, expectedNormalProgressValue, "Normal progress should be equal to \(expectedNormalProgressValue)")
-        XCTAssertEqual(sut.overtimeProgress, expectedOvertimeProgressValue, accuracy: 0.01, "Overtime progress should be equal to \(expectedOvertimeProgressValue)")
-    }
-    
     func test_stopTimerService_stopsSecondTimerAndSavesEntry() throws {
         let numberOfFires = workTimerLimit + overtimeTimerLimit
         let expectedDisplayValue = TimeInterval(overtimeTimerLimit)
@@ -369,7 +272,7 @@ extension HomeViewModelModelTests {
 }
 
 //MARK: BACKGROUND AND FOREGROUND TIMER UPDATES
-extension HomeViewModelModelTests {
+extension HomeViewModelTests {
     func test_resumeFromBackground_withOneTimer_notExceedingTimerLimit() {
         //Given
         setUpWithOneTimer()
@@ -483,8 +386,9 @@ extension HomeViewModelModelTests {
         let expectedEntriesCount = try numberOfEntries() + 1
         sut.startTimerService()
         fireTimer(3)
+        sleep(3)
         NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: nil)
-        sleep(5)
+        sleep(2)
         //When
         NotificationCenter.default.post(name: UIApplication.willEnterForegroundNotification, object: nil)
         //Then
@@ -503,7 +407,7 @@ extension HomeViewModelModelTests {
 }
 
 //MARK: HELPERS
-extension HomeViewModelModelTests {
+extension HomeViewModelTests {
     private func setUpWithOneTimer() {
         testContainer.settingsStore.isLoggingOvertime = false
         testContainer.settingsStore.workTimeInSeconds = workTimerLimit
