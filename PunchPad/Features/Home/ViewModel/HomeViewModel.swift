@@ -9,184 +9,152 @@ import SwiftUI
 import Combine
 
 class HomeViewModel: NSObject, ObservableObject {
+    private var subscriptions = Set<AnyCancellable>()
+    private var timerManagerCancellables = Set<AnyCancellable>()
     private var dataManager: any DataManaging
     private var settingsStore: SettingsStore
     private var payManager: PayManager
     private var notificationService: NotificationService
+    private var timerManager: TimerManager
+    private var timerStore: TimerStore = .init(defaults: .standard)
+    private var timerProvider: Timer.Type
+    private var timersNotRunning: Bool { 
+        self.state == .notStarted || self.state == .finished
+    }
     private var startDate: Date?
     private var finishDate: Date?
     private var appDidEnterBackgroundDate: Date?
-    private var subscriptions = Set<AnyCancellable>()
-    private var timerProvider: Timer.Type = Timer.self
-    private var workTimerService: TimerService
-    private var overtimeTimerService: TimerService?
-    @Published var state: TimerServiceState = .notStarted
+    
+    var state: TimerServiceState {
+        timerManager.state
+    }
     var timerDisplayValue: TimeInterval {
-        if let overtimeTimerService = overtimeTimerService {
+        if let overtimeTimerService = timerManager.overtimeTimerService {
             if overtimeTimerService.progress > 0 {
                 return overtimeTimerService.counter
             } else {
-                return workTimerService.counter
+                return timerManager.workTimerService.counter
             }
         } else {
-            return workTimerService.counter
+            return timerManager.workTimerService.counter
         }
     }
     var normalProgress: CGFloat {
-        workTimerService.progress
+        timerManager.workTimerService.progress
     }
     var overtimeProgress: CGFloat {
-        overtimeTimerService?.progress ?? 0
+        timerManager.overtimeTimerService?.progress ?? 0
     }
     
-    init(dataManager: any DataManaging, settingsStore: SettingsStore, payManager: PayManager, notificationService: NotificationService, timerProvider: Timer.Type) {
+    init(dataManager: any DataManaging, settingsStore: SettingsStore, payManager: PayManager, notificationService: NotificationService, timerProvider: Timer.Type = Timer.self) {
         self.dataManager = dataManager
         self.settingsStore = settingsStore
         self.timerProvider = timerProvider
         self.payManager = payManager
         self.notificationService = notificationService
-        self.workTimerService = .init(
-            timerProvider: timerProvider,
-            timerLimit: TimeInterval(settingsStore.workTimeInSeconds)
+        let configuration = TimerManagerConfiguration(
+            workTimeInSeconds: TimeInterval(settingsStore.workTimeInSeconds),
+            isLoggingOvertime: settingsStore.isLoggingOvertime,
+            overtimeInSeconds: TimeInterval(settingsStore.maximumOvertimeAllowedInSeconds)
         )
-        if self.settingsStore.isLoggingOvertime {
-            self.overtimeTimerService = .init(
-                timerProvider: timerProvider,
-                timerLimit: TimeInterval(settingsStore.maximumOvertimeAllowedInSeconds))
-        }
+        self.timerManager = TimerManager(timerProvider: timerProvider,
+                                    with: configuration)
         super.init()
         
         setUpStoreSubscribers()
         setAppStateObservers()
-        setUpTimerSubscribers()
+        setUpTimerManagerSubscribers()
     }
     
     private func setUpStoreSubscribers() {
         settingsStore.$isLoggingOvertime
             .filter { [weak self] _ in
-                self?.state == .notStarted
+                self?.timersNotRunning ?? false
             }.sink { [weak self] value in
                 guard let self else { return }
                 if value {
-                    self.overtimeTimerService = .init(
-                        timerProvider: timerProvider,
-                        timerLimit: TimeInterval(settingsStore.maximumOvertimeAllowedInSeconds)
+                    let config = TimerManagerConfiguration(
+                        workTimeInSeconds: TimeInterval(settingsStore.workTimeInSeconds),
+                        isLoggingOvertime: value,
+                        overtimeInSeconds: TimeInterval(settingsStore.maximumOvertimeAllowedInSeconds)
                     )
+                    reloadTimerManager(with: config)
                 } else {
-                    self.overtimeTimerService = nil
+                    let config = TimerManagerConfiguration(
+                        workTimeInSeconds: TimeInterval(settingsStore.workTimeInSeconds),
+                        isLoggingOvertime: false,
+                        overtimeInSeconds: nil)
+                    reloadTimerManager(with: config)
                 }
             }.store(in: &subscriptions)
         
         settingsStore.$workTimeInSeconds
             .filter { [weak self] _ in
-                self?.state == .notStarted
+                self?.timersNotRunning ?? false
             }.sink { [weak self] workTime in
                 guard let self else { return }
-                self.workTimerService = .init(
-                        timerProvider: timerProvider,
-                        timerLimit: TimeInterval(workTime)
-                        )
+                let config = TimerManagerConfiguration(
+                    workTimeInSeconds: TimeInterval(workTime),
+                    isLoggingOvertime: settingsStore.isLoggingOvertime,
+                    overtimeInSeconds: TimeInterval(settingsStore.maximumOvertimeAllowedInSeconds)
+                )
+                reloadTimerManager(with: config)
             }.store(in: &subscriptions)
         
         settingsStore.$maximumOvertimeAllowedInSeconds
             .filter { [weak self] _ in
-                self?.state == .notStarted && (self?.settingsStore.isLoggingOvertime ?? false)
+                (self?.timersNotRunning ?? false) && (self?.settingsStore.isLoggingOvertime ?? false)
             }.sink { [weak self] maximumOvertime in
                 guard let self else { return }
-                self.overtimeTimerService = .init(
-                        timerProvider: timerProvider,
-                        timerLimit: TimeInterval(maximumOvertime)
-                        )
+                let config = TimerManagerConfiguration(
+                    workTimeInSeconds: TimeInterval(settingsStore.workTimeInSeconds),
+                    isLoggingOvertime: settingsStore.isLoggingOvertime,
+                    overtimeInSeconds: TimeInterval(maximumOvertime)
+                )
+                timerManager = .init(timerProvider: timerProvider, with: config)
             }.store(in: &subscriptions)
     }
     
-    private func setUpTimerSubscribers() {
-        self.workTimerService.objectWillChange.sink { _ in
-            self.objectWillChange.send()
-        }.store(in: &subscriptions)
+    private func setUpTimerManagerSubscribers() {
+        timerManagerCancellables.removeAll()
         
-        self.overtimeTimerService?.objectWillChange.sink { _ in
-            self.objectWillChange.send()
-        }.store(in: &subscriptions)
+        self.timerManager.objectWillChange.sink { [weak self] _ in
+            self?.objectWillChange.send()
+        }.store(in: &timerManagerCancellables)
         
-        if let overtimeTimerService = self.overtimeTimerService {
-            self.workTimerService.$serviceState.filter { state in
-                state == .finished
-            }.sink { [weak self] _ in
-                self?.overtimeTimerService?.send(event: .start)
-            }.store(in: &subscriptions)
-            
-            overtimeTimerService.$serviceState.filter { state in
-                return state == .finished
-            }.sink { [weak self] _ in
-                guard let self else { return }
-                self.state = .finished
-                if let _ = self.finishDate {
-                    self.saveEntry()
-                } else {
-                    self.finishDate = Date()
-                    self.saveEntry()
-                }
-            }.store(in: &subscriptions)
-        } else {
-            self.workTimerService.$serviceState.filter { state in
-                return state == .finished
-            }.sink { [weak self] _ in
-                guard let self else { return }
-                self.state = .finished
-                if let _ = self.finishDate {
-                    self.saveEntry()
-                } else {
-                    self.finishDate = Date()
-                    self.saveEntry()
-                }
-            }.store(in: &subscriptions)
-        }
+        self.timerManager.timerDidFinish
+            .sink { [weak self] date in
+                self?.finishDate = date
+                self?.saveEntry()
+            }.store(in: &timerManagerCancellables)
+    }
+    private func reloadTimerManager(with config: TimerManagerConfiguration) {
+        timerManager = .init(timerProvider: timerProvider, with: config)
+        setUpTimerManagerSubscribers()
     }
 }
 
 //MARK: TIMER INTERFACE
 extension HomeViewModel {
-    
     func startTimerService() {
         guard state != .running else { return }
-        //TODO: add clean up of old dates, subscribers and other data
-        if state == .finished {
-            workTimerService = .init(
-                timerProvider: timerProvider,
-                timerLimit: TimeInterval(settingsStore.workTimeInSeconds)
-            )
-            if settingsStore.isLoggingOvertime {
-                overtimeTimerService = .init(
-                    timerProvider: timerProvider,
-                    timerLimit: TimeInterval(settingsStore.maximumOvertimeAllowedInSeconds)
-                )
-            }
-            // this needs to deinitialize previous subscribers too
-            setUpTimerSubscribers()
-        }
+        timerManager.startTimerService()
         startDate = Date()
-        self.state = .running
-        workTimerService.send(event: .start)
     }
     
     func pauseTimerService() {
         guard state != .paused else { return }
-        self.state = .paused
-        workTimerService.send(event: .pause)
-        overtimeTimerService?.send(event: .pause)
+        timerManager.pauseTimerService()
     }
+    
     func resumeTimerService() {
         guard state != .running else { return }
-        self.state = .running
-        workTimerService.send(event: .resumeWith(nil))
-        overtimeTimerService?.send(event: .resumeWith(nil))
+        timerManager.resumeTimerService()
     }
+    
     func stopTimerService() {
         guard state != .finished else { return }
-        finishDate = Date()
-        workTimerService.send(event: .stop)
-        overtimeTimerService?.send(event: .stop)
+        timerManager.stopTimerService()
     }
 }
 
@@ -216,53 +184,10 @@ extension HomeViewModel {
     /// Remove pending notifications for timers and update timers
     private func appWillEnterForeground() {
         if let appDidEnterBackgroundDate {
-            resumeFromBackground(appDidEnterBackgroundDate)
+            timerManager.resumeFromBackground(appDidEnterBackgroundDate)
         }
+        appDidEnterBackgroundDate = nil
         notificationService.deschedulePendingNotifications()
-    }
-    
-    func resumeFromBackground(_ appDidEnterBackgroundDate: Date) {
-        let timePassedInBackground = DateInterval(start: appDidEnterBackgroundDate, end: Date()).duration
-        
-        guard let overtimeTimerService else {
-            if workTimerService.serviceState == .running {
-                if timePassedInBackground < workTimerService.remainingTime {
-                    workTimerService.send(event: .resumeWith(timePassedInBackground))
-                } else {
-                    self.finishDate = appDidEnterBackgroundDate.addingTimeInterval(workTimerService.remainingTime)
-                    workTimerService.send(event: .resumeWith(timePassedInBackground))
-                }
-            }
-            return
-        }
-        // TODO: INVESTIGATE IF OVERTIME IS REGISTERING WHEN WAKING UP IN OVERTIME
-        if workTimerService.serviceState == .running {
-            if workTimerService.remainingTime < timePassedInBackground {
-                let worktimePassedInBackground = workTimerService.remainingTime
-                let overtimePassedInBackground = timePassedInBackground - worktimePassedInBackground
-                workTimerService.send(event: .resumeWith(worktimePassedInBackground))
-                //something is wrong - at this time the overtime timer service has timer limit of 0?
-                overtimeTimerService.send(event: .start)
-                if overtimePassedInBackground < overtimeTimerService.remainingTime {
-                    overtimeTimerService.send(event: .resumeWith(overtimePassedInBackground))
-                } else {
-                    self.finishDate = appDidEnterBackgroundDate.addingTimeInterval(worktimePassedInBackground + overtimeTimerService.remainingTime)
-                    // OVERTIME DID NOT REGISTER HERE
-                    overtimeTimerService.send(event: .resumeWith(overtimeTimerService.remainingTime))
-                }
-            } else {
-                workTimerService.send(event: .resumeWith(timePassedInBackground))
-            }
-        } else if overtimeTimerService.serviceState == .running {
-            if overtimeTimerService.remainingTime < timePassedInBackground {
-                let remainingOvertime = overtimeTimerService.remainingTime
-                self.finishDate = appDidEnterBackgroundDate.addingTimeInterval(remainingOvertime)
-                overtimeTimerService.send(event: .resumeWith(remainingOvertime))
-            } else {
-                overtimeTimerService.send(event: .resumeWith(timePassedInBackground))
-            }
-        }
-        self.appDidEnterBackgroundDate = nil
     }
 }
 
@@ -273,16 +198,20 @@ extension HomeViewModel {
         let calculatedNetPay: Double? = {
             settingsStore.isCalculatingNetPay ? payManager.calculateNetPay(gross: Double(settingsStore.grossPayPerMonth)) : nil
         }()
+        let timeWorked = Int(timerManager.workTimerService.counter)
+        let overtimeWorked = Int(timerManager.overtimeTimerService?.counter ?? 0)
         let entryToSave = Entry(startDate: startDate,
                                 finishDate: finishDate,
-                                workTimeInSec: Int(workTimerService.counter),
-                                overTimeInSec: Int(overtimeTimerService?.counter ?? 0),
+                                workTimeInSec: timeWorked,
+                                overTimeInSec: overtimeWorked,
                                 maximumOvertimeAllowedInSeconds: settingsStore.maximumOvertimeAllowedInSeconds,
                                 standardWorktimeInSeconds: settingsStore.workTimeInSeconds,
                                 grossPayPerMonth: settingsStore.grossPayPerMonth, 
                                 calculatedNetPay: calculatedNetPay
         )
         dataManager.updateAndSave(entry: entryToSave)
+        self.startDate = nil
+        self.finishDate = nil
     }
 }
 
@@ -291,15 +220,18 @@ extension HomeViewModel {
     /// Schedule notifications for finish of overtime timer service and worktime timer service
     private func scheduleTimerFinishNotifications() {
         guard settingsStore.isSendingNotification else { return }
-        if let overtimeTimerService {
-            if workTimerService.serviceState == .running {
-                notificationService.scheduleNotification(for: .workTime, in: workTimerService.remainingTime)
-                notificationService.scheduleNotification(for: .overTime, in: workTimerService.remainingTime + overtimeTimerService.remainingTime)
-            } else if overtimeTimerService.serviceState == .running {
-                notificationService.scheduleNotification(for: .overTime, in: overtimeTimerService.remainingTime)
+        if let overtimeService = timerManager.overtimeTimerService {
+            if timerManager.workTimerService.serviceState == .running {
+                notificationService.scheduleNotification(for: .workTime, 
+                                                         in: timerManager.workTimerService.remainingTime)
+                let overtimeNotificationTimeInterval = timerManager.workTimerService.remainingTime + overtimeService.remainingTime
+                notificationService.scheduleNotification(for: .overTime,
+                                                         in: overtimeNotificationTimeInterval)
+            } else if overtimeService.serviceState == .running {
+                notificationService.scheduleNotification(for: .overTime, in: overtimeService.remainingTime)
             }
-        } else if workTimerService.serviceState == .running {
-            notificationService.scheduleNotification(for: .workTime, in: workTimerService.remainingTime)
+        } else if timerManager.workTimerService.serviceState == .running {
+            notificationService.scheduleNotification(for: .workTime, in: timerManager.workTimerService.remainingTime)
         }
     }
 }

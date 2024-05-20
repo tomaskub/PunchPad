@@ -17,7 +17,6 @@ class TimerManager: ObservableObject {
     @Published var state: TimerServiceState = .notStarted
     var timerDidFinish: PassthroughSubject<Date, Never> = .init()
     
-    
     init(timerProvider: Timer.Type = Timer.self, with configuration: TimerManagerConfiguration) {
         self.timerProvider = timerProvider
         self.configuration = configuration
@@ -33,7 +32,7 @@ class TimerManager: ObservableObject {
 
     private func setUpSubscriptions() {
         // clear timer cancellables from old references
-        timerCancellables = .init()
+        timerCancellables.removeAll()
         
         workTimerService.objectWillChange.sink { _ in
             self.objectWillChange.send()
@@ -117,6 +116,7 @@ class TimerManager: ObservableObject {
                 if timePassedInBackground < workTimerService.remainingTime {
                     workTimerService.send(event: .resumeWith(timePassedInBackground))
                 } else {
+                    timerCancellables.removeAll()
                     self.timerDidFinish.send(appDidEnterBackgroundDate.addingTimeInterval(workTimerService.remainingTime))
                     workTimerService.send(event: .resumeWith(timePassedInBackground))
                 }
@@ -132,17 +132,23 @@ class TimerManager: ObservableObject {
                 if overtimePassedInBackground < overtimeTimerService.remainingTime {
                     overtimeTimerService.send(event: .resumeWith(overtimePassedInBackground))
                 } else {
-                    self.timerDidFinish.send( appDidEnterBackgroundDate.addingTimeInterval(worktimePassedInBackground + overtimeTimerService.remainingTime))
-                    overtimeTimerService.send(event: .resumeWith(overtimeTimerService.remainingTime))
+                    // To avoid additional timerDidFinish value sent with timer events
+                    timerCancellables.removeAll()
+                    let remainingTime = overtimeTimerService.remainingTime
+                    overtimeTimerService.send(event: .resumeWith(remainingTime))
+                    let finishDate = appDidEnterBackgroundDate.addingTimeInterval(worktimePassedInBackground + overtimeTimerService.counter)
+                    self.timerDidFinish.send(finishDate)
                 }
             } else {
                 workTimerService.send(event: .resumeWith(timePassedInBackground))
             }
         } else if overtimeTimerService.serviceState == .running {
             if overtimeTimerService.remainingTime < timePassedInBackground {
+                timerCancellables.removeAll()
                 let remainingOvertime = overtimeTimerService.remainingTime
-                self.timerDidFinish.send(appDidEnterBackgroundDate.addingTimeInterval(remainingOvertime))
                 overtimeTimerService.send(event: .resumeWith(remainingOvertime))
+                let finishDate = appDidEnterBackgroundDate.addingTimeInterval(remainingOvertime)
+                self.timerDidFinish.send(finishDate)
             } else {
                 overtimeTimerService.send(event: .resumeWith(timePassedInBackground))
             }
