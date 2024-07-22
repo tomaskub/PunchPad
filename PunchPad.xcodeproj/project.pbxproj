@@ -171,7 +171,7 @@
 		D60480D72B122CDA00D6D70D /* ChartPeriodServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartPeriodServiceTests.swift; sourceTree = "<group>"; };
 		D60480D92B122D3F00D6D70D /* ChartPeriodService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartPeriodService.swift; sourceTree = "<group>"; };
 		D60594DB2AA7A2C400B8B264 /* SettingsViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewScreen.swift; sourceTree = "<group>"; };
-		D606361A2BF8F9210026FC00 /* TimerManagerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TimerManagerConfiguration.swift; path = PunchPad/Features/TimerService/TimerManagerConfiguration.swift; sourceTree = "<group>"; };
+		D606361A2BF8F9210026FC00 /* TimerManagerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManagerConfiguration.swift; sourceTree = "<group>"; };
 		D606361C2BF925760026FC00 /* TimerManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManagerTests.swift; sourceTree = "<group>"; };
 		D60D21F12AA30F310055BE34 /* HomeViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewScreen.swift; sourceTree = "<group>"; };
 		D60D21F42AA357BA0055BE34 /* OnboardingViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewScreen.swift; sourceTree = "<group>"; };
@@ -399,7 +399,6 @@
 		D6C4588729D229200069D89B = {
 			isa = PBXGroup;
 			children = (
-				D606361A2BF8F9210026FC00 /* TimerManagerConfiguration.swift */,
 				D6C4589229D229210069D89B /* PunchPad */,
 				D6C458A329D229230069D89B /* PunchPadTests */,
 				D6C458AD29D229230069D89B /* PunchPadUITests */,
@@ -765,6 +764,7 @@
 		D6FD09502BCC49C100AD8989 /* TimerService */ = {
 			isa = PBXGroup;
 			children = (
+				D606361A2BF8F9210026FC00 /* TimerManagerConfiguration.swift */,
 				D629CEF82B3613660036579D /* TimerService.swift */,
 				D67633FC2BF5500500D45163 /* TimerServiceEvent.swift */,
 				D67633FA2BF54F7F00D45163 /* TimerServiceState.swift */,
