@@ -29,6 +29,14 @@ class TimerManager: ObservableObject {
         }
         setUpSubscriptions()
     }
+    #warning("#2 - MAKE SURE IT WORK WITH UNIT TESTS")
+    convenience init(timerProvider: Timer.Type = Timer.self, withModel model: TimerModel) {
+        self.init(timerProvider: timerProvider, with: model.configuration)
+        setInitialState(ofTimerService: workTimerService, toCounter: model.workTimeCounter, toState: model.workTimerState)
+        if let overtimeTimerService, let counter = model.overtimeCounter, let state = model.overtimeTimerState {
+            setInitialState(ofTimerService: overtimeTimerService, toCounter: counter, toState: state)
+        }
+    }
 
     private func setUpSubscriptions() {
         // clear timer cancellables from old references

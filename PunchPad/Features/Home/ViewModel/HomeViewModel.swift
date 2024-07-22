@@ -53,6 +53,8 @@ class HomeViewModel: NSObject, ObservableObject {
         self.timerProvider = timerProvider
         self.payManager = payManager
         self.notificationService = notificationService
+        #warning("#3 - cover with unit test and make sure implementation works")
+        // TODO: ALWAYS INIT FROM MODEL, IF NOT PRESENT, INIT WITHOUT MODEL, GET MODEL FROM STORE ON INIT
         self.timerManagerConfiguration = TimerManagerConfiguration(
             workTimeInSeconds: TimeInterval(settingsStore.workTimeInSeconds),
             isLoggingOvertime: settingsStore.isLoggingOvertime,
