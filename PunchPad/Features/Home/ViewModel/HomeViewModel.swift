@@ -25,7 +25,7 @@ class HomeViewModel: NSObject, ObservableObject {
     private var startDate: Date?
     private var finishDate: Date?
     private var appDidEnterBackgroundDate: Date?
-    
+    private var currentTimerModel: TimerModel?
     var state: TimerServiceState {
         timerManager.state
     }
@@ -129,6 +129,7 @@ class HomeViewModel: NSObject, ObservableObject {
                 self?.saveEntry()
             }.store(in: &timerManagerCancellables)
     }
+    
     private func reloadTimerManager(with config: TimerManagerConfiguration) {
         timerManager = .init(timerProvider: timerProvider, with: config)
         setUpTimerManagerSubscribers()
@@ -178,7 +179,16 @@ extension HomeViewModel {
     
     /// Set appDidEnterBackgroundDate to now and set notifications for worktime and overtime timers finish
     private func appDidEnterBackground() {
-        appDidEnterBackgroundDate = Date()
+        let model = generateTimerModel()
+        appDidEnterBackgroundDate = model.timeStamp
+        currentTimerModel = model
+        do {
+            print("Attempting to save current timer model")
+            try timerStore.save(model)
+            print("Saved model successfully")
+        } catch {
+            print("Failed to save model on entering background \(error)")
+        }
         scheduleTimerFinishNotifications()
     }
     
@@ -213,6 +223,15 @@ extension HomeViewModel {
         dataManager.updateAndSave(entry: entryToSave)
         self.startDate = nil
         self.finishDate = nil
+    }
+    
+    func generateTimerModel() -> TimerModel {
+           TimerModel(configuration: timerManagerConfiguration,
+                                        workTimeCounter: timerManager.workTimerService.counter,
+                                        overtimeCounter: timerManager.overtimeTimerService?.counter,
+                                        workTimerState: timerManager.workTimerService.serviceState,
+                                        overtimeTimerState: timerManager.overtimeTimerService?.serviceState,
+                                        timeStamp: Date())
     }
 }
 
