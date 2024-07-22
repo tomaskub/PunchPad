@@ -15,6 +15,7 @@ class HomeViewModel: NSObject, ObservableObject {
     private var settingsStore: SettingsStore
     private var payManager: PayManager
     private var notificationService: NotificationService
+    private var timerManagerConfiguration: TimerManagerConfiguration
     private var timerManager: TimerManager
     private var timerStore: TimerStore = .init(defaults: .standard)
     private var timerProvider: Timer.Type
@@ -52,13 +53,13 @@ class HomeViewModel: NSObject, ObservableObject {
         self.timerProvider = timerProvider
         self.payManager = payManager
         self.notificationService = notificationService
-        let configuration = TimerManagerConfiguration(
+        self.timerManagerConfiguration = TimerManagerConfiguration(
             workTimeInSeconds: TimeInterval(settingsStore.workTimeInSeconds),
             isLoggingOvertime: settingsStore.isLoggingOvertime,
             overtimeInSeconds: TimeInterval(settingsStore.maximumOvertimeAllowedInSeconds)
         )
         self.timerManager = TimerManager(timerProvider: timerProvider,
-                                    with: configuration)
+                                         with: timerManagerConfiguration)
         super.init()
         
         setUpStoreSubscribers()
