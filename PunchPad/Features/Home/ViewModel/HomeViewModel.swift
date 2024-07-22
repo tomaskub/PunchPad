@@ -175,6 +175,11 @@ extension HomeViewModel {
             .sink { [weak self] _ in
                 self?.appWillEnterForeground()
             }.store(in: &subscriptions)
+        NotificationCenter.default
+            .publisher(for: UIApplication.willTerminateNotification)
+            .sink { _ in
+                print("App will terminate - should save timer configuration present in background")
+            }.store(in: &subscriptions)
     }
     
     /// Set appDidEnterBackgroundDate to now and set notifications for worktime and overtime timers finish
