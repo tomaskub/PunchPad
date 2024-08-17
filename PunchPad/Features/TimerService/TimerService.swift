@@ -8,14 +8,7 @@
 import Foundation
 import SwiftUI
 
-class TimerService: ObservableObject {
-    enum TimerServiceState {
-        case running, paused, notStarted, finished
-    }
-    enum TimerServiceEvent {
-        case start, stop, pause, resumeWith(TimeInterval?)
-    }
-    
+final class TimerService: ObservableObject {
     private let timerProvider: Timer.Type
     private var timer: Timer?
     private let timerLimit: TimeInterval
@@ -85,5 +78,33 @@ class TimerService: ObservableObject {
     
     private func updateProgressCounter() {
         progress = CGFloat(counter / timerLimit)
+    }
+    #warning("#1 - MAKE SURE IT WORK WITH UNIT TESTS")
+    fileprivate func setTimerService(counter value: TimeInterval) {
+        guard value <= timerLimit else {
+            preconditionFailure("Attempted to set value larger than timer limit, this should not happen")
+        }
+        counter = value
+        updateProgressCounter()
+    }
+    fileprivate func setTimerService(state: TimerServiceState) {
+        serviceState = state
+    }
+    
+    fileprivate func attachTimer() {
+        timer = timerProvider.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] _ in
+            guard let self else { return }
+            self.updateTimer()
+        })
+    }
+}
+
+extension TimerManager {
+    func setInitialState(ofTimerService service: TimerService, toCounter value: TimeInterval, toState state: TimerServiceState) {
+        service.setTimerService(counter: value)
+        service.setTimerService(state: state)
+        if state == .running || state == .paused {
+            service.attachTimer()
+        }
     }
 }
