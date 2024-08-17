@@ -14,4 +14,13 @@ struct TimerModel: Codable {
     let workTimerState: TimerServiceState
     let overtimeTimerState: TimerServiceState?
     let timeStamp: Date
+    
+    static func initial(configuration: TimerManagerConfiguration) -> TimerModel {
+        return TimerModel(configuration: configuration,
+                          workTimeCounter: 0,
+                          overtimeCounter: 0,
+                          workTimerState: .notStarted,
+                          overtimeTimerState: configuration.isLoggingOvertime ? .notStarted : nil,
+                          timeStamp: .now)
+    }
 }
