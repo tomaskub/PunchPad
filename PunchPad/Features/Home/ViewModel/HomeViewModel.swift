@@ -47,21 +47,31 @@ class HomeViewModel: NSObject, ObservableObject {
         timerManager.overtimeTimerService?.progress ?? 0
     }
     
-    init(dataManager: any DataManaging, settingsStore: SettingsStore, payManager: PayManager, notificationService: NotificationService, timerProvider: Timer.Type = Timer.self) {
+    init(dataManager: any DataManaging, 
+         settingsStore: SettingsStore,
+         payManager: PayManager,
+         notificationService: NotificationService,
+         timerProvider: Timer.Type = Timer.self) {
         self.dataManager = dataManager
         self.settingsStore = settingsStore
         self.timerProvider = timerProvider
         self.payManager = payManager
         self.notificationService = notificationService
         #warning("#3 - cover with unit test and make sure implementation works")
-        // TODO: ALWAYS INIT FROM MODEL, IF NOT PRESENT, INIT WITHOUT MODEL, GET MODEL FROM STORE ON INIT
-        self.timerManagerConfiguration = TimerManagerConfiguration(
-            workTimeInSeconds: TimeInterval(settingsStore.workTimeInSeconds),
-            isLoggingOvertime: settingsStore.isLoggingOvertime,
-            overtimeInSeconds: TimeInterval(settingsStore.maximumOvertimeAllowedInSeconds)
-        )
-        self.timerManager = TimerManager(timerProvider: timerProvider,
-                                         with: timerManagerConfiguration)
+        do {
+            self.currentTimerModel = try self.timerStore.retrieve()
+            self.timerManagerConfiguration = currentTimerModel!.configuration
+            self.timerManager = TimerManager(withModel: currentTimerModel!)
+        } catch {
+            self.timerManagerConfiguration = TimerManagerConfiguration(
+                workTimeInSeconds: TimeInterval(settingsStore.workTimeInSeconds),
+                isLoggingOvertime: settingsStore.isLoggingOvertime,
+                overtimeInSeconds: TimeInterval(settingsStore.maximumOvertimeAllowedInSeconds)
+            )
+            self.currentTimerModel = TimerModel.initial(configuration: timerManagerConfiguration)
+            self.timerManager = TimerManager(timerProvider: timerProvider,
+                                             with: timerManagerConfiguration)
+        }
         super.init()
         
         setUpStoreSubscribers()
@@ -181,6 +191,7 @@ extension HomeViewModel {
             .publisher(for: UIApplication.willTerminateNotification)
             .sink { _ in
                 print("App will terminate - should save timer configuration present in background")
+                
             }.store(in: &subscriptions)
     }
     
