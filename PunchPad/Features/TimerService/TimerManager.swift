@@ -36,8 +36,9 @@ class TimerManager: ObservableObject {
         if let overtimeTimerService, let counter = model.overtimeCounter, let state = model.overtimeTimerState {
             setInitialState(ofTimerService: overtimeTimerService, toCounter: counter, toState: state)
         }
+       setState(basedOn: model)
     }
-
+    
     private func setUpSubscriptions() {
         // clear timer cancellables from old references
         timerCancellables.removeAll()
@@ -45,7 +46,7 @@ class TimerManager: ObservableObject {
         workTimerService.objectWillChange.sink { _ in
             self.objectWillChange.send()
         }.store(in: &timerCancellables)
-    
+        
         overtimeTimerService?.objectWillChange.sink(receiveValue: { _ in
             self.objectWillChange.send()
         }).store(in: &timerCancellables)
@@ -77,6 +78,26 @@ class TimerManager: ObservableObject {
         }
     }
     
+    private func setState(basedOn model: TimerModel) {
+        let timePassed = Date.now.timeIntervalSince(model.timeStamp)
+        if workTimerService.serviceState == .running {
+            workTimerService.send(event: .resumeWith(timePassed))
+        }
+        if overtimeTimerService?.serviceState == .running {
+            overtimeTimerService?.send(event: .resumeWith(timePassed))
+        }
+        if workTimerService.serviceState == .paused || overtimeTimerService?.serviceState == .paused {
+            self.state = .paused
+        }
+        // rare case work timer finished and overtime did not had time to start
+        if workTimerService.serviceState == .finished && overtimeTimerService?.serviceState == .notStarted {
+            overtimeTimerService?.send(event: .start)
+        }
+    }
+}
+
+// MARK: - Timer controls
+extension TimerManager {
     func startTimerService() {
         guard state != .running else { return }
         if state == .finished {
