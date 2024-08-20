@@ -8,4 +8,8 @@
 import Foundation
 enum TimerServiceEvent {
     case start, stop, pause, resumeWith(TimeInterval?)
+    
+    var debugDescription: String {
+        String(describing: self)
+    }
 }

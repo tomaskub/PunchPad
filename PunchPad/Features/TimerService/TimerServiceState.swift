@@ -9,4 +9,8 @@ import Foundation
 
 enum TimerServiceState: Codable {
     case running, paused, notStarted, finished
+    
+    var debugDescription: String {
+        String(describing: self)
+    }
 }
