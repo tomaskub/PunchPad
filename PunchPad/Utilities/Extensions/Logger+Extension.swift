@@ -11,4 +11,5 @@ import OSLog
 extension Logger {
     static let subsystem = Bundle.main.bundleIdentifier!
     static let timerService = Logger(subsystem: subsystem, category: "TimerService")
+    static let timerStore = Logger(subsystem: subsystem, category: "TimerStore")
 }
