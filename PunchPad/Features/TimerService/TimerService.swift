@@ -7,11 +7,13 @@
 
 import Foundation
 import SwiftUI
+import OSLog
 
 final class TimerService: ObservableObject {
     private let timerProvider: Timer.Type
     private var timer: Timer?
     private let timerLimit: TimeInterval
+    private let logger = Logger.timerService
     @Published private(set) var progress: CGFloat = 0.0
     @Published private(set) var serviceState: TimerServiceState = .notStarted
     @Published private(set) var counter: TimeInterval = 0
@@ -25,6 +27,7 @@ final class TimerService: ObservableObject {
     }
     
     func send(event: TimerServiceEvent) {
+        logger.debug("Recieved event \(event.debugDescription)")
         switch event {
         case .start:
             if serviceState == .notStarted {
@@ -35,11 +38,13 @@ final class TimerService: ObservableObject {
             
         case .pause:
             if serviceState == .running {
+                logger.debug("Pausing timer")
                 serviceState = .paused
             }
             
         case .stop:
             if !(serviceState == .notStarted) {
+                logger.debug("Finishing timer")
                 if let timer = timer {
                     timer.invalidate()
                 }
@@ -47,8 +52,10 @@ final class TimerService: ObservableObject {
             }
         case let .resumeWith(timePassed):
             if serviceState == .paused || serviceState == .running {
+                logger.debug("Reasuming timer")
                 self.serviceState = .running
                 if let timePassed {
+                    logger.debug("Updating timer with time passed: \(timePassed)")
                     self.updateTimer(byAdding: timePassed)
                 }
             }
@@ -56,6 +63,7 @@ final class TimerService: ObservableObject {
     }
     
     private func startTimer()  {
+        logger.debug("startTimer called")
         counter = 0
         progress = 0
         serviceState = .running
@@ -66,6 +74,7 @@ final class TimerService: ObservableObject {
     }
     
     private func updateTimer(byAdding addValue: TimeInterval = 1) {
+        logger.debug("updateTimer called")
         guard self.serviceState == .running else { return }
         counter += addValue < remainingTime ? addValue : remainingTime
         withAnimation(.easeInOut) {
@@ -77,10 +86,12 @@ final class TimerService: ObservableObject {
     }
     
     private func updateProgressCounter() {
+        logger.debug("updateProgressCounter called")
         progress = CGFloat(counter / timerLimit)
     }
-    #warning("#1 - MAKE SURE IT WORK WITH UNIT TESTS")
+    
     fileprivate func setTimerService(counter value: TimeInterval) {
+        logger.debug("setTimerService called with value: \(value)")
         guard value <= timerLimit else {
             preconditionFailure("Attempted to set value larger than timer limit, this should not happen")
         }
@@ -88,10 +99,12 @@ final class TimerService: ObservableObject {
         updateProgressCounter()
     }
     fileprivate func setTimerService(state: TimerServiceState) {
+        logger.debug("setTimerService called with state: \(state.debugDescription)")
         serviceState = state
     }
     
     fileprivate func attachTimer() {
+        logger.debug("attachTimer called")
         timer = timerProvider.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] _ in
             guard let self else { return }
             self.updateTimer()
