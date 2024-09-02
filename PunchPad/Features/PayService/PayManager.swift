@@ -1,16 +1,18 @@
 //
 //  PayManager.swift
-//  ClockIn
+//  PunchPad
 //
 //  Created by Tomasz Kubiak on 4/16/23.
 //
 
 import Foundation
 import Combine
+import OSLog
 
 final class PayManager: ObservableObject {
     private var dataManager: any DataManaging
     private var settingsStore: SettingsStore
+    private let logger = Logger.payManager
     private var calendar: Calendar
     private var overtimePayCoef: Double = 1.5
     private var subscriptions = Set<AnyCancellable>()
@@ -18,6 +20,7 @@ final class PayManager: ObservableObject {
     @Published private(set) var grossDataForPeriod: GrossSalary
     
     init(dataManager: any DataManaging, settingsStore: SettingsStore, currentPeriod: Period = (Date(), Date()), calendar: Calendar) {
+        logger.debug("Initializing PayManager")
         self.settingsStore = settingsStore
         self.dataManager = dataManager
         self.currentPeriod = currentPeriod
@@ -29,10 +32,12 @@ final class PayManager: ObservableObject {
     
     ///Update current period driving published gross salary data
     func updatePeriod(with period: Period) {
+        logger.debug("Update period called")
         currentPeriod = period
     }
     
     private func setStoreSubscribers() {
+        logger.debug("Set store subscribers")
         settingsStore.objectWillChange.sink { [weak self] _ in
             self?.objectWillChange.send()
         }.store(in: &subscriptions)
@@ -43,6 +48,7 @@ final class PayManager: ObservableObject {
     }
     
     private func setCurrentPeriodSubscriber() {
+        logger.debug("Set current period subscriber")
         $currentPeriod
             .removeDuplicates { lhs, rhs in
                 return lhs.0 == rhs.0 && lhs.1 == rhs.1
@@ -57,6 +63,7 @@ final class PayManager: ObservableObject {
 private extension PayManager {
     /// Generate salary data based on given period
     func generateGrossDataForPeriod(_ period: Period) -> GrossSalary {
+        logger.debug("generateGrossDataForPeriod called for period: \(period.0) - \(period.1)")
         let entryData = dataManager.fetch(for: period)
         let averageWorktime: Int? = calculateAverage(from: entryData, keypath: \.workTimeInSeconds)
         let averageOvertime: Int? = calculateAverage(from: entryData, keypath: \.overTimeInSeconds)
@@ -76,7 +83,7 @@ private extension PayManager {
                 return nil
             }
         }()
-        
+        logger.debug("Finished generating gross data for period")
         return .init(period: period,
                      payPerHour: calculateAverageGrossPayPerHour(from: processedEntries, using: calendar),
                      payUpToDate: payUpToDate ?? 0,
@@ -86,6 +93,7 @@ private extension PayManager {
     
     /// Process avaliable entry data for the given period by adding empty entries before today and standard entries in future
     func processEntryData(in period: Period, from entryData: [Entry]?, averageWorktime: Int?, averageOvertime: Int?, calendar: Calendar, store: SettingsStore) -> [Entry] {
+        logger.debug("processEntryData called")
         return getWorkDaysInPeriod(using: calendar, in: period).map { date in
             if let retrievedEntry = entryData?.first(where: { calendar.isDate($0.startDate, inSameDayAs: date) }) {
                 return retrievedEntry
