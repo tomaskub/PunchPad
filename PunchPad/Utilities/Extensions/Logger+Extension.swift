@@ -13,4 +13,5 @@ extension Logger {
     static let timerService = Logger(subsystem: subsystem, category: "TimerService")
     static let timerStore = Logger(subsystem: subsystem, category: "TimerStore")
     static let timerManager = Logger(subsystem: subsystem, category: "TimerManager")
+    static let containerService = Logger(subsystem: subsystem, category: "Container")
 }
