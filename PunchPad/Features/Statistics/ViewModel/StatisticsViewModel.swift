@@ -7,8 +7,10 @@
 
 import Foundation
 import Combine
+import OSLog
 
 final class StatisticsViewModel: ObservableObject {
+    private let logger = Logger.statisticsViewModel
     private var chartPeriodService: ChartPeriodService
     private var calendar: Calendar
     private var dataManager: any DataManaging
@@ -47,6 +49,7 @@ final class StatisticsViewModel: ObservableObject {
     }
     
     init(dataManager: any DataManaging, payManager: PayManager, settingsStore: SettingsStore, calendar: Calendar) {
+        logger.debug("Initializing StatisticsViewModel")
         self.dataManager = dataManager
         self.payManager = payManager
         self.settingsStore = settingsStore
@@ -57,7 +60,7 @@ final class StatisticsViewModel: ObservableObject {
         do {
             self.periodDisplayed = try chartPeriodService.generatePeriod(for: Date(), in: chartTimeRange)
         } catch {
-            print("Error while getting initial period")
+            logger.error("Error while getting initial period")
         }
         
         setPayManagerSubscriber()
@@ -85,9 +88,9 @@ final class StatisticsViewModel: ObservableObject {
                         self.periodDisplayed = try self.chartPeriodService.generatePeriod(for: midDate, in: timeRange)
                         self.payManager.updatePeriod(with: self.periodDisplayed)
                     } catch ChartPeriodServiceError.attemptedToRetrievePeriodForAll {
-                        print("Failed to generate chart time period becouse `all` was selected")
+                        self.logger.error("Failed to generate chart time period becouse `all` was selected")
                     } catch {
-                        print("Failed to generate chart time period with new range")
+                        self.logger.error("Failed to generate chart time period with new range")
                     }
                 case .all:
                     if let firstEntry = dataManager.fetchOldestExisting(),
@@ -96,10 +99,10 @@ final class StatisticsViewModel: ObservableObject {
                             self.periodDisplayed = try self.chartPeriodService.generatePeriod(from: firstEntry, to: lastEntry)
                             self.payManager.updatePeriod(with: self.periodDisplayed)
                         } catch {
-                            print("Failed to generate chart time period with new `.all` range")
+                            self.logger.error("Failed to generate chart time period with new `.all` range")
                         }
                     } else {
-                        print("Failed to generate chart time period with new `.all` range when retrieving first and last entry")
+                        self.logger.error("Failed to generate chart time period with new `.all` range when retrieving first and last entry")
                     }
                 }
             }.store(in: &subscriptions)
@@ -126,8 +129,11 @@ final class StatisticsViewModel: ObservableObject {
 
 extension StatisticsViewModel {
     private func fetchEntriesWithPlaceholders(for period: Period) -> [Entry] {
+        logger.debug("fetchEntriesWithPlaceholders called")
         guard let numberOfDaysInPeriod = calendar.dateComponents([.day], from: period.0, to: period.1).day,
-              numberOfDaysInPeriod > 0 else { return [] }
+              numberOfDaysInPeriod > 0 else {
+            logger.warning("0 or less days in period, returning empty array")
+            return [] }
         let placeholders = [Int](0..<numberOfDaysInPeriod)
             .compactMap { i in
                 calendar.date(byAdding: .day, value: i, to: period.0)
@@ -143,6 +149,7 @@ extension StatisticsViewModel {
                 )
             }
         guard let fetchedEntries = dataManager.fetch(for: period) else {
+            logger.debug("Did not fetch any entries from persistance, returning placeholders")
             return placeholders
         }
         return placeholders.map { placeholder in
@@ -155,6 +162,7 @@ extension StatisticsViewModel {
 //MARK: DATA GROUPING FUNCTIONS
 extension StatisticsViewModel {
     private func groupEntriesByYearMonth(_ entries: [Entry]) -> [[Entry]] {
+        logger.debug("groupEntriesByYearMonth called")
         var result: [[Entry]] = .init()
         
         var currentYearMonth: DateComponents?
@@ -179,6 +187,7 @@ extension StatisticsViewModel {
     }
     
     private func groupEntriesByYearWeek(_ entries: [Entry]) -> [[Entry]] {
+        logger.debug("groupEntriesByYearWeek called")
         var result = [[Entry]]()
         var currentYearWeek: DateComponents?
         var currentEntries: [Entry] = .init()
@@ -205,22 +214,24 @@ extension StatisticsViewModel {
 extension StatisticsViewModel {
     
     func loadPreviousPeriod() {
+        logger.debug("loadPreviousPeriod called")
         guard self.chartTimeRange != .all else { return }
         do {
             periodDisplayed = try chartPeriodService.retardPeriod(by: chartTimeRange, from: periodDisplayed)
             payManager.updatePeriod(with: periodDisplayed)
         } catch {
-            print("Failed to load previous period")
+            logger.error("Failed to load previous period")
         }
     }
     
     func loadNextPeriod() {
+        logger.debug("loadNextPeriod called")
         guard self.chartTimeRange != .all else { return }
         do {
             periodDisplayed = try chartPeriodService.advancePeriod(by: chartTimeRange, from: periodDisplayed)
             payManager.updatePeriod(with: periodDisplayed)
         } catch {
-            print("Failed to load next period")
+            logger.error("Failed to load next period")
         }
     }
 }
