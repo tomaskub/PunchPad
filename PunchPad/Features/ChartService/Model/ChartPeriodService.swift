@@ -7,14 +7,6 @@
 
 import Foundation
 
-enum ChartPeriodServiceError: Error {
-    case attemptedToRetrievePeriodForAll
-    case failedToCreateStartDateFromComponents
-    case failedToCreateDateByAddingComponents
-    case failedToRetrieveChartTimeRangeCount
-    case failedToRetriveDayComponentFromPeriod
-}
-
 class ChartPeriodService {
     let calendar: Calendar
     

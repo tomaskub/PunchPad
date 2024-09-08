@@ -79,6 +79,7 @@
 		D69C8CD92B44208C00146EFA /* ConfirmButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C8CD82B44208C00146EFA /* ConfirmButtonStyle.swift */; };
 		D69C8CDB2B4420D600146EFA /* CancelButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C8CDA2B4420D600146EFA /* CancelButtonStyle.swift */; };
 		D69C8CDD2B44224100146EFA /* VerticalDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C8CDC2B44224100146EFA /* VerticalDivider.swift */; };
+		D69F294B2C8E4C0A002B8C64 /* ChartPeriodServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69F294A2C8E4C0A002B8C64 /* ChartPeriodServiceError.swift */; };
 		D6AB737029F562E600D5DE82 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AB736F29F562E600D5DE82 /* OnboardingViewModel.swift */; };
 		D6B2BDF22B27810700CB4FA7 /* DateFilterSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B2BDF12B27810700CB4FA7 /* DateFilterSheetView.swift */; };
 		D6B2BDF42B27C22400CB4FA7 /* EmptyPlaceholderModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B2BDF32B27C22400CB4FA7 /* EmptyPlaceholderModifier.swift */; };
@@ -241,6 +242,7 @@
 		D69C8CD82B44208C00146EFA /* ConfirmButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmButtonStyle.swift; sourceTree = "<group>"; };
 		D69C8CDA2B4420D600146EFA /* CancelButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelButtonStyle.swift; sourceTree = "<group>"; };
 		D69C8CDC2B44224100146EFA /* VerticalDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalDivider.swift; sourceTree = "<group>"; };
+		D69F294A2C8E4C0A002B8C64 /* ChartPeriodServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartPeriodServiceError.swift; sourceTree = "<group>"; };
 		D6AB736F29F562E600D5DE82 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		D6B2BDF12B27810700CB4FA7 /* DateFilterSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFilterSheetView.swift; sourceTree = "<group>"; };
 		D6B2BDF32B27C22400CB4FA7 /* EmptyPlaceholderModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyPlaceholderModifier.swift; sourceTree = "<group>"; };
@@ -732,6 +734,7 @@
 				D66A4DF52B7AA72800D16110 /* ChartType.swift */,
 				D6FA94FA2B013C770034B16A /* ChartLegendItem.swift */,
 				D60480D92B122D3F00D6D70D /* ChartPeriodService.swift */,
+				D69F294A2C8E4C0A002B8C64 /* ChartPeriodServiceError.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -957,6 +960,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D69F294B2C8E4C0A002B8C64 /* ChartPeriodServiceError.swift in Sources */,
 				D684A3882AF6F3E700511E0D /* OnboardingWelcomeView.swift in Sources */,
 				D6842EC429EC62DE00731E84 /* PayManager.swift in Sources */,
 				D64766C52AFEBD9D0013AC9A /* ChartLegendView.swift in Sources */,
