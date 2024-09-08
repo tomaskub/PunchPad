@@ -27,7 +27,7 @@ struct TimerStore: TimerStoring {
             logger.debug("Data decoded to timer model")
             return model
         } else {
-            logger.debug("Data failed to retrieve from defaults")
+            logger.warning("Data failed to retrieve from defaults")
             throw TimerStoreError.failedToRetrieveData
         }
     }
