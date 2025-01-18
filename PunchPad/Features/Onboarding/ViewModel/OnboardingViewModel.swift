@@ -8,10 +8,12 @@
 import Foundation
 import Combine
 import UserNotifications
+import OSLog
 
 final class OnboardingViewModel: ObservableObject {
     private let secondsInHour = 3600
     private let secondsInMinute = 60
+    private let logger = Logger.onboardingViewModel
     private var subscriptions = Set<AnyCancellable>()
     private var notificationService: NotificationService
     @Published var settingsStore: SettingsStore
@@ -35,6 +37,7 @@ final class OnboardingViewModel: ObservableObject {
     }
     
     private func setPublishers() {
+        logger.debug("setPublishers called")
         $hoursWorking
             .removeDuplicates()
             .sink { [weak self] hours in
@@ -105,6 +108,7 @@ final class OnboardingViewModel: ObservableObject {
     }
     
     func requestAuthorizationForNotifications() {
+        logger.debug("requestAuthorizationForNotifications called")
         notificationService.requestAuthorizationForNotifications { [weak self] result, error in
             DispatchQueue.main.async {
                 self?.settingsStore.isSendingNotification = result
