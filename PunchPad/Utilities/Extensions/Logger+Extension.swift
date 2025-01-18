@@ -21,6 +21,8 @@ extension Logger {
         case chartService
         case statisticsViewModel
         case settingsStore
+        case historyViewModel
+        case editSheetViewModel
     }
     
     static let timerService = logger(for: .timerService)
@@ -34,6 +36,8 @@ extension Logger {
     static let chartService = logger(for: .chartService)
     static let statisticsViewModel = logger(for: .statisticsViewModel)
     static let settingsStore = logger(for: .settingsStore)
+    static let historyViewModel = logger(for: .historyViewModel)
+    static let editSheetViewModel = logger(for: .editSheetViewModel)
     private static let subsystem = Bundle.main.bundleIdentifier!
 
     private static func logger(for category: Category) -> Logger {
