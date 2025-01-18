@@ -7,10 +7,12 @@
 
 import Foundation
 import Combine
+import OSLog
 
 class TimerManager: ObservableObject {
     private let timerProvider: Timer.Type
     private let configuration: TimerManagerConfiguration
+    private let logger = Logger.timerManager
     private var timerCancellables = Set<AnyCancellable>()
     var workTimerService: TimerService
     var overtimeTimerService: TimerService?
@@ -29,7 +31,7 @@ class TimerManager: ObservableObject {
         }
         setUpSubscriptions()
     }
-    #warning("#2 - MAKE SURE IT WORK WITH UNIT TESTS")
+    
     convenience init(timerProvider: Timer.Type = Timer.self, withModel model: TimerModel) {
         self.init(timerProvider: timerProvider, with: model.configuration)
         setInitialState(ofTimerService: workTimerService, toCounter: model.workTimeCounter, toState: model.workTimerState)
@@ -99,6 +101,7 @@ class TimerManager: ObservableObject {
 // MARK: - Timer controls
 extension TimerManager {
     func startTimerService() {
+        logger.debug("startTimerService called")
         guard state != .running else { return }
         if state == .finished {
             workTimerService = .init(
@@ -118,6 +121,7 @@ extension TimerManager {
     }
     
     func pauseTimerService() {
+        logger.debug("pauseTimerService called")
         guard state != .paused else { return }
         self.state = .paused
         workTimerService.send(event: .pause)
@@ -125,6 +129,7 @@ extension TimerManager {
     }
     
     func resumeTimerService() {
+        logger.debug("resumeTimerService called")
         guard state != .running else { return }
         self.state = .running
         workTimerService.send(event: .resumeWith(nil))
@@ -132,12 +137,14 @@ extension TimerManager {
     }
     
     func stopTimerService() {
+        logger.debug("stopTimerService called")
         guard state != .finished else { return }
         workTimerService.send(event: .stop)
         overtimeTimerService?.send(event: .stop)
     }
     
     func resumeFromBackground(_ appDidEnterBackgroundDate: Date) {
+        logger.debug("resumeFromBackground called")
         let timePassedInBackground = DateInterval(start: appDidEnterBackgroundDate, end: Date()).duration
         
         guard let overtimeTimerService else {
@@ -145,6 +152,7 @@ extension TimerManager {
                 if timePassedInBackground < workTimerService.remainingTime {
                     workTimerService.send(event: .resumeWith(timePassedInBackground))
                 } else {
+                    logger.debug("Timer finished in background")
                     timerCancellables.removeAll()
                     self.timerDidFinish.send(appDidEnterBackgroundDate.addingTimeInterval(workTimerService.remainingTime))
                     workTimerService.send(event: .resumeWith(timePassedInBackground))
@@ -161,6 +169,7 @@ extension TimerManager {
                 if overtimePassedInBackground < overtimeTimerService.remainingTime {
                     overtimeTimerService.send(event: .resumeWith(overtimePassedInBackground))
                 } else {
+                    logger.debug("Timer finished in background")
                     // To avoid additional timerDidFinish value sent with timer events
                     timerCancellables.removeAll()
                     let remainingTime = overtimeTimerService.remainingTime
@@ -173,6 +182,7 @@ extension TimerManager {
             }
         } else if overtimeTimerService.serviceState == .running {
             if overtimeTimerService.remainingTime < timePassedInBackground {
+                logger.debug("Timer finished in background")
                 timerCancellables.removeAll()
                 let remainingOvertime = overtimeTimerService.remainingTime
                 overtimeTimerService.send(event: .resumeWith(remainingOvertime))

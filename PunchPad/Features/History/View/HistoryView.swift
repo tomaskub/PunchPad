@@ -197,6 +197,7 @@ extension HistoryView: Localized {
         static let errorRowText = Localization.HistoryScreen.somethingWentWrong
     }
 }
+
 #Preview {
     struct ContainerView: View {
         private let container = PreviewContainer()

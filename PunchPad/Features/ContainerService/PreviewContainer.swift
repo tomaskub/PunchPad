@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OSLog
 
 final class PreviewContainer: ContainerProtocol {
     private(set) var dataManager: any DataManaging
@@ -13,8 +14,10 @@ final class PreviewContainer: ContainerProtocol {
     private(set) var timerProvider: Timer.Type
     private(set) var settingsStore: SettingsStore
     private(set) var notificationService: NotificationService
+    private let logger = Logger.containerService
     
     init() {
+        logger.debug("Initializing preview container")
         SettingsStore.setTestUserDefaults()
         self.timerProvider = Timer.self
         self.settingsStore = SettingsStore()

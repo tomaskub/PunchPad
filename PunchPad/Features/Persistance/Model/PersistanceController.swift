@@ -7,9 +7,13 @@
 
 import Foundation
 import CoreData
+import OSLog
 
+// INFO: Potentially change to a class to help with passing logger into load peristent stores
+// need to evaluate the impact of the changes - peristance controller should only be handled by data manager
 struct PersistanceController {
-
+    private static let name = "WorkHistory"
+    private let logger = Logger.persistanceContainer
     private let container: NSPersistentContainer
     
     var viewContext: NSManagedObjectContext {
@@ -17,13 +21,14 @@ struct PersistanceController {
     }
     
     init(inMemory: Bool = false) {
-        container = NSPersistentContainer(name: "WorkHistory")
+        logger.debug("Initializing persistance controller \(inMemory ? "in memory" : "in storage")")
+        container = NSPersistentContainer(name: PersistanceController.name)
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         }
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
-                //TODO: Implement error handling - below is not appropriate to use in shiped code
+                #warning("TODO: implement error handling before shipping")
                 fatalError("Fatal error: \(error), \(error.userInfo)")
             }
         })

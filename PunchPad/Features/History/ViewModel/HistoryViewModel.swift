@@ -8,8 +8,10 @@
 import Foundation
 import CoreData
 import Combine
+import OSLog
 
 final class HistoryViewModel: ObservableObject {
+    private var logger = Logger.historyViewModel
     private var dataManager: any DataManaging
     private var settingsStore: SettingsStore
     private var periodService: ChartPeriodService = .init(calendar: .current)
@@ -80,11 +82,13 @@ final class HistoryViewModel: ObservableObject {
 //MARK: POPULATE LIST DATA
 extension HistoryViewModel {
     func resetFilters() {
+        logger.debug("resetFilters called")
         isSortingActive = false
         groupedEntries = loadInitialEntries()
     }
     
     func applyFilters() {
+        logger.debug("applyFilters called")
         isSortingActive = true
         let startDate = Calendar.current.startOfDay(for: filterFromDate)
         let finishDate = Calendar.current.startOfDay(for: filterToDate)
@@ -99,11 +103,13 @@ extension HistoryViewModel {
     }
     
     func loadInitialEntries() -> [[Entry]] {
+        logger.debug("loadInitialEntries called")
         guard let entries = dataManager.fetch(from: nil, to: nil, ascendingOrder: false, fetchLimit: sizeOfChunk) else { return [[]] }
         return groupEntriesByYearMonth(entries)
     }
     
     func loadMoreItems() {
+        logger.debug("loadMoreItems called")
         guard isSortingActive == false else { return }
         paginationState = .isLoading
         
@@ -122,6 +128,7 @@ extension HistoryViewModel {
     }
     
     private func groupEntriesByYearMonth(_ entries: [Entry]) -> [[Entry]] {
+        logger.debug("groupEntriesByYearMonth called")
         var result: [[Entry]] = .init()
         
         var currentYearMonth: DateComponents?

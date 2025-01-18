@@ -7,8 +7,10 @@
 
 import Foundation
 import Combine
+import OSLog
 
 final class EditSheetViewModel: ObservableObject {
+    private var logger = Logger.editSheetViewModel
     private var dataManager: any DataManaging
     private var settingsStore: SettingsStore
     private var payService: PayManager
@@ -71,6 +73,7 @@ final class EditSheetViewModel: ObservableObject {
     }
     
     private func setOverrideTimePipelines() {
+        logger.debug("setOverrideTimePipelines called")
         $currentStandardWorkTime
             .dropFirst()
             .removeDuplicates()
@@ -89,6 +92,7 @@ final class EditSheetViewModel: ObservableObject {
     }
     
     private func setTimeCalculationPipelines() {
+        logger.debug("setTimeCalculationPipelines called")
         $finishDate
             .dropFirst()
             .removeDuplicates()
@@ -117,6 +121,7 @@ final class EditSheetViewModel: ObservableObject {
     }
 
     private func setDateMatchingPipeline() {
+        logger.debug("setDateMatchingPipeline called")
         $shouldDisplayFullDates
             .dropFirst()
             .removeDuplicates()
@@ -185,6 +190,7 @@ final class EditSheetViewModel: ObservableObject {
     
     /// Save entry constructed from data published by view model
     func saveEntry() {
+        logger.debug("saveEntry called")
         entry.startDate = startDate
         entry.finishDate = finishDate
         entry.workTimeInSeconds = Int(workTimeInSeconds)

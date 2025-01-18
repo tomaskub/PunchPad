@@ -7,33 +7,42 @@
 
 import Foundation
 import UserNotifications
+import OSLog
 
 final class NotificationService {
     private let center: UNUserNotificationCenter
     private var pendingNotificationsIDs: Set<String> = []
+    private let logger = Logger.notificationService
     
     init(center: UNUserNotificationCenter) {
         self.center = center
     }
     
     func requestAuthorizationForNotifications(failureHandler: @escaping (Bool, Error?) -> Void) {
-        center.requestAuthorization(options: [.alert, .sound, .badge]) { success, error in
+        logger.debug("requestAuthorization called")
+        center.requestAuthorization(options: [.alert, .sound, .badge]) { [weak self] success, error in
             if !success {
+                self?.logger.debug("Failed to get authorization")
                 failureHandler(success, error)
+            } else {
+                self?.logger.debug("Authorization successfull")
             }
             if let error {
-                print(error.localizedDescription)
+                self?.logger.error("When requesting authorization: \(error.localizedDescription)")
             }
         }
     }
     
     func deschedulePendingNotifications() {
+        logger.debug("deschedulePendingNotifications called")
         center.removeAllPendingNotificationRequests()
         pendingNotificationsIDs.removeAll()
     }
     
     func checkForAuthorization() async -> Bool? {
+        logger.debug("checkForAuthorization called")
         let settings = await center.notificationSettings()
+        logger.debug("Authorization status retrieved: \(settings.authorizationStatus.debugDescription)")
         switch settings.authorizationStatus {
         case .notDetermined:
             return nil
@@ -47,7 +56,9 @@ final class NotificationService {
     }
     
     func checkForAuthorization(completionHandler: @escaping (Bool?) -> Void) {
-        center.getNotificationSettings { settings in
+        logger.debug("checkForAuthorization called")
+        center.getNotificationSettings { [weak self] settings in
+            self?.logger.debug("Authorization status retrieved: \(settings.authorizationStatus.debugDescription)")
             let value: Bool? = {
                 switch settings.authorizationStatus {
                 case .notDetermined:
@@ -65,6 +76,7 @@ final class NotificationService {
     }
     
     func scheduleNotification(for notification: AppNotification, in timeInterval: TimeInterval) {
+        logger.debug("scheduleNotification called")
         let id = UUID().uuidString
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeInterval, repeats: false)
@@ -81,9 +93,11 @@ final class NotificationService {
     }
     
     private func checkForPermissionAndDispatch(_ notificationRequest: UNNotificationRequest) {
+        logger.debug("checkForPermissionAndDispatch called")
         center.getNotificationSettings { settings in
             switch settings.authorizationStatus {
             case .authorized:
+                self.logger.debug("Recieved authorized status")
                 self.dispatch(notification: notificationRequest)
             default:
                 return
@@ -92,6 +106,7 @@ final class NotificationService {
     }
     
     private func dispatch(notification: UNNotificationRequest) {
+        logger.debug("dispatch called")
         _ = pendingNotificationsIDs.insert(notification.identifier)
         center.add(notification)
     }
