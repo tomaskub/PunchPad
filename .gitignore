@@ -1,3 +1,6 @@
 ClockIn.xcodeproj/project.xcworkspace/xcuserdata/tomaszkubiak.xcuserdatad
 xcuserdata/
 *.xcuserstate
+fastlane/test_output/
+fastlane/report.xml
+
