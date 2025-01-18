@@ -25,6 +25,7 @@ ClockIn helps with tracking the work time and overtime you do at work. Whenever 
 - Charts 
 - CoreData
 - UI and unit tested with XCTest
+- Xcode Cloud for CI tests
 
 # Highlights 
 - DI is done with root container passed into environment. Services are retrieved from container and injected into subviews. Container is responsible for parsing launch arguments, detecting previews and configuring the environment, making UI testing much easier. 
