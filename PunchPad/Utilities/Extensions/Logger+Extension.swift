@@ -9,15 +9,35 @@ import Foundation
 import OSLog
 
 extension Logger {
-    static let subsystem = Bundle.main.bundleIdentifier!
-    static let timerService = Logger(subsystem: subsystem, category: "TimerService")
-    static let timerStore = Logger(subsystem: subsystem, category: "TimerStore")
-    static let timerManager = Logger(subsystem: subsystem, category: "TimerManager")
-    static let containerService = Logger(subsystem: subsystem, category: "Container")
-    static let payManager = Logger(subsystem: subsystem, category: "PayManager")
-    static let notificationService = Logger(subsystem: subsystem, category: "NotificationService")
-    static let persistanceContainer = Logger(subsystem: subsystem, category: "PersistanceContainer")
-    static let dataManager = Logger(subsystem: subsystem, category: "DataManager")
-    static let chartService = Logger(subsystem: subsystem, category: "ChartPeriodService")
-    static let statisticsViewModel = Logger(subsystem: subsystem, category: "StatisticsViewModel")
+    private enum Category: String {
+        case timerService
+        case timerStore
+        case timerManager
+        case containerService
+        case payManager
+        case notificationService
+        case persistanceContainer
+        case dataManager
+        case chartService
+        case statisticsViewModel
+        case settingsStore
+    }
+    
+    static let timerService = logger(for: .timerService)
+    static let timerStore = logger(for: .timerStore)
+    static let timerManager = logger(for: .timerManager)
+    static let containerService = logger(for: .containerService)
+    static let payManager = logger(for: .payManager)
+    static let notificationService = logger(for: .notificationService)
+    static let persistanceContainer = logger(for: .persistanceContainer)
+    static let dataManager = logger(for: .dataManager)
+    static let chartService = logger(for: .chartService)
+    static let statisticsViewModel = logger(for: .statisticsViewModel)
+    static let settingsStore = logger(for: .settingsStore)
+    private static let subsystem = Bundle.main.bundleIdentifier!
+
+    private static func logger(for category: Category) -> Logger {
+        return Logger(subsystem: subsystem,
+                      category: category.rawValue.capitalized)
+    }
 }
