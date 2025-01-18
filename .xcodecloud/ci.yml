@@ -1,0 +1,26 @@
+{
+    "workflows": {
+        "pr-workflow": {
+            "name": "Pull Request Workflow",
+            "enabled": true,
+            "trigger": {
+                "source": "github",
+                "pullRequest": {
+                    "enabled": true,
+                    "targetBranchMatches": ["main"]
+                }
+            },
+            "actions": [
+                {
+                    "name": "Run Fastlane Tests",
+                    "actionType": "build",
+                    "buildConfiguration": "Debug",
+                    "preCustomScriptCommands": [
+                        "bundle install",
+                        "bundle exec fastlane tests"
+                    ]
+                }
+            ]
+        },
+        }
+}
