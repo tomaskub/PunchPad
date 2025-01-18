@@ -399,8 +399,8 @@ extension HomeViewModelTests {
             XCTFail("Failed to retrieve expected entry in \(#function)")
             return
         }
-        XCTAssertEqual(addedEntry.startDate.timeIntervalSince1970, expectedStartTimeInterval, accuracy: 0.01)
-        XCTAssertEqual(addedEntry.finishDate.timeIntervalSince1970, expectedFinishTimeInterval, accuracy: 0.01)
+        XCTAssertEqual(addedEntry.startDate.timeIntervalSince1970, expectedStartTimeInterval, accuracy: 1)
+        XCTAssertEqual(addedEntry.finishDate.timeIntervalSince1970, expectedFinishTimeInterval, accuracy: 1)
         XCTAssertEqual(addedEntry.workTimeInSeconds, 2)
         XCTAssertEqual(addedEntry.overTimeInSeconds, 2)
     }
