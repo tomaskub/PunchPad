@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import OSLog
 
 final class SettingsStore: ObservableObject {
     enum SettingKey: String, CaseIterable {
@@ -19,8 +20,10 @@ final class SettingsStore: ObservableObject {
         case grossPayPerMonth
         case savedColorScheme
     }
+    
     private var subscriptions = Set<AnyCancellable>()
     private let defaults = UserDefaults.standard
+    private var logger = Logger.settingsStore
     @Published var isRunFirstTime: Bool
     @Published var isLoggingOvertime: Bool
     @Published var isCalculatingNetPay: Bool
@@ -47,6 +50,7 @@ final class SettingsStore: ObservableObject {
     }
     
     func setUpSubscribersSavingToUserDefaults() {
+        logger.debug("setUpSubscribers called")
         $isRunFirstTime
             .dropFirst()
             .removeDuplicates()
@@ -106,6 +110,7 @@ final class SettingsStore: ObservableObject {
     }
     
     func clearStore() {
+        logger.debug("clearStore called")
         subscriptions.removeAll()
         for key in SettingKey.allCases {
             if key != .isRunFirstTime {
@@ -125,12 +130,14 @@ final class SettingsStore: ObservableObject {
     }
     
     static func clearUserDefaults() {
+        Logger.settingsStore.debug("clearUserDefaults called")
         for key in SettingKey.allCases {
             UserDefaults.standard.removeObject(forKey: key.rawValue)
         }
     }
     
     static func setTestUserDefaults() {
+        Logger.settingsStore.debug("setTestUserDefaults called")
         let defaults = UserDefaults.standard
         defaults.set(false, forKey: SettingKey.isRunFirstTime.rawValue)
         defaults.set(true, forKey: SettingKey.isLoggingOvertime.rawValue)
@@ -143,6 +150,7 @@ final class SettingsStore: ObservableObject {
     }
     
     private func updateSetting<T>(setting: SettingKey, value: T) {
+        logger.debug("updateSetting called for key: \(setting.rawValue)")
         defaults.set(value, forKey: setting.rawValue)
     }
 }
