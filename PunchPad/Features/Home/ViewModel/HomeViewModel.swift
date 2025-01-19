@@ -17,7 +17,7 @@ class HomeViewModel: NSObject, ObservableObject {
     private var notificationService: NotificationService
     private var timerManagerConfiguration: TimerManagerConfiguration
     private var timerManager: TimerManager
-    private var timerStore: TimerStore = .init(defaults: .standard)
+    private var timerStore: TimerStoring
     private var timerProvider: Timer.Type
     private var timersNotRunning: Bool { 
         self.state == .notStarted || self.state == .finished
@@ -51,13 +51,15 @@ class HomeViewModel: NSObject, ObservableObject {
          settingsStore: SettingsStore,
          payManager: PayManager,
          notificationService: NotificationService,
-         timerProvider: Timer.Type = Timer.self) {
+         timerProvider: Timer.Type = Timer.self,
+         timerStore: TimerStoring = TimerStore(defaults: .standard)) {
         self.dataManager = dataManager
         self.settingsStore = settingsStore
         self.timerProvider = timerProvider
         self.payManager = payManager
         self.notificationService = notificationService
-        #warning("#3 - cover with unit test and make sure implementation works")
+        self.timerStore = timerStore
+        
         do {
             self.currentTimerModel = try self.timerStore.retrieve()
             self.timerManagerConfiguration = currentTimerModel!.configuration

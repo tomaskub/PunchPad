@@ -11,7 +11,8 @@ import XCTest
 final class HomeViewModelTests: XCTestCase {
     var sut: HomeViewModel!
     var testContainer: TestContainer!
-
+    var mockTimerStore: MockTimerStore!
+    
     var workTimerLimit: Int = 100
     var overtimeTimerLimit: Int = 100
     
@@ -20,13 +21,15 @@ final class HomeViewModelTests: XCTestCase {
         SettingsStore.setTestUserDefaults()
         testContainer = TestContainer()
         testContainer.dataManager.deleteAll()
+        mockTimerStore = MockTimerStore()
         sut = .init(HomeViewModel(dataManager: testContainer.dataManager,
                                   settingsStore: testContainer.settingsStore,
                                   payManager: PayManager(dataManager: testContainer.dataManager,
                                                          settingsStore: testContainer.settingsStore,
                                                          calendar: .current),
                                   notificationService: NotificationService(center: .current()),
-                                  timerProvider: MockTimer.self)
+                                  timerProvider: MockTimer.self,
+                                  timerStore: mockTimerStore)
         )
     }
     
@@ -34,9 +37,40 @@ final class HomeViewModelTests: XCTestCase {
         super.tearDown()
         sut = nil
     }
+    
+    class MockTimerStore: TimerStoring {
+        private(set) var retrieveCalled = false
+        private(set) var saveCalled = false
+        private(set) var deleteCalled = false
+        private(set) var shouldThrowOnSave = false
+        var modelToReturn: TimerModel?
+        
+        func retrieve() throws -> TimerModel {
+            retrieveCalled = true
+            guard let modelToReturn else {
+                throw MockTimerStoreError.mock
+            }
+            return modelToReturn
+        }
+        
+        func save(_: TimerModel) throws {
+            saveCalled = true
+            if shouldThrowOnSave {
+                throw MockTimerStoreError.mock
+            }
+        }
+        
+        func delete() {
+            deleteCalled = true
+        }
+        
+        enum MockTimerStoreError: Error {
+            case mock
+        }
+    }
 }
 
-//MARK: TIMER STATE CHANGE FUNCTIONS
+// MARK: - TimeR state change functions
 extension HomeViewModelTests {
     func test_startTimerService_when_noOvertime_firstRun() {
         //Given
@@ -271,7 +305,7 @@ extension HomeViewModelTests {
     }
 }
 
-//MARK: BACKGROUND AND FOREGROUND TIMER UPDATES
+// MARK: - Background and foreground timer updates
 extension HomeViewModelTests {
     func test_resumeFromBackground_withOneTimer_notExceedingTimerLimit() {
         //Given
@@ -406,7 +440,30 @@ extension HomeViewModelTests {
     }
 }
 
-//MARK: HELPERS
+// MARK: - Timer state restoring on initialization
+extension HomeViewModelTests {
+    func test_init_whenTimerStoreRetrievesConfiguration_hasCorrectTimerValues() {
+        // Given
+        let storedModel = generateTimerModelStub()
+        mockTimerStore.modelToReturn = storedModel
+        
+        // When
+        setUpWithMockTimerStore()
+        
+        // Then
+        XCTAssertEqual(sut.timerDisplayValue, storedModel.workTimeCounter)
+    }
+    
+    func test_init_whenTimerStoreFailsToRetrieveConfiguration_hasStartTimerValues() {
+        // When
+        setUpWithMockTimerStore()
+        
+        // Then
+        XCTAssertEqual(sut.timerDisplayValue, 0.0)
+    }
+}
+
+//MARK: - Helpers
 extension HomeViewModelTests {
     private func setUpWithOneTimer() {
         testContainer.settingsStore.isLoggingOvertime = false
@@ -432,6 +489,30 @@ extension HomeViewModelTests {
                                            calendar: .current),
                     notificationService: NotificationService(center: .current()),
                     timerProvider: MockTimer.self)
+    }
+    
+    private func setUpWithMockTimerStore() {
+        sut = .init(dataManager: testContainer.dataManager,
+                    settingsStore: testContainer.settingsStore,
+                    payManager: PayManager(dataManager: testContainer.dataManager,
+                                           settingsStore: testContainer.settingsStore,
+                                           calendar: .current),
+                    notificationService: NotificationService(center: .current()),
+                    timerProvider: MockTimer.self,
+                    timerStore: mockTimerStore)
+    }
+    
+    private func generateTimerModelStub() -> TimerModel {
+        let config = TimerManagerConfiguration(workTimeInSeconds: 10,
+                                               isLoggingOvertime: true,
+                                               overtimeInSeconds: 10)
+        let model = TimerModel(configuration: config,
+                               workTimeCounter: 5,
+                               overtimeCounter: 0,
+                               workTimerState: .paused,
+                               overtimeTimerState: .notStarted,
+                               timeStamp: .now)
+        return model
     }
     
     private func fireTimer(_ numberOfFires: Int) {
