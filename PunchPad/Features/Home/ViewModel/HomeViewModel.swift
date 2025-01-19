@@ -59,7 +59,7 @@ class HomeViewModel: NSObject, ObservableObject {
         self.payManager = payManager
         self.notificationService = notificationService
         self.timerStore = timerStore
-        #warning("#3 - cover with unit test and make sure implementation works")
+        
         do {
             self.currentTimerModel = try self.timerStore.retrieve()
             self.timerManagerConfiguration = currentTimerModel!.configuration
