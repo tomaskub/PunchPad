@@ -11,7 +11,8 @@ import XCTest
 final class HomeViewModelTests: XCTestCase {
     var sut: HomeViewModel!
     var testContainer: TestContainer!
-
+    var mockTimerStore: MockTimerStore!
+    
     var workTimerLimit: Int = 100
     var overtimeTimerLimit: Int = 100
     
@@ -20,19 +21,52 @@ final class HomeViewModelTests: XCTestCase {
         SettingsStore.setTestUserDefaults()
         testContainer = TestContainer()
         testContainer.dataManager.deleteAll()
+        mockTimerStore = MockTimerStore()
         sut = .init(HomeViewModel(dataManager: testContainer.dataManager,
                                   settingsStore: testContainer.settingsStore,
                                   payManager: PayManager(dataManager: testContainer.dataManager,
                                                          settingsStore: testContainer.settingsStore,
                                                          calendar: .current),
                                   notificationService: NotificationService(center: .current()),
-                                  timerProvider: MockTimer.self)
+                                  timerProvider: MockTimer.self,
+                                  timerStore: mockTimerStore)
         )
     }
     
     override func tearDown() {
         super.tearDown()
         sut = nil
+    }
+    
+    class MockTimerStore: TimerStoring {
+        private(set) var retrieveCalled = false
+        private(set) var saveCalled = false
+        private(set) var deleteCalled = false
+        private(set) var shouldThrowOnSave = false
+        var modelToReturn: TimerModel?
+        
+        func retrieve() throws -> TimerModel {
+            retrieveCalled = true
+            guard let modelToReturn else {
+                throw MockTimerStoreError.mock
+            }
+            return modelToReturn
+        }
+        
+        func save(_: TimerModel) throws {
+            saveCalled = true
+            if shouldThrowOnSave {
+                throw MockTimerStoreError.mock
+            }
+        }
+        
+        func delete() {
+            deleteCalled = true
+        }
+        
+        enum MockTimerStoreError: Error {
+            case mock
+        }
     }
 }
 
