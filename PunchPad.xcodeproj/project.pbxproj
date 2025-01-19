@@ -289,6 +289,7 @@
 		D6EA69592AF83E7800D8F6C3 /* OnboardingWorktimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingWorktimeView.swift; sourceTree = "<group>"; };
 		D6EA695B2AF8452A00D8F6C3 /* TextFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFactory.swift; sourceTree = "<group>"; };
 		D6EA695D2AF8498D00D8F6C3 /* OnboardingOvertimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingOvertimeView.swift; sourceTree = "<group>"; };
+		D6EBB40A2D3D24EC00C61072 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D6ED26BC2AA3B739001E2390 /* StatisticsViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewScreen.swift; sourceTree = "<group>"; };
 		D6ED26BE2AA3BA05001E2390 /* OnboardingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingUITests.swift; sourceTree = "<group>"; };
 		D6EF97912BE7FB6900AD719C /* PreviewDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewDataManager.swift; sourceTree = "<group>"; };
@@ -428,6 +429,7 @@
 		D6C4589229D229210069D89B /* PunchPad */ = {
 			isa = PBXGroup;
 			children = (
+				D6EBB40A2D3D24EC00C61072 /* Info.plist */,
 				D6CE83F02BD431FE00DA0882 /* Localizable.xcstrings */,
 				D6FD09342BCC266600AD8989 /* Features */,
 				D6FD09332BCAE09200AD8989 /* Utilities */,
@@ -1237,6 +1239,7 @@
 				DEVELOPMENT_TEAM = 73N45UT488;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PunchPad/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1274,6 +1277,7 @@
 				DEVELOPMENT_TEAM = 73N45UT488;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PunchPad/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
