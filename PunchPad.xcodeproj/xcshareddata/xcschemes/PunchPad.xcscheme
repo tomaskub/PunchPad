@@ -35,6 +35,9 @@
          <TestPlanReference
             reference = "container:PunchPadTests.xctestplan">
          </TestPlanReference>
+         <TestPlanReference
+            reference = "container:PunchPadUITests.xctestplan">
+         </TestPlanReference>
       </TestPlans>
       <Testables>
          <TestableReference
@@ -54,6 +57,17 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D6C458A929D229230069D89B"
+               BuildableName = "PunchPadUITests.xctest"
+               BlueprintName = "PunchPadUITests"
+               ReferencedContainer = "container:PunchPad.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D6240A172D3ED75D00A53B82"
                BuildableName = "PunchPadUITests.xctest"
                BlueprintName = "PunchPadUITests"
                ReferencedContainer = "container:PunchPad.xcodeproj">
