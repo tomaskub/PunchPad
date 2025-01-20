@@ -85,9 +85,6 @@ extension MainView {
                       } trailing: {
                           trailingToolbar
                       }
-                      .navigationBarTrailingItem {
-                          trailingToolbar
-                      }
     }
 }
 
@@ -102,11 +99,14 @@ private extension MainView {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 28, height: 28)
                 .foregroundColor(.theme.primary)
+            
         case .history:
             makeToolBarItemIcon("plus")
                 .onTapGesture {
                     selectedEntry = historyViewModel.newEntry()
                 }
+                .accessibilityIdentifier(ScreenIdentifier.HistoryView.addEntryButton)
+            
         case .statistics:
             EmptyView()
         }
@@ -120,6 +120,10 @@ private extension MainView {
                 .onTapGesture {
                     navigator.push(.settings)
                 }
+                .accessibilityIdentifier(ScreenIdentifier
+                    .NavigationElements
+                    .NavigationBarButtons
+                    .settingNavigationButton)
             
         case .history:
             HStack {
@@ -127,11 +131,16 @@ private extension MainView {
                     .onTapGesture {
                         isShowingFiltering.toggle()
                     }
+                    .accessibilityIdentifier(ScreenIdentifier.HistoryView.filterButton)
                 
                 makeToolBarItemIcon("gearshape")
                     .onTapGesture {
                         navigator.push(.settings)
                     }
+                    .accessibilityIdentifier(ScreenIdentifier
+                        .NavigationElements
+                        .NavigationBarButtons
+                        .settingNavigationButton)
             }
         }
     }
