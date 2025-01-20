@@ -17,7 +17,7 @@ final class HistoryViewScreen {
     }
     
     var addEntryButton: XCUIElement {
-        app.buttons[Identifier.addEntryButton.rawValue]
+        app.images[Identifier.addEntryButton.rawValue]
     }
     
     var entryRows: XCUIElement {

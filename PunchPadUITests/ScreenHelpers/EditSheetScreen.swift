@@ -8,7 +8,6 @@
 import XCTest
 
 class EditSheetScreen {
-    
     private typealias Identifier = ScreenIdentifier.EditSheetView
     private let app: XCUIApplication
     
@@ -24,12 +23,28 @@ class EditSheetScreen {
         app.datePickers[Identifier.DatePicker.finishDate.rawValue]
     }
     
+    var datePicker: XCUIElement {
+        app.datePickers[Identifier.DatePicker.date.rawValue]
+    }
+    
+    var startTimePicker: XCUIElement {
+        app.datePickers[Identifier.DatePicker.startTime.rawValue]
+    }
+    
+    var finishTimePicker: XCUIElement {
+        app.datePickers[Identifier.DatePicker.finishTime.rawValue]
+    }
+    
     var timeWorkedValueLabel: XCUIElement {
-        app.staticTexts[Identifier.Label.timeWorkedValue.rawValue]
+        app.staticTexts[Identifier.Label.worktimeValue.rawValue]
     }
     
     var overtimeValueLabel: XCUIElement {
         app.staticTexts[Identifier.Label.overtimeValue.rawValue]
+    }
+    
+    var breakTimeValueLabel: XCUIElement {
+        app.staticTexts[Identifier.Label.breaktimeValue.rawValue]
     }
     
     var saveButton: XCUIElement {

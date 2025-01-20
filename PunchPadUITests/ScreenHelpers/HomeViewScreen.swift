@@ -34,6 +34,6 @@ class HomeViewScreen {
     }
     
     var settingsNavigationButton: XCUIElement {
-        app.buttons[ScreenIdentifier.HomeView.settingNavigationButton.rawValue]
+        app.buttons[ScreenIdentifier.NavigationElements.NavigationBarButtons.settingNavigationButton.rawValue]
     }
 }

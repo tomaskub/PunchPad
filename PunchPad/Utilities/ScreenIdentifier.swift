@@ -8,7 +8,6 @@
 import Foundation
 
 enum ScreenIdentifier {
-    
     enum NavigationElements {
         enum NavigationBarButtons: String {
             case settingNavigationButton
@@ -157,13 +156,17 @@ enum ScreenIdentifier {
     
     enum EditSheetView {
         enum Label: String {
-            case timeWorkedValue
+            case worktimeValue
             case overtimeValue
+            case breaktimeValue
         }
         
         enum DatePicker: String {
             case startDate
             case finishDate
+            case date
+            case startTime
+            case finishTime
         }
         
         enum Button: String {
