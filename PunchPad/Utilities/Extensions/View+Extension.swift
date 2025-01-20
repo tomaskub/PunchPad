@@ -44,7 +44,6 @@ extension View {
         )
     }
     
-    
     /// Animate in sync within a task.
     /// - Parameters:
     ///   - duration: length before next animation within a task will start
@@ -72,6 +71,10 @@ extension View {
                 continuation.resume()
             }
         }
+    }
+    
+    nonisolated public func accessibilityIdentifier<T: RawRepresentable>(_ identifier: T) -> ModifiedContent<Self, AccessibilityAttachmentModifier> where T.RawValue == String {
+        accessibilityIdentifier(identifier.rawValue)
     }
 }
 

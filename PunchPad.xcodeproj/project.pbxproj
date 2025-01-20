@@ -78,6 +78,7 @@
 		D684A3882AF6F3E700511E0D /* OnboardingWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D684A3872AF6F3E700511E0D /* OnboardingWelcomeView.swift */; };
 		D684A38A2AF6F54B00511E0D /* ButtonFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D684A3892AF6F54B00511E0D /* ButtonFactory.swift */; };
 		D68732022B2243C9008CB0D4 /* PaginationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68732012B2243C9008CB0D4 /* PaginationState.swift */; };
+		D68C4C6F2D3EED2000C37E79 /* ModifiedContent+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68C4C6E2D3EED2000C37E79 /* ModifiedContent+Extension.swift */; };
 		D698F3F02B5C131D00D9DFF4 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D698F3EF2B5C131D00D9DFF4 /* NotificationService.swift */; };
 		D698F3F22B5C1F8600D9DFF4 /* AppNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D698F3F12B5C1F8600D9DFF4 /* AppNotification.swift */; };
 		D69C8CD72B43687700146EFA /* CustomDatePickerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C8CD62B43687700146EFA /* CustomDatePickerContainer.swift */; };
@@ -236,6 +237,7 @@
 		D684A3872AF6F3E700511E0D /* OnboardingWelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingWelcomeView.swift; sourceTree = "<group>"; };
 		D684A3892AF6F54B00511E0D /* ButtonFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonFactory.swift; sourceTree = "<group>"; };
 		D68732012B2243C9008CB0D4 /* PaginationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationState.swift; sourceTree = "<group>"; };
+		D68C4C6E2D3EED2000C37E79 /* ModifiedContent+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModifiedContent+Extension.swift"; sourceTree = "<group>"; };
 		D698F3EF2B5C131D00D9DFF4 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		D698F3F12B5C1F8600D9DFF4 /* AppNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNotification.swift; sourceTree = "<group>"; };
 		D69C8CD62B43687700146EFA /* CustomDatePickerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePickerContainer.swift; sourceTree = "<group>"; };
@@ -334,6 +336,7 @@
 				D62B9DF92C71E53100CBEC4B /* Logger+Extension.swift */,
 				D6DD4B342C86519C00263B59 /* UNAuthorizationStatus+Extension.swift */,
 				D6CB2A7B2B05629200F3030C /* View+Extension.swift */,
+				D68C4C6E2D3EED2000C37E79 /* ModifiedContent+Extension.swift */,
 				D666ADCB2AC05A0500B74663 /* CaseIterable+Extension.swift */,
 				D6CBB8672B34ACF20074CE8B /* Calendar+Extension.swift */,
 				D6C3567A2B44AAB4007C23A3 /* ButtonStyle+Extension.swift */,
@@ -1042,6 +1045,7 @@
 				D66A4DF82B7AA74F00D16110 /* Period.swift in Sources */,
 				D617D43D2B4987480069AA3B /* GrossSalary.swift in Sources */,
 				D6C458C129D2DD4F0069D89B /* HomeViewModel.swift in Sources */,
+				D68C4C6F2D3EED2000C37E79 /* ModifiedContent+Extension.swift in Sources */,
 				D6C4589629D229210069D89B /* ContentView.swift in Sources */,
 				D63753AE2B45DA2000386482 /* TextFieldStyle+Extension.swift in Sources */,
 				D67332E62AADB8B1005FFE7F /* LaunchArgument.swift in Sources */,
