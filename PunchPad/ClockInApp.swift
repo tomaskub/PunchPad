@@ -15,9 +15,10 @@ struct ClockInApp: App {
     @AppStorage(SettingsStore.SettingKey.savedColorScheme.rawValue) var preferredColorScheme: String?
     
     init() {
+        let container = resolveContainerType()
+        self.container = container
         let handler = LaunchArgumentsHandler(userDefaults: .standard)
         handler.handleLaunch()
-        self.container = Container()
     }
     
     var colorScheme: ColorScheme? {
@@ -32,9 +33,19 @@ struct ClockInApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(navigator: appNavigator,
-                        container: container
-            )
-                .preferredColorScheme(colorScheme)
+                        container: container)
+            .preferredColorScheme(colorScheme)
         }
+    }
+}
+
+fileprivate func resolveContainerType() -> Container {
+    let handler = LaunchArgumentsHandler(userDefaults: .standard)
+    
+    if handler.shouldSetInMemoryPersistentStore() {
+        let dataManager = TestDataManager()
+        return Container(dataManaging: dataManager)
+    } else {
+        return Container()
     }
 }

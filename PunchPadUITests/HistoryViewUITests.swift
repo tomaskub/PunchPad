@@ -88,11 +88,11 @@ final class HistoryViewUITests: XCTestCase {
         XCTAssertEqual(cellResult, .completed)
     }
     
-    #warning("Ensure setup includes a cell in the in memory store")
     func test_deletingEntry() {
         // Given
         navigateToHistoryView()
-        let expectedCellCount = app.collectionViews.cells.count - 1
+        // INFO: there is 2 extra cells - loading and month header
+        let expectedCellCount = app.collectionViews.cells.count - 3
         let cellCountExpectation = expectation(
             for: NSPredicate(format: "count == \(expectedCellCount)"),
             evaluatedWith: app.collectionViews.cells

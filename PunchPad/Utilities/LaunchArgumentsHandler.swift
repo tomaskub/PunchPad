@@ -11,7 +11,23 @@ struct LaunchArgumentsHandler {
     let userDefaults: UserDefaults
     
     func handleLaunch() {
+        setTestUserDefaultsIfNeeded()
         startWithOnboardingIfNeeded()
+    }
+    
+    func shouldSetInMemoryPersistentStore() -> Bool {
+        guard
+            CommandLine.arguments.contains(LaunchArgument.inMemoryPresistenStore.rawValue)
+        else { return false  }
+        return true
+    }
+    
+    private func setTestUserDefaultsIfNeeded() {
+        guard
+            CommandLine.arguments.contains(LaunchArgument.setTestUserDefaults.rawValue)
+        else { return }
+        
+        SettingsStore.setTestUserDefaults()
     }
     
     private func startWithOnboardingIfNeeded() {
