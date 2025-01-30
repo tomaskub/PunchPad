@@ -118,6 +118,7 @@
 		D6DD4B352C86519C00263B59 /* UNAuthorizationStatus+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DD4B342C86519C00263B59 /* UNAuthorizationStatus+Extension.swift */; };
 		D6E2C15929D6C20E00229286 /* WorkHistory.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15729D6C20E00229286 /* WorkHistory.xcdatamodeld */; };
 		D6E2C15B29D6C31800229286 /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E2C15A29D6C31800229286 /* HistoryViewModel.swift */; };
+		D6E3100F2D4C2FCA00C06CFD /* LaunchArgumentsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E3100E2D4C2FCA00C06CFD /* LaunchArgumentsHandler.swift */; };
 		D6E6832E2B79502B009C6CEC /* ChartableEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E6832D2B79502B009C6CEC /* ChartableEntry.swift */; };
 		D6E6B8732AF98A4B0073D911 /* OnboardingNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E6B8722AF98A4B0073D911 /* OnboardingNotificationView.swift */; };
 		D6E6B8752AF98EB40073D911 /* OnboardingSalaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E6B8742AF98EB40073D911 /* OnboardingSalaryView.swift */; };
@@ -283,6 +284,7 @@
 		D6DD4B342C86519C00263B59 /* UNAuthorizationStatus+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UNAuthorizationStatus+Extension.swift"; sourceTree = "<group>"; };
 		D6E2C15829D6C20E00229286 /* WorkHistory.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WorkHistory.xcdatamodel; sourceTree = "<group>"; };
 		D6E2C15A29D6C31800229286 /* HistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
+		D6E3100E2D4C2FCA00C06CFD /* LaunchArgumentsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchArgumentsHandler.swift; sourceTree = "<group>"; };
 		D6E6832D2B79502B009C6CEC /* ChartableEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartableEntry.swift; sourceTree = "<group>"; };
 		D6E6B8722AF98A4B0073D911 /* OnboardingNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingNotificationView.swift; sourceTree = "<group>"; };
 		D6E6B8742AF98EB40073D911 /* OnboardingSalaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSalaryView.swift; sourceTree = "<group>"; };
@@ -515,6 +517,7 @@
 				D61F11322AB3A6E700902D6D /* Extensions */,
 				D6B2BDF52B27C42800CB4FA7 /* ViewModifiers */,
 				D67332E52AADB8B1005FFE7F /* LaunchArgument.swift */,
+				D6E3100E2D4C2FCA00C06CFD /* LaunchArgumentsHandler.swift */,
 				D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */,
 			);
 			path = Utilities;
@@ -1019,6 +1022,7 @@
 				D698F3F02B5C131D00D9DFF4 /* NotificationService.swift in Sources */,
 				D6FA94FD2B013F060034B16A /* ChartLegendItemView.swift in Sources */,
 				D67633F92BF54E4300D45163 /* TimerModel.swift in Sources */,
+				D6E3100F2D4C2FCA00C06CFD /* LaunchArgumentsHandler.swift in Sources */,
 				D6E2C15B29D6C31800229286 /* HistoryViewModel.swift in Sources */,
 				D6EA695C2AF8452A00D8F6C3 /* TextFactory.swift in Sources */,
 				D6CE83F82BD4443300DA0882 /* Localized.swift in Sources */,
