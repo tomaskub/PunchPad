@@ -31,4 +31,16 @@ final class HistoryViewScreen {
     var editEntryButton: XCUIElement {
         app.buttons[Identifier.editEntryButton.rawValue]
     }
+    
+    var dialogOkButton: XCUIElement {
+        app.buttons[Identifier.ConfirmDeleteDialogView.okButton.rawValue]
+    }
+    
+    var dialogCancelButton: XCUIElement {
+        app.buttons[Identifier.ConfirmDeleteDialogView.cancelButton.rawValue]
+    }
+    
+    var dialogLabel: XCUIElement {
+        app.staticTexts[Identifier.ConfirmDeleteDialogView.dialogLabel.rawValue]
+    }
 }

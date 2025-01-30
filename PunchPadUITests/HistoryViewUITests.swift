@@ -88,22 +88,45 @@ final class HistoryViewUITests: XCTestCase {
         XCTAssertEqual(cellResult, .completed)
     }
     
+    #warning("Ensure setup includes a cell in the in memory store")
     func test_deletingEntry() {
         // Given
         navigateToHistoryView()
         let expectedCellCount = app.collectionViews.cells.count - 1
-        let cellCountExpectation = expectation(for: NSPredicate(format: "count == \(expectedCellCount)"), evaluatedWith: app.collectionViews.cells)
+        let cellCountExpectation = expectation(
+            for: NSPredicate(format: "count == \(expectedCellCount)"),
+            evaluatedWith: app.collectionViews.cells
+        )
         let swipeButtonsExpectation = [
-            expectation(for: existsPredicate, evaluatedWith: historyScreen.editEntryButton),
-            expectation(for: existsPredicate, evaluatedWith: historyScreen.deleteEntryButton)
+            historyScreen.editEntryButton,
+            historyScreen.deleteEntryButton
         ]
+            .map { expectation(for: existsPredicate, evaluatedWith: $0) }
+        
+        let confirmDialogExpectations = [
+            historyScreen.dialogOkButton,
+            historyScreen.dialogCancelButton,
+            historyScreen.dialogLabel
+        ]
+            .map { expectation(for: existsPredicate, evaluatedWith: $0) }
+        
         // When
         app.collectionViews.cells.firstMatch.swipeLeft()
         let cellSwipeButtonsResult = XCTWaiter.wait(for: swipeButtonsExpectation, timeout: standardTimeout)
+        
         // Then
         XCTAssertEqual(cellSwipeButtonsResult, .completed, "After swipe edit and delete buttons should exist")
+        
         // When
         historyScreen.deleteEntryButton.tap()
+        let confirmDialogResult = XCTWaiter.wait(for: confirmDialogExpectations, timeout: standardTimeout)
+        
+        // Then
+        XCTAssertEqual(confirmDialogResult, .completed, "After pressing delete buttons confirm dialog should be present")
+        
+        // When
+        app.buttons["Ok"].tap()
+        
         // Then
         let result = XCTWaiter.wait(for: [cellCountExpectation], timeout: standardTimeout)
         XCTAssertEqual(result, .completed, "The amount of cells should be 1 less than starting amount")
@@ -111,24 +134,24 @@ final class HistoryViewUITests: XCTestCase {
     
     func test_EditingExistingEntry() {
         // Given
-        let resultExpetations = [
-            expectation(for: existsPredicate, evaluatedWith: app.staticTexts["6:00 AM"]),
-            expectation(for: existsPredicate, evaluatedWith: app.staticTexts["4:00 PM"]),
-            expectation(for: existsPredicate, evaluatedWith: app.staticTexts["10 hours 00 minutes"])
-        ]
+        let resultExpetations = ["06:00 - 16:00", "10 hours 00 min"]
+            .map{ app.staticTexts[$0] }
+            .map { expectation(for: existsPredicate, evaluatedWith: $0) }
         navigateToHistoryView()
         // When
         app.collectionViews.cells.firstMatch.swipeLeft()
         historyScreen.editEntryButton.tap()
-        editScreen.finishDatePicker.buttons.element(boundBy: 2).tap()
-        app.pickerWheels.element(boundBy: 0).adjust(toPickerWheelValue: "4")
+        editScreen.finishTimePicker.tap()
+        app.pickerWheels.element(boundBy: 0).adjust(toPickerWheelValue: "16")
         app.pickerWheels.element(boundBy: 1).adjust(toPickerWheelValue: "00")
         editScreen.popoverDismissButton.tap()
         editScreen.saveButton.tap()
-        app.collectionViews.cells.firstMatch.tap()
+        
         // Then
-        let result = XCTWaiter.wait(for: resultExpetations, timeout: standardTimeout)
-        XCTAssertEqual(result, .completed, "The expected static texts should exit")
+        let result = XCTWaiter.wait(for: resultExpetations,
+                                    timeout: standardTimeout)
+        XCTAssertEqual(result, .completed,
+                       "The expected static texts should exit")
     }
     
     private func navigateToHistoryView() {

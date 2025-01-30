@@ -7,7 +7,9 @@
 
 import SwiftUI
 
+#warning("Implement localization in this file")
 struct ConfirmDeleteRowView: View {
+    private typealias Identifier = ScreenIdentifier.HistoryView.ConfirmDeleteDialogView
     let iconSystemName: String
     let headingText: String
     let confirmAction: () -> Void
@@ -22,9 +24,12 @@ struct ConfirmDeleteRowView: View {
     var body: some View {
         VStack {
             Label(
-                title: { Text(headingText)
+                title: {
+                    Text(headingText)
                         .foregroundColor(.theme.blackLabel)
-                    .font(.system(size: 14))},
+                        .font(.system(size: 14))
+                        .accessibilityIdentifier(Identifier.dialogLabel)
+                },
                 icon: { Image(systemName: iconSystemName)
                         .foregroundColor(.theme.redLabel)
                 }
@@ -35,11 +40,13 @@ struct ConfirmDeleteRowView: View {
                  cancelAction()
                 }
                 .buttonStyle(.dismissive)
+                .accessibilityIdentifier(Identifier.cancelButton)
                 
                 Button("Ok") {
                     confirmAction()
                 }
                 .buttonStyle(.confirming)
+                .accessibilityIdentifier(Identifier.okButton)
             }
         }
     }

@@ -138,6 +138,12 @@ enum ScreenIdentifier {
         case editEntryButton
         case entryRow
         case filterButton
+        
+        enum ConfirmDeleteDialogView: String {
+            case okButton
+            case cancelButton
+            case dialogLabel
+        }
     }
     
     enum HistoryRowView {
