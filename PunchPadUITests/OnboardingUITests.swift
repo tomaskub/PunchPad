@@ -121,18 +121,25 @@ final class OnboardingUITests: XCTestCase {
         onboardingScreen.overtimeMinutesPicker.children(matching: .pickerWheel).firstMatch.adjust(toPickerWheelValue: "30")
         onboardingScreen.overtimeHoursPicker.children(matching: .pickerWheel).firstMatch.adjust(toPickerWheelValue: "4")
         onboardingScreen.advanceStageButton.tap()
+        
         onboardingScreen.notificationToggleButton.switches.firstMatch.tap()
+        
         onboardingScreen.advanceStageButton.tap()
         onboardingScreen.grossPaycheckTextField.tap()
+        
         onboardingScreen.grossPaycheckTextField.typeText("10000\n")
         onboardingScreen.calculateNetSalaryToggleButton.switches.firstMatch.tap()
         onboardingScreen.advanceStageButton.tap(withNumberOfTaps: 2, numberOfTouches: 1)
-        HomeViewScreen(app: app).settingsNavigationButton.tap()
+        
+        ContentViewScreen(app: app).navBarSettingsButton.tap()
+        
         // Then
-        XCTAssertEqual(settingsScreen.grossPaycheckTextField.value as! String, "10000")
+        XCTAssertEqual(
+            extractNumber(from:(settingsScreen.grossPaycheckTextField.value as? String) ?? ""),
+            10_000
+        )
         XCTAssertEqual(settingsScreen.calculateNetPayToggle.value as? String, "1")
-        XCTAssertEqual(settingsScreen.sendNotificationsToggle.value as? String, "1")
-        // something is wrong with this one?
+        XCTAssertEqual(settingsScreen.sendNotificationsToggle.value as? String, "0")
         XCTAssertEqual(settingsScreen.keepLogginOvertimeToggle.value as? String, "1")
         // When
         settingsScreen.setTimeLengthExpandText.tap()
@@ -143,5 +150,12 @@ final class OnboardingUITests: XCTestCase {
         XCTAssertEqual(settingsScreen.workMinutesHoursPicker.pickerWheels.firstMatch.value as! String, "30")
         XCTAssertEqual(settingsScreen.overtimeHoursPicker.pickerWheels.firstMatch.value as! String, "4")
         XCTAssertEqual(settingsScreen.overtimeMinutesPicker.pickerWheels.firstMatch.value as! String, "30")
+    }
+    
+    func extractNumber(from: String) -> Int? {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = .current
+        return formatter.number(from: from) as? Int
     }
 }

@@ -15,10 +15,12 @@ struct ClockInApp: App {
     @AppStorage(SettingsStore.SettingKey.savedColorScheme.rawValue) var preferredColorScheme: String?
     
     init() {
-        let container = resolveContainerType()
-        self.container = container
+        // Handle first
         let handler = LaunchArgumentsHandler(userDefaults: .standard)
         handler.handleLaunch()
+        
+        let container = resolveContainerType()
+        self.container = container
     }
     
     var colorScheme: ColorScheme? {

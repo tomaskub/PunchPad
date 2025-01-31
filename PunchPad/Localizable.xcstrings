@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "" : {
-
-    },
     "%lld" : {
 
     },
@@ -59,6 +56,9 @@
 
     },
     "Edit entry" : {
+
+    },
+    "Enter amount" : {
 
     },
     "Filter" : {

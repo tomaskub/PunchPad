@@ -27,7 +27,7 @@ struct OnboardingWorktimeView: View {
                                 .tag(i)
                         }
                     }
-                    .accessibilityIdentifier(Identifier.Pickers.workingHours.rawValue)
+                    .accessibilityIdentifier(Identifier.Pickers.workingHours)
                     .pickerStyle(.wheel)
                 }
                 VStack {
@@ -41,7 +41,7 @@ struct OnboardingWorktimeView: View {
                                 .tag(i)
                         }
                     }
-                    .accessibilityIdentifier(Identifier.Pickers.workingMinutes.rawValue)
+                    .accessibilityIdentifier(Identifier.Pickers.workingMinutes)
                     .pickerStyle(.wheel)
                 }
             }

@@ -130,10 +130,11 @@ private extension SettingsView {
                 }
             }
             if isShowingOvertimeEditor {
-                makePickerRow(hours: $viewModel.overtimeHours,
-                              minutes: $viewModel.overtimeMinutes,
-                              hoursAccessibilityIdentifier: .overtimeHoursPicker,
-                              minutesAccessibilityIdentifier: .overtimeMinutesPicker
+                makePickerRow(
+                    hours: $viewModel.overtimeHours,
+                    minutes: $viewModel.overtimeMinutes,
+                    hoursAccessibilityIdentifier: .overtimeHoursPicker,
+                    minutesAccessibilityIdentifier: .overtimeMinutesPicker
                 )
             }
         }
@@ -149,6 +150,7 @@ private extension SettingsView {
             )
             .foregroundColor(.theme.blackLabel)
             .textFieldStyle(.greenBordered)
+            .accessibilityIdentifier(Identifier.TextFields.grossPay)
         }
     }
     
@@ -218,7 +220,7 @@ private extension SettingsView {
         Toggle(text, isOn: value)
             .foregroundStyle(Color.theme.blackLabel)
             .tint(.theme.primary)
-            .accessibilityIdentifier(identifier.rawValue)
+            .accessibilityIdentifier(identifier)
     }
     
     
