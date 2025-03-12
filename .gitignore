@@ -1,6 +1,14 @@
+## XCUserdata
 ClockIn.xcodeproj/project.xcworkspace/xcuserdata/tomaszkubiak.xcuserdatad
 xcuserdata/
 *.xcuserstate
+
+## Fastlane
 fastlane/test_output/
 fastlane/report.xml
+
+## Swift package manager
+.build/
+.swiftpm/
+.netrc
 
