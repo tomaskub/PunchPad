@@ -26,8 +26,10 @@ ClockIn helps with tracking the work time and overtime you do at work. Whenever 
 - CoreData
 - UI and unit tested with XCTest
 - Xcode Cloud for CI tests
+- SPM
 
 # Highlights 
+- Dependencies are local swift packages imported into the main app project.
 - DI is done with root container passed into environment. Services are retrieved from container and injected into subviews. Container is responsible for parsing launch arguments, detecting previews and configuring the environment, making UI testing much easier. 
 - SettingsStore wraps user defaults and provides a type safe access to the settings. It also is a single point of acess and shares state with multiple view models, ensuring that all parts of the app work on the same set of data.
 - RingView shows passsing time in intuitive manner
