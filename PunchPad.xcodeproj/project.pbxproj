@@ -27,6 +27,7 @@
 		D621C0CA2B3B79850065DF8C /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D621C0C92B3B79850065DF8C /* CircleButton.swift */; };
 		D621C0CC2B3B8BE40065DF8C /* TimerIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D621C0CB2B3B8BE40065DF8C /* TimerIndicator.swift */; };
 		D6226E592D82209F00CD6D98 /* NavigationKit in Frameworks */ = {isa = PBXBuildFile; productRef = D6226E582D82209F00CD6D98 /* NavigationKit */; };
+		D6226E5C2D82249700CD6D98 /* TabViewKit in Frameworks */ = {isa = PBXBuildFile; productRef = D6226E5B2D82249700CD6D98 /* TabViewKit */; };
 		D629CEF92B3613660036579D /* TimerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D629CEF82B3613660036579D /* TimerService.swift */; };
 		D629CEFB2B363B500036579D /* TimerServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D629CEFA2B363B500036579D /* TimerServiceTests.swift */; };
 		D62B9DFA2C71E53100CBEC4B /* Logger+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62B9DF92C71E53100CBEC4B /* Logger+Extension.swift */; };
@@ -303,6 +304,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6226E5C2D82249700CD6D98 /* TabViewKit in Frameworks */,
 				D66451062B56FF47003C537B /* ThemeKit.framework in Frameworks */,
 				D6226E592D82209F00CD6D98 /* NavigationKit in Frameworks */,
 				D6FE20902B4700AE00F931CD /* TabViewKit.framework in Frameworks */,
@@ -918,6 +920,7 @@
 			mainGroup = D6C4588729D229200069D89B;
 			packageReferences = (
 				D6226E572D82209F00CD6D98 /* XCLocalSwiftPackageReference "Packages/NavigationKit" */,
+				D6226E5A2D82249700CD6D98 /* XCLocalSwiftPackageReference "Packages/TabViewKit" */,
 			);
 			productRefGroup = D6C4589129D229210069D89B /* Products */;
 			projectDirPath = "";
@@ -1426,12 +1429,20 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Packages/NavigationKit;
 		};
+		D6226E5A2D82249700CD6D98 /* XCLocalSwiftPackageReference "Packages/TabViewKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/TabViewKit;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		D6226E582D82209F00CD6D98 /* NavigationKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = NavigationKit;
+		};
+		D6226E5B2D82249700CD6D98 /* TabViewKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TabViewKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 
