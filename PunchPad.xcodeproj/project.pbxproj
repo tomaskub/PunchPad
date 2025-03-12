@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -26,6 +26,7 @@
 		D61F11342AB3A6FF00902D6D /* ColorScheme+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61F11332AB3A6FF00902D6D /* ColorScheme+Extension.swift */; };
 		D621C0CA2B3B79850065DF8C /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D621C0C92B3B79850065DF8C /* CircleButton.swift */; };
 		D621C0CC2B3B8BE40065DF8C /* TimerIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D621C0CB2B3B8BE40065DF8C /* TimerIndicator.swift */; };
+		D6226E592D82209F00CD6D98 /* NavigationKit in Frameworks */ = {isa = PBXBuildFile; productRef = D6226E582D82209F00CD6D98 /* NavigationKit */; };
 		D629CEF92B3613660036579D /* TimerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D629CEF82B3613660036579D /* TimerService.swift */; };
 		D629CEFB2B363B500036579D /* TimerServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D629CEFA2B363B500036579D /* TimerServiceTests.swift */; };
 		D62B9DFA2C71E53100CBEC4B /* Logger+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62B9DF92C71E53100CBEC4B /* Logger+Extension.swift */; };
@@ -131,8 +132,6 @@
 		D6FA94FD2B013F060034B16A /* ChartLegendItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FA94FC2B013F060034B16A /* ChartLegendItemView.swift */; };
 		D6FA94FF2B0145FF0034B16A /* ChartFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FA94FE2B0145FE0034B16A /* ChartFactory.swift */; };
 		D6FE20872B46EE0D00F931CD /* ConfirmDeleteRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FE20862B46EE0D00F931CD /* ConfirmDeleteRowView.swift */; };
-		D6FE208D2B4700AD00F931CD /* NavigationKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6801A142B404F61003F54F9 /* NavigationKit.framework */; };
-		D6FE208E2B4700AD00F931CD /* NavigationKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D6801A142B404F61003F54F9 /* NavigationKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D6FE20902B4700AE00F931CD /* TabViewKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D62286732B40A04B00B41004 /* TabViewKit.framework */; };
 		D6FE20912B4700AE00F931CD /* TabViewKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D62286732B40A04B00B41004 /* TabViewKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -163,7 +162,6 @@
 			files = (
 				D66451072B56FF47003C537B /* ThemeKit.framework in Embed Frameworks */,
 				D6FE20912B4700AE00F931CD /* TabViewKit.framework in Embed Frameworks */,
-				D6FE208E2B4700AD00F931CD /* NavigationKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -306,8 +304,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				D66451062B56FF47003C537B /* ThemeKit.framework in Frameworks */,
+				D6226E592D82209F00CD6D98 /* NavigationKit in Frameworks */,
 				D6FE20902B4700AE00F931CD /* TabViewKit.framework in Frameworks */,
-				D6FE208D2B4700AD00F931CD /* NavigationKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -918,6 +916,9 @@
 				Base,
 			);
 			mainGroup = D6C4588729D229200069D89B;
+			packageReferences = (
+				D6226E572D82209F00CD6D98 /* XCLocalSwiftPackageReference "Packages/NavigationKit" */,
+			);
 			productRefGroup = D6C4589129D229210069D89B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1419,6 +1420,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		D6226E572D82209F00CD6D98 /* XCLocalSwiftPackageReference "Packages/NavigationKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/NavigationKit;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D6226E582D82209F00CD6D98 /* NavigationKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NavigationKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		D6E2C15729D6C20E00229286 /* WorkHistory.xcdatamodeld */ = {

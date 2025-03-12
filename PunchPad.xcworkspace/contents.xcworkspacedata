@@ -16,7 +16,4 @@
    <FileRef
       location = "group:Frameworks/TabViewKit.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:Frameworks/NavigationKit.xcodeproj">
-   </FileRef>
 </Workspace>
