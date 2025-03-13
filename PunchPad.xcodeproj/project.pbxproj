@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -19,6 +19,7 @@
 		D61F11342AB3A6FF00902D6D /* ColorScheme+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61F11332AB3A6FF00902D6D /* ColorScheme+Extension.swift */; };
 		D621C0CA2B3B79850065DF8C /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D621C0C92B3B79850065DF8C /* CircleButton.swift */; };
 		D621C0CC2B3B8BE40065DF8C /* TimerIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D621C0CB2B3B8BE40065DF8C /* TimerIndicator.swift */; };
+
 		D6240A232D3ED77500A53B82 /* HistoryViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61007482AAB867C00503C28 /* HistoryViewScreen.swift */; };
 		D6240A242D3ED78A00A53B82 /* EditSheetScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D610074C2AAC77F300503C28 /* EditSheetScreen.swift */; };
 		D6240A252D3ED78F00A53B82 /* HomeViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60D21F12AA30F310055BE34 /* HomeViewScreen.swift */; };
@@ -33,6 +34,12 @@
 		D6240A2E2D3ED7BB00A53B82 /* SettingsViewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B3B2652ABA237800101A1F /* SettingsViewUITests.swift */; };
 		D6240A2F2D3ED7CC00A53B82 /* LaunchArgument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67332E52AADB8B1005FFE7F /* LaunchArgument.swift */; };
 		D6240A302D3ED8AA00A53B82 /* ScreenIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D906AD2AA0BEDE004E09C9 /* ScreenIdentifier.swift */; };
+
+		D6226E592D82209F00CD6D98 /* NavigationKit in Frameworks */ = {isa = PBXBuildFile; productRef = D6226E582D82209F00CD6D98 /* NavigationKit */; };
+		D6226E5C2D82249700CD6D98 /* TabViewKit in Frameworks */ = {isa = PBXBuildFile; productRef = D6226E5B2D82249700CD6D98 /* TabViewKit */; };
+		D6226E602D822D0D00CD6D98 /* ThemeKit in Frameworks */ = {isa = PBXBuildFile; productRef = D6226E5F2D822D0D00CD6D98 /* ThemeKit */; };
+		D6226E632D82334600CD6D98 /* ThemeKit in Frameworks */ = {isa = PBXBuildFile; productRef = D6226E622D82334600CD6D98 /* ThemeKit */; };
+
 		D629CEF92B3613660036579D /* TimerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D629CEF82B3613660036579D /* TimerService.swift */; };
 		D629CEFB2B363B500036579D /* TimerServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D629CEFA2B363B500036579D /* TimerServiceTests.swift */; };
 		D62B9DFA2C71E53100CBEC4B /* Logger+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62B9DF92C71E53100CBEC4B /* Logger+Extension.swift */; };
@@ -53,8 +60,6 @@
 		D65A976B29F2E6B800462D8C /* StatisticsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65A976A29F2E6B800462D8C /* StatisticsViewModelTests.swift */; };
 		D65A976F29F3BBDD00462D8C /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65A976E29F3BBDD00462D8C /* OnboardingView.swift */; };
 		D65FD53D29D8B259006CC34F /* PersistanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65FD53C29D8B259006CC34F /* PersistanceController.swift */; };
-		D66451062B56FF47003C537B /* ThemeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D630A53A2B4704EA0098CA86 /* ThemeKit.framework */; };
-		D66451072B56FF47003C537B /* ThemeKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D630A53A2B4704EA0098CA86 /* ThemeKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D666ADCC2AC05A0500B74663 /* CaseIterable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D666ADCB2AC05A0500B74663 /* CaseIterable+Extension.swift */; };
 		D66750EA29D713C900757F17 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66750E929D713C900757F17 /* HistoryView.swift */; };
 		D66750EC29D71C8300757F17 /* HistoryRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66750EB29D71C8300757F17 /* HistoryRowView.swift */; };
@@ -133,10 +138,6 @@
 		D6FA94FD2B013F060034B16A /* ChartLegendItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FA94FC2B013F060034B16A /* ChartLegendItemView.swift */; };
 		D6FA94FF2B0145FF0034B16A /* ChartFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FA94FE2B0145FE0034B16A /* ChartFactory.swift */; };
 		D6FE20872B46EE0D00F931CD /* ConfirmDeleteRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FE20862B46EE0D00F931CD /* ConfirmDeleteRowView.swift */; };
-		D6FE208D2B4700AD00F931CD /* NavigationKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6801A142B404F61003F54F9 /* NavigationKit.framework */; };
-		D6FE208E2B4700AD00F931CD /* NavigationKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D6801A142B404F61003F54F9 /* NavigationKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D6FE20902B4700AE00F931CD /* TabViewKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D62286732B40A04B00B41004 /* TabViewKit.framework */; };
-		D6FE20912B4700AE00F931CD /* TabViewKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D62286732B40A04B00B41004 /* TabViewKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -155,22 +156,6 @@
 			remoteInfo = ClockIn;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		D6FE208F2B4700AD00F931CD /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				D66451072B56FF47003C537B /* ThemeKit.framework in Embed Frameworks */,
-				D6FE20912B4700AE00F931CD /* TabViewKit.framework in Embed Frameworks */,
-				D6FE208E2B4700AD00F931CD /* NavigationKit.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		D60480D72B122CDA00D6D70D /* ChartPeriodServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartPeriodServiceTests.swift; sourceTree = "<group>"; };
@@ -310,6 +295,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6226E5C2D82249700CD6D98 /* TabViewKit in Frameworks */,
+				D6226E602D822D0D00CD6D98 /* ThemeKit in Frameworks */,
+				D6226E592D82209F00CD6D98 /* NavigationKit in Frameworks */,
+				D6226E632D82334600CD6D98 /* ThemeKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -867,7 +856,6 @@
 				D6C4588C29D229210069D89B /* Sources */,
 				D6C4588D29D229210069D89B /* Frameworks */,
 				D6C4588E29D229210069D89B /* Resources */,
-				D6FE208F2B4700AD00F931CD /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -928,6 +916,11 @@
 				Base,
 			);
 			mainGroup = D6C4588729D229200069D89B;
+			packageReferences = (
+				D6226E572D82209F00CD6D98 /* XCLocalSwiftPackageReference "Packages/NavigationKit" */,
+				D6226E5A2D82249700CD6D98 /* XCLocalSwiftPackageReference "Packages/TabViewKit" */,
+				D6226E612D82334600CD6D98 /* XCLocalSwiftPackageReference "Packages/ThemeKit" */,
+			);
 			productRefGroup = D6C4589129D229210069D89B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1448,6 +1441,40 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		D6226E572D82209F00CD6D98 /* XCLocalSwiftPackageReference "Packages/NavigationKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/NavigationKit;
+		};
+		D6226E5A2D82249700CD6D98 /* XCLocalSwiftPackageReference "Packages/TabViewKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/TabViewKit;
+		};
+		D6226E612D82334600CD6D98 /* XCLocalSwiftPackageReference "Packages/ThemeKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/ThemeKit;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D6226E582D82209F00CD6D98 /* NavigationKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NavigationKit;
+		};
+		D6226E5B2D82249700CD6D98 /* TabViewKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TabViewKit;
+		};
+		D6226E5F2D822D0D00CD6D98 /* ThemeKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ThemeKit;
+		};
+		D6226E622D82334600CD6D98 /* ThemeKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ThemeKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		D6E2C15729D6C20E00229286 /* WorkHistory.xcdatamodeld */ = {
