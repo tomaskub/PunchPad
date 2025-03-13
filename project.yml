@@ -58,9 +58,21 @@ targets:
         INFOPLIST_KEY_UIUserInterfaceStyle: Light
 
     scheme: 
-      testTargets:
-        - name: PunchPadTests 
-        - name: PunchPadUITests 
+      PunchPad:
+        build: 
+          targets: 
+            PunchPad: all 
+        test:
+          config: Debug
+          targets:
+            - name: PunchPadTests 
+            - name: PunchPadUITests 
+          deviceSpecifications: 
+            - generic: 
+                platform: iOS
+                os: latest
+                size: iPhone
+       
     signing:
       style: automatic 
       teamId: 73N45UT488
@@ -73,7 +85,7 @@ targets:
       iOS: 16.4
     sources:
       - path: PunchPadTests
-    dependecies:
+    dependencies:
       - target: PunchPad
     signing:
       style: automatic
@@ -86,7 +98,7 @@ targets:
       iOS: 16.4
     sources:
       - path: PunchPadUITests
-    dependecies:
+    dependencies:
       - target: PunchPad
     signing:
       style: automatic
