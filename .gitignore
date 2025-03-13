@@ -1,6 +1,5 @@
 # XcodeGen generated files
 *.xcodeproj/
-*.xcworkspace/
 *.xcarchive/
 *.xccheckout
 *.xcuserstate
