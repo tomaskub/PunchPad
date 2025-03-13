@@ -72,6 +72,6 @@ class StatisticsViewScreen {
     }
     
     var detailedHistoryNavigationButton: XCUIElement {
-        app.buttons[Identifier.NavigationBarButtons.detailedHistory.rawValue]
+        app.buttons[ScreenIdentifier.NavigationElements.NavigationBarButtons.detailedHistory.rawValue]
     }
 }

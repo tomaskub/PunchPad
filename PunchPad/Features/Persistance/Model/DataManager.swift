@@ -16,9 +16,8 @@ final class DataManager: NSObject {
     private let logger = Logger.dataManager
     fileprivate var managedObjectContext: NSManagedObjectContext
     
-    override init() {
+    init(with persistanceController: PersistanceController = PersistanceController(inMemory: false)) {
         logger.debug("Initializing data manager")
-        let persistanceController = PersistanceController()
         self.managedObjectContext = persistanceController.viewContext
         super.init()
         //Notify of change anytime CD changes

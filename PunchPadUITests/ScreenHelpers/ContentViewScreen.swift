@@ -8,6 +8,7 @@
 import XCTest
 
 class ContentViewScreen {
+    private typealias Elements = ScreenIdentifier.NavigationElements
     private let app: XCUIApplication
     
     init(app: XCUIApplication) {
@@ -15,13 +16,18 @@ class ContentViewScreen {
     }
     
     var tabBarHomeButton: XCUIElement {
-        app.tabBars.buttons[ScreenIdentifier.TabBar.home.rawValue]
+        app.staticTexts[Elements.TabBarButtons.home.rawValue]
     }
     
     var tabBarStatisticsButton: XCUIElement {
-        app.tabBars.buttons[ScreenIdentifier.TabBar.statistics.rawValue]
+        app.staticTexts[Elements.TabBarButtons.statistics.rawValue]
     }
+    
     var tabBarHistoryButton: XCUIElement {
-        app.tabBars.buttons[ScreenIdentifier.TabBar.history.rawValue]
+        app.staticTexts[Elements.TabBarButtons.history.rawValue]
+    }
+    
+    var navBarSettingsButton: XCUIElement {
+        app.images[Elements.NavigationBarButtons.settingNavigationButton.rawValue]
     }
 }

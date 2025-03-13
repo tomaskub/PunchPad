@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "BEA71145-DE72-47F5-82CF-E8FB7E606254",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:PunchPad.xcodeproj",
+        "identifier" : "D6240A172D3ED75D00A53B82",
+        "name" : "PunchPadUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

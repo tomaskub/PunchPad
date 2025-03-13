@@ -71,7 +71,7 @@ extension OnboardingView {
     
     private var topButton: some View {
         Label(Strings.backButtonText, systemImage: "chevron.left")
-            .accessibilityIdentifier(Identifier.Buttons.regressStage.rawValue)
+            .accessibilityIdentifier(Identifier.Buttons.regressStage)
             .foregroundColor(.theme.blackLabel)
             .onTapGesture {
                 withAnimation(.spring()) {
@@ -91,7 +91,7 @@ extension OnboardingView {
             }
         }
         .buttonStyle(.confirming)
-        .accessibilityIdentifier(Identifier.Buttons.advanceStage.rawValue)
+        .accessibilityIdentifier(Identifier.Buttons.advanceStage)
     }
 }
 

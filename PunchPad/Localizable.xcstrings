@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "" : {
-
-    },
     "%lld" : {
 
     },
@@ -34,16 +31,10 @@
     "Cancel" : {
 
     },
-    "CancelButtonStyle" : {
-
-    },
     "Clear all saved data" : {
 
     },
     "Color scheme" : {
-
-    },
-    "ConfirmButtonStyle" : {
 
     },
     "Congratulations! You are finished with your normal hours!" : {
@@ -65,6 +56,9 @@
 
     },
     "Edit entry" : {
+
+    },
+    "Enter amount" : {
 
     },
     "Filter" : {
@@ -167,9 +161,6 @@
 
     },
     "Period" : {
-
-    },
-    "Preview button" : {
 
     },
     "PunchPad needs permission to show notifications" : {

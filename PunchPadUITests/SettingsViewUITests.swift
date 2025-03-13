@@ -224,7 +224,7 @@ final class SettingsViewUITests: XCTestCase {
     }
     
     private func navigateToSettingsView() {
-        HomeViewScreen(app: app).settingsNavigationButton.tap()
+        ContentViewScreen(app: app).navBarSettingsButton.tap()
     }
     
     private func navigateToHistoryView() {
