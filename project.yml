@@ -56,22 +56,6 @@ targets:
         INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
         INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
         INFOPLIST_KEY_UIUserInterfaceStyle: Light
-
-    scheme: 
-      PunchPad:
-        build: 
-          targets: 
-            PunchPad: all 
-        test:
-          config: Debug
-          targets:
-            - name: PunchPadTests 
-            - name: PunchPadUITests 
-          deviceSpecifications: 
-            - generic: 
-                platform: iOS
-                os: latest
-                size: iPhone
        
     signing:
       style: automatic 
@@ -82,7 +66,7 @@ targets:
     type: bundle.unit-test
     platform: iOS
     deploymentTarget:
-      iOS: 16.4
+      iOS: 16.6
     sources:
       - path: PunchPadTests
     dependencies:
@@ -95,7 +79,7 @@ targets:
     type: bundle.ui-testing
     platform: iOS
     deploymentTarget:
-      iOS: 16.4
+      iOS: 16.6
     sources:
       - path: PunchPadUITests
     dependencies:
@@ -103,3 +87,23 @@ targets:
     signing:
       style: automatic
       teamId: 73N45UT488
+
+schemes:
+  PunchPad:
+    build: 
+      targets:
+        PunchPad: all
+    test:
+      config: Debug
+      targets:
+        - name: PunchPadTests 
+      testPlans:
+        - path: PunchPadTests.xctestplan
+    run:
+      config: Debug
+    profile:
+      config: Release
+    analyze: 
+      config: Debug
+    archive: 
+      config: Release
