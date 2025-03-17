@@ -71,9 +71,14 @@ targets:
       - path: PunchPadTests
     dependencies:
       - target: PunchPad
+    settings: 
+      PRODUCT_BUNDLE_IDENTIFIER: tomasz.m.kubiak.PunchPad.Tests
+      GENERATE_INFOPLIST_FILE: YES
+      DEVELOPMENT_TEAM: 73N45UT488
     signing:
       style: automatic
       teamId: 73N45UT488
+      provisioningProfiles: {}
 
   PunchPadUITests:
     type: bundle.ui-testing
@@ -97,6 +102,7 @@ schemes:
       config: Debug
       targets:
         - name: PunchPadTests 
+        #- name: PunchPadUITests
       testPlans:
         - path: PunchPadTests.xctestplan
     run:
