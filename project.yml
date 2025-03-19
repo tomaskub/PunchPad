@@ -5,7 +5,7 @@ options:
   postGenCommand: mv PunchPad/Info.plist.backup PunchPad/Info.plist
   bundlePrefix: com.tomasz.m.kubiak
   deploymentTarget:
-    iOS: 16.6
+    iOS: "16.6"
 
 packages:
   NavigationKit:
@@ -19,8 +19,6 @@ targets:
   PunchPad:
     type: application
     platform: iOS
-    deploymentTarget:
-      iOS: 16.6
     sources:
       - path: PunchPad
         excludes:
@@ -49,7 +47,6 @@ targets:
         SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: NO 
         SUPPORTS_VISION_OS: NO
         SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
-        IPHONEOS_DEPLOYMENT_TARGET: "iOS 16.4"
         INFOPLIST_KEY_UILAUNCHSTORYBOARDNAME: LaunchScreen
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
         INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
@@ -65,8 +62,6 @@ targets:
   PunchPadTests:
     type: bundle.unit-test
     platform: iOS
-    deploymentTarget:
-      iOS: 16.6
     sources:
       - path: PunchPadTests
     dependencies:
@@ -83,8 +78,6 @@ targets:
   PunchPadUITests:
     type: bundle.ui-testing
     platform: iOS
-    deploymentTarget:
-      iOS: 16.6
     sources:
       - path: PunchPadUITests
     dependencies:
