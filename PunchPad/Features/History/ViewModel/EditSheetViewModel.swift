@@ -98,8 +98,8 @@ final class EditSheetViewModel: ObservableObject {
             .removeDuplicates()
             .filter { [weak self] newValue in
                 guard let self else { return false }
-                let oldValueComponents = Calendar.current.dateComponents([.year, .month, .day], from: self.finishDate)
-                return Calendar.current.date(newValue, matchesComponents: oldValueComponents) || self.shouldDisplayFullDates
+                let oldValueComponents = self.calendar.dateComponents([.year, .month, .day], from: self.finishDate)
+                return self.calendar.date(newValue, matchesComponents: oldValueComponents) || self.shouldDisplayFullDates
             }
             .sink { [weak self] date in
                 guard let self else { return }
@@ -111,8 +111,8 @@ final class EditSheetViewModel: ObservableObject {
             .removeDuplicates()
             .filter { [weak self] newValue in
                 guard let self else { return false }
-                let oldValueComponents = Calendar.current.dateComponents([.year, .month, .day], from: self.startDate)
-                return Calendar.current.date(newValue, matchesComponents: oldValueComponents) || self.shouldDisplayFullDates
+                let oldValueComponents = self.calendar.dateComponents([.year, .month, .day], from: self.startDate)
+                return self.calendar.date(newValue, matchesComponents: oldValueComponents) || self.shouldDisplayFullDates
             }
             .sink { [weak self] date in
                 guard let self else { return }
