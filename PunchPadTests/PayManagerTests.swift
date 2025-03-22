@@ -146,7 +146,7 @@ extension PayManagerTests {
         let result = sut.grossDataForPeriod
         XCTAssertEqual(result.numberOfWorkingDays, expectedNumberOfWorkingDaysInPeriod)
         XCTAssertEqual(result.payPerHour, expectedPayPerHour, accuracy: 0.01)
-        XCTAssertEqual(result.payPredicted ?? 0, expectedPayPrediced, accuracy: 0.01)
+        XCTAssertNil(result.payPredicted)
         XCTAssertEqual(result.payUpToDate, expectedPayUpToDate, accuracy: 0.01)
     }
     
