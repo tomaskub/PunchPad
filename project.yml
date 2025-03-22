@@ -1,0 +1,108 @@
+name: PunchPad
+
+options: 
+  preGenCommand: cp PunchPad/Info.plist PunchPad/Info.plist.backup
+  postGenCommand: mv PunchPad/Info.plist.backup PunchPad/Info.plist
+  bundlePrefix: com.tomasz.m.kubiak
+  deploymentTarget:
+    iOS: "16.6"
+
+packages:
+  NavigationKit:
+    path: Packages/NavigationKit
+  TabViewKit:
+    path: Packages/TabViewKit
+  ThemeKit:
+    path: Packages/ThemeKit
+
+targets:
+  PunchPad:
+    type: application
+    platform: iOS
+    sources:
+      - path: PunchPad
+        excludes:
+        - "Info.plist.backup"
+    dependencies:
+      - package: NavigationKit # change this back later see what it does 
+      - package: TabViewKit
+      - package: ThemeKit
+    info: 
+      path: PunchPad/Info.plist
+
+    settings:
+      base: 
+        MARKETING_VERSION: 0.1.3
+        CURRENT_PROJECT_VERSION: 1
+
+        DEVELOPMENT_TEAM: 73N45UT488
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_FILE: PunchPad/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: tomasz.m.kubiak.PunchPad
+        PRODUCT_NAME: $(TARGET_NAME)
+        ENABLE_PREVIEWS: YES
+        SUPPORTED_PLATFORMS: [iphoneos iphonesimulator]
+        TARGETED_DEVICE_FAMILY: 1
+        SUPPORTS_MACCATALYST: NO
+        SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: NO 
+        SUPPORTS_VISION_OS: NO
+        SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
+        INFOPLIST_KEY_UILAUNCHSTORYBOARDNAME: LaunchScreen
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+        INFOPLIST_KEY_UIUserInterfaceStyle: Light
+       
+    signing:
+      style: automatic 
+      teamId: 73N45UT488
+      provisioningProfiles: {}
+      
+  PunchPadTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: PunchPadTests
+    dependencies:
+      - target: PunchPad
+    settings: 
+      PRODUCT_BUNDLE_IDENTIFIER: tomasz.m.kubiak.PunchPad.Tests
+      GENERATE_INFOPLIST_FILE: YES
+      DEVELOPMENT_TEAM: 73N45UT488
+    signing:
+      style: automatic
+      teamId: 73N45UT488
+      provisioningProfiles: {}
+
+  PunchPadUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: PunchPadUITests
+    dependencies:
+      - target: PunchPad
+    signing:
+      style: automatic
+      teamId: 73N45UT488
+
+schemes:
+  PunchPad:
+    build: 
+      targets:
+        PunchPad: all
+    test:
+      config: Debug
+      targets:
+        - name: PunchPadTests 
+        #- name: PunchPadUITests
+      testPlans:
+        - path: PunchPadTests.xctestplan
+    run:
+      config: Debug
+    profile:
+      config: Release
+    analyze: 
+      config: Debug
+    archive: 
+      config: Release

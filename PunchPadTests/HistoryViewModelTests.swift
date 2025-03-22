@@ -30,20 +30,25 @@ final class HistoryViewModelTests: XCTestCase {
     }
     
     func test_groupingEntries() {
+        // Given
         sut = nil
         let calendar = Calendar.current
         guard let date = calendar.date(from: DateComponents(year: 2023, month: 12)) else { XCTFail(); return }
+        container.dataManager.deleteAll() // TODO: refactor cleaning data before tests
         
-        let entries = PreviewDataFactory.buildDataForPreviewForYear(containing: date, using: calendar)
-        
-        for entry in entries {
-            container.dataManager.updateAndSave(entry: entry)
+        PreviewDataFactory.buildDataForPreviewForYear(
+            containing: date,
+            using: calendar
+        ).forEach {
+            container.dataManager.updateAndSave(entry: $0)
         }
         
+        // When
         sut = .init(dataManager: container.dataManager,
                     settingsStore: container.settingsStore,
                     sizeOfChunk: nil)
         
+        // Then
         XCTAssertEqual(sut.groupedEntries.count, 12)
         
         for (i, monthArray) in sut.groupedEntries.enumerated() {
