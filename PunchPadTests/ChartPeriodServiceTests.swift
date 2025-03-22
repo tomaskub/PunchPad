@@ -8,15 +8,21 @@
 import XCTest
 @testable import PunchPad
 final class ChartPeriodServiceTests: XCTestCase {
-    
     var sut: ChartPeriodService!
+    var fixedCalendar: Calendar!
     
     override func setUp() {
-        sut = ChartPeriodService(calendar: .current)
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(identifier: "UTC")!
+        calendar.firstWeekday = 2 // set Monday
+        
+        fixedCalendar = calendar
+        sut = ChartPeriodService(calendar: fixedCalendar)
     }
     
     override func tearDown() {
         sut = nil
+        fixedCalendar = nil
     }
 }
 
@@ -28,19 +34,9 @@ extension ChartPeriodServiceTests {
      */
     func test_generatePeriod_forMonth() throws {
         // Given
-        let inputDate = {
-            let dateComponents = DateComponents(year: 2023, month: 11, day: 20)
-            return Calendar.current.date(from: dateComponents)
-        }()
-        let startDate = {
-            let dateComponents = DateComponents(year: 2023, month: 11, day: 1)
-            return Calendar.current.date(from: dateComponents)
-        }()
-        let finishDate = {
-            let dateComponents = DateComponents(year: 2023, month: 12, day: 1)
-            return Calendar.current.date(from: dateComponents)
-        }()
-        guard let inputDate, let startDate, let finishDate else {
+        guard let inputDate = createDate(year: 2023, month: 11, day: 20),
+              let startDate = createDate(year: 2023, month: 11, day: 1),
+              let finishDate = createDate(year: 2023, month: 12, day: 1) else {
             XCTFail("Failed to generate input and predicted output dates")
             return
         }
@@ -56,19 +52,9 @@ extension ChartPeriodServiceTests {
     
     func test_generatePeriod_forWeek() throws {
         // Given
-        let inputDate = {
-            let dateComponents = DateComponents(year: 2023, month: 11, day: 22)
-            return Calendar.current.date(from: dateComponents)
-        }()
-        let startDate = {
-            let dateComponents = DateComponents(year: 2023, month: 11, day: 20)
-            return Calendar.current.date(from: dateComponents)
-        }()
-        let finishDate = {
-            let dateComponents = DateComponents(year: 2023, month: 11, day: 27)
-            return Calendar.current.date(from: dateComponents)
-        }()
-        guard let inputDate, let startDate, let finishDate else {
+        guard let inputDate = createDate(year: 2023, month: 11, day: 22),
+              let startDate = createDate(year: 2023, month: 11, day: 20),
+              let finishDate = createDate(year: 2023, month: 11, day: 27) else {
             XCTFail("Failed to generate input and predicted output dates")
             return
         }
@@ -84,19 +70,9 @@ extension ChartPeriodServiceTests {
     
     func test_generatePeriod_forYear() throws {
         // Given
-        let inputDate = {
-            let dateComponents = DateComponents(year: 2023, month: 11, day: 20)
-            return Calendar.current.date(from: dateComponents)
-        }()
-        let startDate = {
-            let dateComponents = DateComponents(year: 2023, month: 1, day: 1)
-            return Calendar.current.date(from: dateComponents)
-        }()
-        let finishDate = {
-            let dateComponents = DateComponents(year: 2024, month: 1, day: 1)
-            return Calendar.current.date(from: dateComponents)
-        }()
-        guard let inputDate, let startDate, let finishDate else {
+        guard let inputDate = createDate(year: 2023, month: 11, day: 20),
+              let startDate = createDate(year: 2023, month: 1, day: 1),
+              let finishDate = createDate(year: 2024, month: 1, day: 1) else {
             XCTFail("Failed to generate input and predicted output dates")
             return
         }
@@ -112,11 +88,7 @@ extension ChartPeriodServiceTests {
     
     func test_generatePeriod_forAll_throwsError() {
         // Given
-        let inputDate = {
-            let dateComponents = DateComponents(year: 2023, month: 11, day: 20)
-            return Calendar.current.date(from: dateComponents)
-        }()
-        guard let inputDate else {
+        guard let inputDate = createDate(year: 2023, month: 11, day: 20) else {
             XCTFail("Failed to generate input date")
             return
         }
@@ -133,19 +105,19 @@ extension ChartPeriodServiceTests {
 extension ChartPeriodServiceTests {
     func test_RetardingPeriodForWeek() throws {
         // Given
-        guard let inputStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 20)),
-              let inputFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 27)),
-              let expectedStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 13)),
-              let expectedFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 20)) else {
-                XCTFail("Failed to generate input and predicted output dates")
-                return
-            }
+        guard let inputStartDate = createDate(year: 2023, month: 11, day: 20),
+              let inputFinishDate = createDate(year: 2023, month: 11, day: 27),
+              let expectedStartDate = createDate(year: 2023, month: 11, day: 13),
+              let expectedFinishDate = createDate(year: 2023, month: 11, day: 20) else {
+            XCTFail("Failed to generate input and predicted output dates")
+            return
+        }
         let inputPeriod: Period = (inputStartDate, inputFinishDate)
         let expectedResult: Period = (expectedStartDate, expectedFinishDate)
         
         // When
         let result = try sut.retardPeriod(by: .week, from: inputPeriod)
-
+        
         // Then
         XCTAssertEqual(result.0, expectedResult.0, "Start date is \(result.0), and it should be \(expectedResult.0)")
         XCTAssertEqual(result.1, expectedResult.1, "Finish date is \(result.1), and it should be \(expectedResult.1)")
@@ -153,10 +125,10 @@ extension ChartPeriodServiceTests {
     
     func test_RetardingPeriodForMonth() throws {
         // Given
-        guard let inputStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 1)),
-              let inputFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 12, day: 1)),
-              let expectedStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 10, day: 1)),
-              let expectedFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 1)) else {
+        guard let inputStartDate = createDate(year: 2023, month: 11, day: 1),
+              let inputFinishDate = createDate(year: 2023, month: 12, day: 1),
+              let expectedStartDate = createDate(year: 2023, month: 10, day: 1),
+              let expectedFinishDate = createDate(year: 2023, month: 11, day: 1) else {
                 XCTFail("Failed to generate input and predicted output dates")
                 return
             }
@@ -173,10 +145,10 @@ extension ChartPeriodServiceTests {
     
     func test_RetardingPeriodForYear() throws {
         // Given
-        guard let inputStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 1, day: 1)),
-              let inputFinishDate = Calendar.current.date(from: DateComponents(year: 2024, month: 1, day: 1)),
-              let expectedStartDate = Calendar.current.date(from: DateComponents(year: 2022, month: 1, day: 1)),
-              let expectedFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 1, day: 1)) else {
+        guard let inputStartDate = createDate(year: 2023, month: 1, day: 1),
+              let inputFinishDate = createDate(year: 2024, month: 1, day: 1),
+              let expectedStartDate = createDate(year: 2022, month: 1, day: 1),
+              let expectedFinishDate = createDate(year: 2023, month: 1, day: 1) else {
                 XCTFail("Failed to generate input and predicted output dates")
                 return
             }
@@ -193,8 +165,8 @@ extension ChartPeriodServiceTests {
     
     func test_RetardingPeriodForAll_throwsError() throws {
         // Given
-        guard let inputStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 1, day: 1)),
-              let inputFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 12, day: 31)) else {
+        guard let inputStartDate = createDate(year: 2023, month: 1, day: 1),
+              let inputFinishDate = createDate(year: 2023, month: 12, day: 31) else {
             XCTFail("Failed to generate input and predicted output dates")
             return
         }
@@ -210,10 +182,10 @@ extension ChartPeriodServiceTests {
 extension ChartPeriodServiceTests {
     func test_advancingPeriodForWeek() throws {
         // Given
-        guard let inputStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 13)),
-              let inputFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 20)),
-              let expectedStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 20)),
-              let expectedFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 27)) else {
+        guard let inputStartDate = createDate(year: 2023, month: 11, day: 13),
+              let inputFinishDate = createDate(year: 2023, month: 11, day: 20),
+              let expectedStartDate = createDate(year: 2023, month: 11, day: 20),
+              let expectedFinishDate = createDate(year: 2023, month: 11, day: 27) else {
                 XCTFail("Failed to generate input and predicted output dates")
                 return
             }
@@ -230,10 +202,10 @@ extension ChartPeriodServiceTests {
     
     func test_advancingPeriodForMonth() throws {
         // Given
-        guard let inputStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 10, day: 1)),
-              let inputFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 1)),
-              let expectedStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 11, day: 1)),
-              let expectedFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 12, day: 1)) else {
+        guard let inputStartDate = createDate(year: 2023, month: 10, day: 1),
+              let inputFinishDate = createDate(year: 2023, month: 11, day: 1),
+              let expectedStartDate = createDate(year: 2023, month: 11, day: 1),
+              let expectedFinishDate = createDate(year: 2023, month: 12, day: 1) else {
                 XCTFail("Failed to generate input and predicted output dates")
                 return
             }
@@ -250,10 +222,10 @@ extension ChartPeriodServiceTests {
     
     func test_advancingPeriodForYear() throws {
         // Given
-        guard let inputStartDate = Calendar.current.date(from: DateComponents(year: 2022, month: 1, day: 1)),
-              let inputFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 1, day: 1)),
-              let expectedStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 1, day: 1)),
-              let expectedFinishDate = Calendar.current.date(from: DateComponents(year: 2024, month: 1, day: 1)) else {
+        guard let inputStartDate = createDate(year: 2022, month: 1, day: 1),
+              let inputFinishDate = createDate(year: 2023, month: 1, day: 1),
+              let expectedStartDate = createDate(year: 2023, month: 1, day: 1),
+              let expectedFinishDate = createDate(year: 2024, month: 1, day: 1) else {
                 XCTFail("Failed to generate input and predicted output dates")
                 return
             }
@@ -270,8 +242,8 @@ extension ChartPeriodServiceTests {
     
     func test_advancingPeriodForAll_throwsError() throws {
         // Given
-        guard let inputStartDate = Calendar.current.date(from: DateComponents(year: 2023, month: 1, day: 1)),
-              let inputFinishDate = Calendar.current.date(from: DateComponents(year: 2023, month: 12, day: 31)) else {
+        guard let inputStartDate = createDate(year: 2023, month: 1, day: 1),
+              let inputFinishDate = createDate(year: 2023, month: 12, day: 31) else {
             XCTFail("Failed to generate input and predicted output dates")
             return
         }
@@ -280,5 +252,22 @@ extension ChartPeriodServiceTests {
         XCTAssertThrowsError(try sut.advancePeriod(by: .all, from: inputPeriod), "Function should throw") { error in
             XCTAssertEqual(error as? ChartPeriodServiceError, .attemptedToRetrievePeriodForAll, "Error thrown should be `.attemptedToRetrievePeriodForAll`")
         }
+    }
+}
+
+// MARK: - Helpers
+extension ChartPeriodServiceTests {
+    func createDate(year: Int, month: Int, day: Int, hour: Int = 0, minute: Int = 0, second: Int = 0) -> Date? {
+        let components = DateComponents(
+            calendar: fixedCalendar,
+            timeZone: fixedCalendar.timeZone,
+            year: year,
+            month: month,
+            day: day,
+            hour: hour,
+            minute: minute,
+            second: second
+        )
+        return fixedCalendar.date(from: components)
     }
 }

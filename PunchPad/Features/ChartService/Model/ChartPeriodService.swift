@@ -36,10 +36,13 @@ class ChartPeriodService {
         case .all:
             throw ChartPeriodServiceError.attemptedToRetrievePeriodForAll
         }
-        guard let startDate = calendar.date(from: startDateComponents) else { 
-            throw  ChartPeriodServiceError.failedToCreateStartDateFromComponents }
+        guard let startDate = calendar.date(from: startDateComponents) else {
+            throw  ChartPeriodServiceError.failedToCreateStartDateFromComponents
+        }
         let numberOfDays = try getNumberOfDays(in: timeRange, for: date)
-        guard let finishDate: Date = calendar.date(byAdding: .day, value: numberOfDays, to: startDate) else { throw ChartPeriodServiceError.failedToCreateDateByAddingComponents }
+        guard let finishDate: Date = calendar.date(byAdding: .day, value: numberOfDays, to: startDate) else {
+            throw ChartPeriodServiceError.failedToCreateDateByAddingComponents
+        }
         return (startDate, finishDate)
     }
     
