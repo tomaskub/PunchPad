@@ -7,22 +7,23 @@
 
 import XCTest
 @testable import PunchPad
-final class ChartPeriodServiceTests: XCTestCase {
+final class ChartPeriodServiceTests: XCTestCase, StableDateCreating {
     var sut: ChartPeriodService!
-    var fixedCalendar: Calendar!
+    var calendar: Calendar!
+    var fixedCalendar: Calendar { calendar }
     
     override func setUp() {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = TimeZone(identifier: "UTC")!
         calendar.firstWeekday = 2 // set Monday
         
-        fixedCalendar = calendar
+        self.calendar = calendar
         sut = ChartPeriodService(calendar: fixedCalendar)
     }
     
     override func tearDown() {
         sut = nil
-        fixedCalendar = nil
+        calendar = nil
     }
 }
 
@@ -255,19 +256,4 @@ extension ChartPeriodServiceTests {
     }
 }
 
-// MARK: - Helpers
-extension ChartPeriodServiceTests {
-    func createDate(year: Int, month: Int, day: Int, hour: Int = 0, minute: Int = 0, second: Int = 0) -> Date? {
-        let components = DateComponents(
-            calendar: fixedCalendar,
-            timeZone: fixedCalendar.timeZone,
-            year: year,
-            month: month,
-            day: day,
-            hour: hour,
-            minute: minute,
-            second: second
-        )
-        return fixedCalendar.date(from: components)
-    }
-}
+
