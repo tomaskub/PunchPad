@@ -30,9 +30,9 @@ struct OnboardingOvertimeView: View {
                             .foregroundColor(.theme.primary)
                         Picker(Strings.hoursPickerLabel,
                                selection: $viewModel.hoursOvertime) {
-                            ForEach(0..<25){ i in
-                                Text("\(i)")
-                                    .foregroundColor(.theme.primary).tag(i)
+                            ForEach(0..<25) { hours in
+                                Text("\(hours)")
+                                    .foregroundColor(.theme.primary).tag(hours)
                             }
                         }
                                .accessibilityIdentifier(Identifier.Pickers.overtimeHours.rawValue)
@@ -43,8 +43,8 @@ struct OnboardingOvertimeView: View {
                             .foregroundColor(.theme.primary)
                         Picker(Strings.minutesPickerLabel,
                                selection: $viewModel.minutesOvertime) {
-                            ForEach(0..<60) { i in
-                                Text("\(i)").foregroundColor(.theme.primary).tag(i)
+                            ForEach(0..<60) { minutes in
+                                Text("\(minutes)").foregroundColor(.theme.primary).tag(minutes)
                             }
                         }
                                .accessibilityIdentifier(Identifier.Pickers.overtimeMinutes.rawValue)
@@ -84,7 +84,7 @@ struct OnboardingOvertimeView: View {
     }
 }
 
-//MARK: - Localization
+// MARK: - Localization
 extension OnboardingOvertimeView: Localized {
     struct Strings {
         static let titleText = Localization.Common.overtime.capitalized
@@ -96,24 +96,24 @@ extension OnboardingOvertimeView: Localized {
     }
 }
 
-struct OnbardingOvertime_Previews: PreviewProvider {
+struct OnbardingOvertimePreviews: PreviewProvider {
     
     private struct PreviewContainerView: View {
         @Environment(\.colorScheme) private var colorScheme
-        @StateObject private var vm: OnboardingViewModel
+        @StateObject private var viewModel: OnboardingViewModel
         private let container: PreviewContainer
         
         init() {
             let container = PreviewContainer()
             self.container = container
-            self._vm = StateObject(wrappedValue: OnboardingViewModel(notificationService: container.notificationService, 
+            self._viewModel = StateObject(wrappedValue: OnboardingViewModel(notificationService: container.notificationService, 
                                                                      settingsStore: container.settingsStore))
         }
         
         var body: some View {
             ZStack {
                 BackgroundFactory.buildSolidColor()
-                OnboardingOvertimeView(viewModel: vm)
+                OnboardingOvertimeView(viewModel: viewModel)
                 VStack {
                     Spacer()
                     Button("Preview button") {

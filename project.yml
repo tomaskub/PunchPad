@@ -14,6 +14,9 @@ packages:
     path: Packages/TabViewKit
   ThemeKit:
     path: Packages/ThemeKit
+  SwiftLintPlugins:
+    url: https://github.com/SimplyDanny/SwiftLintPlugins
+    from: 0.58.2
 
 targets:
   PunchPad:
@@ -24,11 +27,14 @@ targets:
         excludes:
         - "Info.plist.backup"
     dependencies:
-      - package: NavigationKit # change this back later see what it does 
+      - package: NavigationKit
       - package: TabViewKit
       - package: ThemeKit
     info: 
       path: PunchPad/Info.plist
+    buildToolPlugins:
+      - plugin: SwiftLintBuildToolPlugin
+        package: SwiftLintPlugins
 
     settings:
       base: 

@@ -21,10 +21,10 @@ struct OnboardingWorktimeView: View {
                         .foregroundColor(.theme.primary)
                     Picker(Strings.hoursPickerLabel,
                            selection: $viewModel.hoursWorking) {
-                        ForEach(0..<25){ i in
-                            Text("\(i)")
+                        ForEach(0..<25) { hours in
+                            Text("\(hours)")
                                 .foregroundColor(.theme.primary)
-                                .tag(i)
+                                .tag(hours)
                         }
                     }
                     .accessibilityIdentifier(Identifier.Pickers.workingHours.rawValue)
@@ -35,10 +35,10 @@ struct OnboardingWorktimeView: View {
                         .foregroundColor(.theme.primary)
                     Picker(Strings.minutesPickerLabel,
                            selection: $viewModel.minutesWorking) {
-                        ForEach(0..<60) { i in
-                            Text("\(i)")
+                        ForEach(0..<60) { minutes in
+                            Text("\(minutes)")
                                 .foregroundColor(.theme.primary)
-                                .tag(i)
+                                .tag(minutes)
                         }
                     }
                     .accessibilityIdentifier(Identifier.Pickers.workingMinutes.rawValue)
@@ -62,7 +62,7 @@ struct OnboardingWorktimeView: View {
     }
 }
 
-//MARK: - Localization
+// MARK: - Localization
 extension OnboardingWorktimeView: Localized {
     struct Strings {
         static let titleText = Localization.OnboardingWorktimeScreen.workday.capitalized
@@ -76,13 +76,13 @@ struct OnbardingWorktime_Previews: PreviewProvider {
     
     private struct PreviewContainerView: View {
         @Environment(\.colorScheme) private var colorScheme
-        @StateObject private var vm: OnboardingViewModel
+        @StateObject private var viewModel: OnboardingViewModel
         private let container: PreviewContainer
         
         init() {
             let container = PreviewContainer()
             self.container = container
-            self._vm = StateObject(wrappedValue: 
+            self._viewModel = StateObject(wrappedValue:
                                     OnboardingViewModel(notificationService: container.notificationService,
                                                         settingsStore: container.settingsStore)
             )
@@ -91,7 +91,7 @@ struct OnbardingWorktime_Previews: PreviewProvider {
         var body: some View {
             ZStack {
                 BackgroundFactory.buildSolidColor()
-                OnboardingWorktimeView(viewModel: vm)
+                OnboardingWorktimeView(viewModel: viewModel)
                 VStack {
                     Spacer()
                     Button("Preview button") {

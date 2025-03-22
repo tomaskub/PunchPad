@@ -50,7 +50,7 @@ extension OnboardingNotificationView: Localized {
     }
 }
 
-struct OnboardingNotification_Preview: PreviewProvider {
+struct OnboardingNotificationPreview: PreviewProvider {
     private struct PreviewContainerView: View {
         @StateObject private var vm: OnboardingViewModel
         private let container: PreviewContainer
