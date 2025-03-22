@@ -1,0 +1,23 @@
+disabled_rules:
+
+opt_in_rules:
+
+line_length: 120
+
+trailing_whitespace:
+  ignores_empty_lines: true
+
+identifier_name:
+  min_length:
+    warning: 1
+    error: 2
+
+type_body_length:
+  - 250
+  - 400
+
+file_length:
+  - 400
+  - 600
+
+reporter: "xcode"
