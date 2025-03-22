@@ -4,7 +4,7 @@
 //
 //  Created by Tomasz Kubiak on 31/08/2023.
 //
-
+// swiftlint:disable nesting
 import Foundation
 
 enum ScreenIdentifier {
@@ -173,3 +173,4 @@ enum ScreenIdentifier {
         }
     }
 }
+// swiftlint:enable nesting

@@ -42,64 +42,42 @@ final class SettingsStore: ObservableObject {
         self.isLoggingOvertime = defaults.bool(forKey: SettingKey.isLoggingOvertime.rawValue)
         self.isCalculatingNetPay = defaults.bool(forKey: SettingKey.isCalculatingNetPay.rawValue)
         self.isSendingNotification = defaults.bool(forKey: SettingKey.isSendingNotifications.rawValue)
-        self.maximumOvertimeAllowedInSeconds = defaults.integer(forKey: SettingKey.maximumOvertimeAllowedInSeconds.rawValue)
+        self.maximumOvertimeAllowedInSeconds = defaults.integer(
+            forKey: SettingKey.maximumOvertimeAllowedInSeconds.rawValue
+        )
         self.workTimeInSeconds = defaults.integer(forKey: SettingKey.workTimeInSeconds.rawValue)
-        self.grossPayPerMonth = defaults.integer(forKey: SettingKey.grossPayPerMonth.rawValue)
-        self.savedColorScheme = ColorScheme.fromStringValue(defaults.string(forKey: SettingKey.savedColorScheme.rawValue))
+        self.grossPayPerMonth = defaults.integer(
+            forKey: SettingKey.grossPayPerMonth.rawValue
+        )
+        self.savedColorScheme = ColorScheme.fromStringValue(
+            defaults.string(forKey: SettingKey.savedColorScheme.rawValue)
+        )
         self.setUpSubscribersSavingToUserDefaults()
     }
     
     func setUpSubscribersSavingToUserDefaults() {
         logger.debug("setUpSubscribers called")
-        $isRunFirstTime
-            .dropFirst()
-            .removeDuplicates()
-            .sink { [weak self] value in
-                guard let self else { return }
-                self.updateSetting(setting: .isRunFirstTime, value: value)
-            }.store(in: &subscriptions)
-        $isLoggingOvertime
-            .dropFirst()
-            .removeDuplicates()
-            .sink { [weak self] value in
-                guard let self else { return }
-                self.updateSetting(setting: .isLoggingOvertime, value: value)
-            }.store(in: &subscriptions)
-        $isCalculatingNetPay
-            .dropFirst()
-            .removeDuplicates()
-            .sink { [weak self] value in
-                guard let self else { return }
-                self.updateSetting(setting: .isCalculatingNetPay, value: value)
-            }.store(in: &subscriptions)
-        $isSendingNotification
-            .dropFirst()
-            .removeDuplicates()
-            .sink { [weak self] value in
-                guard let self else { return }
-                self.updateSetting(setting: .isSendingNotifications, value: value)
-            }.store(in: &subscriptions)
-     $maximumOvertimeAllowedInSeconds
-            .dropFirst()
-            .removeDuplicates()
-            .sink { [weak self] value in
-                guard let self else { return }
-                self.updateSetting(setting: .maximumOvertimeAllowedInSeconds, value: value)
-            }.store(in: &subscriptions)
-        $workTimeInSeconds
-            .dropFirst()
-            .removeDuplicates()
-            .sink { [weak self] value in
-                guard let self else { return }
-                self.updateSetting(setting: .workTimeInSeconds, value: value)
-            }.store(in: &subscriptions)
-        $grossPayPerMonth
-            .dropFirst()
-            .removeDuplicates()
-            .sink { [weak self] value in
-                guard let self else { return }
-                self.updateSetting(setting: .grossPayPerMonth, value: value)
-            }.store(in: &subscriptions)
+        
+        boolPublishersWithKeys
+            .forEach { key, publisher in
+                publisher
+                    .dropFirst()
+                    .removeDuplicates()
+                    .sink { [weak self] value in
+                        self?.updateSetting(setting: key, value: value)
+                    }.store(in: &subscriptions)
+        }
+        
+        intPublishersWithKeys
+            .forEach { key, publisher in
+                publisher
+                    .dropFirst()
+                    .removeDuplicates()
+                    .sink { [weak self] value in
+                        self?.updateSetting(setting: key, value: value)
+                    }.store(in: &subscriptions)
+        }
+
         $savedColorScheme
             .dropFirst()
             .removeDuplicates()
@@ -152,5 +130,23 @@ final class SettingsStore: ObservableObject {
     private func updateSetting<T>(setting: SettingKey, value: T) {
         logger.debug("updateSetting called for key: \(setting.rawValue)")
         defaults.set(value, forKey: setting.rawValue)
+    }
+}
+
+extension SettingsStore {
+    var boolPublishersWithKeys: [SettingKey: Published<Bool>.Publisher] {
+        [
+            .isRunFirstTime: $isRunFirstTime,
+            .isLoggingOvertime: $isLoggingOvertime,
+            .isCalculatingNetPay: $isCalculatingNetPay,
+            .isSendingNotifications: $isSendingNotification
+        ]
+    }
+    var intPublishersWithKeys: [SettingKey: Published<Int>.Publisher] {
+        [
+            .maximumOvertimeAllowedInSeconds: $maximumOvertimeAllowedInSeconds,
+            .workTimeInSeconds: $workTimeInSeconds,
+            .grossPayPerMonth: $grossPayPerMonth
+        ]
     }
 }

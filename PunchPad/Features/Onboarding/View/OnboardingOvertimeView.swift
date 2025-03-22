@@ -106,8 +106,10 @@ struct OnbardingOvertimePreviews: PreviewProvider {
         init() {
             let container = PreviewContainer()
             self.container = container
-            self._viewModel = StateObject(wrappedValue: OnboardingViewModel(notificationService: container.notificationService, 
-                                                                     settingsStore: container.settingsStore))
+            self._viewModel = StateObject(
+                wrappedValue: OnboardingViewModel(notificationService: container.notificationService,
+                                                  settingsStore: container.settingsStore)
+            )
         }
         
         var body: some View {

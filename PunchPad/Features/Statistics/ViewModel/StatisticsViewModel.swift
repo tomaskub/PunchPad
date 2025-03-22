@@ -158,7 +158,8 @@ extension StatisticsViewModel {
             return placeholders
         }
         return placeholders.map { placeholder in
-            let placeholderDateComponents = self.calendar.dateComponents([.day, .month, .year], from: placeholder.startDate)
+            let placeholderDateComponents = self.calendar.dateComponents([.day, .month, .year],
+                                                                         from: placeholder.startDate)
             let replacer = fetchedEntries
                 .first {
                     self.calendar.date($0.startDate, matchesComponents: placeholderDateComponents)

@@ -13,7 +13,10 @@ struct ConfirmDeleteRowView: View {
     let confirmAction: () -> Void
     let cancelAction: () -> Void
     
-    init(_ headingText: String, iconSystemName: String, confirmAction: @escaping () -> Void, cancelAction: @escaping () -> Void) {
+    init(_ headingText: String,
+         iconSystemName: String,
+         confirmAction: @escaping () -> Void,
+         cancelAction: @escaping () -> Void) {
         self.iconSystemName = iconSystemName
         self.headingText = headingText
         self.confirmAction = confirmAction
@@ -47,7 +50,7 @@ struct ConfirmDeleteRowView: View {
 
 #Preview("ConfirmDeleteRowView") {
     List {
-        ConfirmDeleteRowView("Are you sure you want to delete this item?", 
+        ConfirmDeleteRowView("Are you sure you want to delete this item?",
                              iconSystemName: "checkmark.circle") { } cancelAction: { }
     }
     .listStyle(.insetGrouped)

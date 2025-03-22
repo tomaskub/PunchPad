@@ -463,7 +463,7 @@ extension HomeViewModelTests {
     }
 }
 
-//MARK: - Helpers
+// MARK: - Helpers
 extension HomeViewModelTests {
     private func setUpWithOneTimer() {
         testContainer.settingsStore.isLoggingOvertime = false

@@ -16,7 +16,7 @@ struct MainView: View {
     @StateObject private var statViewModel: StatisticsViewModel
     @StateObject private var historyViewModel: HistoryViewModel
     @State private var isShowingFiltering: Bool = false
-    @State private var selectedEntry: Entry? = nil
+    @State private var selectedEntry: Entry?
     @Binding private var tabSelection: TabBarItem
     private let container: ContainerProtocol
     private let mainTitle: AttributedString = {
@@ -59,7 +59,7 @@ struct MainView: View {
     }
 }
 
-//MARK: - Body
+// MARK: - Body
 extension MainView {
     var body: some View {
         CustomTabView(selection: $tabSelection,
@@ -70,7 +70,7 @@ extension MainView {
             StatisticsView(viewModel: statViewModel)
                 .tabBarItem(tab: .statistics, selection: $tabSelection)
             
-            HistoryView(viewModel: historyViewModel, 
+            HistoryView(viewModel: historyViewModel,
                         selectedEntry: $selectedEntry,
                         isShowingFiltering: $isShowingFiltering,
                         container: container)
@@ -91,7 +91,7 @@ extension MainView {
     }
 }
 
-//MARK: - View Builders
+// MARK: - View Builders
 private extension MainView {
     @ViewBuilder
     var leadingToolbar: some View {

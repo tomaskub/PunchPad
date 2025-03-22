@@ -36,14 +36,16 @@ extension View {
     }
     
     /// Applies empty placeholder modifier trigering display of placeholder view if items collection is empty
-    func emptyPlaceholder<Items: Collection, PlaceholderView: View>(_ items: Items, _ placeholder: @escaping () -> PlaceholderView) -> some View {
+    func emptyPlaceholder<Items: Collection, PlaceholderView: View>(
+        _ items: Items,
+        _ placeholder: @escaping () -> PlaceholderView
+    ) -> some View {
         self.modifier(
             EmptyPlaceholderModifier(items: items,
                                      placeholder: AnyView(placeholder())
                                     )
         )
     }
-    
     
     /// Animate in sync within a task.
     /// - Parameters:
@@ -74,4 +76,3 @@ extension View {
         }
     }
 }
-

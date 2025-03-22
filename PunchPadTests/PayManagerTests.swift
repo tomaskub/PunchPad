@@ -32,7 +32,7 @@ final class PayManagerTests: XCTestCase {
     }
 }
 
-//MARK: TEST DATA GENERATION FOR PAST PERIODS
+// MARK: TEST DATA GENERATION FOR PAST PERIODS
 extension PayManagerTests {
     func testGenerateDataForPastWeek() {
         //Given
@@ -117,7 +117,7 @@ extension PayManagerTests {
     }
 }
 
-//MARK: TEST DATA GENERATION FOR CURRENT PERIODS
+// MARK: TEST DATA GENERATION FOR CURRENT PERIODS
 extension PayManagerTests {
     func testGeneratingDataForNotFinishedWeek() {
         //Given
@@ -217,7 +217,7 @@ extension PayManagerTests {
     }
 }
 
-//MARK: TEST DATA GENERATION FOR FUTURE PERIODS
+// MARK: TEST DATA GENERATION FOR FUTURE PERIODS
 extension PayManagerTests {
     func testGeneratingDataForPeriodInFuture_withNoEntries() {
         //Given

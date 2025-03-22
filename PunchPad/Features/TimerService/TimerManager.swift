@@ -22,11 +22,11 @@ class TimerManager: ObservableObject {
     init(timerProvider: Timer.Type = Timer.self, with configuration: TimerManagerConfiguration) {
         self.timerProvider = timerProvider
         self.configuration = configuration
-        self.workTimerService = .init(timerProvider: timerProvider, 
+        self.workTimerService = .init(timerProvider: timerProvider,
                                       timerLimit: configuration.workTimeInSeconds)
         if configuration.isLoggingOvertime,
             let limit = configuration.overtimeInSeconds {
-            self.overtimeTimerService = .init(timerProvider: timerProvider, 
+            self.overtimeTimerService = .init(timerProvider: timerProvider,
                                               timerLimit: limit)
         }
         setUpSubscriptions()
@@ -34,7 +34,9 @@ class TimerManager: ObservableObject {
     
     convenience init(timerProvider: Timer.Type = Timer.self, withModel model: TimerModel) {
         self.init(timerProvider: timerProvider, with: model.configuration)
-        setInitialState(ofTimerService: workTimerService, toCounter: model.workTimeCounter, toState: model.workTimerState)
+        setInitialState(ofTimerService: workTimerService,
+                        toCounter: model.workTimeCounter,
+                        toState: model.workTimerState)
         if let overtimeTimerService, let counter = model.overtimeCounter, let state = model.overtimeTimerState {
             setInitialState(ofTimerService: overtimeTimerService, toCounter: counter, toState: state)
         }
@@ -154,7 +156,9 @@ extension TimerManager {
                 } else {
                     logger.debug("Timer finished in background")
                     timerCancellables.removeAll()
-                    self.timerDidFinish.send(appDidEnterBackgroundDate.addingTimeInterval(workTimerService.remainingTime))
+                    self.timerDidFinish.send(
+                        appDidEnterBackgroundDate.addingTimeInterval(workTimerService.remainingTime)
+                    )
                     workTimerService.send(event: .resumeWith(timePassedInBackground))
                 }
             }
@@ -174,7 +178,9 @@ extension TimerManager {
                     timerCancellables.removeAll()
                     let remainingTime = overtimeTimerService.remainingTime
                     overtimeTimerService.send(event: .resumeWith(remainingTime))
-                    let finishDate = appDidEnterBackgroundDate.addingTimeInterval(worktimePassedInBackground + overtimeTimerService.counter)
+                    let finishDate = appDidEnterBackgroundDate.addingTimeInterval(
+                        worktimePassedInBackground + overtimeTimerService.counter
+                    )
                     self.timerDidFinish.send(finishDate)
                 }
             } else {

@@ -19,7 +19,10 @@ struct HistoryView: View {
     @Binding private var isShowingFiltering: Bool
     @State private var entryToBeDeleted: Entry?
     
-    init(viewModel: HistoryViewModel, selectedEntry: Binding<Entry?>, isShowingFiltering: Binding<Bool>, container: ContainerProtocol) {
+    init(viewModel: HistoryViewModel,
+         selectedEntry: Binding<Entry?>,
+         isShowingFiltering: Binding<Bool>,
+         container: ContainerProtocol) {
         self.viewModel = viewModel
         self._selectedEntry = selectedEntry
         self._isShowingFiltering = isShowingFiltering
@@ -27,7 +30,7 @@ struct HistoryView: View {
     }
 }
 
-//MARK: - Body
+// MARK: - Body
 extension HistoryView {
     var body: some View {
         ZStack {
@@ -43,7 +46,7 @@ extension HistoryView {
             }
             .scrollContentBackground(.hidden)
             .sheet(item: $selectedEntry) { entry in
-                EditSheetView(viewModel: 
+                EditSheetView(viewModel:
                                 EditSheetViewModel(dataManager: container.dataManager,
                                                    settingsStore: container.settingsStore,
                                                    payService: container.payManager,
@@ -57,7 +60,7 @@ extension HistoryView {
     }
 }
 
-//MARK: - Helper functions
+// MARK: - Helper functions
 private extension HistoryView {
     func makeSectionHeader(_ entry: Entry?) -> String {
         if let date = entry?.startDate {
@@ -73,7 +76,7 @@ private extension HistoryView {
     }
 }
 
-//MARK: - List View Builders
+// MARK: - List View Builders
 private extension HistoryView {
     @ViewBuilder
     func makeListConent(_ groupedEntries: [[Entry]]) -> some View {
@@ -89,7 +92,7 @@ private extension HistoryView {
                     HistoryRowView(withEntry: entry)
                         .accessibilityIdentifier(Identifier.entryRow.rawValue)
                         .onTapGesture {
-                            //required to scroll list and have long press gesture
+                            // required to scroll list and have long press gesture
                         }
                         .onLongPressGesture {
                             selectedEntry = entry
@@ -143,7 +146,7 @@ private extension HistoryView {
     }
 }
 
-//MARK: - View Components
+// MARK: - View Components
 private extension HistoryView {
     var emptyPlaceholderView: some View {
         VStack {
@@ -156,8 +159,7 @@ private extension HistoryView {
     var filteringView: some View {
         DateFilterSheetView(fromDate: $viewModel.filterFromDate,
                             toDate: $viewModel.filterToDate,
-                            sortAscending: $viewModel.sortAscending)
-        {
+                            sortAscending: $viewModel.sortAscending) {
             viewModel.resetFilters()
         } confirmAction: {
             viewModel.applyFilters()
@@ -201,7 +203,7 @@ extension HistoryView: Localized {
 #Preview {
     struct ContainerView: View {
         private let container = PreviewContainer()
-        @State private var selectedEntry: Entry? = nil
+        @State private var selectedEntry: Entry?
         @State private var filter: Bool = false
         var body: some View {
                 HistoryView(viewModel:

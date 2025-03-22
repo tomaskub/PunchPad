@@ -14,5 +14,3 @@ extension ButtonStyle where Self == CancelButtonStyle {
 extension ButtonStyle where Self == ConfirmButtonStyle {
     static var confirming: ConfirmButtonStyle { .init() }
 }
-
-

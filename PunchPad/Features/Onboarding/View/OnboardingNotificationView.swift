@@ -13,7 +13,7 @@ struct OnboardingNotificationView: View {
     @ObservedObject var viewModel: OnboardingViewModel
     
     var body: some View {
-        VStack(spacing: 40) { 
+        VStack(spacing: 40) {
             TextFactory.buildTitle(Strings.titleText)
             
             TextFactory.buildDescription(Strings.descriptionText)
@@ -38,7 +38,7 @@ struct OnboardingNotificationView: View {
     }
 }
 
-//MARK: - Localization
+// MARK: - Localization
 extension OnboardingNotificationView: Localized {
     struct Strings {
         static let titleText = Localization.OnboardingNotificationScreen.notifications
@@ -52,14 +52,14 @@ extension OnboardingNotificationView: Localized {
 
 struct OnboardingNotificationPreview: PreviewProvider {
     private struct PreviewContainerView: View {
-        @StateObject private var vm: OnboardingViewModel
+        @StateObject private var viewModel: OnboardingViewModel
         private let container: PreviewContainer
         @Environment(\.colorScheme) private var colorScheme
         
         init() {
             let container = PreviewContainer()
             self.container = container
-            self._vm = StateObject(wrappedValue: 
+            self._viewModel = StateObject(wrappedValue:
                                     OnboardingViewModel(
                                         notificationService: container.notificationService,
                                         settingsStore: container.settingsStore)
@@ -69,7 +69,7 @@ struct OnboardingNotificationPreview: PreviewProvider {
         var body: some View {
             ZStack {
                 BackgroundFactory.buildSolidColor()
-                OnboardingNotificationView(viewModel: vm)
+                OnboardingNotificationView(viewModel: viewModel)
                 VStack {
                     Spacer()
                     Button( "Preview button") {

@@ -26,4 +26,3 @@ final class Container: ContainerProtocol {
         self.notificationService = NotificationService(center: .current())
     }
 }
-

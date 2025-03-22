@@ -272,7 +272,7 @@ private extension SettingsView {
     }
 }
 
-// MARK: -Localization
+// MARK: - Localization
 extension SettingsView: Localized {
     struct Strings {
         static let title = Localization.SettingsScreen.settings

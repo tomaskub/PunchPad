@@ -74,11 +74,10 @@ struct RingView: View {
     }
 }
     
-
 struct RingView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            RingView(startPoint: 0, 
+            RingView(startPoint: 0,
                      endPoint: 0.4,
                      ringColor: .black)
                 .padding(.horizontal, 50)

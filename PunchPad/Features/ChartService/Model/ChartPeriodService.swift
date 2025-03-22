@@ -17,11 +17,14 @@ class ChartPeriodService {
     }
     
     /// Generate Period (touple of dates)  encompasing given time range, containing date
+    /// if calendar fails to calculate a range of days in time range,
+    /// or `ChartPeriodServiceError.failedToCreateStartDateFromComponents`
+    ///  when attempt to create a start date from components.
     /// - Parameters:
     ///     - calendar: the calendar used to establish the date periods (default calendar is .current)
     ///     - date: the date that the period contains
     ///     - timeRange:  time range that should be encompased in period
-    /// - Throws: `ChartPeriodServiceError.failedToRetrieveChartTimeRangeCount` if calendar fails to calculate a range of days in time range, or `ChartPeriodServiceError.failedToCreateStartDateFromComponents` when attempt to create a start date from components.
+    /// - Throws: `ChartPeriodServiceError.failedToRetrieveChartTimeRangeCount`
     /// - Returns: a touple of start date and end date of the period
     func generatePeriod(for date: Date, in timeRange: ChartTimeRange) throws -> Period {
         logger.debug("generatePeriod called in time range \(timeRange.description) for date: \(date)")
@@ -84,7 +87,6 @@ class ChartPeriodService {
         return calendar.date(from: dateComponents)!
     }
     
-    
     /// Get a number of days in a given ChartTimeRange in which the given date exists
     private func getNumberOfDays(in timeRange: ChartTimeRange, for date: Date) throws -> Int {
         logger.debug("getNumberOfDays called")
@@ -105,4 +107,3 @@ class ChartPeriodService {
         return range.count
     }
 }
-
