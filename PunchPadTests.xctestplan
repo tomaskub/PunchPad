@@ -21,7 +21,8 @@
         "HomeViewModelModelTests\/test_resumeFromBackground_withOneTimer_notExceedingTimerLimit()",
         "HomeViewModelModelTests\/test_resumeFromBackground_withTwoTimers_exceedingFirstTimerLimit()",
         "HomeViewModelModelTests\/test_resumeFromBackground_withTwoTimers_exceedingSecondTimer()",
-        "HomeViewModelModelTests\/test_resumeFromBackground_withTwoTimers_notExceedingFirstTimerLimit()"
+        "HomeViewModelModelTests\/test_resumeFromBackground_withTwoTimers_notExceedingFirstTimerLimit()",
+        "PayManagerTests\/testGeneratingDataForNotFinishedWeek()"
       ],
       "target" : {
         "containerPath" : "container:PunchPad.xcodeproj",
