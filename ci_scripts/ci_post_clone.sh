@@ -38,6 +38,10 @@ fi
 
 echo "Project generated successfully"
 
+print_step "Enable plugin use"
+defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
+defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
+
 # print_step "Resolving swift package dependencies"
 # xcodebuild -resolvePackageDependencies \
   # -project "PunchPad.xcodeproj" \
