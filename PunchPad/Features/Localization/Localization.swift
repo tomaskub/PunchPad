@@ -4,7 +4,7 @@
 //
 //  Created by Tomasz Kubiak on 20/04/2024.
 //
-
+// swiftlint:disable line_length
 import Foundation
 
 struct Localization {
@@ -116,7 +116,7 @@ struct Localization {
         static let regularTime = String(localized: "Regular time")
         static let breaktime = String(localized: "Break time")
         static let editEntry = String(localized: "Edit entry")
-        static let overrideSettings = String(localized: "override settings") 
+        static let overrideSettings = String(localized: "override settings")
         static let date = String(localized: "Date")
         static let maximumOvertime = String(localized: "Maximum overtime")
         static let standardWorkTime = String(localized: "Standard work time")
@@ -135,3 +135,4 @@ struct Localization {
         static let startYourWorkDay = String(localized: "Start your work day")
     }
 }
+// swiftlint:enable line_length

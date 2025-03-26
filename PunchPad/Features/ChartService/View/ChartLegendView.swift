@@ -24,7 +24,7 @@ struct ChartLegendView: View {
     }
 }
 
-//MARK: - Localization
+// MARK: - Localization
 extension ChartLegendView: Localized {
     struct Strings {
         static let title = Localization.ChartLegendScreen.legend
@@ -42,6 +42,3 @@ struct ChartLegendView_Previews: PreviewProvider {
         .previewDisplayName("Chart Legend View")
     }
 }
-
-
-

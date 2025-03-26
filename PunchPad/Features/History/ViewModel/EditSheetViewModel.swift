@@ -45,7 +45,11 @@ final class EditSheetViewModel: ObservableObject {
         CGFloat(overTimeInSeconds / currentMaximumOvertime)
     }
     
-    init(dataManager: any DataManaging,  settingsStore: SettingsStore, payService: PayManager, calendar: Calendar = .current, entry: Entry) {
+    init(dataManager: any DataManaging,
+         settingsStore: SettingsStore,
+         payService: PayManager,
+         calendar: Calendar = .current,
+         entry: Entry) {
         self.dataManager = dataManager
         self.settingsStore = settingsStore
         self.payService = payService
@@ -99,7 +103,8 @@ final class EditSheetViewModel: ObservableObject {
             .filter { [weak self] newValue in
                 guard let self else { return false }
                 let oldValueComponents = self.calendar.dateComponents([.year, .month, .day], from: self.finishDate)
-                return self.calendar.date(newValue, matchesComponents: oldValueComponents) || self.shouldDisplayFullDates
+                return self.calendar.date(newValue,
+                                          matchesComponents: oldValueComponents) || self.shouldDisplayFullDates
             }
             .sink { [weak self] date in
                 guard let self else { return }
@@ -111,8 +116,10 @@ final class EditSheetViewModel: ObservableObject {
             .removeDuplicates()
             .filter { [weak self] newValue in
                 guard let self else { return false }
-                let oldValueComponents = self.calendar.dateComponents([.year, .month, .day], from: self.startDate)
-                return self.calendar.date(newValue, matchesComponents: oldValueComponents) || self.shouldDisplayFullDates
+                let oldValueComponents = self.calendar.dateComponents([.year, .month, .day],
+                                                                      from: self.startDate)
+                return self.calendar.date(newValue,
+                                          matchesComponents: oldValueComponents) || self.shouldDisplayFullDates
             }
             .sink { [weak self] date in
                 guard let self else { return }
@@ -129,7 +136,10 @@ final class EditSheetViewModel: ObservableObject {
                 return !value
             })
             .map { _ in
-                let newDate = self.adjustToEqualDateComponents([.year, .month, .day], from: self.startDate, to: self.finishDate, using: self.calendar)
+                let newDate = self.adjustToEqualDateComponents([.year, .month, .day],
+                                                               from: self.startDate,
+                                                               to: self.finishDate,
+                                                               using: self.calendar)
                 if newDate.timeIntervalSince1970 < self.startDate.timeIntervalSince1970 {
                     return self.startDate
                 } else {
@@ -141,10 +151,14 @@ final class EditSheetViewModel: ObservableObject {
     /// Adjust component in target date to match components in source date
     ///  Minimum resultion to which the date will be adjusted is `.second`.
     ///  Components allowed to be used in set are `.year`, `.month`, `.day`, `.hour`, `.minute` and `.second`
-    private func adjustToEqualDateComponents(_ calendarComponents: Set<Calendar.Component>, from source: Date, to target: Date, using calendar: Calendar) -> Date {
+    private func adjustToEqualDateComponents(_ calendarComponents: Set<Calendar.Component>,
+                                             from source: Date,
+                                             to target: Date,
+                                             using calendar: Calendar) -> Date {
         let allowedCalendarComponents: Set<Calendar.Component> = [.year, .month, .day, .hour, .minute, .second]
         let changedDateComponents = calendar.dateComponents(calendarComponents, from: source)
-        let unchangedDateComponents = calendar.dateComponents(allowedCalendarComponents.subtracting(calendarComponents), from: target)
+        let unchangedDateComponents = calendar.dateComponents(allowedCalendarComponents.subtracting(calendarComponents),
+                                                              from: target)
         var resultDateComponents = DateComponents()
         for calendarComponent in allowedCalendarComponents {
             guard let keyPath = calendarComponent.dateComponentKeyPath else { continue }
@@ -164,7 +178,7 @@ final class EditSheetViewModel: ObservableObject {
         if interval.duration <= currentStandardWorkTime {
             workTimeInSeconds = interval.duration
             overTimeInSeconds = 0
-        } else if interval.duration - currentStandardWorkTime < currentMaximumOvertime{
+        } else if interval.duration - currentStandardWorkTime < currentMaximumOvertime {
             workTimeInSeconds = currentStandardWorkTime
             overTimeInSeconds = interval.duration - currentStandardWorkTime
         } else {

@@ -27,7 +27,7 @@ struct OnboardingFinishView: View {
     }
 }
 
-struct OnboardingFinish_Preview: PreviewProvider {
+struct OnboardingFinishPreview: PreviewProvider {
     private struct PreviewContainerView: View {
         @Environment(\.colorScheme) private var colorScheme
         var body: some View {

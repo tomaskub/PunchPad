@@ -12,7 +12,7 @@ struct OnboardingWelcomeView: View {
     private let logoResource: String = "LaunchLogo"
     
     var body: some View {
-        VStack(spacing: 40){
+        VStack(spacing: 40) {
             
             Image(logoResource)
                  .resizable()
@@ -43,7 +43,7 @@ extension OnboardingWelcomeView: Localized {
                 VStack {
                     Spacer()
                     Button("Preview button") {
-                        //do nothing
+                        // do nothing
                     }
                     .buttonStyle(.confirming)
                 }.padding(30)

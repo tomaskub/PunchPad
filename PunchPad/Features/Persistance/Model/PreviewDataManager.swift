@@ -49,7 +49,10 @@ final class PreviewDataManager: NSObject, DataManaging {
         return fetch(from: period.0, to: period.1)
     }
     
-    func fetch(from startDate: Date?, to finishDate: Date?, ascendingOrder: Bool = false, fetchLimit: Int? = nil) -> [Entry]? {
+    func fetch(from startDate: Date?,
+               to finishDate: Date?,
+               ascendingOrder: Bool = false,
+               fetchLimit: Int? = nil) -> [Entry]? {
         logger.debug("fetch called")
         var result = data.filter { data in
             if let startDate, let finishDate {

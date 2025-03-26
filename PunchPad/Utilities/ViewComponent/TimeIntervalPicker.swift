@@ -39,15 +39,15 @@ struct TimeIntervalPicker: View {
             Text(buttonLabelText)
                 .foregroundColor(.black)
                 .padding(.vertical, 8)
-                .padding(.horizontal,14)
+                .padding(.horizontal, 14)
                 .background(.gray.opacity(0.15))
                 .cornerRadius(10)
         }
         .popover(isPresented: $isShowingPickers) {
             HStack {
                 Picker(selection: hourComponent) {
-                    ForEach(0..<hoursInDay, id: \.self) { i in
-                        Text("\(i)").tag(i)
+                    ForEach(0..<hoursInDay, id: \.self) { hour in
+                        Text("\(hour)").tag(hour)
                     }
                 } label: {
                     EmptyView()
@@ -55,8 +55,8 @@ struct TimeIntervalPicker: View {
                 .frame(width: 100)
                 .pickerStyle(.wheel)
                 Picker(selection: minuteComponent) {
-                    ForEach(0..<minutesInHour, id: \.self) { i in
-                        Text("\(i)").tag(i)
+                    ForEach(0..<minutesInHour, id: \.self) { minute in
+                        Text("\(minute)").tag(minute)
                     }
                 } label: {
                     EmptyView()
@@ -68,7 +68,6 @@ struct TimeIntervalPicker: View {
         }
     }
 }
-
 
 #Preview {
     TimeIntervalPicker(buttonLabelText: "01:30",

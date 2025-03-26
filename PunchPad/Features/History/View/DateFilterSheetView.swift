@@ -15,7 +15,11 @@ struct DateFilterSheetView: View {
     private let cancelAction: () -> Void
     private let confirmAction: () -> Void
     
-    init(fromDate: Binding<Date>, toDate: Binding<Date>, sortAscending: Binding<Bool>, cancelAction: @escaping () -> Void, confirmAction: @escaping () -> Void) {
+    init(fromDate: Binding<Date>,
+         toDate: Binding<Date>,
+         sortAscending: Binding<Bool>,
+         cancelAction: @escaping () -> Void,
+         confirmAction: @escaping () -> Void) {
         self._fromDate = fromDate
         self._toDate = toDate
         self._sortAscending = sortAscending

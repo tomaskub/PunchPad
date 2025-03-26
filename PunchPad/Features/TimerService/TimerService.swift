@@ -26,6 +26,7 @@ final class TimerService: ObservableObject {
         self.timerProvider = timerProvider
     }
     
+    // swiftlint:disable:next cyclomatic_complexity
     func send(event: TimerServiceEvent) {
         logger.debug("Recieved event \(event.debugDescription)")
         switch event {
@@ -62,7 +63,7 @@ final class TimerService: ObservableObject {
         }
     }
     
-    private func startTimer()  {
+    private func startTimer() {
         logger.debug("startTimer called")
         counter = 0
         progress = 0
@@ -113,7 +114,9 @@ final class TimerService: ObservableObject {
 }
 
 extension TimerManager {
-    func setInitialState(ofTimerService service: TimerService, toCounter value: TimeInterval, toState state: TimerServiceState) {
+    func setInitialState(ofTimerService service: TimerService,
+                         toCounter value: TimeInterval,
+                         toState state: TimerServiceState) {
         service.setTimerService(counter: value)
         service.setTimerService(state: state)
         if state == .running || state == .paused {

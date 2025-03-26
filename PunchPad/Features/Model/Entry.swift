@@ -44,8 +44,15 @@ struct Entry: ChartableEntry {
         self.calculatedNetPay = calculatedNetPay
     }
     
-    ///Initialize with current date for start and finish, work time and overtime is set to 0
+    /// Initialize with current date for start and finish, work time and overtime is set to 0
     init() {
-        self.init(startDate: Date(), finishDate: Date(), workTimeInSec: 0, overTimeInSec: 0, maximumOvertimeAllowedInSeconds: 0, standardWorktimeInSeconds: 0, grossPayPerMonth: 0, calculatedNetPay: nil)
+        self.init(startDate: Date(),
+                  finishDate: Date(),
+                  workTimeInSec: 0,
+                  overTimeInSec: 0,
+                  maximumOvertimeAllowedInSeconds: 0,
+                  standardWorktimeInSeconds: 0,
+                  grossPayPerMonth: 0,
+                  calculatedNetPay: nil)
     }
 }

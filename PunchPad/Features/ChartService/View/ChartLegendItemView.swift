@@ -26,7 +26,9 @@ struct ChartLegendItemView: View {
 
 struct ChartLegendItemView_Previews: PreviewProvider {
     static var previews: some View {
-        ChartLegendItemView(chartLegendItem: ChartLegendItem(itemName: "Rectangles", itemShape: Rectangle(), itemShapeColor: .red))
+        ChartLegendItemView(chartLegendItem: ChartLegendItem(itemName: "Rectangles",
+                                                             itemShape: Rectangle(),
+                                                             itemShapeColor: .red))
             .padding()
             .previewLayout(.sizeThatFits)
     }

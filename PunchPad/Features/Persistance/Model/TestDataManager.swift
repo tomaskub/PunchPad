@@ -31,7 +31,7 @@ final class TestDataManager: NSObject {
     
     private func addTestingData() {
         logger.debug("addTestingData called")
-        var dateComponents = Calendar.current.dateComponents([.month,.year], from: Date())
+        var dateComponents = Calendar.current.dateComponents([.month, .year], from: Date())
         dateComponents.day = 1
         let date = Calendar.current.date(from: dateComponents)!
         let entry = EntryMO(context: managedObjectContext)
@@ -132,7 +132,10 @@ extension TestDataManager: DataManaging {
         return fetch(from: period.0, to: period.1)
     }
     
-    func fetch(from startDate: Date?, to finishDate: Date?, ascendingOrder: Bool = false, fetchLimit: Int? = nil) -> [Entry]? {
+    func fetch(from startDate: Date?,
+               to finishDate: Date?,
+               ascendingOrder: Bool = false,
+               fetchLimit: Int? = nil) -> [Entry]? {
         logger.debug("fetch called")
         let request: NSFetchRequest<EntryMO> = EntryMO.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "startDate", ascending: ascendingOrder)]
@@ -199,7 +202,7 @@ extension TestDataManager: DataManaging {
     }
 }
 
-//MARK: - Core Data Helper Functions
+// MARK: - Core Data Helper Functions
 private extension TestDataManager {
     func saveContext() {
         logger.debug("saveContext called")
@@ -212,7 +215,9 @@ private extension TestDataManager {
         }
     }
     
-    func fetchFirst<T: NSManagedObject>(_ objectType: T.Type, predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]? = nil) -> Result<T?, Error> {
+    func fetchFirst<T: NSManagedObject>(_ objectType: T.Type,
+                                        predicate: NSPredicate?,
+                                        sortDescriptors: [NSSortDescriptor]? = nil) -> Result<T?, Error> {
         logger.debug("fetchFirst called")
         let request = objectType.fetchRequest()
         request.predicate = predicate
@@ -248,7 +253,7 @@ private extension TestDataManager {
     }
 }
 
-//MARK: - Entry Conv Init
+// MARK: - Entry Conv Init
 fileprivate extension Entry {
     init(entryMO: EntryMO) {
         self.id = entryMO.id

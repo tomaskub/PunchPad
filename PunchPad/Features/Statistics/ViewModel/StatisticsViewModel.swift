@@ -34,7 +34,8 @@ final class StatisticsViewModel: ObservableObject {
             entry.overTimeInSeconds / secondsInHour
         }.reduce(0, +)
     }
-    ///Entries for use with a chart - contains empy entries for days without the entry in this monts
+    
+    /// Entries for use with a chart - contains empy entries for days without the entry in this monts
     @Published var entryInPeriod: [Entry]
     var entrySummaryByMonthYear: [EntrySummary] {
         groupEntriesByYearMonth(entryInPeriod).map { EntrySummary(fromEntries: $0) }
@@ -96,12 +97,16 @@ final class StatisticsViewModel: ObservableObject {
                     if let firstEntry = dataManager.fetchOldestExisting(),
                        let lastEntry = dataManager.fetchNewestExisting() {
                         do {
-                            self.periodDisplayed = try self.chartPeriodService.generatePeriod(from: firstEntry, to: lastEntry)
+                            self.periodDisplayed = try self.chartPeriodService.generatePeriod(
+                                from: firstEntry,
+                                to: lastEntry
+                            )
                             self.payManager.updatePeriod(with: self.periodDisplayed)
                         } catch {
                             self.logger.error("Failed to generate chart time period with new `.all` range")
                         }
                     } else {
+                        // swiftlint:disable:next line_length
                         self.logger.error("Failed to generate chart time period with new `.all` range when retrieving first and last entry")
                     }
                 }
@@ -135,8 +140,8 @@ extension StatisticsViewModel {
             logger.warning("0 or less days in period, returning empty array")
             return [] }
         let placeholders = [Int](0..<numberOfDaysInPeriod)
-            .compactMap { i in
-                calendar.date(byAdding: .day, value: i, to: period.0)
+            .compactMap { day in
+                calendar.date(byAdding: .day, value: day, to: period.0)
             }.map { date in
                 Entry(startDate: date,
                       finishDate: date,
@@ -153,13 +158,18 @@ extension StatisticsViewModel {
             return placeholders
         }
         return placeholders.map { placeholder in
-            let placeholderDateComponents = self.calendar.dateComponents([.day,.month,.year], from: placeholder.startDate)
-            let replacer = fetchedEntries.first { self.calendar.date($0.startDate, matchesComponents: placeholderDateComponents) }
+            let placeholderDateComponents = self.calendar.dateComponents([.day, .month, .year],
+                                                                         from: placeholder.startDate)
+            let replacer = fetchedEntries
+                .first {
+                    self.calendar.date($0.startDate, matchesComponents: placeholderDateComponents)
+                }
             return replacer ?? placeholder
         }
     }
 }
-//MARK: DATA GROUPING FUNCTIONS
+
+// MARK: DATA GROUPING FUNCTIONS
 extension StatisticsViewModel {
     private func groupEntriesByYearMonth(_ entries: [Entry]) -> [[Entry]] {
         logger.debug("groupEntriesByYearMonth called")
@@ -169,7 +179,7 @@ extension StatisticsViewModel {
         var currentEntries: [Entry] = .init()
         
         for entry in entries {
-            let entryDateComponents = Calendar.current.dateComponents([.month,.year], from: entry.startDate)
+            let entryDateComponents = Calendar.current.dateComponents([.month, .year], from: entry.startDate)
             if entryDateComponents != currentYearMonth {
                 if !currentEntries.isEmpty {
                     result.append(currentEntries)
@@ -192,7 +202,8 @@ extension StatisticsViewModel {
         var currentYearWeek: DateComponents?
         var currentEntries: [Entry] = .init()
         for entry in entries {
-            let entryDateComponents = Calendar.current.dateComponents([.weekOfYear, .yearForWeekOfYear], from: entry.startDate)
+            let entryDateComponents = Calendar.current.dateComponents([.weekOfYear, .yearForWeekOfYear],
+                                                                      from: entry.startDate)
             if entryDateComponents != currentYearWeek {
                 if !currentEntries.isEmpty {
                     result.append(currentEntries)
@@ -210,7 +221,7 @@ extension StatisticsViewModel {
     }
 }
 
-//MARK: CHART DATA FUNCTIONS
+// MARK: CHART DATA FUNCTIONS
 extension StatisticsViewModel {
     
     func loadPreviousPeriod() {

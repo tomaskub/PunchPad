@@ -27,7 +27,7 @@ struct CircleButton: ButtonStyle {
 }
 
 #Preview {
-    ZStack{
+    ZStack {
         BackgroundFactory.buildSolidColor()
         HStack {
             Button { } label: {

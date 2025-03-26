@@ -109,7 +109,7 @@ struct CustomNavigationBarView: View {
     }
 }
 
-//MARK: WIDTH AND HEIGHT ADJUSTMENTS
+// MARK: WIDTH AND HEIGHT ADJUSTMENTS
 private extension CustomNavigationBarView {
     struct BarItemWidthPrefKey: PreferenceKey {
         static let defaultValue: CGFloat = 0
@@ -142,7 +142,7 @@ private extension CustomNavigationBarView {
     }
 }
 
-//MARK: PREVIEWS
+// MARK: PREVIEWS
 #Preview("Home configuration") {
     struct Preview: View {
         let navBarTitleConfiguration = {

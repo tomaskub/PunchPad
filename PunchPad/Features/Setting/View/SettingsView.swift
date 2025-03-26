@@ -35,7 +35,7 @@ struct SettingsView: View {
 // MARK: - Body
 extension SettingsView {
     var body: some View {
-        ZStack{
+        ZStack {
             background
             List {
                 Section {
@@ -178,7 +178,10 @@ private extension SettingsView {
 // MARK: - View Builders
 private extension SettingsView {
     @ViewBuilder
-    private func makeChevronListButton(_ text: String, chevronOrientation: Bool, accessibilityIdentifier: Identifier.ExpandableCells? = nil, onTap: @escaping () -> Void) -> some View {
+    private func makeChevronListButton(_ text: String,
+                                       chevronOrientation: Bool,
+                                       accessibilityIdentifier: Identifier.ExpandableCells? = nil,
+                                       onTap: @escaping () -> Void) -> some View {
         HStack {
             Text(text)
                 .foregroundStyle(Color.theme.blackLabel)
@@ -194,7 +197,11 @@ private extension SettingsView {
         }
     }
     @ViewBuilder
-    private func makeListButton(_ text: String, systemName: String, iconForegroundColor: Color? = nil, accessibilityIdentifier: String? = nil, onTap: @escaping () -> Void) -> some View {
+    private func makeListButton(_ text: String,
+                                systemName: String,
+                                iconForegroundColor: Color? = nil,
+                                accessibilityIdentifier: String? = nil,
+                                onTap: @escaping () -> Void) -> some View {
         HStack {
             Text(text)
                 .foregroundStyle(Color.theme.blackLabel)
@@ -214,24 +221,28 @@ private extension SettingsView {
     }
     
     @ViewBuilder
-    private func makeToggleRow(_ text: String, isOn value: Binding<Bool>, identifier: Identifier.ToggableCells) -> some View {
+    private func makeToggleRow(_ text: String,
+                               isOn value: Binding<Bool>,
+                               identifier: Identifier.ToggableCells) -> some View {
         Toggle(text, isOn: value)
             .foregroundStyle(Color.theme.blackLabel)
             .tint(.theme.primary)
             .accessibilityIdentifier(identifier.rawValue)
     }
     
-    
     @ViewBuilder
-    private func makePickerRow(hours: Binding<Int>, minutes: Binding<Int>, hoursAccessibilityIdentifier: Identifier.Pickers? = nil, minutesAccessibilityIdentifier: Identifier.Pickers? = nil) -> some View {
+    private func makePickerRow(hours: Binding<Int>,
+                               minutes: Binding<Int>,
+                               hoursAccessibilityIdentifier: Identifier.Pickers? = nil,
+                               minutesAccessibilityIdentifier: Identifier.Pickers? = nil) -> some View {
         HStack {
             VStack {
                 Text(Strings.hoursPickerText)
                     .foregroundColor(.theme.primary)
                 
                 Picker(Strings.hoursPickerText, selection: hours) {
-                    ForEach(0..<25) { i in
-                        Text("\(i)").tag(i)
+                    ForEach(0..<25) { hour in
+                        Text("\(hour)").tag(hour)
                             .foregroundColor(.theme.primary)
                     }
                 }
@@ -246,8 +257,8 @@ private extension SettingsView {
                     .foregroundColor(.theme.primary)
                 
                 Picker(Strings.minutesPickerText, selection: minutes) {
-                    ForEach(0..<60) { i in
-                        Text("\(i)").tag(i)
+                    ForEach(0..<60) { minutes in
+                        Text("\(minutes)").tag(minutes)
                             .foregroundColor(.theme.primary)
                     }
                 }
@@ -261,7 +272,7 @@ private extension SettingsView {
     }
 }
 
-//MARK: -Localization
+// MARK: - Localization
 extension SettingsView: Localized {
     struct Strings {
         static let title = Localization.SettingsScreen.settings
@@ -294,7 +305,7 @@ extension SettingsView: Localized {
     struct ContainerView: View {
         private let container = PreviewContainer()
         var body: some View {
-            SettingsView(viewModel: 
+            SettingsView(viewModel:
                             SettingsViewModel(dataManger: container.dataManager,
                                               notificationService: container.notificationService,
                                               settingsStore: container.settingsStore)

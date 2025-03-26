@@ -27,7 +27,7 @@ final class ChartPeriodServiceTests: XCTestCase, StableDateCreating {
     }
 }
 
-//MARK: TEST FOR GENERATING PERIOD
+// MARK: TEST FOR GENERATING PERIOD
 extension ChartPeriodServiceTests {
     //NOTE ON DATE GENERATION IN TESTS
     /*
@@ -102,7 +102,7 @@ extension ChartPeriodServiceTests {
     }
 }
 
-//MARK: TESTS FOR RETARDING PERIOD
+// MARK: TESTS FOR RETARDING PERIOD
 extension ChartPeriodServiceTests {
     func test_RetardingPeriodForWeek() throws {
         // Given
@@ -179,7 +179,7 @@ extension ChartPeriodServiceTests {
     }
 }
 
-//MARK: TESTS FOR ADVANCING PERIOD
+// MARK: TESTS FOR ADVANCING PERIOD
 extension ChartPeriodServiceTests {
     func test_advancingPeriodForWeek() throws {
         // Given

@@ -9,7 +9,6 @@
 import Foundation
 import CoreData
 
-
 extension EntryMO {
     @nonobjc public class func fetchRequest() -> NSFetchRequest<EntryMO> {
         return NSFetchRequest<EntryMO>(entityName: "EntryMO")
@@ -26,6 +25,6 @@ extension EntryMO {
     @NSManaged public var calculatedNetPay: Double
 }
 
-extension EntryMO : Identifiable {
+extension EntryMO: Identifiable {
 
 }

@@ -32,7 +32,7 @@ final class PayManagerTests: XCTestCase {
     }
 }
 
-//MARK: TEST DATA GENERATION FOR PAST PERIODS
+// MARK: TEST DATA GENERATION FOR PAST PERIODS
 extension PayManagerTests {
     func testGenerateDataForPastWeek() {
         //Given
@@ -117,8 +117,9 @@ extension PayManagerTests {
     }
 }
 
-//MARK: TEST DATA GENERATION FOR CURRENT PERIODS
+// MARK: TEST DATA GENERATION FOR CURRENT PERIODS
 extension PayManagerTests {
+    // TODO: Fix flaky test - this test is not repeatable due to date of the run being used. For beigning of the week a pay predicted will not be avaliable, but if we have a possible prediction (for example we are mid-week) we will see a value.
     func testGeneratingDataForNotFinishedWeek() {
         //Given
         let date = Calendar.current.startOfDay(for: Date())
@@ -217,7 +218,7 @@ extension PayManagerTests {
     }
 }
 
-//MARK: TEST DATA GENERATION FOR FUTURE PERIODS
+// MARK: TEST DATA GENERATION FOR FUTURE PERIODS
 extension PayManagerTests {
     func testGeneratingDataForPeriodInFuture_withNoEntries() {
         //Given

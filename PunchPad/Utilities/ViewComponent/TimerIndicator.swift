@@ -15,7 +15,12 @@ struct TimerIndicator: View {
     let secondProgress: CGFloat
     let useOnlyWorkLabel: Bool
     
-    init(timerLabel: String, firstProgress: CGFloat, firstTimerLabel: String, secondProgress: CGFloat, secondTimerLabel: String, useOnlyWorkLabel: Bool = false) {
+    init(timerLabel: String,
+         firstProgress: CGFloat,
+         firstTimerLabel: String,
+         secondProgress: CGFloat,
+         secondTimerLabel: String,
+         useOnlyWorkLabel: Bool = false) {
         self.timerLabel = timerLabel
         self.firstProgressLabel = firstTimerLabel
         self.secondProgressLabel = secondTimerLabel

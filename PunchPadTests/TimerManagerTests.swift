@@ -23,7 +23,7 @@ final class TimerManagerTests: XCTestCase {
     }
 }
 
-//MARK: TIMER STATE CHANGE FUNCTIONS
+// MARK: TIMER STATE CHANGE FUNCTIONS
 extension TimerManagerTests {
     func test_startTimerService_when_noOvertime_firstRun() {
         //Given
@@ -444,7 +444,7 @@ extension TimerManagerTests {
     }
 }
 
-//MARK: HELPERS
+// MARK: HELPERS
 extension TimerManagerTests {
     private func setUpWithOneTimer() {
         let configuration = TimerManagerConfiguration(workTimeInSeconds: TimeInterval(workTimerLimit),

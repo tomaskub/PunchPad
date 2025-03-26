@@ -19,7 +19,7 @@ class HomeViewModel: NSObject, ObservableObject {
     private var timerManager: TimerManager
     private var timerStore: TimerStoring
     private var timerProvider: Timer.Type
-    private var timersNotRunning: Bool { 
+    private var timersNotRunning: Bool {
         self.state == .notStarted || self.state == .finished
     }
     private var startDate: Date?
@@ -47,7 +47,7 @@ class HomeViewModel: NSObject, ObservableObject {
         timerManager.overtimeTimerService?.progress ?? 0
     }
     
-    init(dataManager: any DataManaging, 
+    init(dataManager: any DataManaging,
          settingsStore: SettingsStore,
          payManager: PayManager,
          notificationService: NotificationService,
@@ -150,7 +150,7 @@ class HomeViewModel: NSObject, ObservableObject {
     }
 }
 
-//MARK: TIMER INTERFACE
+// MARK: TIMER INTERFACE
 extension HomeViewModel {
     func startTimerService() {
         guard state != .running else { return }
@@ -174,7 +174,7 @@ extension HomeViewModel {
     }
 }
 
-//MARK: HANDLING BACKGROUND TIMER UPDATE FUNC
+// MARK: HANDLING BACKGROUND TIMER UPDATE FUNC
 extension HomeViewModel {
     /// Set up combine subs to UI application background and foreground events
     private func setAppStateObservers() {
@@ -222,12 +222,14 @@ extension HomeViewModel {
     }
 }
 
-//MARK: DATA OPERATIONS
+// MARK: DATA OPERATIONS
 extension HomeViewModel {
     func saveEntry() {
         guard let startDate = startDate, let finishDate = finishDate else { return }
         let calculatedNetPay: Double? = {
-            settingsStore.isCalculatingNetPay ? payManager.calculateNetPay(gross: Double(settingsStore.grossPayPerMonth)) : nil
+            settingsStore.isCalculatingNetPay ?
+            payManager.calculateNetPay(gross: Double(settingsStore.grossPayPerMonth)) :
+            nil
         }()
         let timeWorked = Int(timerManager.workTimerService.counter)
         let overtimeWorked = Int(timerManager.overtimeTimerService?.counter ?? 0)
@@ -237,7 +239,7 @@ extension HomeViewModel {
                                 overTimeInSec: overtimeWorked,
                                 maximumOvertimeAllowedInSeconds: settingsStore.maximumOvertimeAllowedInSeconds,
                                 standardWorktimeInSeconds: settingsStore.workTimeInSeconds,
-                                grossPayPerMonth: settingsStore.grossPayPerMonth, 
+                                grossPayPerMonth: settingsStore.grossPayPerMonth,
                                 calculatedNetPay: calculatedNetPay
         )
         dataManager.updateAndSave(entry: entryToSave)
@@ -255,16 +257,17 @@ extension HomeViewModel {
     }
 }
 
-//MARK: NOTIFICATIONS
+// MARK: NOTIFICATIONS
 extension HomeViewModel {
     /// Schedule notifications for finish of overtime timer service and worktime timer service
     private func scheduleTimerFinishNotifications() {
         guard settingsStore.isSendingNotification else { return }
         if let overtimeService = timerManager.overtimeTimerService {
             if timerManager.workTimerService.serviceState == .running {
-                notificationService.scheduleNotification(for: .workTime, 
+                notificationService.scheduleNotification(for: .workTime,
                                                          in: timerManager.workTimerService.remainingTime)
-                let overtimeNotificationTimeInterval = timerManager.workTimerService.remainingTime + overtimeService.remainingTime
+                var overtimeNotificationTimeInterval = timerManager.workTimerService.remainingTime
+                overtimeNotificationTimeInterval += overtimeService.remainingTime
                 notificationService.scheduleNotification(for: .overTime,
                                                          in: overtimeNotificationTimeInterval)
             } else if overtimeService.serviceState == .running {

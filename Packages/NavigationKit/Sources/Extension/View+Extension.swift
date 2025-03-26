@@ -16,7 +16,7 @@ public extension View {
     }
 }
 
-//MARK: NAVIGATION BAR TITLE
+// MARK: NAVIGATION BAR TITLE
 public extension View {
     /// Sets the title, alignment, text color, and typography for the navigation bar.
     /// - Parameters:
@@ -56,7 +56,7 @@ public extension View {
     }
 }
 
-//MARK: NAVIGATION BAR BACKGROUND
+// MARK: NAVIGATION BAR BACKGROUND
 public extension View {
     /// Sets the background view for the navigation bar.
     /// - Parameter bg: A closure returning the background view.
@@ -72,7 +72,7 @@ public extension View {
     }
 }
 
-//MARK: NAVIGATION BAR LEADING & TRAILING ITEM
+// MARK: NAVIGATION BAR LEADING & TRAILING ITEM
 public extension View {
     /// Sets the leading item view for the navigation bar.
     /// - Parameter content: A closure returning the leading item view.
@@ -112,7 +112,7 @@ public extension View {
     }
 }
 
-//MARK: NAVIGATION BAR CONTENT
+// MARK: NAVIGATION BAR CONTENT
 public extension View {
     /// Sets a custom content view for the navigation bar.
     /// - Parameter content: A closure returning the custom content view.

@@ -26,7 +26,7 @@ struct PersistanceController {
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         }
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+        container.loadPersistentStores(completionHandler: { (_, error) in
             if let error = error as NSError? {
                 #warning("TODO: implement error handling before shipping")
                 fatalError("Fatal error: \(error), \(error.userInfo)")

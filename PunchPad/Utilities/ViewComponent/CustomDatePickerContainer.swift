@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CustomDatePickerContainer<Content: View, Leading: View, Trailing: View>: View  {
+struct CustomDatePickerContainer<Content: View, Leading: View, Trailing: View>: View {
     @State private var labelSize: CGSize = CGSize()
     private let labelText: String?
     private let cornerRadius: CGFloat
@@ -50,7 +50,7 @@ struct CustomDatePickerContainer<Content: View, Leading: View, Trailing: View>: 
     init(labelText: String?, cornerRadius: CGFloat = 10,
          @ViewBuilder content: @escaping () -> Content,
          @ViewBuilder trailing: @escaping () -> Trailing) where Leading == EmptyView {
-        self.init(labelText: labelText, 
+        self.init(labelText: labelText,
                   cornerRadius: cornerRadius,
                   content: content,
                   leadingIcon: nil,
@@ -59,7 +59,7 @@ struct CustomDatePickerContainer<Content: View, Leading: View, Trailing: View>: 
     
     init(labelText: String?, cornerRadius: CGFloat = 10,
          @ViewBuilder content: @escaping () -> Content) where Trailing == EmptyView, Leading == EmptyView {
-        self.init(labelText: labelText, 
+        self.init(labelText: labelText,
                   cornerRadius: cornerRadius,
                   content: content,
                   leadingIcon: nil,
@@ -112,19 +112,36 @@ struct CustomDatePickerContainer<Content: View, Leading: View, Trailing: View>: 
         Path { path in
             path.move(to: CGPoint(x: 0.125 * proxy.size.width, y: 0))
             path.addLine(to: CGPoint(x: cornerRadius, y: 0))
-            path.addArc(center: CGPoint(x: cornerRadius, y: cornerRadius), radius: cornerRadius, startAngle: Angle(degrees: 270), endAngle: Angle.degrees(180), clockwise: true)
+            path.addArc(center: CGPoint(x: cornerRadius, y: cornerRadius),
+                        radius: cornerRadius,
+                        startAngle: Angle(degrees: 270),
+                        endAngle: Angle.degrees(180),
+                        clockwise: true)
             path.addLine(to: CGPoint(x: 0, y: proxy.size.height - cornerRadius))
-            path.addArc(center: CGPoint(x: cornerRadius, y: proxy.size.height - cornerRadius), radius: cornerRadius, startAngle: Angle(degrees: 180), endAngle: Angle(degrees: 90), clockwise: true)
+            path.addArc(center: CGPoint(x: cornerRadius, y: proxy.size.height - cornerRadius),
+                        radius: cornerRadius,
+                        startAngle: Angle(degrees: 180),
+                        endAngle: Angle(degrees: 90),
+                        clockwise: true)
             path.addLine(to: CGPoint(x: proxy.size.width - cornerRadius, y: proxy.size.height))
-            path.addArc(center: CGPoint(x: proxy.size.width-cornerRadius, y: proxy.size.height - cornerRadius), radius: cornerRadius, startAngle: Angle(degrees: 90), endAngle: Angle(degrees: 0), clockwise: true)
+            path.addArc(center: CGPoint(x: proxy.size.width-cornerRadius,
+                                        y: proxy.size.height - cornerRadius),
+                        radius: cornerRadius,
+                        startAngle: Angle(degrees: 90),
+                        endAngle: Angle(degrees: 0),
+                        clockwise: true)
             path.addLine(to: CGPoint(x: proxy.size.width, y: cornerRadius))
-            path.addArc(center: CGPoint(x: proxy.size.width - cornerRadius, y: cornerRadius), radius: cornerRadius, startAngle: Angle(degrees: 0), endAngle: Angle(degrees: 270), clockwise: true)
+            path.addArc(center: CGPoint(x: proxy.size.width - cornerRadius, y: cornerRadius),
+                        radius: cornerRadius,
+                        startAngle: Angle(degrees: 0),
+                        endAngle: Angle(degrees: 270),
+                        clockwise: true)
             path.addLine(to: CGPoint(x: 0.125 * proxy.size.width + labelSize.width, y: 0))
         }
     }
 }
 
-fileprivate struct PrefKey: PreferenceKey {
+private struct PrefKey: PreferenceKey {
     static var defaultValue: CGSize = CGSize()
     static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
         value = nextValue()

@@ -8,25 +8,27 @@
 import Foundation
 
 struct PreviewDataFactory {
-    static func buildDataForPreviewForYear(containing date: Date = Date(), using calendar: Calendar = .current) -> [Entry] {
+    static func buildDataForPreviewForYear(containing date: Date = Date(),
+                                           using calendar: Calendar = .current) -> [Entry] {
         var result = [Entry]()
         let year = calendar.dateComponents([.year], from: date).year!
-        for i in 1...12 {
-            guard let dateInMonth = calendar.date(from: DateComponents(year: year, month: i)) else { continue }
+        for month in 1...12 {
+            guard let dateInMonth = calendar.date(from: DateComponents(year: year, month: month)) else { continue }
             let dataForMonth = buildDataForPreviewForMonth(containing: dateInMonth, using: calendar)
             result.append(contentsOf: dataForMonth)
         }
         return result
     }
     
-    static func buildDataForPreviewForMonth(containing date: Date = Date(), using calendar: Calendar = Calendar.current) -> [Entry] {
+    static func buildDataForPreviewForMonth(containing date: Date = Date(),
+                                            using calendar: Calendar = Calendar.current) -> [Entry] {
         let currentDate = calendar.startOfDay(for: date)
         guard let numberOfDaysInMonth = calendar.range(of: .day, in: .month, for: currentDate) else { return [] }
-        let dateComponents = calendar.dateComponents([.year,.month], from: currentDate)
+        let dateComponents = calendar.dateComponents([.year, .month], from: currentDate)
         var result = [Entry]()
-        for i in numberOfDaysInMonth {
+        for day in numberOfDaysInMonth {
             var localDateComponents = dateComponents
-            localDateComponents.day = i
+            localDateComponents.day = day
             guard let workingDate = calendar.date(from: localDateComponents),
                   !calendar.isDateInWeekend(workingDate),
                   let entry = buildDataForDay(for: workingDate, using: calendar) else { continue }

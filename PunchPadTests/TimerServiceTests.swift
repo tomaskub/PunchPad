@@ -32,7 +32,7 @@ final class TimerServiceTests: XCTestCase {
     }
 }
 
-//MARK: TEST STATE CHANGES
+// MARK: TEST STATE CHANGES
 extension TimerServiceTests {
     //INITIAL STATE
     func test_initialServiceState() {

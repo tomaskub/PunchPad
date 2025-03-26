@@ -47,6 +47,7 @@ final class SettingsViewModel: ObservableObject {
         setWorkTimeUISubscribers()
         setOvertimeUISubscribers()
         setGrossPayUISubscribers()
+        setNotificationCenterSubscribers()
     }
     
     private func setSettingStoreSubscribers() {
@@ -54,7 +55,8 @@ final class SettingsViewModel: ObservableObject {
             .receive(on: RunLoop.main)
             .filter { [weak self] value in
                 guard let self else { return false }
-                return value/secondsInHour != self.timerHours && (value % secondsInHour) / secondsInMinute != self.timerMinutes
+                return value/secondsInHour != self.timerHours &&
+                (value % secondsInHour) / secondsInMinute != self.timerMinutes
             }
             .sink { [weak self] value in
                 guard let self else { return }
@@ -66,7 +68,8 @@ final class SettingsViewModel: ObservableObject {
             .receive(on: RunLoop.main)
             .filter { [weak self] value in
                 guard let self else { return false }
-                return value/secondsInHour != self.overtimeHours && (value % secondsInHour) / secondsInMinute != self.overtimeMinutes
+                return value/secondsInHour != self.overtimeHours &&
+                (value % secondsInHour) / secondsInMinute != self.overtimeMinutes
             }
             .sink { [weak self] value in
                 guard let self else { return }
@@ -88,7 +91,7 @@ final class SettingsViewModel: ObservableObject {
         settingsStore.$isSendingNotification
             .removeDuplicates()
             .filter { $0 }
-            .sink { [weak self] value in
+            .sink { [weak self] _ in
                 self?.requestAuthorizationForNotifications()
             }.store(in: &subscriptions)
         
@@ -98,7 +101,9 @@ final class SettingsViewModel: ObservableObject {
             .filter { !$0 }
             .receive(on: RunLoop.main)
             .assign(to: &self.settingsStore.$isSendingNotification)
+    }
         
+    private func setNotificationCenterSubscribers() {
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .filter { [weak self] _ in
@@ -110,7 +115,7 @@ final class SettingsViewModel: ObservableObject {
     }
     
     private func requestAuthorizationForNotifications() {
-        self.notificationService.requestAuthorizationForNotifications { [weak self] result, error in
+        self.notificationService.requestAuthorizationForNotifications { [weak self] result, _ in
             DispatchQueue.main.async {
                 self?.shouldShowNotificationDeniedAlert = !result
             }

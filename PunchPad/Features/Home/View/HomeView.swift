@@ -10,8 +10,6 @@ import NavigationKit
 import ThemeKit
 import TabViewKit
 
-
-
 struct HomeView: View {
     private typealias Identifier = ScreenIdentifier.HomeView
     private let timerIndicatorHourAndMinuteFormatter = FormatterFactory.makeHourAndMinuteDateComponentFormatter()
@@ -24,7 +22,7 @@ struct HomeView: View {
     var body: some View {
         ZStack {
             background
-            VStack{
+            VStack {
                 VStack(spacing: 60) {
                     TimerIndicator(
                         timerLabel: formatTimeInterval(viewModel.timerDisplayValue),
@@ -60,7 +58,8 @@ struct HomeView: View {
         }
     }
 }
-//MARK: - Localization
+
+// MARK: - Localization
 extension HomeView: Localized {
     struct Strings {
         static let bottomMessageText = Localization.HomeScreen.startYourWorkDay.capitalized
@@ -68,7 +67,8 @@ extension HomeView: Localized {
         static let secondTimerLabelText = Localization.Common.overtime.uppercased()
     }
 }
-//MARK: - Timer Controls
+
+// MARK: - Timer Controls
 private extension HomeView {
     @ViewBuilder
     func makeControls(_ state: TimerServiceState) -> some View {
@@ -153,7 +153,7 @@ private extension HomeView {
     }
 }
 
-//MARK: - Preview
+// MARK: - Preview
 struct Home_Previews: PreviewProvider {
     private struct ContainerView: View {
         private let container = PreviewContainer()
@@ -163,7 +163,7 @@ struct Home_Previews: PreviewProvider {
                         HomeViewModel(
                             dataManager: container.dataManager,
                             settingsStore: container.settingsStore,
-                            payManager: container.payManager, 
+                            payManager: container.payManager,
                             notificationService: container.notificationService,
                             timerProvider: container.timerProvider)
             )
