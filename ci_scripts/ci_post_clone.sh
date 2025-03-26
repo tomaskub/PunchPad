@@ -7,7 +7,6 @@ print_step() {
   echo ""
   echo "================================================"
   echo ">>> $1"
-  echo "================================================"
 }
 
 install_dependecy() {
@@ -23,7 +22,6 @@ print_step "Checking xcodegen availablity"
 if ! command -v xcodegen &> /dev/null; then 
   echo "XcodeGen not found"
   install_dependecy "xcodegen"
-  #brew install xcodegen
 else 
   echo "XcodeGen avaliable"
 fi
@@ -40,11 +38,11 @@ fi
 
 echo "Project generated successfully"
 
-print_step "Resolving swift package dependencies"
-xcodebuild -resolvePackageDependencies \
-  -project "PunchPad.xcodeproj" \
-  -scheme "PunchPad" \
-  -derivedDataPath "$CI_DERIVED_DATA_PATH" \
-  -clonedSourcePackagesDirPath "./SourcePackages" \
-  -disableAutomaticPackageResolution \
-  -verbose 
+# print_step "Resolving swift package dependencies"
+# xcodebuild -resolvePackageDependencies \
+  # -project "PunchPad.xcodeproj" \
+  # -scheme "PunchPad" \
+  # -derivedDataPath "$CI_DERIVED_DATA_PATH" \
+  # -clonedSourcePackagesDirPath "./SourcePackages" \
+  # -disableAutomaticPackageResolution \
+  # -verbose 
