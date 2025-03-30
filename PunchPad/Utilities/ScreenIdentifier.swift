@@ -30,36 +30,25 @@ enum ScreenIdentifier {
         case timerLabel
     }
     
-    enum StatisticsView {
-        enum Chart: String {
-            case workTimeChart
-            case startTimeChart
-            case finishTimeChart
-        }
+    enum StatisticsView: String {
+        case workTimeChart
         
         enum SegmentedControl: String {
-            case chartType
-        }
-        
-        enum ChartTypeButton: String {
-            case workTime
-            case startTime
-            case finishTime
-        }
-        
-        enum ChartLegend: String {
-            case workTimeChartLegend
-            case startTimeChartLegend
-            case finishTimeChartLegend
+            case allRange
+            case yearRange
+            case monthRange
+            case weekRange
         }
         
         enum SalaryCalculationLabel: String {
+            case period
+            case grossPayPerHour
             case grossPay
-            case netPay
+            case grossPayPredicted
+            case workingDaysNumber
         }
         
         enum SectionHeaders: String {
-            case chart
             case salaryCalculation
         }
     }

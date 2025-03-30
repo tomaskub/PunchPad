@@ -124,7 +124,9 @@ private extension StatisticsView {
         var body: some View {
             Picker(String(), selection: $pickerSelection) {
                 ForEach(ChartTimeRange.allCases) { range in
-                    Text(range.rawValue.capitalized)}
+                    Text(range.rawValue.capitalized)
+                        .accessibilityIdentifier(range.mapToIdentifier())
+                }
             }
             .pickerStyle(.segmented)
         }
@@ -229,25 +231,32 @@ private extension StatisticsView {
                                 selectedRange: viewModel.chartTimeRange
                               )
             )
+            .accessibilityIdentifier(Identifier.SalaryCalculationLabel.period)
             SalaryListRowView(propertyName: Strings.grossPayPerHourListRowTitle,
                               propertyValue: currencyFormatter.string(
                                 from: viewModel.grossSalaryData.payPerHour as NSNumber
                               ) ?? String()
             )
+            .accessibilityIdentifier(Identifier.SalaryCalculationLabel.grossPayPerHour)
+            
             SalaryListRowView(propertyName: Strings.grossPayListRowTitle,
                               propertyValue: currencyFormatter.string(
                                 from: viewModel.grossSalaryData.payUpToDate as NSNumber
                               ) ?? String()
             )
+            .accessibilityIdentifier(Identifier.SalaryCalculationLabel.grossPay)
+            
             if let payPredicted = viewModel.grossSalaryData.payPredicted {
                 SalaryListRowView(propertyName: Strings.grossPayPredictedListRowTitle,
                                   propertyValue: currencyFormatter.string(from: payPredicted as NSNumber) ?? String()
                 )
+                .accessibilityIdentifier(Identifier.SalaryCalculationLabel.grossPayPredicted)
             }
             SalaryListRowView(propertyName: Strings.numberOfWorkingDaysListRowTitle,
                               propertyValue: String(viewModel.grossSalaryData.numberOfWorkingDays)
                                 
             )
+            .accessibilityIdentifier(Identifier.SalaryCalculationLabel.workingDaysNumber)
         }
     }
     struct SalaryListRowView: View {
@@ -294,4 +303,19 @@ extension StatisticsView: Localized {
         }
     }
     return Preview()
+}
+
+private extension ChartTimeRange {
+    func mapToIdentifier() -> ScreenIdentifier.StatisticsView.SegmentedControl {
+        return switch self {
+        case .all:
+                .allRange
+        case .year:
+                .yearRange
+        case .month:
+                .monthRange
+        case .week:
+                .weekRange
+        }
+    }
 }
