@@ -15,6 +15,7 @@ class SettingsViewScreen {
         self.app = app
     }
     
+    // TODO: see if there are obseleted values here
     var setTimeLengthExpandText: XCUIElement {
         app.staticTexts[Identifier.ExpandableCells.setTimerLength.rawValue]
     }
@@ -33,18 +34,6 @@ class SettingsViewScreen {
     
     var calculateNetPayToggle: XCUIElement {
         app.switches[Identifier.ToggableCells.calculateNetPay.rawValue]
-    }
-    
-    var appearanceSystemButton: XCUIElement {
-        app.buttons[Identifier.SegmentedControlButtons.system.rawValue]
-    }
-    
-    var appearanceDarkButton: XCUIElement {
-        app.buttons[Identifier.SegmentedControlButtons.dark.rawValue]
-    }
-    
-    var appearanceLightButton: XCUIElement {
-        app.buttons[Identifier.SegmentedControlButtons.light.rawValue]
     }
     
     var clearAllSavedDataButton: XCUIElement {

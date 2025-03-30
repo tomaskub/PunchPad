@@ -86,12 +86,6 @@ enum ScreenIdentifier {
             case appearancePicker
         }
         
-        enum SegmentedControlButtons: String {
-            case system
-            case dark
-            case light
-        }
-        
         enum ToggableCells: String {
             case sendNotificationsOnFinish
             case keepLoggingOvertime
