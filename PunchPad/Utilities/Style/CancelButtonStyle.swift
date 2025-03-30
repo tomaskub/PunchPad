@@ -26,4 +26,3 @@ struct CancelButtonStyle: ButtonStyle {
     .buttonStyle(CancelButtonStyle())
     .padding()
 }
-

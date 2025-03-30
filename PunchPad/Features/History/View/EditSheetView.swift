@@ -24,7 +24,7 @@ struct EditSheetView: View {
     }
 }
 
-//MARK: - Body
+// MARK: - Body
 extension EditSheetView {
     var body: some View {
         ZStack {
@@ -53,7 +53,7 @@ extension EditSheetView {
     }
 }
 
-//MARK: - Time Indicator, Labels
+// MARK: - Time Indicator, Labels
 private extension EditSheetView {
     var infoSection: some View {
         Group {
@@ -117,7 +117,7 @@ private extension EditSheetView {
     }
 }
 
-//MARK: - Date Controls
+// MARK: - Date Controls
 private extension EditSheetView {
     @ViewBuilder
     var dateControls: some View {
@@ -131,7 +131,9 @@ private extension EditSheetView {
     var diffDayDateControls: some View {
         Group {
             CustomDatePickerContainer(labelText: Strings.startDateText) {
-                DatePicker(Strings.startDateText, selection: $viewModel.startDate, in: PartialRangeThrough(viewModel.finishDate))
+                DatePicker(Strings.startDateText,
+                           selection: $viewModel.startDate,
+                           in: PartialRangeThrough(viewModel.finishDate))
                     .labelsHidden()
                     .accessibilityIdentifier(Identifier.DatePicker.startDate)
             } trailing: {
@@ -142,7 +144,9 @@ private extension EditSheetView {
             .padding(.bottom, 2)
             
             CustomDatePickerContainer(labelText: Strings.finishDateText) {
-                DatePicker(Strings.finishDateText, selection: $viewModel.finishDate, in: PartialRangeFrom(viewModel.startDate))
+                DatePicker(Strings.finishDateText,
+                           selection: $viewModel.finishDate,
+                           in: PartialRangeFrom(viewModel.startDate))
                     .labelsHidden()
                     .accessibilityIdentifier(Identifier.DatePicker.finishDate)
             } trailing: {
@@ -200,7 +204,7 @@ private extension EditSheetView {
     }
 }
 
-//MARK: - Override Settings Controls
+// MARK: - Override Settings Controls
 private extension EditSheetView {
     @ViewBuilder
     func overrideControls(_ proxy: ScrollViewProxy) -> some View {
@@ -211,7 +215,7 @@ private extension EditSheetView {
          
     }
     
-    @ViewBuilder 
+    @ViewBuilder
     func overrideSettingsHeader(_ proxy: ScrollViewProxy) -> some View {
         HStack {
             Image(systemName: isShowingOverrideControls ? chevronUpIconName : chevronDownIconName)
@@ -274,7 +278,7 @@ private extension EditSheetView {
     }
 }
 
-//MARK: - Save Controls
+// MARK: - Save Controls
 extension EditSheetView {
     var editControls: some View {
         Group {
@@ -297,7 +301,7 @@ extension EditSheetView {
     }
 }
 
-//MARK: - View Components
+// MARK: - View Components
 extension EditSheetView {
     var title: some View {
         HStack {
@@ -343,7 +347,7 @@ extension EditSheetView {
     }
 }
 
-//MARK: - Localization
+// MARK: - Localization
 extension EditSheetView: Localized {
     struct Strings {
         static let regularTimeText = Localization.EditSheetScreen.regularTime
@@ -363,6 +367,7 @@ extension EditSheetView: Localized {
         static let calculateNetPayText = Localization.EditSheetScreen.calculateNetPay
     }
 }
+
 #Preview("Single date controls") {
     struct ContainerView: View {
         private let container = PreviewContainer()
@@ -385,7 +390,7 @@ extension EditSheetView: Localized {
             ZStack {
                 BackgroundFactory.buildSolidColor()
             }
-            .sheet(isPresented: .constant(true)){
+            .sheet(isPresented: .constant(true)) {
                 EditSheetView(viewModel:
                                 EditSheetViewModel(dataManager: container.dataManager,
                                                    settingsStore: container.settingsStore,
@@ -412,7 +417,7 @@ extension EditSheetView: Localized {
             return Entry(startDate: startDate,
                          finishDate: finishDate,
                          workTimeInSec: 4*3600,
-                         overTimeInSec: 0,//3600 + 1800,
+                         overTimeInSec: 0,
                          maximumOvertimeAllowedInSeconds: 5*3600,
                          standardWorktimeInSeconds: 8*3600,
                          grossPayPerMonth: 10000,
@@ -422,7 +427,7 @@ extension EditSheetView: Localized {
             ZStack {
                 BackgroundFactory.buildSolidColor()
             }
-            .sheet(isPresented: .constant(true)){
+            .sheet(isPresented: .constant(true)) {
                 EditSheetView(viewModel:
                                 EditSheetViewModel(dataManager: container.dataManager,
                                                    settingsStore: container.settingsStore,
@@ -434,5 +439,5 @@ extension EditSheetView: Localized {
     }
     
     return ContainerView()
-    
+    // swiftlint:disable:next file_length
 }

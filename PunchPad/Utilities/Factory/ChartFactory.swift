@@ -15,7 +15,9 @@ struct ChartFactory {
     private static let legendHoursWorkedLabelTitle = "Hours worked"
     private static let legendOvertimeLabelTitle = "Overtime"
     
-    /// Build chart using buildBarChart function with default colors from theme kit, x axis unis set to day and x axis value labels formatter to 2 digit days and 3 letter description of month (such as `21 Jun`)
+    /// Build chart using buildBarChart function with default colors from theme kit,
+    /// x axis unis set to day and x axis value labels formatter to 2 digit days and 3 letter description of month
+    /// (such as `21 Jun`)
     /// - Parameter data: array of chartableEntry data
     /// - Returns: Chart view
     @ViewBuilder static func buildBarChartForDays<T: ChartableEntry>(data: [T]) -> some View {
@@ -25,7 +27,9 @@ struct ChartFactory {
                                        yScale: 0...15)
     }
     
-    /// Build chart using buildBarChart function with default colors from theme kit, x axis unis set to week of year and x axis value labels formatter to 2 digit days and 3 letter description of month (such as `21 Jun`)
+    /// Build chart using buildBarChart function with default colors from theme kit,
+    /// x axis unis set to week of year and x axis value labels formatter to 2 digit days and 3 letter description of
+    /// month (such as `21 Jun`)
     /// - Parameter data: array of chartableEntry data
     /// - Returns: Chart view
     @ViewBuilder static func buildBarChartForWeeks<T: ChartableEntry>(data: [T]) -> some View {
@@ -35,8 +39,9 @@ struct ChartFactory {
                                        yScale: nil)
     }
     
-    
-    /// Build chart using buildBarChart function with default colors from theme kit, x axis unis set to month and x axis value labels formatter to 3 letter description of month (such as `Jun`)
+    /// Build chart using buildBarChart function with default colors from theme kit,
+    /// x axis unis set to month and x axis value labels formatter to 3 letter description of
+    /// month (such as `Jun`)
     /// - Parameter data: array of chartableEntry data
     /// - Returns: Chart view
     @ViewBuilder static func buildBarChartForMonths<T: ChartableEntry>(data: [T]) -> some View {
@@ -53,8 +58,19 @@ struct ChartFactory {
     ///   - xFormatter: formatter used for x axis values of data
     ///   - yScale: optional scale to be used on y axis
     /// - Returns: Chart view
-    @ViewBuilder static func buildBarChartWithDefaultColors<T: ChartableEntry>(data: [T], xUnit: Calendar.Component, xFormatter: DateFormatter, yScale: ClosedRange<Int>? = nil) -> some View {
-        buildBarChart(data: data, firstColor: .theme.primary, secondColor: .theme.redChart, axisColor: .theme.buttonColor, xUnit: xUnit, xFormatter: xFormatter, yScale: yScale)
+    @ViewBuilder static func buildBarChartWithDefaultColors<T: ChartableEntry>(
+        data: [T],
+        xUnit: Calendar.Component,
+        xFormatter: DateFormatter,
+        yScale: ClosedRange<Int>? = nil
+    ) -> some View {
+        buildBarChart(data: data,
+                      firstColor: .theme.primary,
+                      secondColor: .theme.redChart,
+                      axisColor: .theme.buttonColor,
+                      xUnit: xUnit,
+                      xFormatter: xFormatter,
+                      yScale: yScale)
     }
     
     /// Build BarChart based on chartable entry array
@@ -67,14 +83,23 @@ struct ChartFactory {
     ///   - xFormatter: formatter used for x axis values of data
     ///   - yScale: optional scale to be used on y axis
     /// - Returns: Chart View
-    @ViewBuilder static func buildBarChart<T: ChartableEntry>(data: [T], firstColor: Color, secondColor: Color, axisColor: Color, xUnit: Calendar.Component, xFormatter: DateFormatter, yScale: ClosedRange<Int>? = nil) -> some View {
+    @ViewBuilder static func buildBarChart<T: ChartableEntry>(
+        // swiftlint:disable:previous function_parameter_count
+        data: [T],
+        firstColor: Color,
+        secondColor: Color,
+        axisColor: Color,
+        xUnit: Calendar.Component,
+        xFormatter: DateFormatter,
+        yScale: ClosedRange<Int>? = nil
+    ) -> some View {
             Chart(data) {
                 BarMark(
                     x: .value(xAxisDateLabelTitle, $0.startDate, unit: xUnit),
                     y: .value(yAxisHoursWorkedLabelTitle, $0.workTimeInSeconds / 3600))
                 .foregroundStyle(firstColor)
                 
-                BarMark(x: .value(xAxisDateLabelTitle, $0.startDate,unit: xUnit),
+                BarMark(x: .value(xAxisDateLabelTitle, $0.startDate, unit: xUnit),
                         y: .value(yAxisHoursWorkedLabelTitle, $0.overTimeInSeconds / 3600))
                 .foregroundStyle(secondColor)
             }
@@ -83,7 +108,7 @@ struct ChartFactory {
                     AxisGridLine()
                         .foregroundStyle(axisColor)
                     
-                    AxisValueLabel() {
+                    AxisValueLabel {
                         if let date = value.as(Date.self) {
                             Text(xFormatter.string(from: date))
                                 .foregroundStyle(axisColor)
@@ -96,7 +121,7 @@ struct ChartFactory {
                     AxisGridLine()
                         .foregroundStyle(axisColor)
                     
-                    AxisValueLabel() {
+                    AxisValueLabel {
                         if let intVal = value.as(Int.self) {
                             Text("\(intVal)")
                                 .foregroundStyle(axisColor)
@@ -125,11 +150,18 @@ struct ChartFactory {
     ///   - color: color of point marker
     ///   - displayName: display name to show on legend
     /// - Returns: Chart with point markers
-    @ViewBuilder static func buildPointChartForPunchTime(entries: [Entry], property: KeyPath<Entry, Date>, color: Color, displayName: String) -> some View {
+    @ViewBuilder static func buildPointChartForPunchTime(entries: [Entry],
+                                                         property: KeyPath<Entry, Date>,
+                                                         color: Color,
+                                                         displayName: String) -> some View {
         Chart(entries) {
             PointMark(
                 x: .value(xAxisDateLabelTitle, $0.startDate),
-                y: .value(xAxisDateLabelTitle, Calendar.current.dateComponents([.hour, .minute], from: $0[keyPath: property]).hour!)
+                y: .value(
+                    xAxisDateLabelTitle,
+                    Calendar.current.dateComponents([.hour, .minute],
+                                                    from: $0[keyPath: property]).hour!
+                )
             )
             .foregroundStyle($0.workTimeInSeconds == 0 ? .clear : color)
         }

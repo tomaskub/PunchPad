@@ -34,3 +34,18 @@ extension XCTestCase {
     }
 }
 
+extension StableDateCreating where Self: XCTest {
+    func createDate(year: Int, month: Int, day: Int, hour: Int = 0, minute: Int = 0, second: Int = 0) -> Date? {
+        let components = DateComponents(
+            calendar: fixedCalendar,
+            timeZone: fixedCalendar.timeZone,
+            year: year,
+            month: month,
+            day: day,
+            hour: hour,
+            minute: minute,
+            second: second
+        )
+        return fixedCalendar.date(from: components)
+    }
+}

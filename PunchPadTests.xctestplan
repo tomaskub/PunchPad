@@ -13,11 +13,8 @@
   },
   "testTargets" : [
     {
+      "parallelizable" : false,
       "skippedTests" : [
-        "ChartPeriodServiceTests",
-        "ClockInTests",
-        "EditSheetViewModelTests",
-        "HistoryViewModelTests",
         "HomeViewModelModelTests\/test_resumeFromBackground_whenEnteredDuringSecondTimer_withTwoTimers_exceedingSecondTimer()",
         "HomeViewModelModelTests\/test_resumeFromBackground_withOneTimer_exceedingTimerLimit()",
         "HomeViewModelModelTests\/test_resumeFromBackground_withOneTimer_exceedingTimerLimit_savesEntry()",
@@ -25,14 +22,11 @@
         "HomeViewModelModelTests\/test_resumeFromBackground_withTwoTimers_exceedingFirstTimerLimit()",
         "HomeViewModelModelTests\/test_resumeFromBackground_withTwoTimers_exceedingSecondTimer()",
         "HomeViewModelModelTests\/test_resumeFromBackground_withTwoTimers_notExceedingFirstTimerLimit()",
-        "PayManagerTests",
-        "StatisticsViewModelTests",
-        "TimerManagerTests",
-        "TimerServiceTests"
+        "PayManagerTests\/testGeneratingDataForNotFinishedWeek()"
       ],
       "target" : {
         "containerPath" : "container:PunchPad.xcodeproj",
-        "identifier" : "D6C4589F29D229230069D89B",
+        "identifier" : "DD5249DF9FD5810F12418181",
         "name" : "PunchPadTests"
       }
     }

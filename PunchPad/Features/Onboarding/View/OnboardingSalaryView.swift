@@ -47,7 +47,6 @@ struct OnboardingSalaryView: View {
             )
             .accessibilityIdentifier(Identifier.TextFields.grossPaycheck)
             .textFieldStyle(.greenBordered)
-            
         }
         .padding()
         .background()
@@ -66,7 +65,7 @@ struct OnboardingSalaryView: View {
     }
 }
 
-//MARK: - Localization
+// MARK: - Localization
 extension OnboardingSalaryView: Localized {
     struct Strings {
         static let titleText = Localization.OnboardingSalaryScreen.salary
@@ -77,16 +76,16 @@ extension OnboardingSalaryView: Localized {
     }
 }
 
-struct OnboardingSalary_Preview: PreviewProvider {
+struct OnboardingSalaryPreview: PreviewProvider {
     private struct PreviewContainerView: View {
-        @StateObject private var vm: OnboardingViewModel
+        @StateObject private var viewModel: OnboardingViewModel
         private let container: PreviewContainer
         @Environment(\.colorScheme) private var colorScheme
         
         init() {
             let container = PreviewContainer()
             self.container = container
-            self._vm = StateObject(wrappedValue: 
+            self._viewModel = StateObject(wrappedValue:
                                     OnboardingViewModel(notificationService: container.notificationService,
                                                         settingsStore: container.settingsStore)
             )
@@ -95,7 +94,7 @@ struct OnboardingSalary_Preview: PreviewProvider {
         var body: some View {
             ZStack {
                 BackgroundFactory.buildSolidColor()
-                OnboardingSalaryView(viewModel: vm)
+                OnboardingSalaryView(viewModel: viewModel)
                 VStack {
                     Spacer()
                     Button("Preview button") {

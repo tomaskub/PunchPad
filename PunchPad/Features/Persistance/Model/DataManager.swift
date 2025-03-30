@@ -20,7 +20,7 @@ final class DataManager: NSObject {
         logger.debug("Initializing data manager")
         self.managedObjectContext = persistanceController.viewContext
         super.init()
-        //Notify of change anytime CD changes
+        // Notify of change anytime CD changes
         NotificationCenter.default.publisher(for: Notification.Name.NSManagedObjectContextDidSave)
             .sink { [weak self] _ in
                 self?.dataDidChange.send()
@@ -30,7 +30,7 @@ final class DataManager: NSObject {
 }
 
 extension DataManager: DataManaging {
-    ///Updates and saves an entry to entryMO, if there is no entryMO it will create a corresponding entryMO
+    /// Updates and saves an entry to entryMO, if there is no entryMO it will create a corresponding entryMO
     func updateAndSave(entry: Entry) {
         logger.debug("updateAndSave called")
         let predicate = NSPredicate(format: "id = %@", entry.id as CVarArg)
@@ -38,7 +38,7 @@ extension DataManager: DataManaging {
         switch result {
         case .success(let managedObject):
             if let entryMO = managedObject {
-                //update
+                // update
                 update(entryMO: entryMO, from: entry)
             } else {
                 // create entryMO from entry
@@ -113,7 +113,7 @@ extension DataManager: DataManaging {
         return fetch(from: period.0, to: period.1)
     }
     
-    func fetch(from startDate: Date?, 
+    func fetch(from startDate: Date?,
                to finishDate: Date?,
                ascendingOrder: Bool = false,
                fetchLimit: Int? = nil) -> [Entry]? {
@@ -183,7 +183,7 @@ extension DataManager: DataManaging {
     }
 }
 
-//MARK: - Core Data Helper Functions
+// MARK: - Core Data Helper Functions
 private extension DataManager {
     func saveContext() {
         logger.debug("saveContext called")
@@ -196,7 +196,9 @@ private extension DataManager {
         }
     }
     
-    func fetchFirst<T: NSManagedObject>(_ objectType: T.Type, predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]? = nil) -> Result<T?, Error> {
+    func fetchFirst<T: NSManagedObject>(_ objectType: T.Type,
+                                        predicate: NSPredicate?,
+                                        sortDescriptors: [NSSortDescriptor]? = nil) -> Result<T?, Error> {
         logger.debug("fetchFirst called")
         let request = objectType.fetchRequest()
         request.predicate = predicate
@@ -232,7 +234,7 @@ private extension DataManager {
     }
 }
 
-//MARK: - Entry Conv Init
+// MARK: - Entry Conv Init
 extension Entry {
     fileprivate init(entryMO: EntryMO) {
         self.id = entryMO.id

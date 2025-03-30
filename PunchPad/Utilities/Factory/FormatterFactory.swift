@@ -8,7 +8,8 @@
 import Foundation
 
 struct FormatterFactory {
-    /// Returns `DateComponentsFormatter` with hour and a minute components, positional unit style, and padd zero formatting behaviour
+    /// Returns `DateComponentsFormatter` with hour and a minute components,
+    /// positional unit style, and padd zero formatting behaviour
     static func makeHourAndMinuteDateComponentFormatter() -> DateComponentsFormatter {
         let formatter = DateComponentsFormatter()
         formatter.unitsStyle = .positional
@@ -17,7 +18,8 @@ struct FormatterFactory {
         return formatter
     }
     
-    /// Returns `DateComponentsFormatter` with minute and second components, positional unit style, and padd zero formatting behaviour
+    /// Returns `DateComponentsFormatter` with minute and second components,
+    /// positional unit style, and padd zero formatting behaviour
     static func makeMinuteAndSecondDateComponetFormatter() -> DateComponentsFormatter {
         let formatter = DateComponentsFormatter()
         formatter.unitsStyle = .positional
@@ -56,7 +58,8 @@ struct FormatterFactory {
         return formatter
     }
     
-    /// Returns `DateFormatter` with date style displaying full month name - `January` and 4 digit year `1999`, with no time components
+    /// Returns `DateFormatter` with date style displaying full month name - `January` and 4 digit year `1999`,
+    /// with no time components
     static func makeFullMonthYearDateFormatter() -> DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM yyyy"

@@ -32,7 +32,7 @@ struct OnboardingView: View {
     
     var body: some View {
         
-        ZStack{
+        ZStack {
             background
                 switch currentStage {
                 case .welcome:
@@ -95,7 +95,7 @@ extension OnboardingView {
     }
 }
 
-//MARK: - Localization
+// MARK: - Localization
 extension OnboardingView: Localized {
     struct Strings {
         static let backButtonText = Localization.Common.back.capitalized

@@ -37,7 +37,8 @@ struct BackgroundFactory {
     }
     
     @ViewBuilder
-    static func buildSolidWithStrip(solid color: Color = .theme.background, strip stripColor: Color = .theme.white) -> some View {
+    static func buildSolidWithStrip(solid color: Color = .theme.background,
+                                    strip stripColor: Color = .theme.white) -> some View {
         ZStack {
             color
             VStack {

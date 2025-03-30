@@ -22,7 +22,7 @@ final class TestContainer: ContainerProtocol {
         self.timerProvider = Timer.self
         self.settingsStore = SettingsStore()
         self.dataManager = TestDataManager()
-        self.payManager = PayManager(dataManager: dataManager, 
+        self.payManager = PayManager(dataManager: dataManager,
                                      settingsStore: settingsStore,
                                      calendar: .current)
         self.notificationService = NotificationService(center: .current())

@@ -20,7 +20,7 @@ struct StatisticsView: View {
     }
 }
 
-//MARK: - Body
+// MARK: - Body
 extension StatisticsView {
     var body: some View {
         ZStack {
@@ -71,7 +71,7 @@ extension StatisticsView {
     }
 }
 
-//MARK: - Swipe Gestures
+// MARK: - Swipe Gestures
 private extension StatisticsView {
     enum SwipeDirection: String {
         case left, right, up, down, none
@@ -94,14 +94,14 @@ private extension StatisticsView {
     }
 }
 
-//MARK: - Auxiliary View Components
+// MARK: - Auxiliary View Components
 private extension StatisticsView {
     var background: some View {
         BackgroundFactory.buildSolidColor()
     }
 }
 
-//MARK: - Chart Views
+// MARK: - Chart Views
 private extension StatisticsView {
     struct ChartTimeRangePicker: View {
         @Binding var pickerSelection: ChartTimeRange
@@ -116,7 +116,7 @@ private extension StatisticsView {
             )
             
             UISegmentedControl.appearance().setTitleTextAttributes(
-                [.foregroundColor: UIColor(Color.theme.white)], 
+                [.foregroundColor: UIColor(Color.theme.white)],
                 for: .normal
             )
         }
@@ -219,7 +219,7 @@ private extension StatisticsView {
     }
 }
 
-//MARK: - Salary Views
+// MARK: - Salary Views
 private extension StatisticsView {
     var newGrossData: some View {
         Group {
@@ -230,10 +230,14 @@ private extension StatisticsView {
                               )
             )
             SalaryListRowView(propertyName: Strings.grossPayPerHourListRowTitle,
-                              propertyValue: currencyFormatter.string(from: viewModel.grossSalaryData.payPerHour as NSNumber) ?? String()
+                              propertyValue: currencyFormatter.string(
+                                from: viewModel.grossSalaryData.payPerHour as NSNumber
+                              ) ?? String()
             )
             SalaryListRowView(propertyName: Strings.grossPayListRowTitle,
-                              propertyValue: currencyFormatter.string(from: viewModel.grossSalaryData.payUpToDate as NSNumber) ?? String()
+                              propertyValue: currencyFormatter.string(
+                                from: viewModel.grossSalaryData.payUpToDate as NSNumber
+                              ) ?? String()
             )
             if let payPredicted = viewModel.grossSalaryData.payPredicted {
                 SalaryListRowView(propertyName: Strings.grossPayPredictedListRowTitle,

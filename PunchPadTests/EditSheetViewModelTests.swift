@@ -47,14 +47,24 @@ final class EditSheetViewModelTests: XCTestCase {
 
     func test_adjustToEqualDateComponents() throws {
         //Given
+        sut.shouldDisplayFullDates = true
+        let finishDatePublisher = sut.$finishDate
+            .first()
+            .eraseToAnyPublisher()
+        
         guard let inputDate = Calendar.current.date(byAdding: .day, value: -1, to: sut.startDate),
               let expectedFinishDate = Calendar.current.date(byAdding: .day, value: -1, to: sut.finishDate) else {
             XCTFail("Failed to generate input and expected date in \(#file), function: \(#function), at line \(#line)")
             return
         }
+        
         //When
         sut.startDate = inputDate
+        sut.shouldDisplayFullDates = false
+
         //Then
-        XCTAssertEqual(expectedFinishDate, sut.finishDate, "Dates should be equal")
+        let result = try awaitPublisher(finishDatePublisher)
+        let resultFinishDate = try XCTUnwrap(result)
+        XCTAssertEqual(expectedFinishDate, resultFinishDate, "Dates should be equal")
     }
 }

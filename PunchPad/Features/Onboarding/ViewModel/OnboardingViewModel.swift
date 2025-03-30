@@ -36,59 +36,28 @@ final class OnboardingViewModel: ObservableObject {
         setPublishers()
     }
     
+    func requestAuthorizationForNotifications() {
+        logger.debug("requestAuthorizationForNotifications called")
+        notificationService.requestAuthorizationForNotifications { [weak self] result, _ in
+            DispatchQueue.main.async {
+                self?.settingsStore.isSendingNotification = result
+                self?.authorizationDenied = !result
+            }
+        }
+    }
+    
     private func setPublishers() {
         logger.debug("setPublishers called")
-        $hoursWorking
-            .removeDuplicates()
-            .sink { [weak self] hours in
-                guard let self else { return }
-                self.settingsStore.workTimeInSeconds = self.calculateTimeInSeconds(hours: hours, minutes: self.minutesWorking)
-            }.store(in: &subscriptions)
         
-        $minutesWorking
-            .removeDuplicates()
-            .sink { [weak self] minutes in
-                guard let self else { return }
-                self.settingsStore.workTimeInSeconds = self.calculateTimeInSeconds(hours: self.hoursWorking, minutes: minutes)
-            }.store(in: &subscriptions)
-        
-        $hoursOvertime
-            .removeDuplicates()
-            .sink { [weak self] hours in
-                guard let self else { return }
-                self.settingsStore.maximumOvertimeAllowedInSeconds = self.calculateTimeInSeconds(hours: hours, minutes: self.minutesOvertime)
-            }.store(in: &subscriptions)
-        
-        $minutesOvertime
-            .removeDuplicates()
-            .sink { [weak self] minutes in
-                guard let self else { return }
-                self.settingsStore.maximumOvertimeAllowedInSeconds = self.calculateTimeInSeconds(hours: self.hoursOvertime, minutes: minutes)
-            }.store(in: &subscriptions)
+        setupWorkingTimePublishers()
+        setupOvertimePublishers()
+        setupNotificationSendingPublishers()
         
         $grossPayPerMonthText
             .removeDuplicates()
             .sink { [weak self] newValue in
                 guard let self else { return }
                 self.settingsStore.grossPayPerMonth = newValue
-            }.store(in: &subscriptions)
-        
-        settingsStore.$isSendingNotification
-            .filter { [weak self] value in
-                guard let self else { return false }
-                return value && !self.authorizationDenied
-            }
-            .sink { [weak self] value in
-                self?.requestAuthorizationForNotifications()
-            }.store(in: &subscriptions)
-        
-        settingsStore.$isSendingNotification
-            .filter { [weak self] _ in
-                guard let self else { return false }
-                return self.authorizationDenied
-            }.sink { [weak self] _ in
-                guard let self else { return }
-                self.shouldShowNotificationDeniedAlert = true
             }.store(in: &subscriptions)
         
         $shouldShowNotificationDeniedAlert
@@ -100,20 +69,73 @@ final class OnboardingViewModel: ObservableObject {
                 guard let self else { return }
                 self.settingsStore.isSendingNotification = false
             }.store(in: &subscriptions)
-            
+    }
+    
+    private func setupWorkingTimePublishers() {
+        $hoursWorking
+            .removeDuplicates()
+            .sink { [weak self] hours in
+                guard let self else { return }
+                self.settingsStore.workTimeInSeconds = self.calculateTimeInSeconds(
+                    hours: hours,
+                    minutes: self.minutesWorking
+                )
+            }.store(in: &subscriptions)
+        
+        $minutesWorking
+            .removeDuplicates()
+            .sink { [weak self] minutes in
+                guard let self else { return }
+                self.settingsStore.workTimeInSeconds = self.calculateTimeInSeconds(
+                    hours: self.hoursWorking,
+                    minutes: minutes
+                )
+            }.store(in: &subscriptions)
+    }
+    
+    private func setupOvertimePublishers() {
+        $hoursOvertime
+            .removeDuplicates()
+            .sink { [weak self] hours in
+                guard let self else { return }
+                self.settingsStore.maximumOvertimeAllowedInSeconds = self.calculateTimeInSeconds(
+                    hours: hours,
+                    minutes: self.minutesOvertime
+                )
+            }.store(in: &subscriptions)
+        
+        $minutesOvertime
+            .removeDuplicates()
+            .sink { [weak self] minutes in
+                guard let self else { return }
+                self.settingsStore.maximumOvertimeAllowedInSeconds = self.calculateTimeInSeconds(
+                    hours: self.hoursOvertime,
+                    minutes: minutes
+                )
+            }.store(in: &subscriptions)
+    }
+    
+    private func setupNotificationSendingPublishers() {
+        settingsStore.$isSendingNotification
+            .filter { [weak self] value in
+                guard let self else { return false }
+                return value && !self.authorizationDenied
+            }
+            .sink { [weak self] _ in
+                self?.requestAuthorizationForNotifications()
+            }.store(in: &subscriptions)
+        
+        settingsStore.$isSendingNotification
+            .filter { [weak self] _ in
+                guard let self else { return false }
+                return self.authorizationDenied
+            }.sink { [weak self] _ in
+                guard let self else { return }
+                self.shouldShowNotificationDeniedAlert = true
+            }.store(in: &subscriptions)
     }
     
     private func calculateTimeInSeconds(hours: Int, minutes: Int) -> Int {
         hours * secondsInHour + minutes * secondsInMinute
-    }
-    
-    func requestAuthorizationForNotifications() {
-        logger.debug("requestAuthorizationForNotifications called")
-        notificationService.requestAuthorizationForNotifications { [weak self] result, error in
-            DispatchQueue.main.async {
-                self?.settingsStore.isSendingNotification = result
-                self?.authorizationDenied = !result
-            }
-        }
     }
 }

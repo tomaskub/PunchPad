@@ -1,7 +1,21 @@
-## XCUserdata
-ClockIn.xcodeproj/project.xcworkspace/xcuserdata/tomaszkubiak.xcuserdatad
-xcuserdata/
+# XcodeGen generated files
+*.xcodeproj/
+*.xcarchive/
+*.xccheckout
 *.xcuserstate
+*.xcscmblueprint
+
+# Xcode temporary files
+*~.nib/
+*.swp
+.DS_Store
+
+# User-specific Xcode files
+*.mode1v3
+*.mode2v3
+xcuserdata/
+DerivedData/
+.idea/#
 
 ## Fastlane
 fastlane/test_output/

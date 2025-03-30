@@ -9,7 +9,7 @@ import SwiftUI
 import ThemeKit
 
 struct HistoryRowView: View {
-    private let timeIntervalFormatter: DateComponentsFormatter = FormatterFactory.makeHourAndMinuteDateComponentFormatter()
+    private let timeIntervalFormatter = FormatterFactory.makeHourAndMinuteDateComponentFormatter()
     private let timeFormatter: DateFormatter = FormatterFactory.makeTimeFormatter()
     private let dateFormatter: DateFormatter = FormatterFactory.makeDateFormatter()
     private let startDate: Date
@@ -19,7 +19,12 @@ struct HistoryRowView: View {
     private let maximumOvertimeAllowedInSeconds: Int
     private let standardWorktimeInSeconds: Int
     
-    init(startDate: Date, finishDate: Date, workTimeInSeconds: Int, overTimeInSeconds: Int, maximumOvertimeAllowedInSeconds: Int, standardWorktimeInSecons: Int) {
+    init(startDate: Date,
+         finishDate: Date,
+         workTimeInSeconds: Int,
+         overTimeInSeconds: Int,
+         maximumOvertimeAllowedInSeconds: Int,
+         standardWorktimeInSecons: Int) {
         self.startDate = startDate
         self.finishDate = finishDate
         self.workTimeInSeconds = workTimeInSeconds
@@ -128,7 +133,7 @@ struct HistoryRowView: View {
     }
 }
 
-//MARK: - Localization
+// MARK: - Localization
 extension HistoryRowView: Localized {
     struct Strings {
         static let hoursText = Localization.Common.hours
