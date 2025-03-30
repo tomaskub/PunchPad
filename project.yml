@@ -86,11 +86,18 @@ targets:
     platform: iOS
     sources:
       - path: PunchPadUITests
+      - path: PunchPad/Utilities/ScreenIdentifier.swift
+      - path: PunchPad/Utilities/LaunchArgument.swift
     dependencies:
       - target: PunchPad
+    settings: 
+      PRODUCT_BUNDLE_IDENTIFIER: tomasz.m.kubiak.PunchPad.UITests
+      GENERATE_INFOPLIST_FILE: YES
+      DEVELOPMENT_TEAM: 73N45UT488
     signing:
       style: automatic
       teamId: 73N45UT488
+      provisioningProfiles: {}
 
 schemes:
   PunchPad:
@@ -101,9 +108,10 @@ schemes:
       config: Debug
       targets:
         - name: PunchPadTests 
-        #- name: PunchPadUITests
+        - name: PunchPadUITests
       testPlans:
         - path: PunchPadTests.xctestplan
+        - path: PunchPadUITests.xctestplan
     run:
       config: Debug
     profile:
