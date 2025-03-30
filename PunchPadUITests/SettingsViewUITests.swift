@@ -205,13 +205,15 @@ final class SettingsViewUITests: XCTestCase {
     func test_ClearSavedData() {
         // Given
         navigateToSettingsView()
+        let emptyStateLabel = HistoryViewScreen(app: app).emptyStateLabel
+        
         // When
         settingsScreen.clearAllSavedDataButton.tap()
-        app.navigationBars.buttons.firstMatch.tap()
+        settingsScreen.navigationBackButtons.tap()
         navigateToHistoryView()
+        
         // Then
-        let countPredicate = NSPredicate(format: "count == 0")
-        let expectation = expectation(for: countPredicate, evaluatedWith: app.collectionViews.cells)
+        let expectation = expectation(for: existsPredicate, evaluatedWith: emptyStateLabel)
         let result = XCTWaiter.wait(for: [expectation], timeout: standardTimeout)
         XCTAssertEqual(result, .completed, "There should be no cells in app")
     }
