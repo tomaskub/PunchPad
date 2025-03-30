@@ -74,4 +74,8 @@ class SettingsViewScreen {
     var grossPaycheckTextField: XCUIElement {
         app.textFields[Identifier.TextFields.grossPay.rawValue]
     }
+    
+    var navigationBackButtons: XCUIElement {
+        app.staticTexts["Back"]
+    }
 }

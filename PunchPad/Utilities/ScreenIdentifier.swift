@@ -138,6 +138,7 @@ enum ScreenIdentifier {
         case editEntryButton
         case entryRow
         case filterButton
+        case emptyPlaceholder
         
         enum ConfirmDeleteDialogView: String {
             case okButton

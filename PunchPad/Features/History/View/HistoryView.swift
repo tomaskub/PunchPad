@@ -149,6 +149,7 @@ private extension HistoryView {
         VStack {
             Image(systemName: "nosign")
             Text(Strings.placeholderText)
+                .accessibilityIdentifier(Identifier.emptyPlaceholder)
                 .multilineTextAlignment(.center)
         }
     }

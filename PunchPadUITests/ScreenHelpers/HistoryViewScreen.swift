@@ -43,4 +43,8 @@ final class HistoryViewScreen {
     var dialogLabel: XCUIElement {
         app.staticTexts[Identifier.ConfirmDeleteDialogView.dialogLabel.rawValue]
     }
+    
+    var emptyStateLabel: XCUIElement {
+        app.staticTexts[Identifier.emptyPlaceholder.rawValue]
+    }
 }
