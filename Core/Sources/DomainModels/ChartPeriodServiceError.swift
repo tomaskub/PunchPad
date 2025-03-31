@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ChartPeriodServiceError: Error {
+public enum ChartPeriodServiceError: Error {
     case attemptedToRetrievePeriodForAll
     case failedToCreateStartDateFromComponents
     case failedToCreateDateByAddingComponents

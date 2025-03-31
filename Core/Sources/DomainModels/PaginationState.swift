@@ -4,9 +4,6 @@
 //
 //  Created by Tomasz Kubiak on 07/12/2023.
 //
-
-import Foundation
-
-enum PaginationState {
+public  enum PaginationState {
     case isLoading, idle, error
 }

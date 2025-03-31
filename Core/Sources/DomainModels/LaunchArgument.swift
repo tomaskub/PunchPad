@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum LaunchArgument: String {
+public enum LaunchArgument: String {
     case withOnboarding
     case setTestUserDefaults
     case inMemoryPresistenStore

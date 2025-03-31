@@ -6,10 +6,10 @@
 //
 
 import Foundation
-enum TimerServiceEvent {
+public enum TimerServiceEvent {
     case start, stop, pause, resumeWith(TimeInterval?)
     
-    var debugDescription: String {
+    public var debugDescription: String {
         String(describing: self)
     }
 }

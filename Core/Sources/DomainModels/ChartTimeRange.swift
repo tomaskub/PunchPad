@@ -7,12 +7,12 @@
 
 import Foundation
 
-enum ChartTimeRange: String, Identifiable, CaseIterable {
+public enum ChartTimeRange: String, Identifiable, CaseIterable {
     case week, month, year, all
     
-    var id: ChartTimeRange { self }
+    public var id: ChartTimeRange { self }
     
-    var description: String {
+    public var description: String {
         switch self {
         case .week:
             "week"

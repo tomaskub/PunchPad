@@ -7,15 +7,15 @@
 
 import Foundation
 
-struct TimerModel: Codable {
-    let configuration: TimerManagerConfiguration
-    let workTimeCounter: TimeInterval
-    let overtimeCounter: TimeInterval?
-    let workTimerState: TimerServiceState
-    let overtimeTimerState: TimerServiceState?
-    let timeStamp: Date
+public struct TimerModel: Codable {
+    public let configuration: TimerManagerConfiguration
+    public let workTimeCounter: TimeInterval
+    public let overtimeCounter: TimeInterval?
+    public let workTimerState: TimerServiceState
+    public let overtimeTimerState: TimerServiceState?
+    public let timeStamp: Date
     
-    static func initial(configuration: TimerManagerConfiguration) -> TimerModel {
+    public static func initial(configuration: TimerManagerConfiguration) -> TimerModel {
         return TimerModel(configuration: configuration,
                           workTimeCounter: 0,
                           overtimeCounter: 0,

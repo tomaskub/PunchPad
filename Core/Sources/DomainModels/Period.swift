@@ -7,4 +7,4 @@
 
 import Foundation
 
-typealias Period = (Date, Date)
+public typealias Period = (Date, Date)

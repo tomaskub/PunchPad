@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct TimerManagerConfiguration: Codable {
-    let workTimeInSeconds: TimeInterval
-    let isLoggingOvertime: Bool
-    let overtimeInSeconds: TimeInterval?
+public struct TimerManagerConfiguration: Codable {
+    public let workTimeInSeconds: TimeInterval
+    public let isLoggingOvertime: Bool
+    public let overtimeInSeconds: TimeInterval?
 }

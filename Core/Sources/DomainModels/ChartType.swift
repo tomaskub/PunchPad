@@ -7,6 +7,6 @@
 
 import Foundation
 
-enum ChartType {
+public enum ChartType {
     case time, startTime, finishTime
 }

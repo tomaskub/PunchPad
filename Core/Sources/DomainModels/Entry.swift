@@ -7,25 +7,25 @@
 
 import Foundation
 
-struct Entry: ChartableEntry {
-    var id: UUID
-    var startDate: Date
-    var finishDate: Date
-    var workTimeInSeconds: Int
-    var overTimeInSeconds: Int
-    var maximumOvertimeAllowedInSeconds: Int
-    var standardWorktimeInSeconds: Int
-    var grossPayPerMonth: Int
-    var calculatedNetPay: Double?
+public struct Entry: ChartableEntry {
+    public var id: UUID
+    public var startDate: Date
+    public var finishDate: Date
+    public var workTimeInSeconds: Int
+    public var overTimeInSeconds: Int
+    public var maximumOvertimeAllowedInSeconds: Int
+    public var standardWorktimeInSeconds: Int
+    public var grossPayPerMonth: Int
+    public var calculatedNetPay: Double?
     
-    var overtimeFraction: CGFloat {
+    public var overtimeFraction: CGFloat {
         CGFloat(overTimeInSeconds) / CGFloat(maximumOvertimeAllowedInSeconds)
     }
-    var worktimeFraction: CGFloat {
+    public var worktimeFraction: CGFloat {
         CGFloat(workTimeInSeconds) / CGFloat(standardWorktimeInSeconds)
     }
     
-    init(startDate: Date,
+    public init(startDate: Date,
          finishDate: Date,
          workTimeInSec: Int,
          overTimeInSec: Int,
@@ -45,7 +45,7 @@ struct Entry: ChartableEntry {
     }
     
     /// Initialize with current date for start and finish, work time and overtime is set to 0
-    init() {
+    public init() {
         self.init(startDate: Date(),
                   finishDate: Date(),
                   workTimeInSec: 0,

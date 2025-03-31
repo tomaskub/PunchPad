@@ -4,25 +4,16 @@
 //
 //  Created by Tomasz Kubiak on 31/08/2023.
 //
-// swiftlint:disable nesting
-import Foundation
 
-enum ScreenIdentifier {
-    enum NavigationElements {
-        enum NavigationBarButtons: String {
-            case settingNavigationButton
-            case detailedHistory
-            case back
-        }
-        
-        enum TabBarButtons: String {
-            case home
-            case statistics
-            case history
-        }
+// swiftlint:disable nesting
+public enum ScreenIdentifier {
+    public enum TabBar: String {
+        case home
+        case statistics
+        case history
     }
-    
-    enum HomeView: String {
+
+    public enum HomeView: String {
         case startButton
         case pauseButton
         case resumeButton
@@ -30,36 +21,53 @@ enum ScreenIdentifier {
         case timerLabel
     }
     
-    enum StatisticsView: String {
-        case workTimeChart
-        
-        enum SegmentedControl: String {
-            case allRange
-            case yearRange
-            case monthRange
-            case weekRange
+    public enum StatisticsView {
+        public enum Chart: String {
+            case workTimeChart
+            case startTimeChart
+            case finishTimeChart
         }
         
-        enum SalaryCalculationLabel: String {
-            case period
-            case grossPayPerHour
+        public enum SegmentedControl: String {
+            case chartType
+        }
+        
+        public enum ChartTypeButton: String {
+            case workTime
+            case startTime
+            case finishTime
+        }
+        
+        public enum ChartLegend: String {
+            case workTimeChartLegend
+            case startTimeChartLegend
+            case finishTimeChartLegend
+        }
+        
+        public enum SalaryCalculationLabel: String {
             case grossPay
             case grossPayPredicted
             case workingDaysNumber
         }
         
-        enum SectionHeaders: String {
+        public enum SectionHeaders: String {
+            case chart
             case salaryCalculation
+        }
+        
+        public enum NavigationBarButtons: String {
+            case detailedHistory
+            case back
         }
     }
     
-    enum SettingsView {
-        enum ExpandableCells: String {
+    public enum SettingsView {
+        public enum ExpandableCells: String {
             case setTimerLength
             case setOvertimeLength
         }
         
-        enum SectionHeaders: String {
+        public enum SectionHeaders: String {
             case timerSettings
             case overtimeSettings
             case paycheckCalculation
@@ -67,7 +75,7 @@ enum ScreenIdentifier {
             case appearance
         }
         
-        enum Pickers: String {
+        public enum Pickers: String {
             case timeHoursPicker
             case timeMinutesPicker
             case overtimeHoursPicker
@@ -75,47 +83,53 @@ enum ScreenIdentifier {
             case appearancePicker
         }
         
-        enum ToggableCells: String {
+        public enum SegmentedControlButtons: String {
+            case system
+            case dark
+            case light
+        }
+        
+        public enum ToggableCells: String {
             case sendNotificationsOnFinish
             case keepLoggingOvertime
             case calculateNetPay
         }
         
-        enum ButtonCells: String {
+        public enum ButtonCells: String {
             case clearAllSavedData
             case resetPreferences
         }
         
-        enum TextFields: String {
+        public enum TextFields: String {
             case grossPay
         }
     }
     
-    enum OnboardingView {
-        enum Pickers: String {
+    public enum OnboardingView {
+        public enum Pickers: String {
             case workingHours
             case workingMinutes
             case overtimeHours
             case overtimeMinutes
         }
         
-        enum TextFields: String {
+        public enum TextFields: String {
             case grossPaycheck
         }
         
-        enum Toggles: String {
+        public enum Toggles: String {
             case overtime
             case notifications
             case calculateNetSalary
         }
         
-        enum Buttons: String {
+        public enum Buttons: String {
             case advanceStage
             case regressStage
         }
     }
     
-    enum HistoryView: String {
+    public enum HistoryView: String {
         case addEntryButton
         case deleteEntryButton
         case editEntryButton
@@ -130,28 +144,28 @@ enum ScreenIdentifier {
         }
     }
     
-    enum HistoryRowView {
-        enum Label: String {
+    public enum HistoryRowView {
+        public enum Label: String {
             case dateLabel
             case timeWorkedLabel
             case startTimeValueLabel
             case finishTimeValueLabel
         }
         
-        enum DetailView: String {
+        public enum DetailView: String {
             case circleDetail
             case barDetail
         }
     }
     
-    enum EditSheetView {
-        enum Label: String {
-            case worktimeValue
+    public enum EditSheetView {
+        public enum Label: String {
+            case timeWorkedValue
             case overtimeValue
             case breaktimeValue
         }
         
-        enum DatePicker: String {
+        public enum DatePicker: String {
             case startDate
             case finishDate
             case date
@@ -159,7 +173,7 @@ enum ScreenIdentifier {
             case finishTime
         }
         
-        enum Button: String {
+        public enum Button: String {
             case save
             case cancel
         }

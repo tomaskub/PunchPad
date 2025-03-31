@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Route: Equatable {
+public enum Route: Equatable {
     case main
     case settings
 }
