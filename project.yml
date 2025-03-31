@@ -33,7 +33,10 @@ targets:
       - package: TabViewKit
       - package: ThemeKit
       - package: Core
-        product: UIComponents
+        product: UIComponents 
+      - { package: Core, product: DomainModels }
+      - package: Core
+        product: FoundationExtensions
     info: 
       path: PunchPad/Info.plist
     buildToolPlugins:

@@ -6,16 +6,26 @@ let package = Package(
     products: [
         .library(
             name: "UIComponents",
-            targets: ["UIComponents"]),
-
+            targets: ["UIComponents"]
+        ),
+        .library(
+            name: "DomainModels",
+            targets: ["DomainModels"]
+        ),
+        .library(
+            name: "FoundationExtensions",
+            targets: ["FoundationExtensions"]
+        )
 //        .library(
 //            name: "Persistance",
 //            targets: ["Persistance"]
 //        )
     ],
     targets: [
-        .target(
-            name: "UIComponents"),
+        .target(name: "UIComponents"),
+        .target(name: "DomainModels"),
+        .target(name: "FoundationExtensions"),
+
 //        .target(name: "Persistance"),
 //        .testTarget(
 //            name: "PeristanceTests",

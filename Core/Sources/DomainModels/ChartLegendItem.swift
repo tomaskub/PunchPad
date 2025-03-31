@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct ChartLegendItem: Identifiable {
-    let id: UUID
-    let itemName: String
-    let itemShape: AnyShape
-    let itemShapeColor: Color
+public struct ChartLegendItem: Identifiable {
+    public let id: UUID
+    public let itemName: String
+    public let itemShape: AnyShape
+    public let itemShapeColor: Color
     
-    init(itemName: String, itemShape: any Shape, itemShapeColor: Color) {
+    public init(itemName: String, itemShape: any Shape, itemShapeColor: Color) {
         self.id = UUID()
         self.itemName = itemName
         self.itemShape = AnyShape(itemShape)

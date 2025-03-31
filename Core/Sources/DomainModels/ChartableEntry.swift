@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol ChartableEntry: Identifiable, Hashable {
+public protocol ChartableEntry: Identifiable, Hashable {
     var id: UUID { get }
     var startDate: Date { get }
     var workTimeInSeconds: Int { get }
