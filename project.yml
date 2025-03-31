@@ -8,6 +8,8 @@ options:
     iOS: "16.6"
 
 packages:
+  Core:
+    path: Core
   NavigationKit:
     path: Packages/NavigationKit
   TabViewKit:
@@ -30,6 +32,8 @@ targets:
       - package: NavigationKit
       - package: TabViewKit
       - package: ThemeKit
+      - package: Core
+        product: UIComponents
     info: 
       path: PunchPad/Info.plist
     buildToolPlugins:
