@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct FormatterFactory {
+public struct FormatterFactory {
     /// Returns `DateComponentsFormatter` with hour and a minute components,
     /// positional unit style, and padd zero formatting behaviour
-    static func makeHourAndMinuteDateComponentFormatter() -> DateComponentsFormatter {
+    public static func makeHourAndMinuteDateComponentFormatter() -> DateComponentsFormatter {
         let formatter = DateComponentsFormatter()
         formatter.unitsStyle = .positional
         formatter.allowedUnits = [.hour, .minute]
@@ -20,7 +20,7 @@ struct FormatterFactory {
     
     /// Returns `DateComponentsFormatter` with minute and second components,
     /// positional unit style, and padd zero formatting behaviour
-    static func makeMinuteAndSecondDateComponetFormatter() -> DateComponentsFormatter {
+    public static func makeMinuteAndSecondDateComponetFormatter() -> DateComponentsFormatter {
         let formatter = DateComponentsFormatter()
         formatter.unitsStyle = .positional
         formatter.allowedUnits = [.minute, .second]
@@ -29,7 +29,7 @@ struct FormatterFactory {
     }
     
     /// Returns `DateFormatter` with `dateStyle` set to `.none` and `timeStyle` set to `.short`
-    static func makeTimeFormatter() -> DateFormatter {
+    public static func makeTimeFormatter() -> DateFormatter {
         let formatter = DateFormatter()
         formatter.dateStyle = .none
         formatter.timeStyle = .short
@@ -37,7 +37,7 @@ struct FormatterFactory {
     }
     
     /// Returns `DateFormatter` with `dateStyle` set to `.medium` and `timeStyle` set to `.none`
-    static func makeDateFormatter() -> DateFormatter {
+    public static func makeDateFormatter() -> DateFormatter {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         formatter.timeStyle = .none
@@ -45,14 +45,14 @@ struct FormatterFactory {
     }
     
     /// Returns `DateFormatter` with date style displaying `23 Jun`, with no time components
-    static func makeDayAndMonthDateFormatter() -> DateFormatter {
+    public static func makeDayAndMonthDateFormatter() -> DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd MMM"
         return formatter
     }
     
     /// Returns `DateFormatter` with date style displaying 3 letter month - `Jun`, with no time components
-    static func makeMonthDateFormatter() -> DateFormatter {
+    public static func makeMonthDateFormatter() -> DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMM"
         return formatter
@@ -60,28 +60,28 @@ struct FormatterFactory {
     
     /// Returns `DateFormatter` with date style displaying full month name - `January` and 4 digit year `1999`,
     /// with no time components
-    static func makeFullMonthYearDateFormatter() -> DateFormatter {
+    public static func makeFullMonthYearDateFormatter() -> DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM yyyy"
         return formatter
     }
     
     /// Returns `DateFormatter` with date style displaying 4 digit year `1999`, with no time components
-    static func makeYearDateFormatter() -> DateFormatter {
+    public static func makeYearDateFormatter() -> DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy"
         return formatter
     }
     
     /// Returns `DateFormatter` with date style displaying 1 or 2 digit day of the month, with no time components
-    static func makeDayDateFormatter() -> DateFormatter {
+    public static func makeDayDateFormatter() -> DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd"
         return formatter
     }
     
     /// Returns `NumberFormatter` with given local and currency number style
-    static func makeCurrencyFormatter(_ locale: Locale) -> NumberFormatter {
+    public static func makeCurrencyFormatter(_ locale: Locale) -> NumberFormatter {
         let formatter = NumberFormatter()
         formatter.locale = locale
         formatter.numberStyle = .currency

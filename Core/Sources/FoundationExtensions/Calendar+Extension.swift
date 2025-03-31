@@ -43,6 +43,8 @@ extension Calendar.Component {
             return \.nanosecond
         case .calendar, .timeZone, .isLeapMonth:
             return nil
+        case .dayOfYear:
+            return nil
         @unknown default:
             return nil
         }

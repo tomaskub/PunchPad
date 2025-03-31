@@ -8,7 +8,7 @@
 import Foundation
 import OSLog
 
-extension Logger {
+public extension Logger {
     private enum Category: String {
         case timerService
         case timerStore
