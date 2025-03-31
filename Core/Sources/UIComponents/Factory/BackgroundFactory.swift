@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct BackgroundFactory {
+public struct BackgroundFactory {
     @ViewBuilder
     static func buildGradient(colorScheme: ColorScheme) -> some View {
         LinearGradient(
@@ -36,7 +36,7 @@ struct BackgroundFactory {
             .background(Color.theme.background)
     }
     
-    @ViewBuilder
+    @ViewBuilder @MainActor
     static func buildSolidWithStrip(solid color: Color = .theme.background,
                                     strip stripColor: Color = .theme.white) -> some View {
         ZStack {

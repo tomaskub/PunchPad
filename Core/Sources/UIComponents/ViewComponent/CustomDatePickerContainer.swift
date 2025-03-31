@@ -142,7 +142,7 @@ struct CustomDatePickerContainer<Content: View, Leading: View, Trailing: View>: 
 }
 
 private struct PrefKey: PreferenceKey {
-    static var defaultValue: CGSize = CGSize()
+    static let defaultValue: CGSize = CGSize()
     static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
         value = nextValue()
     }

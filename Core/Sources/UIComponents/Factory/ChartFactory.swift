@@ -8,6 +8,8 @@
 import SwiftUI
 import Charts
 import ThemeKit
+import DomainModels
+import FoundationExtensions
 
 struct ChartFactory {
     private static let xAxisDateLabelTitle = "Date"
@@ -83,7 +85,7 @@ struct ChartFactory {
     ///   - xFormatter: formatter used for x axis values of data
     ///   - yScale: optional scale to be used on y axis
     /// - Returns: Chart View
-    @ViewBuilder static func buildBarChart<T: ChartableEntry>(
+    @ViewBuilder @MainActor static func buildBarChart<T: ChartableEntry>(
         // swiftlint:disable:previous function_parameter_count
         data: [T],
         firstColor: Color,

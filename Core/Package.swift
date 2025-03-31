@@ -2,7 +2,9 @@
 import PackageDescription
 
 let package = Package(
+    
     name: "Core",
+    platforms: [.iOS("16.4")],
     products: [
         .library(
             name: "UIComponents",
@@ -22,7 +24,12 @@ let package = Package(
 //        )
     ],
     targets: [
-        .target(name: "UIComponents"),
+        .target(name: "UIComponents",
+                dependencies: [
+                    .target(name: "DomainModels"),
+                    .target(name: "FoundationExtensions")
+                ]
+               ),
         .target(name: "DomainModels"),
         .target(name: "FoundationExtensions"),
 
