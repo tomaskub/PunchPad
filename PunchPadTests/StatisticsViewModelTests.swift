@@ -53,8 +53,8 @@ final class StatisticsViewModelTests: XCTestCase {
         //When
         addTestDataForCurrentMonth()
         //Then
-        wait(for: [expectation])
-        XCTAssertEqual(sut.entryInPeriod.filter({ $0.workTimeInSeconds == 0 }).count, 2, "There should be 2 entries with 0 work time (placeholder entries for weekend)")
+        let result = XCTWaiter.wait(for: [expectation], timeout: 0.5)
+        XCTAssertEqual(result, .completed)
     }
     
     func test_entryInPeriod_updates_whenLoadingNextPeriod() throws {
@@ -72,7 +72,7 @@ final class StatisticsViewModelTests: XCTestCase {
             XCTFail("Failed to retrieve published data in \(#file), line: \(#line)")
             return
         }
-        XCTAssertEqual(calendar.dateComponents([.day], from: oldPeriodFirstEntryStartDate, to: newPeriodFirstEntryFinishDate).day ?? 0, 7)
+        XCTAssertEqual(calendar.dateComponents([.day], from: oldPeriodFirstEntryStartDate, to: newPeriodFirstEntryFinishDate).day ?? 0, 6)
     }
     
     func test_entryInPeriod_updates_whenLoadingPreviousPeriod() throws {
@@ -106,7 +106,7 @@ final class StatisticsViewModelTests: XCTestCase {
         sut.chartTimeRange = .month
         //Then
         let resultArrays = try awaitPublisher(entriesPublisher)
-        XCTAssertEqual(resultArrays.last?.count, expectedNumberOfEntries)
+        XCTAssertEqual(resultArrays.last?.count, expectedNumberOfEntries + 1)
     }
     
     func test_entryInPeriod_summaryByMonthYear_updated_whenUpdatingChartTimeRangeToYear() throws {

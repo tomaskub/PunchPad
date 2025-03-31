@@ -55,8 +55,9 @@ final class SettingsViewModel: ObservableObject {
             .receive(on: RunLoop.main)
             .filter { [weak self] value in
                 guard let self else { return false }
-                return value/secondsInHour != self.timerHours &&
-                (value % secondsInHour) / secondsInMinute != self.timerMinutes
+                let isHourChange = value/self.secondsInHour != self.timerHours
+                let isMinuteChange = (value % self.secondsInHour) / self.secondsInMinute != self.timerMinutes
+                return isHourChange || isMinuteChange
             }
             .sink { [weak self] value in
                 guard let self else { return }
@@ -68,8 +69,9 @@ final class SettingsViewModel: ObservableObject {
             .receive(on: RunLoop.main)
             .filter { [weak self] value in
                 guard let self else { return false }
-                return value/secondsInHour != self.overtimeHours &&
-                (value % secondsInHour) / secondsInMinute != self.overtimeMinutes
+                let isHourChange = value/secondsInHour != self.overtimeHours
+                let isMinuteChange = (value % secondsInHour) / secondsInMinute != self.overtimeMinutes
+                return  isHourChange || isMinuteChange
             }
             .sink { [weak self] value in
                 guard let self else { return }

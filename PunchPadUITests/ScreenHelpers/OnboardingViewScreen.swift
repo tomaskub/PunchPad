@@ -48,7 +48,7 @@ class OnboardingViewScreen {
     }
     
     var advanceStageButton: XCUIElement {
-        app.staticTexts[Identifier.Buttons.advanceStage.rawValue]
+        app.buttons[Identifier.Buttons.advanceStage.rawValue]
     }
     
     var regressStageButton: XCUIElement {

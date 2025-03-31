@@ -8,63 +8,52 @@
 import Foundation
 
 enum ScreenIdentifier {
-    
-    enum TabBar: String {
-        case home
-        case statistics
-        case history
+    enum NavigationElements {
+        enum NavigationBarButtons: String {
+            case settingNavigationButton
+            case detailedHistory
+            case back
+        }
+        
+        enum TabBarButtons: String {
+            case home
+            case statistics
+            case history
+        }
     }
+    
     enum HomeView: String {
         case startButton
         case pauseButton
         case resumeButton
         case finishButton
         case timerLabel
-        case settingNavigationButton
     }
     
-    enum StatisticsView {
-        
-        enum Chart: String {
-            case workTimeChart
-            case startTimeChart
-            case finishTimeChart
-        }
+    enum StatisticsView: String {
+        case workTimeChart
         
         enum SegmentedControl: String {
-            case chartType
-        }
-        
-        enum ChartTypeButton: String {
-            case workTime
-            case startTime
-            case finishTime
-        }
-        
-        enum ChartLegend: String {
-            case workTimeChartLegend
-            case startTimeChartLegend
-            case finishTimeChartLegend
+            case allRange
+            case yearRange
+            case monthRange
+            case weekRange
         }
         
         enum SalaryCalculationLabel: String {
+            case period
+            case grossPayPerHour
             case grossPay
-            case netPay
+            case grossPayPredicted
+            case workingDaysNumber
         }
         
         enum SectionHeaders: String {
-            case chart
             case salaryCalculation
-        }
-        
-        enum NavigationBarButtons: String {
-            case detailedHistory
-            case back
         }
     }
     
     enum SettingsView {
-        
         enum ExpandableCells: String {
             case setTimerLength
             case setOvertimeLength
@@ -86,12 +75,6 @@ enum ScreenIdentifier {
             case appearancePicker
         }
         
-        enum SegmentedControlButtons: String {
-            case system
-            case dark
-            case light
-        }
-        
         enum ToggableCells: String {
             case sendNotificationsOnFinish
             case keepLoggingOvertime
@@ -109,7 +92,6 @@ enum ScreenIdentifier {
     }
     
     enum OnboardingView {
-        
         enum Pickers: String {
             case workingHours
             case workingMinutes
@@ -138,10 +120,17 @@ enum ScreenIdentifier {
         case deleteEntryButton
         case editEntryButton
         case entryRow
+        case filterButton
+        case emptyPlaceholder
+        
+        enum ConfirmDeleteDialogView: String {
+            case okButton
+            case cancelButton
+            case dialogLabel
+        }
     }
     
     enum HistoryRowView {
-        
         enum Label: String {
             case dateLabel
             case timeWorkedLabel
@@ -156,15 +145,18 @@ enum ScreenIdentifier {
     }
     
     enum EditSheetView {
-        
         enum Label: String {
-            case timeWorkedValue
+            case worktimeValue
             case overtimeValue
+            case breaktimeValue
         }
         
         enum DatePicker: String {
             case startDate
             case finishDate
+            case date
+            case startTime
+            case finishTime
         }
         
         enum Button: String {

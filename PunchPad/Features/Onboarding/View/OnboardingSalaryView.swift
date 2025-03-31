@@ -40,15 +40,19 @@ struct OnboardingSalaryView: View {
             Text(Strings.paycheckText)
                 .foregroundStyle(Color.theme.blackLabel)
             
-            TextField("", value: $viewModel.grossPayPerMonthText, format: .currency(code: localCurrencyCode))
-                .accessibilityIdentifier(Identifier.TextFields.grossPaycheck.rawValue)
-                .textFieldStyle(.greenBordered)
-                
+            TextField(
+                "Enter amount",
+                value: $viewModel.grossPayPerMonthText.nilIfZero,
+                format: .currency(code: localCurrencyCode)
+            )
+            .accessibilityIdentifier(Identifier.TextFields.grossPaycheck)
+            .textFieldStyle(.greenBordered)
         }
         .padding()
         .background()
         .cornerRadius(20)
     }
+    
     private var netSalaryToggle: some View {
         Toggle(Strings.netSalaryToggleText,
                isOn: $viewModel.settingsStore.isCalculatingNetPay)

@@ -75,4 +75,11 @@ extension View {
             }
         }
     }
+    
+    nonisolated public func accessibilityIdentifier<T: RawRepresentable>(
+        _ identifier: T
+    ) -> ModifiedContent<Self, AccessibilityAttachmentModifier>
+    where T.RawValue == String {
+        accessibilityIdentifier(identifier.rawValue)
+    }
 }

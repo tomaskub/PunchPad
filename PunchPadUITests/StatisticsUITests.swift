@@ -31,34 +31,36 @@ final class StatisticsUITests: XCTestCase {
         app = nil
     }
     
-    func test_ChartConfiguration() {
+    func test_initialScreenElements() {
         // Given
         let initialConfigurationExpectations = [
-            expectation(for: existsPredicate, evaluatedWith: statisticsScreen.chartSectionHeader),
-            expectation(for: existsPredicate, evaluatedWith: statisticsScreen.salaryCalculationSectionHeader),
-            expectation(for: existsPredicate, evaluatedWith: statisticsScreen.detailedHistoryNavigationButton),
-            expectation(for: existsPredicate, evaluatedWith: statisticsScreen.workTimeChart),
+            statisticsScreen.salaryCalculationSectionHeader,
+            statisticsScreen.allRangeSegmentedButton,
+            statisticsScreen.weekRangeSegmentedButton,
+            statisticsScreen.monthRangeSegmentedButton,
         ]
+            .map { expectation(for: existsPredicate, evaluatedWith: $0) }
+        let swipeUpExpectations = [
+            statisticsScreen.grossPayLabel,
+            statisticsScreen.grossPayPerHourLabel,
+            statisticsScreen.periodLabel,
+            statisticsScreen.workDaysNumberLabel
+        ]
+            .map { expectation(for: existsPredicate, evaluatedWith: $0) }
+
         // When
         navigateToStatisticsView()
+        
         // Then
         let initialConfigurationResult = XCTWaiter.wait(for: initialConfigurationExpectations, timeout: standardTimeout)
         XCTAssertEqual(initialConfigurationResult, .completed, "Initial components should exist")
+        
         // When
-        statisticsScreen.startTimeChartButton.tap()
+        statisticsScreen.salaryCalculationSectionHeader.swipeUp()
+        
         // Then
-        let startTimeChartExistance = statisticsScreen.startTimeChart.waitForExistence(timeout: standardTimeout)
-        XCTAssert(startTimeChartExistance, "Start time chart should exist")
-        // When
-        statisticsScreen.finishTimeChartButton.tap()
-        // Then
-        let finishTimeChartExistance = statisticsScreen.finishTimeChart.waitForExistence(timeout: standardTimeout)
-        XCTAssert(finishTimeChartExistance, "Finish time chart should exist")
-        // When
-        statisticsScreen.workTimeChartButton.tap()
-        // Then
-        let workTimeChartExistance = statisticsScreen.workTimeChart.waitForExistence(timeout: standardTimeout)
-        XCTAssert(workTimeChartExistance, "Work time chart should exist")
+        let swipeUpResult = XCTWaiter.wait(for: swipeUpExpectations, timeout: standardTimeout)
+        XCTAssertEqual(swipeUpResult, .completed, "Initial components should exist")
     }
     
     private func navigateToStatisticsView() {

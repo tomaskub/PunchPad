@@ -34,38 +34,44 @@ final class SettingsViewUITests: XCTestCase {
     func test_SettingsViewInitialScreenConfiguration() {
         // Given
         let notExpandedElementsExpectations = [
-            expectation(for: existsPredicate, evaluatedWith: settingsScreen.setTimeLengthExpandText),
-            expectation(for: existsPredicate, evaluatedWith: settingsScreen.setOvertimeLengthExpandButton),
-            expectation(for: existsPredicate, evaluatedWith: settingsScreen.keepLogginOvertimeToggle),
-            expectation(for: existsPredicate, evaluatedWith: settingsScreen.grossPaycheckTextField),
-            expectation(for: existsPredicate, evaluatedWith: settingsScreen.calculateNetPayToggle),
-            expectation(for: existsPredicate, evaluatedWith: settingsScreen.clearAllSavedDataButton),
-            expectation(for: existsPredicate, evaluatedWith: settingsScreen.resetPreferencesButton),
-            expectation(for: existsPredicate, evaluatedWith: settingsScreen.sendNotificationsToggle),
-            expectation(for: existsPredicate, evaluatedWith: settingsScreen.appearanceDarkButton),
-            expectation(for: existsPredicate, evaluatedWith: settingsScreen.appearanceLightButton),
-            expectation(for: existsPredicate, evaluatedWith: settingsScreen.appearanceSystemButton)
-        ]
+            settingsScreen.setTimeLengthExpandText,
+            settingsScreen.setOvertimeLengthExpandButton,
+            settingsScreen.keepLogginOvertimeToggle,
+            settingsScreen.grossPaycheckTextField,
+            settingsScreen.calculateNetPayToggle,
+            settingsScreen.clearAllSavedDataButton,
+            settingsScreen.resetPreferencesButton,
+            settingsScreen.sendNotificationsToggle
+        ].map { expectation(for: existsPredicate, evaluatedWith: $0) }
+        
         let worktimePickerExpectations = [
-            expectation(for: existsPredicate, evaluatedWith: settingsScreen.workTimeHoursPicker),
-            expectation(for: existsPredicate, evaluatedWith: settingsScreen.workMinutesHoursPicker)
-        ]
+            settingsScreen.workTimeHoursPicker,
+            settingsScreen.workMinutesHoursPicker
+        ].map { expectation(for: existsPredicate, evaluatedWith: $0) }
+        
         let overtimePickerExpectations = [
-            expectation(for: existsPredicate, evaluatedWith: settingsScreen.overtimeHoursPicker),
-            expectation(for: existsPredicate, evaluatedWith: settingsScreen.overtimeMinutesPicker)
-        ]
+            settingsScreen.overtimeHoursPicker,
+            settingsScreen.overtimeMinutesPicker
+        ].map { expectation(for: existsPredicate, evaluatedWith: $0) }
+
+        // When
         navigateToSettingsView()
+        
         // Then
         let notExpandedElementsResult = XCTWaiter.wait(for: notExpandedElementsExpectations, timeout: standardTimeout)
         XCTAssertEqual(notExpandedElementsResult, .completed, "Elements should exist")
+        
         // When
         settingsScreen.setTimeLengthExpandText.tap()
+        
         // Then
         let worktimePickerResult = XCTWaiter.wait(for: worktimePickerExpectations, timeout: standardTimeout)
         XCTAssertEqual(worktimePickerResult, .completed, "Work time pickers should exist")
+        
         // When
         settingsScreen.setTimeLengthExpandText.tap()
         settingsScreen.setOvertimeLengthExpandButton.tap()
+        
         // Then
         let overtimePickerResult = XCTWaiter.wait(for: overtimePickerExpectations, timeout: standardTimeout)
         XCTAssertEqual(overtimePickerResult, .completed, " Overtime pickers should exist")
@@ -73,31 +79,31 @@ final class SettingsViewUITests: XCTestCase {
     
     func test_toggleButtonsToggleAndRetainValues() {
         // Given
+        // INFO: notification toggle ommited since it requires permissions
         navigateToSettingsView()
         let initialValues: [String?] = [
-            settingsScreen.sendNotificationsToggle.value as? String,
             settingsScreen.keepLogginOvertimeToggle.value as? String,
             settingsScreen.calculateNetPayToggle.value as? String
         ]
+        
         // When
-        settingsScreen.sendNotificationsToggle.switches.firstMatch.tap()
         settingsScreen.keepLogginOvertimeToggle.switches.firstMatch.tap()
         settingsScreen.calculateNetPayToggle.switches.firstMatch.tap()
+        
         // Then
         let exitValues: [String?] = [
-            settingsScreen.sendNotificationsToggle.value as? String,
             settingsScreen.keepLogginOvertimeToggle.value as? String,
             settingsScreen.calculateNetPayToggle.value as? String
         ]
         XCTAssertNotEqual(exitValues[0], initialValues[0])
         XCTAssertNotEqual(exitValues[1], initialValues[1])
-        XCTAssertNotEqual(exitValues[2], initialValues[2])
+        
         // When
         restartApp()
         navigateToSettingsView()
+        
         // Then
         let resumeValues: [String?] = [
-            settingsScreen.sendNotificationsToggle.value as? String,
             settingsScreen.keepLogginOvertimeToggle.value as? String,
             settingsScreen.calculateNetPayToggle.value as? String
         ]
@@ -159,44 +165,60 @@ final class SettingsViewUITests: XCTestCase {
         // Given
         let valuePredicate = NSPredicate(format: "value == '0'")
         let initialToggleValueExpectations = generateToggleExpecations(predicate: valuePredicate)
-        let initialPickerWorkValueExpectations = generatePickerWorkExpectations(predicate: valuePredicate)
-        let initialPickerOvertimeValueExpectations = generatePickerOvertimeExpectations(predicate: valuePredicate)
+        let initialPickerWorkValueExpectations = generatePickerWorkExpectations(hours: 0, minutes: 0)
+        let initialPickerOvertimeValueExpectations = generatePickerOvertimeExpectations(hours: 0, minutes: 0)
         let finalToggleValueExpectations = generateToggleExpecations(predicate: valuePredicate)
-        let finalPickerWorkValueExpectations = generatePickerWorkExpectations(predicate: valuePredicate)
-        let finalPickerOvertimeValueExpectations = generatePickerOvertimeExpectations(predicate: valuePredicate)
+        let finalPickerWorkValueExpectations = generatePickerWorkExpectations(hours: 0, minutes: 0)
+        let finalPickerOvertimeValueExpectations = generatePickerOvertimeExpectations(hours: 0, minutes: 0)
         navigateToSettingsView()
+        
         // When
         settingsScreen.resetPreferencesButton.tap()
+        
         // Then
         let initialTogglesResult = XCTWaiter.wait(for: initialToggleValueExpectations, timeout: standardTimeout)
         XCTAssertEqual(initialTogglesResult, .completed, "The toggles should have false value")
-        XCTAssertEqual(settingsScreen.grossPaycheckTextField.value as? String, "0", "TextField should show '0'")
+        XCTAssertEqual(settingsScreen.grossPaycheckTextField.value as? String,
+                       generateCurrencyTextFieldString(for: 0),
+                       "TextField should show '0'")
+        
         // When
         settingsScreen.setTimeLengthExpandText.tap()
+        
         // Then
         let initialWorkPickerResult = XCTWaiter.wait(for: initialPickerWorkValueExpectations, timeout: standardTimeout)
         XCTAssertEqual(initialWorkPickerResult, .completed, "The work time pickers should show 0s")
+        
         // When
         settingsScreen.setTimeLengthExpandText.tap()
         settingsScreen.setOvertimeLengthExpandButton.tap()
+        
         // Then
         let initialOvertimePickerResult = XCTWaiter.wait(for: initialPickerOvertimeValueExpectations, timeout: standardTimeout)
         XCTAssertEqual(initialOvertimePickerResult, .completed, "The overtime pickers should show 0s")
+        
         // When
         restartApp()
         navigateToSettingsView()
+        
         // Then
         let finalTogglesResult = XCTWaiter.wait(for: finalToggleValueExpectations, timeout: standardTimeout)
         XCTAssertEqual(finalTogglesResult, .completed, "The toggles should have false value")
-        XCTAssertEqual(settingsScreen.grossPaycheckTextField.value as? String, "0", "TextField should be show '0'")
+        XCTAssertEqual(settingsScreen.grossPaycheckTextField.value as? String,
+                       generateCurrencyTextFieldString(for: 0),
+                       "TextField should be show '0'")
+        
         // When
         settingsScreen.setTimeLengthExpandText.tap()
+        
         // Then
         let finalWorkPickerResult = XCTWaiter.wait(for: finalPickerWorkValueExpectations, timeout: standardTimeout)
         XCTAssertEqual(finalWorkPickerResult, .completed, "The work time pickers should show 0s")
+        
         // When
         settingsScreen.setTimeLengthExpandText.tap()
         settingsScreen.setOvertimeLengthExpandButton.tap()
+        
         // Then
         let finalOvertimePickerResult = XCTWaiter.wait(for: finalPickerOvertimeValueExpectations, timeout: standardTimeout)
         XCTAssertEqual(finalOvertimePickerResult, .completed, "The overtime pickers should show 0s")
@@ -205,13 +227,15 @@ final class SettingsViewUITests: XCTestCase {
     func test_ClearSavedData() {
         // Given
         navigateToSettingsView()
+        let emptyStateLabel = HistoryViewScreen(app: app).emptyStateLabel
+        
         // When
         settingsScreen.clearAllSavedDataButton.tap()
-        app.navigationBars.buttons.firstMatch.tap()
+        settingsScreen.navigationBackButtons.tap()
         navigateToHistoryView()
+        
         // Then
-        let countPredicate = NSPredicate(format: "count == 0")
-        let expectation = expectation(for: countPredicate, evaluatedWith: app.collectionViews.cells)
+        let expectation = expectation(for: existsPredicate, evaluatedWith: emptyStateLabel)
         let result = XCTWaiter.wait(for: [expectation], timeout: standardTimeout)
         XCTAssertEqual(result, .completed, "There should be no cells in app")
     }
@@ -224,7 +248,7 @@ final class SettingsViewUITests: XCTestCase {
     }
     
     private func navigateToSettingsView() {
-        HomeViewScreen(app: app).settingsNavigationButton.tap()
+        ContentViewScreen(app: app).navBarSettingsButton.tap()
     }
     
     private func navigateToHistoryView() {
@@ -240,13 +264,39 @@ extension SettingsViewUITests {
          expectation(for: predicate, evaluatedWith: settingsScreen.calculateNetPayToggle)]
     }
     
-    private func generatePickerWorkExpectations(predicate: NSPredicate) -> [XCTestExpectation] {
-        [expectation(for: predicate, evaluatedWith: settingsScreen.workTimeHoursPicker.pickerWheels.firstMatch),
-         expectation(for: predicate, evaluatedWith: settingsScreen.workMinutesHoursPicker.pickerWheels.firstMatch)]
+    private func generatePickerWorkExpectations(hours: Int, minutes: Int) -> [XCTestExpectation] {
+        generatePickerExpectations(hours: hours,
+                                   minutes: minutes,
+                                   hoursPicker: settingsScreen.workTimeHoursPicker,
+                                   minutesPicker: settingsScreen.workMinutesHoursPicker)
     }
     
-    func generatePickerOvertimeExpectations(predicate: NSPredicate) -> [XCTestExpectation] {
-        [expectation(for: predicate, evaluatedWith: settingsScreen.overtimeHoursPicker.pickerWheels.firstMatch),
-         expectation(for: predicate, evaluatedWith: settingsScreen.overtimeMinutesPicker.pickerWheels.firstMatch)]
+    private func generatePickerOvertimeExpectations(hours: Int, minutes: Int) -> [XCTestExpectation] {
+        generatePickerExpectations(hours: hours,
+                                   minutes: minutes,
+                                   hoursPicker: settingsScreen.overtimeHoursPicker,
+                                   minutesPicker: settingsScreen.overtimeMinutesPicker)
+    }
+    
+    private func generatePickerExpectations(hours: Int, minutes: Int, hoursPicker: XCUIElement, minutesPicker: XCUIElement) -> [XCTestExpectation] {
+        let hoursPredicate = NSPredicate(format: "value == '\(hours)'")
+        let minutesPredicate = NSPredicate(format: "value == '\(minutes)'")
+        return [
+            generatePickerValueExpectation(hoursPredicate, picker: hoursPicker),
+            generatePickerValueExpectation(minutesPredicate, picker: minutesPicker)
+        ]
+    }
+    
+    private func generatePickerValueExpectation(_ predicate: NSPredicate, picker: XCUIElement) -> XCTestExpectation {
+        expectation(for: predicate, evaluatedWith: picker.pickerWheels.firstMatch)
+    }
+    
+    private func generateCurrencyTextFieldString(for amount: Int) -> String? {
+        let currencyCode: String = Locale.current.currencySymbol ?? "PLN"
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencyCode = currencyCode
+        formatter.locale = Locale.current
+        return formatter.string(from: NSNumber(integerLiteral: amount))
     }
 }

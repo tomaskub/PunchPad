@@ -83,6 +83,7 @@ private extension EditSheetView {
             VStack {
                 Text(generateTimeIntervalLabel(value: viewModel.overTimeInSeconds))
                     .font(.title)
+                    .accessibilityIdentifier(Identifier.Label.overtimeValue)
                 Text(Strings.overtimeText)
                     .font(.caption)
             }
@@ -93,6 +94,7 @@ private extension EditSheetView {
             VStack {
                 Text(generateTimeIntervalLabel(value: viewModel.workTimeInSeconds))
                     .font(.title)
+                    .accessibilityIdentifier(Identifier.Label.worktimeValue)
                 Text(Strings.regularTimeText)
                     .font(.caption)
             }
@@ -103,6 +105,7 @@ private extension EditSheetView {
         VStack {
             Text(generateTimeIntervalLabel(value: viewModel.breakTime))
                 .font(.title)
+                .accessibilityIdentifier(Identifier.Label.breaktimeValue)
             Text(Strings.breaktimeText)
                 .font(.caption)
         }
@@ -132,7 +135,7 @@ private extension EditSheetView {
                            selection: $viewModel.startDate,
                            in: PartialRangeThrough(viewModel.finishDate))
                     .labelsHidden()
-                    .accessibilityIdentifier(Identifier.DatePicker.startDate.rawValue)
+                    .accessibilityIdentifier(Identifier.DatePicker.startDate)
             } trailing: {
                calendarToggable
             }
@@ -145,7 +148,7 @@ private extension EditSheetView {
                            selection: $viewModel.finishDate,
                            in: PartialRangeFrom(viewModel.startDate))
                     .labelsHidden()
-                    .accessibilityIdentifier(Identifier.DatePicker.finishDate.rawValue)
+                    .accessibilityIdentifier(Identifier.DatePicker.finishDate)
             } trailing: {
                 calendarToggable
             }
@@ -163,6 +166,7 @@ private extension EditSheetView {
                     EmptyView()
                 }
                            .labelsHidden()
+                           .accessibilityIdentifier(Identifier.DatePicker.date)
             } trailing: {
                 calendarToggable
             }
@@ -177,6 +181,7 @@ private extension EditSheetView {
                         EmptyView()
                     }
                                .labelsHidden()
+                               .accessibilityIdentifier(Identifier.DatePicker.startTime)
                 } trailing: {
                     imageClock
                 }
@@ -188,6 +193,7 @@ private extension EditSheetView {
                         EmptyView()
                     }
                                .labelsHidden()
+                               .accessibilityIdentifier(Identifier.DatePicker.finishTime)
                 } trailing: {
                     imageClock
                 }
@@ -281,14 +287,14 @@ extension EditSheetView {
                     dismiss()
                 }
                 .buttonStyle(CancelButtonStyle())
-                .accessibilityIdentifier(Identifier.Button.cancel.rawValue)
+                .accessibilityIdentifier(Identifier.Button.cancel)
                 
                 Button(Strings.saveButtonText.uppercased()) {
                     viewModel.saveEntry()
                     dismiss()
                 }
                 .buttonStyle(ConfirmButtonStyle())
-                .accessibilityIdentifier(Identifier.Button.save.rawValue)
+                .accessibilityIdentifier(Identifier.Button.save)
             }
             .id(editControlsId)
         }

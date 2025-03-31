@@ -75,7 +75,6 @@ final class TimerService: ObservableObject {
     }
     
     private func updateTimer(byAdding addValue: TimeInterval = 1) {
-        logger.debug("updateTimer called")
         guard self.serviceState == .running else { return }
         counter += addValue < remainingTime ? addValue : remainingTime
         withAnimation(.easeInOut) {
