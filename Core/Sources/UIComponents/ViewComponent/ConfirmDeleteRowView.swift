@@ -5,26 +5,28 @@
 //  Created by Tomasz Kubiak on 04/01/2024.
 //
 
+import DomainModels
 import SwiftUI
 
-#warning("Implement localization in this file")
-struct ConfirmDeleteRowView: View {
+public struct ConfirmDeleteRowView: View {
     private typealias Identifier = ScreenIdentifier.HistoryView.ConfirmDeleteDialogView
     let iconSystemName: String
     let headingText: String
     let confirmAction: () -> Void
     let cancelAction: () -> Void
-    
-    init(_ headingText: String,
-         iconSystemName: String,
-         confirmAction: @escaping () -> Void,
-         cancelAction: @escaping () -> Void) {
+
+    public init(
+        _ headingText: String,
+        iconSystemName: String,
+        confirmAction: @escaping () -> Void,
+        cancelAction: @escaping () -> Void
+    ) {
         self.iconSystemName = iconSystemName
         self.headingText = headingText
         self.confirmAction = confirmAction
         self.cancelAction = cancelAction
     }
-    var body: some View {
+    public var body: some View {
         VStack {
             Label(
                 title: {

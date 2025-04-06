@@ -8,15 +8,15 @@
 import SwiftUI
 import ThemeKit
 
-struct TextFactory {
+public struct TextFactory {
     @ViewBuilder
-    static func buildTitle(_ text: String) -> some View {
+    public static func buildTitle(_ text: String) -> some View {
         Text(text)
             .font(.largeTitle)
             .fontWeight(.semibold)
     }
     @ViewBuilder
-    static func buildMultilineTitle(_ text: String) -> some View {
+    public static func buildMultilineTitle(_ text: String) -> some View {
         Text(text)
             .font(.largeTitle)
             .fontWeight(.semibold)
@@ -24,7 +24,7 @@ struct TextFactory {
     }
     
     @ViewBuilder
-    static func buildDescription(_ text: String) -> some View {
+    public static func buildDescription(_ text: String) -> some View {
         Text(text)
             .fontWeight(.medium)
             .foregroundColor(.theme.blackLabel)
@@ -32,7 +32,7 @@ struct TextFactory {
     }
     
     @ViewBuilder
-    static func buildSectionHeader(_ text: String) -> some View {
+    public static func buildSectionHeader(_ text: String) -> some View {
         Text(text)
             .foregroundColor(.theme.primary)
             .font(.system(size: 24, weight: .medium))

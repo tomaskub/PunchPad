@@ -7,6 +7,6 @@
 
 import SwiftUI
 
-extension TextFieldStyle where Self == GreenBorderTextFieldStyle {
+public extension TextFieldStyle where Self == GreenBorderTextFieldStyle {
     static var greenBordered: GreenBorderTextFieldStyle { .init() }
 }

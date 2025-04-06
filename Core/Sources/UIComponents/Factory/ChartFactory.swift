@@ -11,7 +11,7 @@ import ThemeKit
 import DomainModels
 import FoundationExtensions
 
-struct ChartFactory {
+public struct ChartFactory {
     private static let xAxisDateLabelTitle = "Date"
     private static let yAxisHoursWorkedLabelTitle = "Hours worked"
     private static let legendHoursWorkedLabelTitle = "Hours worked"
@@ -22,7 +22,7 @@ struct ChartFactory {
     /// (such as `21 Jun`)
     /// - Parameter data: array of chartableEntry data
     /// - Returns: Chart view
-    @ViewBuilder static func buildBarChartForDays<T: ChartableEntry>(data: [T]) -> some View {
+    @ViewBuilder @MainActor public static func buildBarChartForDays<T: ChartableEntry>(data: [T]) -> some View {
         buildBarChartWithDefaultColors(data: data,
                                        xUnit: .day,
                                        xFormatter: FormatterFactory.makeDayAndMonthDateFormatter(),
@@ -34,7 +34,7 @@ struct ChartFactory {
     /// month (such as `21 Jun`)
     /// - Parameter data: array of chartableEntry data
     /// - Returns: Chart view
-    @ViewBuilder static func buildBarChartForWeeks<T: ChartableEntry>(data: [T]) -> some View {
+    @ViewBuilder @MainActor public static func buildBarChartForWeeks<T: ChartableEntry>(data: [T]) -> some View {
         buildBarChartWithDefaultColors(data: data,
                                        xUnit: .weekOfYear,
                                        xFormatter: FormatterFactory.makeDayAndMonthDateFormatter(),
@@ -46,7 +46,7 @@ struct ChartFactory {
     /// month (such as `Jun`)
     /// - Parameter data: array of chartableEntry data
     /// - Returns: Chart view
-    @ViewBuilder static func buildBarChartForMonths<T: ChartableEntry>(data: [T]) -> some View {
+    @ViewBuilder @MainActor public static func buildBarChartForMonths<T: ChartableEntry>(data: [T]) -> some View {
         buildBarChartWithDefaultColors(data: data,
                                        xUnit: .month,
                                        xFormatter: FormatterFactory.makeMonthDateFormatter(),
@@ -60,7 +60,7 @@ struct ChartFactory {
     ///   - xFormatter: formatter used for x axis values of data
     ///   - yScale: optional scale to be used on y axis
     /// - Returns: Chart view
-    @ViewBuilder static func buildBarChartWithDefaultColors<T: ChartableEntry>(
+    @ViewBuilder @MainActor static func buildBarChartWithDefaultColors<T: ChartableEntry>(
         data: [T],
         xUnit: Calendar.Component,
         xFormatter: DateFormatter,
@@ -138,7 +138,7 @@ struct ChartFactory {
     
     /// Build chart legend view for hours worked and overtime
     /// - Returns: ChartLegendView
-    @ViewBuilder static func buildChartLegend() -> some View {
+    @ViewBuilder @MainActor static func buildChartLegend() -> some View {
         ChartLegendView(chartLegendItems: [
             ChartLegendItem(itemName: legendHoursWorkedLabelTitle, itemShape: Rectangle(), itemShapeColor: .blue),
             ChartLegendItem(itemName: legendOvertimeLabelTitle, itemShape: Circle(), itemShapeColor: .green)])
@@ -152,7 +152,7 @@ struct ChartFactory {
     ///   - color: color of point marker
     ///   - displayName: display name to show on legend
     /// - Returns: Chart with point markers
-    @ViewBuilder static func buildPointChartForPunchTime(entries: [Entry],
+    @ViewBuilder @MainActor static func buildPointChartForPunchTime(entries: [Entry],
                                                          property: KeyPath<Entry, Date>,
                                                          color: Color,
                                                          displayName: String) -> some View {

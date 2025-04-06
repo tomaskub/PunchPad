@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-extension ButtonStyle where Self == CancelButtonStyle {
+public extension ButtonStyle where Self == CancelButtonStyle {
     static var dismissive: CancelButtonStyle { .init() }
 }
 
-extension ButtonStyle where Self == ConfirmButtonStyle {
+public extension ButtonStyle where Self == ConfirmButtonStyle {
     static var confirming: ConfirmButtonStyle { .init() }
 }

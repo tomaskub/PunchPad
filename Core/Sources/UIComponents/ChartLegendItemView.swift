@@ -6,15 +6,16 @@
 //
 
 import SwiftUI
+import DomainModels
 
-struct ChartLegendItemView: View {
+public struct ChartLegendItemView: View {
     private let chartLegendItem: ChartLegendItem
     
-    init(chartLegendItem: ChartLegendItem) {
+    public init(chartLegendItem: ChartLegendItem) {
         self.chartLegendItem = chartLegendItem
     }
     
-    var body: some View {
+    public var body: some View {
         HStack {
             chartLegendItem.itemShape
                 .fill(chartLegendItem.itemShapeColor)

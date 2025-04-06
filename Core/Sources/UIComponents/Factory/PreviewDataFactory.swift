@@ -5,10 +5,11 @@
 //  Created by Tomasz Kubiak on 04/12/2023.
 //
 
+import DomainModels
 import Foundation
 
-struct PreviewDataFactory {
-    static func buildDataForPreviewForYear(containing date: Date = Date(),
+public struct PreviewDataFactory {
+    public static func buildDataForPreviewForYear(containing date: Date = Date(),
                                            using calendar: Calendar = .current) -> [Entry] {
         var result = [Entry]()
         let year = calendar.dateComponents([.year], from: date).year!
@@ -20,7 +21,7 @@ struct PreviewDataFactory {
         return result
     }
     
-    static func buildDataForPreviewForMonth(containing date: Date = Date(),
+    public static func buildDataForPreviewForMonth(containing date: Date = Date(),
                                             using calendar: Calendar = Calendar.current) -> [Entry] {
         let currentDate = calendar.startOfDay(for: date)
         guard let numberOfDaysInMonth = calendar.range(of: .day, in: .month, for: currentDate) else { return [] }

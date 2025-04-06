@@ -7,8 +7,10 @@
 
 import SwiftUI
 
-struct CircleButton: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
+public struct CircleButton: ButtonStyle {
+    public init() {}
+    
+    public func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .foregroundColor(.theme.white)
             .background(

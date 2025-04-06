@@ -8,8 +8,10 @@
 import SwiftUI
 import ThemeKit
 
-struct CancelButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
+public struct CancelButtonStyle: ButtonStyle {
+    public init() {}
+    
+    public func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .foregroundColor(.theme.buttonLabelGray)
             .padding(.horizontal, 16)

@@ -8,8 +8,10 @@
 import ThemeKit
 import SwiftUI
 
-struct ConfirmButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
+public struct ConfirmButtonStyle: ButtonStyle {
+    public init() {}
+    
+    public func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .foregroundColor(.theme.white)
             .padding(.vertical, 10)

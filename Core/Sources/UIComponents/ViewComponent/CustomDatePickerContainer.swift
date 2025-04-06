@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CustomDatePickerContainer<Content: View, Leading: View, Trailing: View>: View {
+public struct CustomDatePickerContainer<Content: View, Leading: View, Trailing: View>: View {
     @State private var labelSize: CGSize = CGSize()
     private let labelText: String?
     private let cornerRadius: CGFloat
@@ -26,7 +26,7 @@ struct CustomDatePickerContainer<Content: View, Leading: View, Trailing: View>: 
         self.trailingIcon = trailingIcon
     }
     
-    init(labelText: String?, cornerRadius: CGFloat = 10,
+    public init(labelText: String?, cornerRadius: CGFloat = 10,
          @ViewBuilder content: @escaping () -> Content,
          @ViewBuilder leading: @escaping () -> Leading,
          @ViewBuilder trailing: @escaping () -> Trailing) {
@@ -37,7 +37,7 @@ struct CustomDatePickerContainer<Content: View, Leading: View, Trailing: View>: 
         self.trailingIcon = trailing
     }
     
-    init(labelText: String?, cornerRadius: CGFloat = 10,
+    public init(labelText: String?, cornerRadius: CGFloat = 10,
          @ViewBuilder content: @escaping () -> Content,
          @ViewBuilder leading: @escaping () -> Leading) where Trailing == EmptyView {
         self.init(labelText: labelText,
@@ -47,7 +47,7 @@ struct CustomDatePickerContainer<Content: View, Leading: View, Trailing: View>: 
                   trailingIcon: nil)
     }
     
-    init(labelText: String?, cornerRadius: CGFloat = 10,
+    public init(labelText: String?, cornerRadius: CGFloat = 10,
          @ViewBuilder content: @escaping () -> Content,
          @ViewBuilder trailing: @escaping () -> Trailing) where Leading == EmptyView {
         self.init(labelText: labelText,
@@ -66,7 +66,7 @@ struct CustomDatePickerContainer<Content: View, Leading: View, Trailing: View>: 
                   trailingIcon: nil)
     }
     
-    var body: some View {
+    public var body: some View {
         ZStack {
             GeometryReader { proxy in
                 drawBackgroundFrame(in: proxy)

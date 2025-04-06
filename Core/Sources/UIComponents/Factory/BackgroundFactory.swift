@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import ThemeKit
 
 public struct BackgroundFactory {
     @ViewBuilder
-    static func buildGradient(colorScheme: ColorScheme) -> some View {
+    public static func buildGradient(colorScheme: ColorScheme) -> some View {
         LinearGradient(
             colors: [ colorScheme == .light ? .white : .black, .blue.opacity(0.5)],
             startPoint: .topLeading,
@@ -18,8 +19,8 @@ public struct BackgroundFactory {
             .ignoresSafeArea()
     }
     
-    @ViewBuilder
-    static func buildSolidColor(_ color: Color? = nil) -> some View {
+    @ViewBuilder @MainActor
+    public static func buildSolidColor(_ color: Color? = nil) -> some View {
         if let color {
             color.ignoresSafeArea()
         } else {
@@ -29,7 +30,7 @@ public struct BackgroundFactory {
     }
     
     @ViewBuilder
-    static func buildNavBarBackground() -> some View {
+    public static func buildNavBarBackground() -> some View {
         RoundedRectangle(cornerRadius: 24)
             .foregroundColor(.theme.white)
             .ignoresSafeArea(edges: .top)
@@ -37,7 +38,7 @@ public struct BackgroundFactory {
     }
     
     @ViewBuilder @MainActor
-    static func buildSolidWithStrip(solid color: Color = .theme.background,
+    public static func buildSolidWithStrip(solid color: Color = .theme.background,
                                     strip stripColor: Color = .theme.white) -> some View {
         ZStack {
             color

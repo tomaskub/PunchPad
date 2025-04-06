@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension ColorScheme {
+public extension ColorScheme {
     
     var rawValue: String {
         switch self {

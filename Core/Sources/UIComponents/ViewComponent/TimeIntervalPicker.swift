@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TimeIntervalPicker: View {
+public struct TimeIntervalPicker: View {
     let hoursInDay = 24
     let minutesInHour = 60
     let secondsInHour = 3600
@@ -15,6 +15,11 @@ struct TimeIntervalPicker: View {
     let buttonLabelText: String
     @State private var isShowingPickers: Bool = false
     @Binding var value: TimeInterval
+    
+    public init(buttonLabelText: String, value: Binding<TimeInterval>) {
+        self.buttonLabelText = buttonLabelText
+        self._value = value
+    }
     
     var hourComponent: Binding<Int> {
         Binding(get: {
@@ -32,7 +37,7 @@ struct TimeIntervalPicker: View {
         })
     }
     
-    var body: some View {
+    public var body: some View {
         Button {
             isShowingPickers.toggle()
         } label: {

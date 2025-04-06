@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TimerIndicator: View {
+public struct TimerIndicator: View {
     let firstProgressLabel: String
     let secondProgressLabel: String
     let timerLabel: String
@@ -15,7 +15,7 @@ struct TimerIndicator: View {
     let secondProgress: CGFloat
     let useOnlyWorkLabel: Bool
     
-    init(timerLabel: String,
+    public init(timerLabel: String,
          firstProgress: CGFloat,
          firstTimerLabel: String,
          secondProgress: CGFloat,
@@ -29,7 +29,7 @@ struct TimerIndicator: View {
         self.useOnlyWorkLabel = useOnlyWorkLabel
     }
     
-    var body: some View {
+    public var body: some View {
         ZStack {
             Circle()
                 .foregroundColor(.theme.white)

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import DomainModels
 
 struct ChartLegendView: View {
     private let chartLegendItems: [ChartLegendItem]
