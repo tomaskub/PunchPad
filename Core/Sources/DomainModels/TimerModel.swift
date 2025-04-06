@@ -15,6 +15,20 @@ public struct TimerModel: Codable {
     public let overtimeTimerState: TimerServiceState?
     public let timeStamp: Date
     
+    public init(configuration: TimerManagerConfiguration,
+                workTimeCounter: TimeInterval,
+                overtimeCounter: TimeInterval?,
+                workTimerState: TimerServiceState,
+                overtimeTimerState: TimerServiceState?,
+                timeStamp: Date) {
+        self.configuration = configuration
+        self.workTimeCounter = workTimeCounter
+        self.overtimeCounter = overtimeCounter
+        self.workTimerState = workTimerState
+        self.overtimeTimerState = overtimeTimerState
+        self.timeStamp = timeStamp
+    }
+    
     public static func initial(configuration: TimerManagerConfiguration) -> TimerModel {
         return TimerModel(configuration: configuration,
                           workTimeCounter: 0,

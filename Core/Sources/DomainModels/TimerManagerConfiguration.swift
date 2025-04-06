@@ -11,4 +11,12 @@ public struct TimerManagerConfiguration: Codable {
     public let workTimeInSeconds: TimeInterval
     public let isLoggingOvertime: Bool
     public let overtimeInSeconds: TimeInterval?
+    
+    public init(workTimeInSeconds: TimeInterval,
+                isLoggingOvertime: Bool,
+                overtimeInSeconds: TimeInterval?) {
+        self.workTimeInSeconds = workTimeInSeconds
+        self.isLoggingOvertime = isLoggingOvertime
+        self.overtimeInSeconds = overtimeInSeconds
+    }
 }
