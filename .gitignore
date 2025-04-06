@@ -26,3 +26,9 @@ fastlane/report.xml
 .swiftpm/
 .netrc
 
+## Nvim Xcodebuild
+.nvim/
+
+## Xcode build server config
+buildServer.json
+
