@@ -8,7 +8,7 @@
 import Foundation
 import NotificationCenter
 
-extension UNAuthorizationStatus {
+public extension UNAuthorizationStatus {
     var debugDescription: String {
         switch self {
         case .notDetermined:

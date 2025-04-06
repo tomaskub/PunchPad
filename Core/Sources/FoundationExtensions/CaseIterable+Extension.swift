@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension CaseIterable where Self: Equatable {
+public extension CaseIterable where Self: Equatable {
     /// Return next enum case or the first one in case given case was last
     func next() -> Self {
         let all = Self.allCases
