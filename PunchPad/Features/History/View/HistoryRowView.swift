@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+import UIComponents
+import DomainModels
+import FoundationExtensions
 import ThemeKit
 
 struct HistoryRowView: View {

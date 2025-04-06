@@ -5,6 +5,7 @@
 //  Created by Tomasz Kubiak on 3/27/23.
 //
 
+import DomainModels
 import SwiftUI
 import TabViewKit
 import NavigationKit

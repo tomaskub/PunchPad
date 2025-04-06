@@ -8,6 +8,7 @@
 import Foundation
 import UserNotifications
 import OSLog
+import DomainModels
 
 final class NotificationService {
     private let center: UNUserNotificationCenter
@@ -110,5 +111,34 @@ final class NotificationService {
         _ = pendingNotificationsIDs.insert(notification.identifier)
         center.add(notification)
     }
+}
+
+extension AppNotification {
+    var title: String {
+        switch self {
+        case .workTime:
+            return Strings.titleWorktime
+        case .overTime:
+            return Strings.titleOvertime
+        }
+    }
     
+    var body: String {
+        switch self {
+        case .workTime:
+            return Strings.bodyWorktime
+        case .overTime:
+            return Strings.bodyOvertime
+        }
+    }
+}
+
+// TODO: inverstigate @retroactive
+extension AppNotification: Localized {
+    public struct Strings {
+        static let titleWorktime = Localization.AppNotificationScreen.worktimeFinished
+        static let titleOvertime = Localization.AppNotificationScreen.overtimeFinished
+        static let bodyWorktime = Localization.AppNotificationScreen.congratulationsYouFinishedNormalHours
+        static let bodyOvertime = Localization.AppNotificationScreen.congratulationsYouFinishedOvertime
+    }
 }

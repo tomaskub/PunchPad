@@ -23,7 +23,7 @@ final class Container: ContainerProtocol {
         self.dataManager = dataManaging
         self.payManager = PayManager(dataManager: dataManager,
                                      settingsStore: settingsStore,
-                                     calendar: .current)
+                                     calendar: Calendar.current)
         self.notificationService = NotificationService(center: .current())
     }
 }

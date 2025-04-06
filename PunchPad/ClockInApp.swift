@@ -7,6 +7,7 @@
 
 import SwiftUI
 import NavigationKit
+import DomainModels
 
 @main
 struct ClockInApp: App {

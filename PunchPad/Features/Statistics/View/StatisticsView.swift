@@ -4,7 +4,9 @@
 //
 //  Created by Tomasz Kubiak on 4/16/23.
 //
-
+import DomainModels
+import FoundationExtensions
+import UIComponents
 import SwiftUI
 import Charts
 import ThemeKit
@@ -134,6 +136,8 @@ private extension StatisticsView {
     
     @ViewBuilder
     var chart: some View {
+        // TODO: ask about the issue:
+        // Referencing subscript 'subscript(dynamicMember:)' requires wrapper 'ObservedObject<StatisticsViewModel>.Wrapper'
         switch viewModel.chartTimeRange {
         case .week, .month:
             ChartFactory.buildBarChartForDays(data: viewModel.entryInPeriod)

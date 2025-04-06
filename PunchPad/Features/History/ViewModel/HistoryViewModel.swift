@@ -5,6 +5,7 @@
 //  Created by Tomasz Kubiak on 3/31/23.
 //
 
+import DomainModels
 import Foundation
 import CoreData
 import Combine

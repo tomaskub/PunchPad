@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import DomainModels
 
 class HomeViewModel: NSObject, ObservableObject {
     private var subscriptions = Set<AnyCancellable>()

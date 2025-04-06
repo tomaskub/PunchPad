@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import DomainModels
 
 protocol DataManaging: NSObject {
     var dataDidChange: PassthroughSubject<Void, Never> { get }

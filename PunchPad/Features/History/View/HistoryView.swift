@@ -5,9 +5,12 @@
 //  Created by Tomasz Kubiak on 3/31/23.
 //
 
+import DomainModels
+import FoundationExtensions
 import SwiftUI
 import Charts
 import ThemeKit
+import UIComponents
 
 struct HistoryView: View {
     private typealias Identifier = ScreenIdentifier.HistoryView

@@ -5,6 +5,7 @@
 //  Created by Tomasz Kubiak on 22/12/2023.
 //
 
+import DomainModels
 import Foundation
 import SwiftUI
 import OSLog

@@ -5,6 +5,7 @@
 //  Created by Tomasz Kubiak on 06/11/2023.
 //
 
+import UIComponents
 import SwiftUI
 
 struct OnboardingFinishView: View {

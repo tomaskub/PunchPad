@@ -4,7 +4,7 @@
 //
 //  Created by Tomasz Kubiak on 4/2/23.
 //
-
+import DomainModels
 import Foundation
 import Combine
 import CoreData
@@ -237,6 +237,8 @@ private extension DataManager {
 // MARK: - Entry Conv Init
 extension Entry {
     fileprivate init(entryMO: EntryMO) {
+        // TODO: Ask about why this is needed - otherwise the method thrown error "self called before self.init()"
+        self.init()
         self.id = entryMO.id
         self.startDate = entryMO.startDate
         self.finishDate = entryMO.finishDate

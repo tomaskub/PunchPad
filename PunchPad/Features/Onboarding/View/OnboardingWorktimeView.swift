@@ -4,7 +4,8 @@
 //
 //  Created by Tomasz Kubiak on 05/11/2023.
 //
-
+import DomainModels
+import UIComponents
 import SwiftUI
 
 struct OnboardingWorktimeView: View {

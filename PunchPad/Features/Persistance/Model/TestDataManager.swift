@@ -4,7 +4,7 @@
 //
 //  Created by Tomasz Kubiak on 05/05/2024.
 //
-
+import DomainModels
 import Foundation
 import CoreData
 import Combine
@@ -256,6 +256,7 @@ private extension TestDataManager {
 // MARK: - Entry Conv Init
 fileprivate extension Entry {
     init(entryMO: EntryMO) {
+        self.init()
         self.id = entryMO.id
         self.startDate = entryMO.startDate
         self.finishDate = entryMO.finishDate

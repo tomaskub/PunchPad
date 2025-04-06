@@ -5,6 +5,7 @@
 //  Created by Tomasz Kubiak on 4/18/23.
 //
 
+import DomainModels
 import Foundation
 import Combine
 import OSLog

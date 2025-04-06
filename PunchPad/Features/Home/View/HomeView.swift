@@ -5,6 +5,9 @@
 //  Created by Tomasz Kubiak on 3/28/23.
 //
 
+import DomainModels
+import FoundationExtensions
+import UIComponents
 import SwiftUI
 import NavigationKit
 import ThemeKit
@@ -32,6 +35,7 @@ struct HomeView: View {
                         secondTimerLabel: Strings.secondTimerLabelText
                     )
                     .frame(width: 260, height: 260)
+                    // todo: investigate error and why it now appeared 
                     makeControls(viewModel.state)
                 }
                 .frame(height: 480, alignment: .top)
