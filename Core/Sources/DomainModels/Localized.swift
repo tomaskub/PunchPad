@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol Localized {
+public protocol Localized {
     associatedtype Strings
 }
