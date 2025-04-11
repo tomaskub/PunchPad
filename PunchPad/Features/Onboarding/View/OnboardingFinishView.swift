@@ -5,8 +5,8 @@
 //  Created by Tomasz Kubiak on 06/11/2023.
 //
 
-import UIComponents
 import SwiftUI
+import UIComponents
 
 struct OnboardingFinishView: View {
     private let titleText: String = "PunchPad has been succsessfully set up"

@@ -5,10 +5,10 @@
 //  Created by Tomasz Kubiak on 3/31/23.
 //
 
+import Charts
 import DomainModels
 import FoundationExtensions
 import SwiftUI
-import Charts
 import ThemeKit
 import UIComponents
 

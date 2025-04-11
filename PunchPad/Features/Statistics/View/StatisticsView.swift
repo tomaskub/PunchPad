@@ -4,12 +4,13 @@
 //
 //  Created by Tomasz Kubiak on 4/16/23.
 //
+
+import Charts
 import DomainModels
 import FoundationExtensions
-import UIComponents
 import SwiftUI
-import Charts
 import ThemeKit
+import UIComponents
 
 struct StatisticsView: View {
     private typealias Identifier = ScreenIdentifier.StatisticsView

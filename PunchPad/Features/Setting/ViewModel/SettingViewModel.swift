@@ -6,8 +6,8 @@
 //
 
 import Combine
-import SwiftUI
 import Persistance
+import SwiftUI
 
 final class SettingsViewModel: ObservableObject {
     private var subscriptions = Set<AnyCancellable>()

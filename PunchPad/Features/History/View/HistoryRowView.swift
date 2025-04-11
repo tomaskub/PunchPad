@@ -5,11 +5,11 @@
 //  Created by Tomasz Kubiak on 3/31/23.
 //
 
-import SwiftUI
-import UIComponents
 import DomainModels
 import FoundationExtensions
+import SwiftUI
 import ThemeKit
+import UIComponents
 
 struct HistoryRowView: View {
     private let timeIntervalFormatter = FormatterFactory.makeHourAndMinuteDateComponentFormatter()

@@ -5,13 +5,13 @@
 //  Created by Tomasz Kubiak on 30/12/2023.
 //
 
-import SwiftUI
 import DomainModels
 import FoundationExtensions
-import UIComponents
-import TabViewKit
 import NavigationKit
+import SwiftUI
+import TabViewKit
 import ThemeKit
+import UIComponents
 
 struct MainView: View {
     private let navigator: Navigator<Route>

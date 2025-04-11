@@ -5,9 +5,9 @@
 //  Created by Tomasz Kubiak on 3/27/23.
 //
 
-import SwiftUI
-import NavigationKit
 import DomainModels
+import NavigationKit
+import SwiftUI
 
 @main
 struct ClockInApp: App {

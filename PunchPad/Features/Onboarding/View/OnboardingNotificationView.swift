@@ -5,9 +5,9 @@
 //  Created by Tomasz Kubiak on 06/11/2023.
 //
 import DomainModels
-import UIComponents
 import SwiftUI
 import ThemeKit
+import UIComponents
 
 struct OnboardingNotificationView: View {
     private typealias Identifier = ScreenIdentifier.OnboardingView

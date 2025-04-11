@@ -5,10 +5,10 @@
 //  Created by Tomasz Kubiak on 3/28/23.
 //
 
-import SwiftUI
 import Combine
 import DomainModels
 import Persistance
+import SwiftUI
 
 class HomeViewModel: NSObject, ObservableObject {
     private var subscriptions = Set<AnyCancellable>()

@@ -5,10 +5,10 @@
 //  Created by Tomasz Kubiak on 20/01/2024.
 //
 
-import Foundation
-import UserNotifications
-import OSLog
 import DomainModels
+import Foundation
+import OSLog
+import UserNotifications
 
 final class NotificationService {
     private let center: UNUserNotificationCenter

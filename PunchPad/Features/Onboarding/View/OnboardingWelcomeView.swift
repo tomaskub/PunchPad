@@ -5,9 +5,9 @@
 //  Created by Tomasz Kubiak on 04/11/2023.
 //
 import DomainModels
-import UIComponents
 import SwiftUI
 import ThemeKit
+import UIComponents
 
 struct OnboardingWelcomeView: View {
     private let logoResource: String = "LaunchLogo"

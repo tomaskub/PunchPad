@@ -6,9 +6,9 @@
 //
 
 import DomainModels
+import NavigationKit
 import SwiftUI
 import TabViewKit
-import NavigationKit
 
 struct ContentView: View {
     private let navigator: Navigator<Route>

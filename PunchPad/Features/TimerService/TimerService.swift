@@ -7,8 +7,8 @@
 
 import DomainModels
 import Foundation
-import SwiftUI
 import OSLog
+import SwiftUI
 
 final class TimerService: ObservableObject {
     private let timerProvider: Timer.Type

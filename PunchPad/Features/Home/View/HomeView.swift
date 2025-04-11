@@ -7,11 +7,11 @@
 
 import DomainModels
 import FoundationExtensions
-import UIComponents
-import SwiftUI
 import NavigationKit
-import ThemeKit
+import SwiftUI
 import TabViewKit
+import ThemeKit
+import UIComponents
 
 struct HomeView: View {
     private typealias Identifier = ScreenIdentifier.HomeView

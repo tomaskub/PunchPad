@@ -5,10 +5,10 @@
 //  Created by Tomasz Kubiak on 4/23/23.
 //
 
-import Foundation
 import Combine
-import UserNotifications
+import Foundation
 import OSLog
+import UserNotifications
 
 final class OnboardingViewModel: ObservableObject {
     private let secondsInHour = 3600

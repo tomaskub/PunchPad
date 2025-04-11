@@ -5,9 +5,9 @@
 //  Created by Tomasz Kubiak on 05/11/2023.
 //
 import DomainModels
-import UIComponents
 import SwiftUI
 import ThemeKit
+import UIComponents
 
 struct OnboardingOvertimeView: View {
     private typealias Identifier = ScreenIdentifier.OnboardingView

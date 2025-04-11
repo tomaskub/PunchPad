@@ -5,9 +5,9 @@
 //  Created by Tomasz Kubiak on 14/09/2023.
 //
 
-import SwiftUI
 import Combine
 import OSLog
+import SwiftUI
 
 final class SettingsStore: ObservableObject {
     enum SettingKey: String, CaseIterable {

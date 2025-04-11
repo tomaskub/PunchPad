@@ -5,8 +5,8 @@
 //  Created by Tomasz Kubiak on 05/11/2023.
 //
 import DomainModels
-import UIComponents
 import SwiftUI
+import UIComponents
 
 struct OnboardingWorktimeView: View {
     private typealias Identifier = ScreenIdentifier.OnboardingView

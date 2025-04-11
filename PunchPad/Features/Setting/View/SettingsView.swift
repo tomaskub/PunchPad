@@ -5,11 +5,11 @@
 //  Created by Tomasz Kubiak on 3/28/23.
 //
 
-import SwiftUI
 import DomainModels
-import UIComponents
 import NavigationKit
+import SwiftUI
 import ThemeKit
+import UIComponents
 
 struct SettingsView: View {
     private typealias Identifier = ScreenIdentifier.SettingsView

@@ -5,9 +5,9 @@
 //  Created by Tomasz Kubiak on 16/05/2024.
 //
 
+import Combine
 import DomainModels
 import Foundation
-import Combine
 import OSLog
 
 class TimerManager: ObservableObject {

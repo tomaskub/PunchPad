@@ -5,10 +5,10 @@
 //  Created by Tomasz Kubiak on 3/31/23.
 //
 
+import Combine
+import CoreData
 import DomainModels
 import Foundation
-import CoreData
-import Combine
 import OSLog
 import Persistance // TODO: Consider using persistance interfaces library approach?
 
