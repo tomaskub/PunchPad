@@ -21,27 +21,28 @@ let package = Package(
         .library(
             name: "XCTestExtensions",
             targets: ["XCTestExtensions"]
+        ),
+        .library(
+            name: "Persistance",
+            targets: ["Persistance"]
         )
-//        .library(
-//            name: "Persistance",
-//            targets: ["Persistance"]
-//        )
     ],
     targets: [
-        .target(name: "UIComponents",
-                dependencies: [
-                    .target(name: "DomainModels"),
-                    .target(name: "FoundationExtensions")
-                ]
-               ),
+        .target(
+            name: "UIComponents",
+            dependencies: [
+                .target(name: "DomainModels"),
+                .target(name: "FoundationExtensions")
+            ]
+        ),
         .target(name: "DomainModels"),
         .target(name: "FoundationExtensions"),
         .target(name: "XCTestExtensions"),
-
-//        .target(name: "Persistance"),
-//        .testTarget(
-//            name: "PeristanceTests",
-//            dependencies: ["Core"]
-//        )
+        .target(
+            name: "Persistance",
+            dependencies: [
+                .target(name: "DomainModels")
+            ]
+        )
     ]
 )

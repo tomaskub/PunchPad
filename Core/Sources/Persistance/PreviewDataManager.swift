@@ -10,47 +10,47 @@ import Foundation
 import Combine
 import OSLog
 
-final class PreviewDataManager: NSObject, DataManaging {
-    var dataDidChange = PassthroughSubject<Void, Never>()
+public final class PreviewDataManager: NSObject, DataManaging {
+    public var dataDidChange = PassthroughSubject<Void, Never>()
     private var data = [Entry]()
     private let logger = Logger.dataManager
     
-    init(with initialData: [Entry] = PreviewDataFactory.buildDataForPreviewForYear()) {
+    public init(with initialData: [Entry] = PreviewDataFactory.buildDataForPreviewForYear()) {
         super.init()
         logger.debug("Initializing sata manager")
         data = initialData
         dataDidChange.send()
     }
     
-    func updateAndSave(entry: Entry) {
+    public func updateAndSave(entry: Entry) {
         logger.debug("updateAndSave called")
         data.append(entry)
         dataDidChange.send()
     }
     
-    func delete(entry: Entry) {
+    public func delete(entry: Entry) {
         logger.debug("delete called")
         data.removeAll { $0.id == entry.id }
         dataDidChange.send()
     }
     
-    func deleteAll() {
+    public func deleteAll() {
         logger.debug("deleteAll called")
         data = .init()
         dataDidChange.send()
     }
     
-    func fetch(forDate date: Date) -> Entry? {
+    public func fetch(forDate date: Date) -> Entry? {
         logger.debug("fetchForDate called")
         return data.first { Calendar.current.isDate($0.startDate, inSameDayAs: date) }
     }
     
-    func fetch(for period: Period) -> [Entry]? {
+    public func fetch(for period: Period) -> [Entry]? {
         logger.debug("fetchForPeriod called")
         return fetch(from: period.0, to: period.1)
     }
     
-    func fetch(from startDate: Date?,
+    public func fetch(from startDate: Date?,
                to finishDate: Date?,
                ascendingOrder: Bool = false,
                fetchLimit: Int? = nil) -> [Entry]? {
@@ -79,12 +79,12 @@ final class PreviewDataManager: NSObject, DataManaging {
         return result
     }
     
-    func fetchOldestExisting() -> Entry? {
+    public func fetchOldestExisting() -> Entry? {
         logger.debug("fetchOldest called")
         return data.min { $0.startDate < $1.startDate }
     }
     
-    func fetchNewestExisting() -> Entry? {
+    public func fetchNewestExisting() -> Entry? {
         logger.debug("fetchNewest called")
         return data.max { $0.startDate > $1.startDate }
     }

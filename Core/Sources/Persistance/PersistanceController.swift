@@ -22,10 +22,19 @@ struct PersistanceController {
     
     init(inMemory: Bool = false) {
         logger.debug("Initializing persistance controller \(inMemory ? "in memory" : "in storage")")
-        container = NSPersistentContainer(name: PersistanceController.name)
+        guard let modelURL = Bundle.module.url(forResource: PersistanceController.name, withExtension: "momd") else {
+            fatalError("Failed to find model url in bundle")
+        }
+        guard let managedObjectModel = NSManagedObjectModel(contentsOf: modelURL) else {
+            fatalError("Failed to load model from URL: \(modelURL)")
+        }
+
+        container = NSPersistentContainer(name: PersistanceController.name, managedObjectModel: managedObjectModel)
+
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         }
+
         container.loadPersistentStores(completionHandler: { (_, error) in
             if let error = error as NSError? {
                 #warning("TODO: implement error handling before shipping")

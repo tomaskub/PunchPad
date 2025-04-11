@@ -1,73 +1,93 @@
 //
-//  DataManager.swift
-//  ClockIn
+//  TestDataManager.swift
+//  PunchPad
 //
-//  Created by Tomasz Kubiak on 4/2/23.
+//  Created by Tomasz Kubiak on 05/05/2024.
 //
+
 import DomainModels
 import Foundation
-import Combine
 import CoreData
+import Combine
 import OSLog
 
-final class DataManager: NSObject {
-    let dataDidChange = PassthroughSubject<Void, Never>()
+public final class TestDataManager: NSObject {
+    public let dataDidChange = PassthroughSubject<Void, Never>()
     private var cancellables = Set<AnyCancellable>()
+    private var managedObjectContext: NSManagedObjectContext
     private let logger = Logger.dataManager
-    fileprivate var managedObjectContext: NSManagedObjectContext
-    
-    init(with persistanceController: PersistanceController = PersistanceController(inMemory: false)) {
+    public override init() {
         logger.debug("Initializing data manager")
+        let persistanceController = PersistanceController(inMemory: true)
         self.managedObjectContext = persistanceController.viewContext
         super.init()
-        // Notify of change anytime CD changes
+        
         NotificationCenter.default.publisher(for: Notification.Name.NSManagedObjectContextDidSave)
             .sink { [weak self] _ in
                 self?.dataDidChange.send()
-            }
-            .store(in: &cancellables)
+            }.store(in: &cancellables)
+        
+        addTestingData()
+    }
+    
+    private func addTestingData() {
+        logger.debug("addTestingData called")
+        var dateComponents = Calendar.current.dateComponents([.month, .year], from: Date())
+        dateComponents.day = 1
+        let date = Calendar.current.date(from: dateComponents)!
+        let entry = EntryMO(context: managedObjectContext)
+        entry.id = UUID()
+        entry.startDate = Calendar.current.date(byAdding: .hour, value: 6, to: date)!
+        entry.finishDate = Calendar.current.date(byAdding: DateComponents(hour: 14, minute: 30), to: date)!
+        entry.overTime = Int64(1 * 1800)
+        entry.workTime = 8 * 3600
+        entry.maximumOvertimeAllowedInSeconds = 5 * 3600
+        entry.standardWorktimeInSeconds = 8 * 3600
+        entry.grossPayPerMonth = 10000
+        saveContext()
+    }
+    
+    public func numberOfEntries() throws -> Int {
+        logger.debug("numberOfEntries called ")
+        let request: NSFetchRequest<EntryMO> = EntryMO.fetchRequest()
+        return try managedObjectContext.count(for: request)
     }
 }
 
-extension DataManager: DataManaging {
-    /// Updates and saves an entry to entryMO, if there is no entryMO it will create a corresponding entryMO
-    func updateAndSave(entry: Entry) {
+extension TestDataManager: DataManaging {
+    public func updateAndSave(entry: Entry) {
         logger.debug("updateAndSave called")
         let predicate = NSPredicate(format: "id = %@", entry.id as CVarArg)
         let result = fetchFirst(EntryMO.self, predicate: predicate)
         switch result {
         case .success(let managedObject):
             if let entryMO = managedObject {
-                // update
                 update(entryMO: entryMO, from: entry)
             } else {
-                // create entryMO from entry
                 entryMO(from: entry)
             }
         case .failure(let error):
             logger.error("Could not fetch Entry to save - \(error): \(error.localizedDescription)")
         }
-        
         saveContext()
     }
     
-    func delete(entry: Entry) {
+    public func delete(entry: Entry) {
         logger.debug("delete called")
         let predicate = NSPredicate(format: "id = %@", entry.id as CVarArg)
         let result = fetchFirst(EntryMO.self, predicate: predicate)
         switch result {
         case .success(let managedObject):
             if let entryMO = managedObject {
-                logger.debug("Deleting found entry")
                 managedObjectContext.delete(entryMO)
             }
-        case .failure(let failure):
-            logger.error("Could not fetch entry to delete - \(failure): \(failure.localizedDescription)")
+        case .failure(let error):
+            logger.error("Could not fetch entry to delete - \(error): \(error.localizedDescription)")
         }
         saveContext()
     }
     
-    func deleteAll() {
+    public func deleteAll() {
         logger.debug("deleteAll called")
         let request: NSFetchRequest<EntryMO> = EntryMO.fetchRequest()
         do {
@@ -81,7 +101,7 @@ extension DataManager: DataManaging {
         }
     }
     
-    func fetch(forDate date: Date) -> Entry? {
+    public func fetch(forDate date: Date) -> Entry? {
         logger.debug("Fetch called for date: \(date)")
         let startDate = Calendar.current.startOfDay(for: date)
         guard let finishDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate) else {
@@ -108,12 +128,12 @@ extension DataManager: DataManaging {
         }
     }
     
-    func fetch(for period: Period) -> [Entry]? {
+    public func fetch(for period: Period) -> [Entry]? {
         logger.debug("fetchForPeriod called")
         return fetch(from: period.0, to: period.1)
     }
     
-    func fetch(from startDate: Date?,
+    public func fetch(from startDate: Date?,
                to finishDate: Date?,
                ascendingOrder: Bool = false,
                fetchLimit: Int? = nil) -> [Entry]? {
@@ -148,7 +168,7 @@ extension DataManager: DataManaging {
         }
     }
     
-    func fetchOldestExisting() -> Entry? {
+    public func fetchOldestExisting() -> Entry? {
         logger.debug("fetchOldestExisting called")
         let sortDescriptor = NSSortDescriptor(key: "startDate", ascending: true)
         let result = fetchFirst(EntryMO.self, predicate: nil, sortDescriptors: [sortDescriptor])
@@ -165,7 +185,7 @@ extension DataManager: DataManaging {
         }
     }
     
-    func fetchNewestExisting() -> Entry? {
+    public func fetchNewestExisting() -> Entry? {
         logger.debug("fetchNewestExisting called")
         let sortDescriptor = NSSortDescriptor(key: "startDate", ascending: false)
         let result = fetchFirst(EntryMO.self, predicate: nil, sortDescriptors: [sortDescriptor])
@@ -184,7 +204,7 @@ extension DataManager: DataManaging {
 }
 
 // MARK: - Core Data Helper Functions
-private extension DataManager {
+private extension TestDataManager {
     func saveContext() {
         logger.debug("saveContext called")
         if managedObjectContext.hasChanges {
@@ -235,9 +255,8 @@ private extension DataManager {
 }
 
 // MARK: - Entry Conv Init
-extension Entry {
-    fileprivate init(entryMO: EntryMO) {
-        // TODO: Ask about why this is needed - otherwise the method thrown error "self called before self.init()"
+fileprivate extension Entry {
+    init(entryMO: EntryMO) {
         self.init()
         self.id = entryMO.id
         self.startDate = entryMO.startDate

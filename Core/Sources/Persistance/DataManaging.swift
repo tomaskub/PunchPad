@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import DomainModels
 
-protocol DataManaging: NSObject {
+public protocol DataManaging: NSObject {
     var dataDidChange: PassthroughSubject<Void, Never> { get }
     func updateAndSave(entry: Entry)
     func delete(entry: Entry)
