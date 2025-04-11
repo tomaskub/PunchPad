@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 import DomainModels
+import Persistance
 
 class HomeViewModel: NSObject, ObservableObject {
     private var subscriptions = Set<AnyCancellable>()

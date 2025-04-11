@@ -37,6 +37,8 @@ targets:
       - { package: Core, product: DomainModels }
       - package: Core
         product: FoundationExtensions
+      - package: Core
+        product: Persistance
     info: 
       path: PunchPad/Info.plist
     buildToolPlugins:

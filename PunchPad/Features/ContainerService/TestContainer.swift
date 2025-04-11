@@ -7,6 +7,7 @@
 
 import Foundation
 import OSLog
+import Persistance
 
 final class TestContainer: ContainerProtocol {
     private(set) var dataManager: any DataManaging

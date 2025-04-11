@@ -7,6 +7,7 @@
 import DomainModels
 import XCTest
 @testable import PunchPad
+import Persistance
 
 final class HomeViewModelTests: XCTestCase {
     var sut: HomeViewModel!

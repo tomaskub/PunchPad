@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 import Combine
 import OSLog
+import Persistance // TODO: Consider using persistance interfaces library approach?
 
 final class HistoryViewModel: ObservableObject {
     private var logger = Logger.historyViewModel

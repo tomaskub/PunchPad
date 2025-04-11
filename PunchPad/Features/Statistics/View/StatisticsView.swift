@@ -137,7 +137,8 @@ private extension StatisticsView {
     @ViewBuilder
     var chart: some View {
         // TODO: ask about the issue:
-        // Referencing subscript 'subscript(dynamicMember:)' requires wrapper 'ObservedObject<StatisticsViewModel>.Wrapper'
+        // Referencing subscript 'subscript(dynamicMember:)' requires
+        // wrapper 'ObservedObject<StatisticsViewModel>.Wrapper'
         switch viewModel.chartTimeRange {
         case .week, .month:
             ChartFactory.buildBarChartForDays(data: viewModel.entryInPeriod)

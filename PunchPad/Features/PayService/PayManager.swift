@@ -8,6 +8,7 @@ import DomainModels
 import Foundation
 import Combine
 import OSLog
+import Persistance
 
 final class PayManager: ObservableObject {
     private var dataManager: any DataManaging

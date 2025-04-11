@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Persistance
 
 protocol ContainerProtocol {
     var dataManager: any DataManaging { get }
