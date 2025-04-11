@@ -4,7 +4,7 @@
 //
 //  Created by Tomasz Kubiak on 4/12/23.
 //
-
+import DomainModels
 import XCTest
 @testable import PunchPad
 

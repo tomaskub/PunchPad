@@ -7,6 +7,7 @@
 
 import XCTest
 import CoreData
+import UIComponents
 @testable import PunchPad
 
 final class HistoryViewModelTests: XCTestCase {
@@ -51,8 +52,8 @@ final class HistoryViewModelTests: XCTestCase {
         // Then
         XCTAssertEqual(sut.groupedEntries.count, 12)
         
-        for (i, monthArray) in sut.groupedEntries.enumerated() {
-            let correctMonthNumber = 12 - i
+        for (monthNumber, monthArray) in sut.groupedEntries.enumerated() {
+            let correctMonthNumber = 12 - monthNumber
             for entry in monthArray {
                 let monthNumber = calendar.dateComponents([.month], from: entry.startDate).month
                 XCTAssertEqual(monthNumber, correctMonthNumber, "Month number should be 1 more than array index")
@@ -147,7 +148,11 @@ final class HistoryViewModelTests: XCTestCase {
         sut.applyFilters()
         
         sut.resetFilters()
-        XCTAssertEqual(sut.groupedEntries.flatMap({ $0 }).count, chunkSize, "Number of entries should be equal to two times chunk size")
+        XCTAssertEqual(
+            sut.groupedEntries.flatMap({ $0 }).count,
+            chunkSize,
+            "Number of entries should be equal to two times chunk size"
+        )
         
     }
 }

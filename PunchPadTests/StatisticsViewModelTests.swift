@@ -8,6 +8,7 @@
 import XCTest
 import CoreData
 import Combine
+import UIComponents
 
 @testable import PunchPad
 

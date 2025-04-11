@@ -5,8 +5,10 @@
 //  Created by Tomasz Kubiak on 4/16/23.
 //
 
-import XCTest
 import CoreData
+import DomainModels
+import XCTest
+
 @testable import PunchPad
 
 final class PayManagerTests: XCTestCase {

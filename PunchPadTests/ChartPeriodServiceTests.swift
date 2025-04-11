@@ -5,8 +5,10 @@
 //  Created by Tomasz Kubiak on 25/11/2023.
 //
 
+import DomainModels
 import XCTest
 @testable import PunchPad
+
 final class ChartPeriodServiceTests: XCTestCase, StableDateCreating {
     var sut: ChartPeriodService!
     var calendar: Calendar!
@@ -29,9 +31,10 @@ final class ChartPeriodServiceTests: XCTestCase, StableDateCreating {
 
 // MARK: TEST FOR GENERATING PERIOD
 extension ChartPeriodServiceTests {
-    //NOTE ON DATE GENERATION IN TESTS
+    // NOTE ON DATE GENERATION IN TESTS
     /*
-     Period service returns start of the day dates - hence, the finish of the period is a start of the next day to encompass whole day before
+     Period service returns start of the day dates - hence,
+     the finish of the period is a start of the next day to encompass whole day before
      */
     func test_generatePeriod_forMonth() throws {
         // Given
@@ -46,7 +49,7 @@ extension ChartPeriodServiceTests {
         // When
         let result = try sut.generatePeriod(for: inputDate, in: .month)
         
-        //Then
+        // Then
         XCTAssertEqual(result.0, expectedResult.0, "Start date is \(result.0), and it should be \(expectedResult.0)")
         XCTAssert(result.1 == expectedResult.1, "Finish date is \(result.1), and it should be \(expectedResult.1)")
     }
@@ -251,9 +254,11 @@ extension ChartPeriodServiceTests {
         let inputPeriod: Period = (inputStartDate, inputFinishDate)
         
         XCTAssertThrowsError(try sut.advancePeriod(by: .all, from: inputPeriod), "Function should throw") { error in
-            XCTAssertEqual(error as? ChartPeriodServiceError, .attemptedToRetrievePeriodForAll, "Error thrown should be `.attemptedToRetrievePeriodForAll`")
+            XCTAssertEqual(
+                error as? ChartPeriodServiceError,
+                .attemptedToRetrievePeriodForAll,
+                "Error thrown should be `.attemptedToRetrievePeriodForAll`"
+            )
         }
     }
 }
-
-
