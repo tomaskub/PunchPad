@@ -6,7 +6,7 @@
 //
 import Foundation
 
-protocol StableDateCreating {
+public protocol StableDateCreating {
     var fixedCalendar: Calendar { get }
     func createDate(year: Int, month: Int, day: Int, hour: Int, minute: Int, second: Int) -> Date?
 }

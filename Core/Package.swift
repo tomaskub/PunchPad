@@ -1,4 +1,4 @@
-// swift-tools-version: 6.0
+// swift-tools-version: 5.9
 import PackageDescription
 
 let package = Package(
@@ -17,6 +17,10 @@ let package = Package(
         .library(
             name: "FoundationExtensions",
             targets: ["FoundationExtensions"]
+        ),
+        .library(
+            name: "XCTestExtensions",
+            targets: ["XCTestExtensions"]
         )
 //        .library(
 //            name: "Persistance",
@@ -32,6 +36,7 @@ let package = Package(
                ),
         .target(name: "DomainModels"),
         .target(name: "FoundationExtensions"),
+        .target(name: "XCTestExtensions"),
 
 //        .target(name: "Persistance"),
 //        .testTarget(

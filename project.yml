@@ -79,6 +79,8 @@ targets:
       - path: PunchPadTests
     dependencies:
       - target: PunchPad
+      - package: Core
+        product: XCTestExtensions
     settings: 
       PRODUCT_BUNDLE_IDENTIFIER: tomasz.m.kubiak.PunchPad.Tests
       GENERATE_INFOPLIST_FILE: YES

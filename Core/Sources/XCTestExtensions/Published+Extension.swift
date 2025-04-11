@@ -7,7 +7,7 @@
 
 import Combine
 
-extension Published.Publisher {
+public extension Published.Publisher {
     /// Ignore initial value and collect N number of next values for a given published property
     /// - Parameter count: number of values to collect
     /// - Returns: type erased publisher emitng a single  array of collected output
