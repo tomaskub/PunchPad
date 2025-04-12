@@ -44,8 +44,15 @@
       ],
       "target" : {
         "containerPath" : "container:PunchPad.xcodeproj",
-        "identifier" : "D6C4589F29D229230069D89B",
+        "identifier" : "DD5249DF9FD5810F12418181",
         "name" : "PunchPadTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Services",
+        "identifier" : "TimerServiceTests",
+        "name" : "TimerServiceTests"
       }
     }
   ],

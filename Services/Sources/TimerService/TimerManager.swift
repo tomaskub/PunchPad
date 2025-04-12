@@ -8,19 +8,20 @@
 import Combine
 import DomainModels
 import Foundation
+import FoundationExtensions
 import OSLog
 
-class TimerManager: ObservableObject {
+public class TimerManager: ObservableObject {
     private let timerProvider: Timer.Type
     private let configuration: TimerManagerConfiguration
     private let logger = Logger.timerManager
     private var timerCancellables = Set<AnyCancellable>()
-    var workTimerService: TimerService
-    var overtimeTimerService: TimerService?
-    @Published var state: TimerServiceState = .notStarted
-    var timerDidFinish: PassthroughSubject<Date, Never> = .init()
+    public var workTimerService: TimerService
+    public var overtimeTimerService: TimerService?
+    @Published public var state: TimerServiceState = .notStarted
+    public var timerDidFinish: PassthroughSubject<Date, Never> = .init()
     
-    init(timerProvider: Timer.Type = Timer.self, with configuration: TimerManagerConfiguration) {
+    public init(timerProvider: Timer.Type = Timer.self, with configuration: TimerManagerConfiguration) {
         self.timerProvider = timerProvider
         self.configuration = configuration
         self.workTimerService = .init(timerProvider: timerProvider,
@@ -33,7 +34,7 @@ class TimerManager: ObservableObject {
         setUpSubscriptions()
     }
     
-    convenience init(timerProvider: Timer.Type = Timer.self, withModel model: TimerModel) {
+    public convenience init(timerProvider: Timer.Type = Timer.self, withModel model: TimerModel) {
         self.init(timerProvider: timerProvider, with: model.configuration)
         setInitialState(ofTimerService: workTimerService,
                         toCounter: model.workTimeCounter,
@@ -103,7 +104,7 @@ class TimerManager: ObservableObject {
 
 // MARK: - Timer controls
 extension TimerManager {
-    func startTimerService() {
+    public func startTimerService() {
         logger.debug("startTimerService called")
         guard state != .running else { return }
         if state == .finished {
@@ -123,7 +124,7 @@ extension TimerManager {
         workTimerService.send(event: .start)
     }
     
-    func pauseTimerService() {
+    public func pauseTimerService() {
         logger.debug("pauseTimerService called")
         guard state != .paused else { return }
         self.state = .paused
@@ -131,7 +132,7 @@ extension TimerManager {
         overtimeTimerService?.send(event: .pause)
     }
     
-    func resumeTimerService() {
+    public func resumeTimerService() {
         logger.debug("resumeTimerService called")
         guard state != .running else { return }
         self.state = .running
@@ -139,14 +140,14 @@ extension TimerManager {
         overtimeTimerService?.send(event: .resumeWith(nil))
     }
     
-    func stopTimerService() {
+    public func stopTimerService() {
         logger.debug("stopTimerService called")
         guard state != .finished else { return }
         workTimerService.send(event: .stop)
         overtimeTimerService?.send(event: .stop)
     }
     
-    func resumeFromBackground(_ appDidEnterBackgroundDate: Date) {
+    public func resumeFromBackground(_ appDidEnterBackgroundDate: Date) {
         logger.debug("resumeFromBackground called")
         let timePassedInBackground = DateInterval(start: appDidEnterBackgroundDate, end: Date()).duration
         

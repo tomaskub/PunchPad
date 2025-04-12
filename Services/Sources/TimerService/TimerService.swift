@@ -7,18 +7,19 @@
 
 import DomainModels
 import Foundation
+import FoundationExtensions
 import OSLog
 import SwiftUI
 
-final class TimerService: ObservableObject {
+public final class TimerService: ObservableObject {
     private let timerProvider: Timer.Type
     private var timer: Timer?
     private let timerLimit: TimeInterval
     private let logger = Logger.timerService
-    @Published private(set) var progress: CGFloat = 0.0
-    @Published private(set) var serviceState: TimerServiceState = .notStarted
-    @Published private(set) var counter: TimeInterval = 0
-    var remainingTime: TimeInterval {
+    @Published public private(set) var progress: CGFloat = 0.0
+    @Published public private(set) var serviceState: TimerServiceState = .notStarted
+    @Published public private(set) var counter: TimeInterval = 0
+    public var remainingTime: TimeInterval {
         timerLimit - counter
     }
     

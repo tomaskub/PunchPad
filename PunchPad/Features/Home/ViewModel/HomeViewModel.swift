@@ -9,6 +9,7 @@ import Combine
 import DomainModels
 import Persistance
 import SwiftUI
+import TimerService
 
 class HomeViewModel: NSObject, ObservableObject {
     private var subscriptions = Set<AnyCancellable>()

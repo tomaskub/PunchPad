@@ -10,6 +10,8 @@ options:
 packages:
   Core:
     path: Core
+  Services: 
+    path: Services
   NavigationKit:
     path: Packages/NavigationKit
   TabViewKit:
@@ -32,13 +34,11 @@ targets:
       - package: NavigationKit
       - package: TabViewKit
       - package: ThemeKit
-      - package: Core
-        product: UIComponents 
+      - { package: Core, product: UIComponents }
       - { package: Core, product: DomainModels }
-      - package: Core
-        product: FoundationExtensions
-      - package: Core
-        product: Persistance
+      - { package: Core, product: FoundationExtensions }
+      - { package: Core, product: Persistance }
+      - { package: Services, product: TimerService }
     info: 
       path: PunchPad/Info.plist
     buildToolPlugins:

@@ -8,7 +8,7 @@
 import DomainModels
 import Foundation
 
-protocol TimerStoring {
+public protocol TimerStoring {
     func retrieve() throws -> TimerModel
     func save(_: TimerModel) throws
     func delete()
