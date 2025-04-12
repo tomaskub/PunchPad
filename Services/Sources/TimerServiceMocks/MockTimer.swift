@@ -7,24 +7,24 @@
 
 import Foundation
 
-class MockTimer: Timer {
+public class MockTimer: Timer {
     
-    var block: ((Timer) -> Void)!
-    var isMockTimerValid = true
+    public var block: ((Timer) -> Void)!
+    public var isMockTimerValid = true
     
-    static var currentTimer: MockTimer!
+    public static var currentTimer: MockTimer!
     
-    override var isValid: Bool {
+    public override var isValid: Bool {
         return isMockTimerValid
     }
     
-    override func fire() {
+    public override func fire() {
         if self.isValid {
             block(self)
         }
     }
     
-    override open class func scheduledTimer(withTimeInterval interval: TimeInterval, repeats: Bool, block: @escaping (Timer) -> Void) -> Timer {
+    public override class func scheduledTimer(withTimeInterval interval: TimeInterval, repeats: Bool, block: @escaping (Timer) -> Void) -> Timer {
         
         let mockTimer = MockTimer()
         mockTimer.isMockTimerValid = true
@@ -36,7 +36,7 @@ class MockTimer: Timer {
         return mockTimer
     }
     
-    override func invalidate() {
+    public override func invalidate() {
         MockTimer.currentTimer.isMockTimerValid = false
     }
 }
