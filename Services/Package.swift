@@ -10,8 +10,11 @@ let package = Package(
         .library(
             name: "TimerService",
             targets: ["TimerService"]
+        ),
+        .library(
+            name: "NotificationService",
+            targets: ["NotificationService"]
         )
-
     ],
     dependencies: [
         .package(path: "../Core")
@@ -29,6 +32,19 @@ let package = Package(
         .testTarget(
             name: "TimerServiceTests",
             dependencies: ["TimerService"]
+        ),
+        .target(
+            name: "NotificationService",
+            dependencies: [
+                .product(
+                    name: "DomainModels",
+                    package: "Core"
+                ),
+                .product(
+                    name: "FoundationExtensions",
+                         package: "Core"
+                )
+            ]
         )
     ]
 )

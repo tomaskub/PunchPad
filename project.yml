@@ -39,6 +39,7 @@ targets:
       - { package: Core, product: FoundationExtensions }
       - { package: Core, product: Persistance }
       - { package: Services, product: TimerService }
+      - { package: Services, product: NotificationService }
     info: 
       path: PunchPad/Info.plist
     buildToolPlugins:

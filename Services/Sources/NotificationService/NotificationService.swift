@@ -7,19 +7,28 @@
 
 import DomainModels
 import Foundation
+import FoundationExtensions
 import OSLog
 import UserNotifications
 
-final class NotificationService {
+public protocol NotificationServicing: AnyObject {
+    func requestAuthorizationForNotifications(failureHandler: @escaping (Bool, Error?) -> Void)
+    func deschedulePendingNotifications()
+    func checkForAuthorization() async -> Bool?
+    func checkForAuthorization(completionHandler: @escaping (Bool?) -> Void)
+    func scheduleNotification(for notification: AppNotification, in timeInterval: TimeInterval)
+}
+
+public final class NotificationService: NotificationServicing {
     private let center: UNUserNotificationCenter
     private var pendingNotificationsIDs: Set<String> = []
-    private let logger = Logger.notificationService
+    private let logger = Logger.notificationService // that is in foundationExtensions right?
     
-    init(center: UNUserNotificationCenter) {
+    public init(center: UNUserNotificationCenter) {
         self.center = center
     }
     
-    func requestAuthorizationForNotifications(failureHandler: @escaping (Bool, Error?) -> Void) {
+    public func requestAuthorizationForNotifications(failureHandler: @escaping (Bool, Error?) -> Void) {
         logger.debug("requestAuthorization called")
         center.requestAuthorization(options: [.alert, .sound, .badge]) { [weak self] success, error in
             if !success {
@@ -34,13 +43,13 @@ final class NotificationService {
         }
     }
     
-    func deschedulePendingNotifications() {
+    public func deschedulePendingNotifications() {
         logger.debug("deschedulePendingNotifications called")
         center.removeAllPendingNotificationRequests()
         pendingNotificationsIDs.removeAll()
     }
     
-    func checkForAuthorization() async -> Bool? {
+    public func checkForAuthorization() async -> Bool? {
         logger.debug("checkForAuthorization called")
         let settings = await center.notificationSettings()
         logger.debug("Authorization status retrieved: \(settings.authorizationStatus.debugDescription)")
@@ -56,7 +65,7 @@ final class NotificationService {
         }
     }
     
-    func checkForAuthorization(completionHandler: @escaping (Bool?) -> Void) {
+    public func checkForAuthorization(completionHandler: @escaping (Bool?) -> Void) {
         logger.debug("checkForAuthorization called")
         center.getNotificationSettings { [weak self] settings in
             self?.logger.debug("Authorization status retrieved: \(settings.authorizationStatus.debugDescription)")
@@ -76,7 +85,7 @@ final class NotificationService {
         }
     }
     
-    func scheduleNotification(for notification: AppNotification, in timeInterval: TimeInterval) {
+    public func scheduleNotification(for notification: AppNotification, in timeInterval: TimeInterval) {
         logger.debug("scheduleNotification called")
         let id = UUID().uuidString
         
