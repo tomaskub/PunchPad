@@ -38,6 +38,7 @@ targets:
       - { package: Core, product: DomainModels }
       - { package: Core, product: FoundationExtensions }
       - { package: Core, product: Persistance }
+      - { package: Services, product: TimerServiceInterfaces }
       - { package: Services, product: TimerService }
       - { package: Services, product: NotificationService }
     info: 
@@ -84,6 +85,7 @@ targets:
       - target: PunchPad
       - package: Core
         product: XCTestExtensions
+      - { package: Services, product: TimerServiceMocks }
     settings: 
       PRODUCT_BUNDLE_IDENTIFIER: tomasz.m.kubiak.PunchPad.Tests
       GENERATE_INFOPLIST_FILE: YES

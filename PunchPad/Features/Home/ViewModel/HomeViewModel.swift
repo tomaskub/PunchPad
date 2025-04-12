@@ -11,6 +11,7 @@ import NotificationService
 import Persistance
 import SwiftUI
 import TimerService
+import TimerServiceInterfaces
 
 class HomeViewModel: NSObject, ObservableObject {
     private var subscriptions = Set<AnyCancellable>()

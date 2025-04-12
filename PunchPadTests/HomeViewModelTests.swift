@@ -5,6 +5,8 @@
 //  Created by Tomasz Kubiak on 4/12/23.
 //
 import DomainModels
+import NotificationService
+import TimerServiceMocks
 import XCTest
 @testable import PunchPad
 import Persistance
@@ -38,40 +40,9 @@ final class HomeViewModelTests: XCTestCase {
         super.tearDown()
         sut = nil
     }
-    
-    class MockTimerStore: TimerStoring {
-        private(set) var retrieveCalled = false
-        private(set) var saveCalled = false
-        private(set) var deleteCalled = false
-        private(set) var shouldThrowOnSave = false
-        var modelToReturn: TimerModel?
-        
-        func retrieve() throws -> TimerModel {
-            retrieveCalled = true
-            guard let modelToReturn else {
-                throw MockTimerStoreError.mock
-            }
-            return modelToReturn
-        }
-        
-        func save(_: TimerModel) throws {
-            saveCalled = true
-            if shouldThrowOnSave {
-                throw MockTimerStoreError.mock
-            }
-        }
-        
-        func delete() {
-            deleteCalled = true
-        }
-        
-        enum MockTimerStoreError: Error {
-            case mock
-        }
-    }
 }
 
-// MARK: - TimeR state change functions
+// MARK: - Timer state change functions
 extension HomeViewModelTests {
     func test_startTimerService_when_noOvertime_firstRun() {
         //Given

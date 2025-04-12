@@ -8,8 +8,16 @@ let package = Package(
     platforms: [.iOS("16.4")],
     products: [
         .library(
+            name: "TimerServiceInterfaces",
+            targets: ["TimerServiceInterfaces"]
+        ),
+        .library(
             name: "TimerService",
             targets: ["TimerService"]
+        ),
+        .library(
+            name: "TimerServiceMocks",
+            targets: ["TimerServiceMocks"]
         ),
         .library(
             name: "NotificationService",
@@ -20,13 +28,21 @@ let package = Package(
         .package(path: "../Core")
     ],
     targets: [
+        .target(name: "TimerServiceInterfaces"),
         .target(
             name: "TimerService",
             dependencies: [
+                .target(name: "TimerServiceInterfaces"),
                 .product(
                     name: "DomainModels",
                     package: "Core"
                 )
+            ]
+        ),
+        .target(
+            name: "TimerServiceMocks",
+            dependencies: [
+                .target(name: "TimerServiceInterfaces")
             ]
         ),
         .testTarget(
@@ -42,7 +58,7 @@ let package = Package(
                 ),
                 .product(
                     name: "FoundationExtensions",
-                         package: "Core"
+                    package: "Core"
                 )
             ]
         )
