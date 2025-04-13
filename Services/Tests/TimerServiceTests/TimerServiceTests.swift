@@ -5,8 +5,9 @@
 //  Created by Tomasz Kubiak on 22/12/2023.
 //
 
+@testable import TimerService
+import TimerServiceMocks
 import XCTest
-@testable import PunchPad
 
 final class TimerServiceTests: XCTestCase {
     let timerLimit = 180

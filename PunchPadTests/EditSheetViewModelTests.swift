@@ -6,6 +6,7 @@
 //
 import DomainModels
 import XCTest
+import XCTestExtensions
 @testable import PunchPad
 
 final class EditSheetViewModelTests: XCTestCase {

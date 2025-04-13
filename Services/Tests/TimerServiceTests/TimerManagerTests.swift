@@ -5,8 +5,10 @@
 //  Created by Tomasz Kubiak on 18/05/2024.
 //
 import DomainModels
+@testable import TimerService
+import TimerServiceMocks
 import XCTest
-@testable import PunchPad
+
 
 final class TimerManagerTests: XCTestCase {
     var sut: TimerManager!

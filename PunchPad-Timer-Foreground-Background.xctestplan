@@ -54,6 +54,13 @@
         "identifier" : "TimerServiceTests",
         "name" : "TimerServiceTests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Services",
+        "identifier" : "ChartPeriodServiceTests",
+        "name" : "ChartPeriodServiceTests"
+      }
     }
   ],
   "version" : 1

@@ -29,6 +29,20 @@
         "identifier" : "DD5249DF9FD5810F12418181",
         "name" : "PunchPadTests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Services",
+        "identifier" : "TimerServiceTests",
+        "name" : "TimerServiceTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Services",
+        "identifier" : "ChartPeriodServiceTests",
+        "name" : "ChartPeriodServiceTests"
+      }
     }
   ],
   "version" : 1

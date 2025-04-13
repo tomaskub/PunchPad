@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "Services",
-    platforms: [.iOS("16.4")],
+    platforms: [.iOS("16.6")],
     products: [
         .library(
             name: "TimerServiceInterfaces",
@@ -18,6 +18,18 @@ let package = Package(
         .library(
             name: "TimerServiceMocks",
             targets: ["TimerServiceMocks"]
+        ),
+        .library(
+            name: "ChartPeriodServiceInterfaces",
+            targets: ["ChartPeriodServiceInterfaces"]
+        ),
+        .library(
+            name: "ChartPeriodService",
+            targets: ["ChartPeriodService"]
+        ),
+        .library(
+            name: "ChartPeriodServiceMocks",
+            targets: ["ChartPeriodServiceMocks"]
         ),
         .library(
             name: "NotificationService",
@@ -36,7 +48,11 @@ let package = Package(
                 .product(
                     name: "DomainModels",
                     package: "Core"
-                )
+                ),
+                .product(
+                    name: "FoundationExtensions",
+                    package: "Core"
+                ),
             ]
         ),
         .target(
@@ -47,7 +63,50 @@ let package = Package(
         ),
         .testTarget(
             name: "TimerServiceTests",
-            dependencies: ["TimerService"]
+            dependencies: [
+                "TimerService",
+                "TimerServiceMocks"
+            ]
+        ),
+        .target(
+            name: "ChartPeriodServiceInterfaces",
+            dependencies:
+                [
+                    .product(
+                        name: "DomainModels",
+                        package: "Core"
+                    )
+                ]
+        ),
+        .target(
+            name: "ChartPeriodService",
+            dependencies: [
+                .target(name: "ChartPeriodServiceInterfaces"),
+                .product(
+                    name: "DomainModels",
+                    package: "Core"
+                ),
+                .product(
+                    name: "FoundationExtensions",
+                    package: "Core"
+                ),
+            ]
+        ),
+        .target(
+            name: "ChartPeriodServiceMocks",
+            dependencies: [
+                .target(name: "ChartPeriodServiceInterfaces")
+            ]
+        ),
+        .testTarget(
+            name: "ChartPeriodServiceTests",
+            dependencies: [
+                "ChartPeriodService",
+                .product(
+                    name: "XCTestExtensions",
+                    package: "Core"
+                )
+            ]
         ),
         .target(
             name: "NotificationService",

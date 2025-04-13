@@ -23,13 +23,13 @@ public final class TimerService: ObservableObject {
         timerLimit - counter
     }
     
-    init(timerProvider: Timer.Type, timerLimit: TimeInterval) {
+    public init(timerProvider: Timer.Type, timerLimit: TimeInterval) {
         self.timerLimit = timerLimit
         self.timerProvider = timerProvider
     }
     
     // swiftlint:disable:next cyclomatic_complexity
-    func send(event: TimerServiceEvent) {
+    public func send(event: TimerServiceEvent) {
         logger.debug("Recieved event \(event.debugDescription)")
         switch event {
         case .start:
