@@ -5,15 +5,17 @@
 //  Created by Tomasz Kubiak on 25/11/2023.
 //
 
+import ChartPeriodServiceInterfaces
 import DomainModels
 import Foundation
+import FoundationExtensions
 import OSLog
 
-class ChartPeriodService {
+public class ChartPeriodService: ChartPeriodServicing {
     private let logger = Logger.chartService
     let calendar: Calendar
     
-    init(calendar: Calendar) {
+    public init(calendar: Calendar) {
         self.calendar = calendar
     }
     
@@ -27,7 +29,7 @@ class ChartPeriodService {
     ///     - timeRange:  time range that should be encompased in period
     /// - Throws: `ChartPeriodServiceError.failedToRetrieveChartTimeRangeCount`
     /// - Returns: a touple of start date and end date of the period
-    func generatePeriod(for date: Date, in timeRange: ChartTimeRange) throws -> Period {
+    public func generatePeriod(for date: Date, in timeRange: ChartTimeRange) throws -> Period {
         logger.debug("generatePeriod called in time range \(timeRange.description) for date: \(date)")
         var startDateComponents: DateComponents
         switch timeRange {
@@ -50,7 +52,7 @@ class ChartPeriodService {
         return (startDate, finishDate)
     }
     
-    func generatePeriod(from startEntry: Entry, to finishEntry: Entry) throws -> Period {
+    public func generatePeriod(from startEntry: Entry, to finishEntry: Entry) throws -> Period {
         logger.debug("generatePeriod from entries")
         let startDate = calendar.startOfDay(for: startEntry.startDate)
         let startOfFinishEntryDay = calendar.startOfDay(for: finishEntry.finishDate)
@@ -60,7 +62,7 @@ class ChartPeriodService {
         return (startDate, finishDate)
     }
     
-    func retardPeriod(by timeRange: ChartTimeRange, from currentPeriod: Period) throws -> Period {
+    public func retardPeriod(by timeRange: ChartTimeRange, from currentPeriod: Period) throws -> Period {
         logger.debug("retardPeriod called")
         guard let dateInPreviousPeriod = calendar.date(byAdding: .day, value: -1, to: currentPeriod.0) else {
             throw ChartPeriodServiceError.failedToCreateDateByAddingComponents
@@ -69,7 +71,7 @@ class ChartPeriodService {
         return previousPeriod
     }
     
-    func advancePeriod(by timeRange: ChartTimeRange, from currentPeriod: Period) throws -> Period {
+    public func advancePeriod(by timeRange: ChartTimeRange, from currentPeriod: Period) throws -> Period {
         logger.debug("advancePeriod called")
         guard let dateInNextPeriod = calendar.date(byAdding: .day, value: 1, to: currentPeriod.1) else {
             throw ChartPeriodServiceError.failedToCreateDateByAddingComponents
@@ -78,7 +80,7 @@ class ChartPeriodService {
         return nextPeriod
     }
     
-    func returnPeriodMidDate(for period: Period) throws -> Date {
+    public func returnPeriodMidDate(for period: Period) throws -> Date {
         logger.debug("returnPeriodMidDate called")
         guard let numberOfDays = calendar.dateComponents([.day], from: period.0, to: period.1).day else {
             throw ChartPeriodServiceError.failedToRetriveDayComponentFromPeriod

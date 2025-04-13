@@ -5,6 +5,7 @@
 //  Created by Tomasz Kubiak on 4/16/23.
 //
 
+import ChartPeriodService
 import CoreData
 import DomainModels
 import XCTest
@@ -24,7 +25,7 @@ final class PayManagerTests: XCTestCase {
         sut = .init(dataManager: testContainer.dataManager,
                     settingsStore: testContainer.settingsStore,
                     calendar: .current)
-        periodService = ChartPeriodService(calendar: .current)
+        periodService = ChartPeriodService(calendar: .current) // todo: replace with mock
     }
     
     override func tearDown() {

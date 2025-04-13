@@ -5,10 +5,10 @@
 //  Created by Tomasz Kubiak on 25/11/2023.
 //
 
+@testable import ChartPeriodService
 import DomainModels
 import XCTest
 import XCTestExtensions
-@testable import PunchPad
 
 final class ChartPeriodServiceTests: XCTestCase, StableDateCreating {
     var sut: ChartPeriodService!

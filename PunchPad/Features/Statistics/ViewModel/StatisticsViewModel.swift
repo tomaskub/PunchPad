@@ -4,6 +4,8 @@
 //
 //  Created by Tomasz Kubiak on 4/16/23.
 //
+
+import ChartPeriodService
 import Combine
 import DomainModels
 import Foundation

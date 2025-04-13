@@ -5,6 +5,7 @@
 //  Created by Tomasz Kubiak on 3/31/23.
 //
 
+import ChartPeriodService
 import Combine
 import CoreData
 import DomainModels
