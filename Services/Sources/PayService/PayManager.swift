@@ -10,9 +10,9 @@ import Foundation
 import OSLog
 import Persistance
 
-final class PayManager: ObservableObject {
+public final class PayManager: ObservableObject {
     private var dataManager: any DataManaging
-    private var settingsStore: SettingsStore
+    private var settingsStore: any SettingsStoring
     private let logger = Logger.payManager
     private var calendar: Calendar
     private var overtimePayCoef: Double = 1.5
@@ -21,7 +21,7 @@ final class PayManager: ObservableObject {
     @Published private(set) var grossDataForPeriod: GrossSalary
 
     init(dataManager: any DataManaging,
-         settingsStore: SettingsStore,
+         settingsStore: any SettingsStoring,
          currentPeriod: Period = (Date(), Date()),
          calendar: Calendar) {
         logger.debug("Initializing PayManager")
@@ -108,7 +108,7 @@ private extension PayManager {
                           averageWorktime: Int?,
                           averageOvertime: Int?,
                           calendar: Calendar,
-                          store: SettingsStore) -> [Entry] {
+                          store: any SettingsStoring) -> [Entry] {
         logger.debug("processEntryData called")
         return getWorkDaysInPeriod(using: calendar, in: period).map { date in
             if let retrievedEntry = entryData?.first(where: { calendar.isDate($0.startDate, inSameDayAs: date) }) {

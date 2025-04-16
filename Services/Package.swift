@@ -32,6 +32,18 @@ let package = Package(
             targets: ["ChartPeriodServiceMocks"]
         ),
         .library(
+            name: "PayServiceInterfaces",
+            targets: ["PayServiceInterfaces"]
+        ),
+        .library(
+            name: "PayService",
+            targets: ["PayService"]
+        ),
+        .library(
+            name: "PayServiceMocks",
+            targets: ["ChartPeriodServiceMocks"]
+        ),
+        .library(
             name: "NotificationService",
             targets: ["NotificationService"]
         )
@@ -106,6 +118,51 @@ let package = Package(
                     name: "XCTestExtensions",
                     package: "Core"
                 )
+            ]
+        ),
+        .target(
+            name: "PayServiceInterfaces",
+            dependencies:
+                [
+                    .product(
+                        name: "DomainModels",
+                        package: "Core"
+                    )
+                ]
+        ),
+        .target(
+            name: "PayService",
+            dependencies: [
+                .target(name: "PayServiceInterfaces"),
+                .product(
+                    name: "DomainModels",
+                    package: "Core"
+                ),
+                .product(
+                    name: "Persistance",
+                    package: "Core"
+                        ),
+            ]
+        ),
+        .target(
+            name: "PayServiceMocks",
+            dependencies: [
+                .target(name: "PayServiceInterfaces")
+            ]
+        ),
+        .testTarget(
+            name: "PayServiceTests",
+            dependencies: [
+                "PayService",
+                "ChartPeriodService",
+                .product(
+                    name: "DomainModels",
+                    package: "Core"
+                ),
+                .product( // needed temp
+                    name: "Persistance",
+                    package: "Core"
+                        ),
             ]
         ),
         .target(
