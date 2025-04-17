@@ -1,6 +1,6 @@
 import Combine
 
-public protocol SettingsStoring: ObservableObject where ObjectWillChangePublisher == ObservableObjectPublisher {
+public protocol SettingsStoring: AnyObject, ObservableObject where ObjectWillChangePublisher == ObservableObjectPublisher {
     var isRunFirstTime: Bool { get set }
     var isLoggingOvertime: Bool { get set }
     var isCalculatingNetPay: Bool { get set }

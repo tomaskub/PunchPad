@@ -10,7 +10,9 @@ import Combine
 import DomainModels
 import Foundation
 import OSLog
+import PayService
 import Persistance
+import SettingsService
 
 final class StatisticsViewModel: ObservableObject {
     private let logger = Logger.statisticsViewModel

@@ -5,6 +5,8 @@
 //  Created by Tomasz Kubiak on 21/12/2023.
 //
 import DomainModels
+import PayService
+import SettingsService
 import XCTest
 import XCTestExtensions
 @testable import PunchPad

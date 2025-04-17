@@ -12,6 +12,7 @@ import DomainModels
 import Foundation
 import OSLog
 import Persistance // TODO: Consider using persistance interfaces library approach?
+import SettingsService
 
 final class HistoryViewModel: ObservableObject {
     private var logger = Logger.historyViewModel

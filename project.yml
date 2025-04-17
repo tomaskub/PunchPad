@@ -43,6 +43,9 @@ targets:
       - { package: Services, product: NotificationService }
       - { package: Services, product: ChartPeriodServiceInterfaces }
       - { package: Services, product: ChartPeriodService }
+      - { package: Services, product: PayService }
+      - { package: Services, product: SettingsServiceInterfaces }
+      - { package: Services, product: SettingsService }
     info: 
       path: PunchPad/Info.plist
     buildToolPlugins:

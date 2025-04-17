@@ -9,7 +9,9 @@ import Combine
 import DomainModels
 import Foundation
 import OSLog
+import PayService
 import Persistance
+import SettingsService
 
 final class EditSheetViewModel: ObservableObject {
     private var logger = Logger.editSheetViewModel

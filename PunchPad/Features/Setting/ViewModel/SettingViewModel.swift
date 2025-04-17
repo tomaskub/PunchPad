@@ -8,6 +8,7 @@
 import Combine
 import NotificationService
 import Persistance
+import SettingsService
 import SwiftUI
 
 final class SettingsViewModel: ObservableObject {

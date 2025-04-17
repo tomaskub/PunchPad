@@ -9,21 +9,22 @@ import DomainModels
 import Foundation
 import OSLog
 import Persistance
+import SettingsServiceInterfaces
 
 public final class PayManager: ObservableObject {
-    private var dataManager: any DataManaging
+    private var dataManager: DataManaging
     private var settingsStore: any SettingsStoring
     private let logger = Logger.payManager
     private var calendar: Calendar
     private var overtimePayCoef: Double = 1.5
     private var subscriptions = Set<AnyCancellable>()
     @Published private var currentPeriod: Period
-    @Published private(set) var grossDataForPeriod: GrossSalary
+    @Published public private(set) var grossDataForPeriod: GrossSalary
 
-    init(dataManager: any DataManaging,
-         settingsStore: any SettingsStoring,
-         currentPeriod: Period = (Date(), Date()),
-         calendar: Calendar) {
+    public init(dataManager: DataManaging,
+                settingsStore: any SettingsStoring,
+                currentPeriod: Period = (Date(), Date()),
+                calendar: Calendar) {
         logger.debug("Initializing PayManager")
         self.settingsStore = settingsStore
         self.dataManager = dataManager
@@ -35,7 +36,7 @@ public final class PayManager: ObservableObject {
     }
 
     /// Update current period driving published gross salary data
-    func updatePeriod(with period: Period) {
+    public func updatePeriod(with period: Period) {
         logger.debug("Update period called")
         currentPeriod = period
     }
@@ -221,7 +222,7 @@ private extension PayManager {
 // MARK: - NET PAY FUNCTIONS - FOR NOW UNUSED
 extension PayManager {
     /// Calculate net pay based on gross pay given, using standard polish taxation for work contract
-    func calculateNetPay(gross: Double) -> Double {
+    public func calculateNetPay(gross: Double) -> Double {
         let skladkaEmerytalna = 0.0976 * gross
         let skladkaRentowa = 0.015 * gross
         let skladkaChorobowa = 0.0245 * gross

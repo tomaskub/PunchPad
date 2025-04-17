@@ -8,7 +8,9 @@
 import Foundation
 import NotificationService
 import OSLog
+import PayService
 import Persistance
+import SettingsService
 
 final class PreviewContainer: ContainerProtocol {
     private(set) var dataManager: any DataManaging

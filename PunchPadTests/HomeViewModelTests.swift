@@ -9,7 +9,9 @@ import NotificationService
 import TimerServiceMocks
 import XCTest
 @testable import PunchPad
+import PayService
 import Persistance
+import SettingsService
 
 final class HomeViewModelTests: XCTestCase {
     var sut: HomeViewModel!

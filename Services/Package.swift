@@ -44,6 +44,18 @@ let package = Package(
             targets: ["ChartPeriodServiceMocks"]
         ),
         .library(
+            name: "SettingsServiceInterfaces",
+            targets: ["SettingsServiceInterfaces"]
+        ),
+        .library(
+            name: "SettingsService",
+            targets: ["SettingsService"]
+        ),
+        .library(
+            name: "SettingsServiceMocks",
+            targets: ["SettingsServiceMocks"]
+        ),
+        .library(
             name: "NotificationService",
             targets: ["NotificationService"]
         )
@@ -52,7 +64,15 @@ let package = Package(
         .package(path: "../Core")
     ],
     targets: [
-        .target(name: "TimerServiceInterfaces"),
+        .target(name: "TimerServiceInterfaces",
+                dependencies:
+                    [
+                        .product(
+                            name: "DomainModels",
+                            package: "Core"
+                        )
+                    ]
+               ),
         .target(
             name: "TimerService",
             dependencies: [
@@ -64,7 +84,7 @@ let package = Package(
                 .product(
                     name: "FoundationExtensions",
                     package: "Core"
-                ),
+                )
             ]
         ),
         .target(
@@ -134,6 +154,7 @@ let package = Package(
             name: "PayService",
             dependencies: [
                 .target(name: "PayServiceInterfaces"),
+                .target(name: "SettingsServiceInterfaces"),
                 .product(
                     name: "DomainModels",
                     package: "Core"
@@ -141,7 +162,7 @@ let package = Package(
                 .product(
                     name: "Persistance",
                     package: "Core"
-                        ),
+                )
             ]
         ),
         .target(
@@ -155,6 +176,8 @@ let package = Package(
             dependencies: [
                 "PayService",
                 "ChartPeriodService",
+                "SettingsService",
+                "SettingsServiceMocks",
                 .product(
                     name: "DomainModels",
                     package: "Core"
@@ -162,7 +185,25 @@ let package = Package(
                 .product( // needed temp
                     name: "Persistance",
                     package: "Core"
-                        ),
+                )
+            ]
+        ),
+        .target(name: "SettingsServiceInterfaces"),
+        .target(
+            name: "SettingsService",
+            dependencies:
+                [
+                "SettingsServiceInterfaces",
+                .product(
+                    name: "DomainModels",
+                    package: "Core"
+                )
+            ]
+        ),
+        .target(
+            name: "SettingsServiceMocks",
+            dependencies: [
+                "SettingsServiceInterfaces"
             ]
         ),
         .target(

@@ -13,7 +13,7 @@ import SwiftUI
 struct ClockInApp: App {
     private let appNavigator: Navigator = Navigator(Route.main)
     private let container: ContainerProtocol
-    @AppStorage(SettingsStore.SettingKey.savedColorScheme.rawValue) var preferredColorScheme: String?
+    @AppStorage(SettingKey.savedColorScheme.rawValue) var preferredColorScheme: String?
     
     init() {
         // Handle first

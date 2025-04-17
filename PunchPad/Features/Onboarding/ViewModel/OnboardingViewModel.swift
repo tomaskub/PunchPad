@@ -10,6 +10,7 @@ import Foundation
 import NotificationService
 import OSLog
 import UserNotifications
+import SettingsService
 
 final class OnboardingViewModel: ObservableObject {
     private let secondsInHour = 3600

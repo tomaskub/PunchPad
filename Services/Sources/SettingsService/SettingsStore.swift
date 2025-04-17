@@ -6,34 +6,36 @@
 //
 
 import Combine
+import DomainModels
 import OSLog
 import SwiftUI
+import SettingsServiceInterfaces
+import FoundationExtensions
+import UIComponents
 
-final class SettingsStore: ObservableObject {
-    enum SettingKey: String, CaseIterable {
-        case isRunFirstTime
-        case isLoggingOvertime
-        case isCalculatingNetPay
-        case isSendingNotifications
-        case maximumOvertimeAllowedInSeconds
-        case workTimeInSeconds
-        case grossPayPerMonth
-        case savedColorScheme
-    }
+public final class SettingsStore: ObservableObject, SettingsStoring {
+    public var isRunFirstTimePublisher: Published<Bool>.Publisher { $isRunFirstTime }
+    public var isLoggingOvertimePublisher: Published<Bool>.Publisher { $isLoggingOvertime }
+    public var isCalculatingNetPayPublisher: Published<Bool>.Publisher { $isCalculatingNetPay }
+    public var isSendingNotificationPublisher: Published<Bool>.Publisher { $isSendingNotification }
+    public var maximumOvertimeAllowedInSecondsPublisher: Published<Int>.Publisher { $maximumOvertimeAllowedInSeconds }
+    public var workTimeInSecondsPublisher: Published<Int>.Publisher { $workTimeInSeconds }
+    public var grossPayPerMonthPublisher: Published<Int>.Publisher { $grossPayPerMonth }
+
+    @Published public var isRunFirstTime: Bool
+    @Published public var isLoggingOvertime: Bool
+    @Published public var isCalculatingNetPay: Bool
+    @Published public var isSendingNotification: Bool
+    @Published public var maximumOvertimeAllowedInSeconds: Int
+    @Published public var workTimeInSeconds: Int
+    @Published public var grossPayPerMonth: Int
+    @Published public var savedColorScheme: ColorScheme?
     
     private var subscriptions = Set<AnyCancellable>()
     private let defaults = UserDefaults.standard
     private var logger = Logger.settingsStore
-    @Published var isRunFirstTime: Bool
-    @Published var isLoggingOvertime: Bool
-    @Published var isCalculatingNetPay: Bool
-    @Published var isSendingNotification: Bool
-    @Published var maximumOvertimeAllowedInSeconds: Int
-    @Published var workTimeInSeconds: Int
-    @Published var grossPayPerMonth: Int
-    @Published var savedColorScheme: ColorScheme?
-    
-    init() {
+
+    public init() {
         if let value = defaults.value(forKey: SettingKey.isRunFirstTime.rawValue) as? Bool {
             self.isRunFirstTime = value
         } else {
@@ -55,7 +57,7 @@ final class SettingsStore: ObservableObject {
         self.setUpSubscribersSavingToUserDefaults()
     }
     
-    func setUpSubscribersSavingToUserDefaults() {
+    private func setUpSubscribersSavingToUserDefaults() {
         logger.debug("setUpSubscribers called")
         
         boolPublishersWithKeys
@@ -87,7 +89,7 @@ final class SettingsStore: ObservableObject {
             }.store(in: &subscriptions)
     }
     
-    func clearStore() {
+    public func clearStore() {
         logger.debug("clearStore called")
         subscriptions.removeAll()
         for key in SettingKey.allCases {
@@ -107,14 +109,14 @@ final class SettingsStore: ObservableObject {
         setUpSubscribersSavingToUserDefaults()
     }
     
-    static func clearUserDefaults() {
+    public static func clearUserDefaults() {
         Logger.settingsStore.debug("clearUserDefaults called")
         for key in SettingKey.allCases {
             UserDefaults.standard.removeObject(forKey: key.rawValue)
         }
     }
     
-    static func setTestUserDefaults() {
+    public static func setTestUserDefaults() {
         Logger.settingsStore.debug("setTestUserDefaults called")
         let defaults = UserDefaults.standard
         defaults.set(false, forKey: SettingKey.isRunFirstTime.rawValue)

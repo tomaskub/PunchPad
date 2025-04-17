@@ -7,7 +7,9 @@
 
 import Foundation
 import NotificationService
+import PayService
 import Persistance
+import SettingsService
 
 protocol ContainerProtocol {
     var dataManager: any DataManaging { get }
