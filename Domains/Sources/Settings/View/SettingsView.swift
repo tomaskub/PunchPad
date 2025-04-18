@@ -7,11 +7,14 @@
 
 import DomainModels
 import NavigationKit
+import NotificationService
+import Persistance
+import SettingsService
 import SwiftUI
 import ThemeKit
 import UIComponents
 
-struct SettingsView: View {
+public struct SettingsView: View {
     private typealias Identifier = ScreenIdentifier.SettingsView
     @StateObject private var viewModel: SettingsViewModel
     @State private var isShowingWorkTimeEditor: Bool = false
@@ -29,14 +32,14 @@ struct SettingsView: View {
         return locale.currencySymbol ?? "PLN"
     }
     
-    init(viewModel: SettingsViewModel) {
+   public init(viewModel: SettingsViewModel) {
         self._viewModel = StateObject.init(wrappedValue: viewModel)
     }
 }
 
 // MARK: - Body
 extension SettingsView {
-    var body: some View {
+    public var body: some View {
         ZStack {
             background
             List {
@@ -278,7 +281,7 @@ private extension SettingsView {
 
 // MARK: - Localization
 extension SettingsView: Localized {
-    struct Strings {
+    public struct Strings {
         static let title = Localization.SettingsScreen.settings
         static let alertTitle = Localization.SettingsScreen.needsPermissionToShowNotifications
         static let alertMessage = Localization.SettingsScreen.youNeedToAllowForNotifications
@@ -305,14 +308,17 @@ extension SettingsView: Localized {
     }
 }
 
+
 #Preview("SettingsView") {
     struct ContainerView: View {
-        private let container = PreviewContainer()
+        private let dataManager = PreviewDataManager()
+        private let settingsStore = SettingsStore()
+        private let notificationService = NotificationService(center: .current())
         var body: some View {
             SettingsView(viewModel:
-                            SettingsViewModel(dataManger: container.dataManager,
-                                              notificationService: container.notificationService,
-                                              settingsStore: container.settingsStore)
+                            SettingsViewModel(dataManger: dataManager,
+                                              notificationService: notificationService,
+                                              settingsStore: settingsStore)
             )
         }
     }

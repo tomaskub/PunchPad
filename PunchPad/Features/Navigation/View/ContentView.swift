@@ -8,6 +8,7 @@
 import DomainModels
 import NavigationKit
 import Onboarding
+import Settings
 import SwiftUI
 import TabViewKit
 
@@ -32,10 +33,11 @@ struct ContentView: View {
                 )
             case .settings:
                 SettingsView(viewModel:
-                                SettingsViewModel(dataManger: container.dataManager,
-                                                  notificationService: container.notificationService,
-                                                  settingsStore: container.settingsStore
-                                                 )
+                                SettingsViewModel(
+                                    dataManger: container.dataManager,
+                                    notificationService: container.notificationService,
+                                    settingsStore: container.settingsStore
+                                )
                 )
             }
         }
@@ -53,8 +55,9 @@ struct ContentView: View {
 #Preview("ContentView") {
     struct ContainerView: View {
         var body: some View {
-            ContentView(navigator: Navigator(Route.main),
-                        container: PreviewContainer()
+            ContentView(
+                navigator: Navigator(Route.main),
+                container: PreviewContainer()
             )
         }
     }

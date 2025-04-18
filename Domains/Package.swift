@@ -10,19 +10,37 @@ let package = Package(
         .library(
             name: "Onboarding",
             targets: ["Onboarding"]
+        ),
+        .library(
+            name: "Settings",
+            targets: ["Settings"]
         )
     ],
     dependencies: [
+        .package(path: "../Core"),
         .package(path: "../Services"),
-        .package(path: "../Packages/ThemeKit")
+        .package(path: "../Packages/ThemeKit"),
+        .package(path: "../Packages/NavigationKit")
     ],
     targets: [
         .target(
             name: "Onboarding",
-        dependencies: [
+            dependencies: [
             .product(name: "NotificationService", package: "Services"),
             .product(name: "SettingsService", package: "Services"),
             .product(name: "ThemeKit", package: "ThemeKit")
+            ]
+        ),
+        .target(
+            name: "Settings",
+            dependencies: [
+                .product(name: "DomainModels", package: "Core"),
+                .product(name: "UIComponents", package: "Core"),
+                .product(name: "Persistance", package: "Core"),
+                .product(name: "NotificationService", package: "Services"),
+                .product(name: "SettingsService", package: "Services"),
+                .product(name: "NavigationKit", package: "NavigationKit"),
+                .product(name: "ThemeKit", package: "ThemeKit")
             ]
         )
     ]

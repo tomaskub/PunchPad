@@ -11,7 +11,7 @@ import Persistance
 import SettingsService
 import SwiftUI
 
-final class SettingsViewModel: ObservableObject {
+public final class SettingsViewModel: ObservableObject {
     private var subscriptions = Set<AnyCancellable>()
     private var notificationService: NotificationServicing
     private var dataManager: DataManaging
@@ -25,7 +25,7 @@ final class SettingsViewModel: ObservableObject {
     @Published var grossPayPerMonth: Int
     @Published var shouldShowNotificationDeniedAlert: Bool = false
     
-    init(dataManger: DataManaging, notificationService: NotificationServicing, settingsStore: SettingsStore) {
+    public init(dataManger: DataManaging, notificationService: NotificationServicing, settingsStore: SettingsStore) {
         self.dataManager = dataManger
         self.notificationService = notificationService
         self.settingsStore = settingsStore

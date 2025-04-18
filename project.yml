@@ -49,6 +49,7 @@ targets:
       - { package: Services, product: SettingsServiceInterfaces }
       - { package: Services, product: SettingsService }
       - { package: Domains, product: Onboarding }
+      - { package: Domains, product: Settings }
     info: 
       path: PunchPad/Info.plist
     buildToolPlugins:
