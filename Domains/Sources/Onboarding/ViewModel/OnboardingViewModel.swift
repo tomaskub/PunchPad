@@ -12,7 +12,7 @@ import OSLog
 import UserNotifications
 import SettingsService
 
-final class OnboardingViewModel: ObservableObject {
+final public class OnboardingViewModel: ObservableObject {
     private let secondsInHour = 3600
     private let secondsInMinute = 60
     private let logger = Logger.onboardingViewModel
@@ -27,7 +27,7 @@ final class OnboardingViewModel: ObservableObject {
     @Published var authorizationDenied = false
     @Published var shouldShowNotificationDeniedAlert = false
     
-    init(notificationService: NotificationService, settingsStore: SettingsStore) {
+    public init(notificationService: NotificationService, settingsStore: SettingsStore) {
         self.notificationService = notificationService
         self.settingsStore = settingsStore
         self.hoursWorking = settingsStore.workTimeInSeconds / secondsInHour

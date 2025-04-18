@@ -9,7 +9,7 @@ import SwiftUI
 import ThemeKit
 import UIComponents
 
-struct OnboardingView: View {
+public struct OnboardingView: View {
     private typealias Identifier = ScreenIdentifier.OnboardingView
     private enum OnboardingStage: Equatable, CaseIterable {
         case welcome, worktime, overtime, notifications, salary, exit
@@ -27,11 +27,11 @@ struct OnboardingView: View {
     @StateObject private var viewModel: OnboardingViewModel
     @State private var currentStage: OnboardingStage = .welcome
     
-    init(viewModel: OnboardingViewModel) {
+    public init(viewModel: OnboardingViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
-    var body: some View {
+    public var body: some View {
         
         ZStack {
             background
@@ -106,14 +106,14 @@ extension OnboardingView: Localized {
     }
 }
 
-#Preview {
-    struct ContainerView: View {
-        private let container = PreviewContainer()
-        var body: some View {
-            OnboardingView(viewModel:
-                            OnboardingViewModel(notificationService: container.notificationService,
-                                                settingsStore: container.settingsStore))
-        }
-    }
-    return ContainerView()
-}
+//#Preview {
+//    struct ContainerView: View {
+//        private let container = PreviewContainer()
+//        var body: some View {
+//            OnboardingView(viewModel:
+//                            OnboardingViewModel(notificationService: container.notificationService,
+//                                                settingsStore: container.settingsStore))
+//        }
+//    }
+//    return ContainerView()
+//}

@@ -12,6 +12,8 @@ packages:
     path: Core
   Services: 
     path: Services
+  Domains: 
+    path: Domains
   NavigationKit:
     path: Packages/NavigationKit
   TabViewKit:
@@ -46,6 +48,7 @@ targets:
       - { package: Services, product: PayService }
       - { package: Services, product: SettingsServiceInterfaces }
       - { package: Services, product: SettingsService }
+      - { package: Domains, product: Onboarding }
     info: 
       path: PunchPad/Info.plist
     buildToolPlugins:

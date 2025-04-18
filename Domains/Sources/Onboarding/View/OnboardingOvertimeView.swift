@@ -97,39 +97,39 @@ extension OnboardingOvertimeView: Localized {
     }
 }
 
-struct OnbardingOvertimePreviews: PreviewProvider {
-    
-    private struct PreviewContainerView: View {
-        @Environment(\.colorScheme) private var colorScheme
-        @StateObject private var viewModel: OnboardingViewModel
-        private let container: PreviewContainer
-        
-        init() {
-            let container = PreviewContainer()
-            self.container = container
-            self._viewModel = StateObject(
-                wrappedValue: OnboardingViewModel(notificationService: container.notificationService,
-                                                  settingsStore: container.settingsStore)
-            )
-        }
-        
-        var body: some View {
-            ZStack {
-                BackgroundFactory.buildSolidColor()
-                OnboardingOvertimeView(viewModel: viewModel)
-                VStack {
-                    Spacer()
-                    Button("Preview button") {
-                        
-                    }
-                    .buttonStyle(.confirming)
-                }
-                .padding(30)
-            }
-        }
-    }
-    
-    static var previews: some View {
-        PreviewContainerView()
-    }
-}
+//struct OnbardingOvertimePreviews: PreviewProvider {
+//    
+//    private struct PreviewContainerView: View {
+//        @Environment(\.colorScheme) private var colorScheme
+//        @StateObject private var viewModel: OnboardingViewModel
+//        private let container: PreviewContainer
+//        
+//        init() {
+//            let container = PreviewContainer()
+//            self.container = container
+//            self._viewModel = StateObject(
+//                wrappedValue: OnboardingViewModel(notificationService: container.notificationService,
+//                                                  settingsStore: container.settingsStore)
+//            )
+//        }
+//        
+//        var body: some View {
+//            ZStack {
+//                BackgroundFactory.buildSolidColor()
+//                OnboardingOvertimeView(viewModel: viewModel)
+//                VStack {
+//                    Spacer()
+//                    Button("Preview button") {
+//                        
+//                    }
+//                    .buttonStyle(.confirming)
+//                }
+//                .padding(30)
+//            }
+//        }
+//    }
+//    
+//    static var previews: some View {
+//        PreviewContainerView()
+//    }
+//}

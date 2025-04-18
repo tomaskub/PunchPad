@@ -51,38 +51,38 @@ extension OnboardingNotificationView: Localized {
     }
 }
 
-struct OnboardingNotificationPreview: PreviewProvider {
-    private struct PreviewContainerView: View {
-        @StateObject private var viewModel: OnboardingViewModel
-        private let container: PreviewContainer
-        @Environment(\.colorScheme) private var colorScheme
-        
-        init() {
-            let container = PreviewContainer()
-            self.container = container
-            self._viewModel = StateObject(wrappedValue:
-                                    OnboardingViewModel(
-                                        notificationService: container.notificationService,
-                                        settingsStore: container.settingsStore)
-            )
-        }
-        
-        var body: some View {
-            ZStack {
-                BackgroundFactory.buildSolidColor()
-                OnboardingNotificationView(viewModel: viewModel)
-                VStack {
-                    Spacer()
-                    Button( "Preview button") {
-                        
-                    }
-                    .buttonStyle(.confirming)
-                        .padding(30)
-                }
-            }
-        }
-    }
-    static var previews: some View {
-        PreviewContainerView()
-    }
-}
+//struct OnboardingNotificationPreview: PreviewProvider {
+//    private struct PreviewContainerView: View {
+//        @StateObject private var viewModel: OnboardingViewModel
+//        private let container: PreviewContainer
+//        @Environment(\.colorScheme) private var colorScheme
+//        
+//        init() {
+//            let container = PreviewContainer()
+//            self.container = container
+//            self._viewModel = StateObject(wrappedValue:
+//                                    OnboardingViewModel(
+//                                        notificationService: container.notificationService,
+//                                        settingsStore: container.settingsStore)
+//            )
+//        }
+//        
+//        var body: some View {
+//            ZStack {
+//                BackgroundFactory.buildSolidColor()
+//                OnboardingNotificationView(viewModel: viewModel)
+//                VStack {
+//                    Spacer()
+//                    Button( "Preview button") {
+//                        
+//                    }
+//                    .buttonStyle(.confirming)
+//                        .padding(30)
+//                }
+//            }
+//        }
+//    }
+//    static var previews: some View {
+//        PreviewContainerView()
+//    }
+//}

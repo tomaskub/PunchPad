@@ -27,12 +27,16 @@ let package = Package(
             targets: ["Persistance"]
         )
     ],
+    dependencies: [
+        .package(path: "../Packages/ThemeKit")
+    ],
     targets: [
         .target(
             name: "UIComponents",
             dependencies: [
                 .target(name: "DomainModels"),
-                .target(name: "FoundationExtensions")
+                .target(name: "FoundationExtensions"),
+                .product(name: "ThemeKit", package: "ThemeKit")
             ]
         ),
         .target(name: "DomainModels"),
