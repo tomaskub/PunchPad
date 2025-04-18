@@ -14,7 +14,7 @@ import PayService
 import Persistance
 import SettingsService
 
-final class StatisticsViewModel: ObservableObject {
+public final class StatisticsViewModel: ObservableObject {
     private let logger = Logger.statisticsViewModel
     private var chartPeriodService: ChartPeriodService
     private var calendar: Calendar
@@ -54,7 +54,7 @@ final class StatisticsViewModel: ObservableObject {
         return groupEntriesByYearWeek(entryInPeriod).map { EntrySummary(fromEntries: $0) }
     }
     
-    init(dataManager: any DataManaging, payManager: PayManager, settingsStore: SettingsStore, calendar: Calendar) {
+    public init(dataManager: any DataManaging, payManager: PayManager, settingsStore: SettingsStore, calendar: Calendar) {
         logger.debug("Initializing StatisticsViewModel")
         self.dataManager = dataManager
         self.payManager = payManager
@@ -68,6 +68,24 @@ final class StatisticsViewModel: ObservableObject {
         } catch {
             logger.error("Error while getting initial period")
         }
+        
+        setPayManagerSubscriber()
+        setPeriodUpdatingSubscriber()
+        setEntryDataUpdatingSubscribers()
+    }
+    
+    init() {
+        let dataManager = PreviewDataManager()
+        let settingsStore = SettingsStore()
+        let calendar = Calendar.current
+        self.dataManager = dataManager
+        self.settingsStore = settingsStore
+        self.calendar = calendar
+        self.payManager = PayManager(dataManager: dataManager,
+                                     settingsStore: settingsStore,
+                                     calendar: calendar)
+        self.chartPeriodService = ChartPeriodService(calendar: calendar)
+        self.entryInPeriod = []
         
         setPayManagerSubscriber()
         setPeriodUpdatingSubscriber()

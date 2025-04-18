@@ -12,20 +12,20 @@ import SwiftUI
 import ThemeKit
 import UIComponents
 
-struct StatisticsView: View {
+public struct StatisticsView: View {
     private typealias Identifier = ScreenIdentifier.StatisticsView
     private let currencyFormatter = FormatterFactory.makeCurrencyFormatter(Locale.current)
     private let dateFormatter = FormatterFactory.makeDateFormatter()
     @ObservedObject private var viewModel: StatisticsViewModel
     
-    init(viewModel: StatisticsViewModel) {
+    public init(viewModel: StatisticsViewModel) {
         self.viewModel = viewModel
     }
 }
 
 // MARK: - Body
 extension StatisticsView {
-    var body: some View {
+    public var body: some View {
         ZStack {
             background
             
@@ -284,7 +284,7 @@ private extension StatisticsView {
 }
 
 extension StatisticsView: Localized {
-    struct Strings {
+    public struct Strings {
         static let salaryCalculationHeaderText = Localization.StatisticsScreen.salaryCalculation
         static let chartTitleText = Localization.StatisticsScreen.timeWorked
         static let periodListRowTitle = Localization.StatisticsScreen.period
@@ -294,18 +294,11 @@ extension StatisticsView: Localized {
         static let numberOfWorkingDaysListRowTitle = Localization.StatisticsScreen.numberOfWorkingDays
     }
 }
+
 #Preview {
     struct Preview: View {
-        private let container = PreviewContainer()
         var body: some View {
-            StatisticsView(viewModel:
-                            StatisticsViewModel(
-                                dataManager: container.dataManager,
-                                payManager: container.payManager,
-                                settingsStore: container.settingsStore,
-                                calendar: .current
-                            )
-            )
+            StatisticsView(viewModel: StatisticsViewModel())
         }
     }
     return Preview()

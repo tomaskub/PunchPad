@@ -14,6 +14,10 @@ let package = Package(
         .library(
             name: "Settings",
             targets: ["Settings"]
+        ),
+        .library(
+            name: "Statistics",
+            targets: ["Statistics"]
         )
     ],
     dependencies: [
@@ -40,6 +44,19 @@ let package = Package(
                 .product(name: "NotificationService", package: "Services"),
                 .product(name: "SettingsService", package: "Services"),
                 .product(name: "NavigationKit", package: "NavigationKit"),
+                .product(name: "ThemeKit", package: "ThemeKit")
+            ]
+        ),
+        .target(
+            name: "Statistics",
+            dependencies: [
+                .product(name: "DomainModels", package: "Core"),
+                .product(name: "FoundationExtensions", package: "Core"),
+                .product(name: "UIComponents", package: "Core"),
+                .product(name: "Persistance", package: "Core"),
+                .product(name: "SettingsService", package: "Services"),
+                .product(name: "ChartPeriodService", package: "Services"),
+                .product(name: "PayService", package: "Services"),
                 .product(name: "ThemeKit", package: "ThemeKit")
             ]
         )
