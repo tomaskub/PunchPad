@@ -18,6 +18,10 @@ let package = Package(
         .library(
             name: "Statistics",
             targets: ["Statistics"]
+        ),
+        .library(
+            name: "History",
+            targets: ["History"]
         )
     ],
     dependencies: [
@@ -58,6 +62,20 @@ let package = Package(
                 .product(name: "ChartPeriodService", package: "Services"),
                 .product(name: "PayService", package: "Services"),
                 .product(name: "ThemeKit", package: "ThemeKit")
+            ]
+        ),
+        .target(
+            name: "History",
+            dependencies: [ 
+                .product(name: "ChartPeriodService", package: "Services"),
+                .product(name: "ContainerService", package: "Services"),
+                .product(name: "DomainModels", package: "Core"),
+                .product(name: "FoundationExtensions", package: "Core"),
+                .product(name: "PayService", package: "Services"),
+                .product(name: "Persistance", package: "Core"),
+                .product(name: "SettingsService", package: "Services"),
+                .product(name: "ThemeKit", package: "ThemeKit"),
+                .product(name: "UIComponents", package: "Core")
             ]
         )
     ]

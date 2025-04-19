@@ -5,6 +5,7 @@
 //  Created by Tomasz Kubiak on 3/28/23.
 //
 
+import ContainerService
 import DomainModels
 import FoundationExtensions
 import NavigationKit
@@ -35,7 +36,7 @@ struct HomeView: View {
                         secondTimerLabel: Strings.secondTimerLabelText
                     )
                     .frame(width: 260, height: 260)
-                    // todo: investigate error and why it now appeared 
+                    // TODO: investigate error and why it now appeared 
                     makeControls(viewModel.state)
                 }
                 .frame(height: 480, alignment: .top)

@@ -5,6 +5,7 @@
 //  Created by Tomasz Kubiak on 3/27/23.
 //
 
+import ContainerService
 import DomainModels
 import NavigationKit
 import SwiftUI

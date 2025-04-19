@@ -5,6 +5,7 @@
 //  Created by Tomasz Kubiak on 4/18/23.
 //
 
+import ContainerService
 import DomainModels
 import FoundationExtensions
 import SwiftUI

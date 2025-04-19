@@ -6,13 +6,14 @@
 //
 
 import Charts
+import ContainerService
 import DomainModels
 import FoundationExtensions
 import SwiftUI
 import ThemeKit
 import UIComponents
 
-struct HistoryView: View {
+public struct HistoryView: View {
     private typealias Identifier = ScreenIdentifier.HistoryView
     private let deleteRowIcon: String = "checkmark.circle"
     private let headerFormatter: DateFormatter = FormatterFactory.makeFullMonthYearDateFormatter()
@@ -22,7 +23,7 @@ struct HistoryView: View {
     @Binding private var isShowingFiltering: Bool
     @State private var entryToBeDeleted: Entry?
     
-    init(viewModel: HistoryViewModel,
+    public init(viewModel: HistoryViewModel,
          selectedEntry: Binding<Entry?>,
          isShowingFiltering: Binding<Bool>,
          container: ContainerProtocol) {
@@ -35,7 +36,7 @@ struct HistoryView: View {
 
 // MARK: - Body
 extension HistoryView {
-    var body: some View {
+    public var body: some View {
         ZStack {
             background
             
@@ -196,7 +197,7 @@ private extension HistoryView {
 }
 
 extension HistoryView: Localized {
-    struct Strings {
+    public struct Strings {
         static let navigationTitleText = Localization.HistoryScreen.history
         static let placeholderText = Localization.HistoryScreen.opsSomethingWentWrong
         static let deleteRowMessage = Localization.HistoryScreen.areYouSure

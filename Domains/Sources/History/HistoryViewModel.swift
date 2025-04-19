@@ -14,7 +14,7 @@ import OSLog
 import Persistance // TODO: Consider using persistance interfaces library approach?
 import SettingsService
 
-final class HistoryViewModel: ObservableObject {
+public final class HistoryViewModel: ObservableObject {
     private var logger = Logger.historyViewModel
     private var dataManager: any DataManaging
     private var settingsStore: SettingsStore
@@ -29,7 +29,7 @@ final class HistoryViewModel: ObservableObject {
     @Published var sortAscending: Bool = false
     @Published var isSortingActive: Bool = false
     
-    init(dataManager: any DataManaging, settingsStore: SettingsStore, sizeOfChunk: Int? = 15) {
+    public init(dataManager: any DataManaging, settingsStore: SettingsStore, sizeOfChunk: Int? = 15) {
         self.dataManager = dataManager
         self.settingsStore = settingsStore
         self.sizeOfChunk = sizeOfChunk
@@ -63,7 +63,7 @@ final class HistoryViewModel: ObservableObject {
     }
     
     /// Return new entry with current date, empty time properties, and default values driven by setting store values
-    func newEntry() -> Entry {
+    public func newEntry() -> Entry {
         return Entry(startDate: Date(),
                           finishDate: Date(),
                           workTimeInSec: 0,
