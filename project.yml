@@ -45,6 +45,7 @@ targets:
       - { package: Services, product: NotificationService }
       - { package: Services, product: ChartPeriodServiceInterfaces }
       - { package: Services, product: ChartPeriodService }
+      - { package: Services, product: ContainerService }
       - { package: Services, product: PayService }
       - { package: Services, product: SettingsServiceInterfaces }
       - { package: Services, product: SettingsService }

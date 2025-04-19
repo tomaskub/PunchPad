@@ -58,12 +58,25 @@ let package = Package(
         .library(
             name: "NotificationService",
             targets: ["NotificationService"]
+        ),
+        .library(
+            name: "ContainerService",
+            targets: ["ContainerService"]
         )
     ],
     dependencies: [
         .package(path: "../Core")
     ],
     targets: [
+        .target(name: "ContainerService",
+                dependencies:
+                    [
+                        .product(
+                            name: "DomainModels",
+                            package: "Core"
+                        )
+                    ]
+               ),
         .target(name: "TimerServiceInterfaces",
                 dependencies:
                     [

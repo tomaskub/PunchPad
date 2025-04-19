@@ -12,19 +12,19 @@ import PayService
 import Persistance
 import SettingsService
 
-final class Container: ContainerProtocol {
-    private(set) var dataManager: any DataManaging
-    private(set) var payManager: PayManager
-    private(set) var timerProvider: Timer.Type
-    private(set) var settingsStore: SettingsStore
-    private(set) var notificationService: NotificationService
+public final class Container: ContainerProtocol {
+    public private(set) var dataManager: any DataManaging
+    public private(set) var payManager: PayManager
+    public private(set) var timerProvider: Timer.Type
+    public private(set) var settingsStore: SettingsStore
+    public private(set) var notificationService: NotificationService
     private let logger = Logger.containerService
     
-    init(dataManaging: DataManaging = DataManager()) {
+    public init() {
         logger.debug("Initializing production container")
         self.timerProvider = Timer.self
         self.settingsStore = SettingsStore()
-        self.dataManager = dataManaging
+        self.dataManager = DataManager()
         self.payManager = PayManager(dataManager: dataManager,
                                      settingsStore: settingsStore,
                                      calendar: Calendar.current)

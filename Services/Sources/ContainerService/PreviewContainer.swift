@@ -1,5 +1,5 @@
 //
-//  TestContainer.swift
+//  PreviewContainer.swift
 //  PunchPad
 //
 //  Created by Tomasz Kubiak on 16/04/2024.
@@ -12,20 +12,20 @@ import PayService
 import Persistance
 import SettingsService
 
-final class TestContainer: ContainerProtocol {
-    private(set) var dataManager: any DataManaging
-    private(set) var payManager: PayManager
-    private(set) var timerProvider: Timer.Type
-    private(set) var settingsStore: SettingsStore
-    private(set) var notificationService: NotificationService
+public final class PreviewContainer: ContainerProtocol {
+    public private(set) var dataManager: any DataManaging
+    public private(set) var payManager: PayManager
+    public private(set) var timerProvider: Timer.Type
+    public private(set) var settingsStore: SettingsStore
+    public private(set) var notificationService: NotificationService
     private let logger = Logger.containerService
     
-    init() {
-        logger.debug("Initializing test container")
+    public init() {
+        logger.debug("Initializing preview container")
         SettingsStore.setTestUserDefaults()
         self.timerProvider = Timer.self
         self.settingsStore = SettingsStore()
-        self.dataManager = TestDataManager()
+        self.dataManager = PreviewDataManager()
         self.payManager = PayManager(dataManager: dataManager,
                                      settingsStore: settingsStore,
                                      calendar: .current)

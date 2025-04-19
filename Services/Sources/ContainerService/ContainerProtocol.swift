@@ -11,7 +11,7 @@ import PayService
 import Persistance
 import SettingsService
 
-protocol ContainerProtocol {
+public protocol ContainerProtocol {
     var dataManager: any DataManaging { get }
     var payManager: PayManager { get }
     var timerProvider: Timer.Type { get }
