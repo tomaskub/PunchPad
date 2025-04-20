@@ -4,12 +4,15 @@
 //
 //  Created by Tomasz Kubiak on 21/12/2023.
 //
+
+import ContainerService
 import DomainModels
 import PayService
 import SettingsService
 import XCTest
 import XCTestExtensions
-@testable import PunchPad
+
+@testable import History
 
 final class EditSheetViewModelTests: XCTestCase {
     var sut: EditSheetViewModel!

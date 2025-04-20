@@ -4,14 +4,18 @@
 //
 //  Created by Tomasz Kubiak on 4/12/23.
 //
+
+import ContainerService
 import DomainModels
 import NotificationService
+import TimerServiceInterfaces
 import TimerServiceMocks
 import XCTest
-@testable import PunchPad
 import PayService
 import Persistance
 import SettingsService
+
+@testable import Home
 
 final class HomeViewModelTests: XCTestCase {
     var sut: HomeViewModel!
@@ -27,7 +31,7 @@ final class HomeViewModelTests: XCTestCase {
         testContainer = TestContainer()
         testContainer.dataManager.deleteAll()
         mockTimerStore = MockTimerStore()
-        sut = .init(HomeViewModel(dataManager: testContainer.dataManager,
+        sut = HomeViewModel(dataManager: testContainer.dataManager,
                                   settingsStore: testContainer.settingsStore,
                                   payManager: PayManager(dataManager: testContainer.dataManager,
                                                          settingsStore: testContainer.settingsStore,
@@ -35,7 +39,7 @@ final class HomeViewModelTests: XCTestCase {
                                   notificationService: NotificationService(center: .current()),
                                   timerProvider: MockTimer.self,
                                   timerStore: mockTimerStore)
-        )
+        
     }
     
     override func tearDown() {

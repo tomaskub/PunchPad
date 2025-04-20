@@ -53,6 +53,7 @@ targets:
       - { package: Domains, product: Settings }
       - { package: Domains, product: Statistics }
       - { package: Domains, product: History }
+      - { package: Domains, product: Home }
     info: 
       path: PunchPad/Info.plist
     buildToolPlugins:

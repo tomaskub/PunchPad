@@ -5,10 +5,12 @@
 //  Created by Tomasz Kubiak on 4/8/23.
 //
 
-import XCTest
 import CoreData
+import ContainerService
 import UIComponents
-@testable import PunchPad
+import XCTest
+
+@testable import History
 
 final class HistoryViewModelTests: XCTestCase {
 

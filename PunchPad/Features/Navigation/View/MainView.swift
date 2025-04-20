@@ -9,6 +9,7 @@ import ContainerService
 import DomainModels
 import FoundationExtensions
 import History
+import Home
 import NavigationKit
 import Statistics
 import SwiftUI

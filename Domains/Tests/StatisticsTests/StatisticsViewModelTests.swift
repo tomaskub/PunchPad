@@ -5,12 +5,14 @@
 //  Created by Tomasz Kubiak on 4/21/23.
 //
 
-import XCTest
-import CoreData
 import Combine
+import ContainerService
+import CoreData
 import UIComponents
+import XCTest
+import XCTestExtensions
 
-@testable import PunchPad
+@testable import Statistics
 
 final class StatisticsViewModelTests: XCTestCase {
     private var cancellables = Set<AnyCancellable>()

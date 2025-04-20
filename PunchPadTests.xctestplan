@@ -13,6 +13,28 @@
   },
   "testTargets" : [
     {
+      "target" : {
+        "containerPath" : "container:Domains",
+        "identifier" : "HistoryTests",
+        "name" : "HistoryTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Domains",
+        "identifier" : "StatisticsTests",
+        "name" : "StatisticsTests"
+      }
+    },
+    {
+      "enabled" : false,
+      "target" : {
+        "containerPath" : "container:Domains",
+        "identifier" : "HomeTests",
+        "name" : "HomeTests"
+      }
+    },
+    {
       "parallelizable" : false,
       "skippedTests" : [
         "HomeViewModelModelTests\/test_resumeFromBackground_whenEnteredDuringSecondTimer_withTwoTimers_exceedingSecondTimer()",
@@ -33,8 +55,8 @@
     {
       "target" : {
         "containerPath" : "container:Services",
-        "identifier" : "TimerServiceTests",
-        "name" : "TimerServiceTests"
+        "identifier" : "PayServiceTests",
+        "name" : "PayServiceTests"
       }
     },
     {
@@ -42,6 +64,13 @@
         "containerPath" : "container:Services",
         "identifier" : "ChartPeriodServiceTests",
         "name" : "ChartPeriodServiceTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Services",
+        "identifier" : "TimerServiceTests",
+        "name" : "TimerServiceTests"
       }
     }
   ],

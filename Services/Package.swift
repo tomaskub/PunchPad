@@ -71,10 +71,11 @@ let package = Package(
         .target(name: "ContainerService",
                 dependencies:
                     [
-                        .product(
-                            name: "DomainModels",
-                            package: "Core"
-                        )
+                        "NotificationService",
+                        "PayService",
+                        "SettingsService",
+                        .product(name: "DomainModels", package: "Core"),
+                        .product(name: "Persistance", package: "Core")
                     ]
                ),
         .target(name: "TimerServiceInterfaces",

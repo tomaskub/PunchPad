@@ -15,7 +15,7 @@ import SwiftUI
 import TimerService
 import TimerServiceInterfaces
 
-class HomeViewModel: NSObject, ObservableObject {
+public class HomeViewModel: NSObject, ObservableObject {
     private var subscriptions = Set<AnyCancellable>()
     private var timerManagerCancellables = Set<AnyCancellable>()
     private var dataManager: any DataManaging
@@ -54,7 +54,7 @@ class HomeViewModel: NSObject, ObservableObject {
         timerManager.overtimeTimerService?.progress ?? 0
     }
     
-    init(dataManager: any DataManaging,
+    public init(dataManager: any DataManaging,
          settingsStore: SettingsStore,
          payManager: PayManager,
          notificationService: NotificationService,

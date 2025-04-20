@@ -14,7 +14,7 @@ import TabViewKit
 import ThemeKit
 import UIComponents
 
-struct HomeView: View {
+public struct HomeView: View {
     private typealias Identifier = ScreenIdentifier.HomeView
     private let timerIndicatorHourAndMinuteFormatter = FormatterFactory.makeHourAndMinuteDateComponentFormatter()
     private let timerIndicatorMinuteAndSecondFormatter = FormatterFactory.makeMinuteAndSecondDateComponetFormatter()
@@ -23,7 +23,11 @@ struct HomeView: View {
     private let pauseIconName = "pause.fill"
     @ObservedObject var viewModel: HomeViewModel
     
-    var body: some View {
+    public init(viewModel: HomeViewModel) {
+        self.viewModel = viewModel
+    }
+    
+    public var body: some View {
         ZStack {
             background
             VStack {
@@ -66,7 +70,7 @@ struct HomeView: View {
 
 // MARK: - Localization
 extension HomeView: Localized {
-    struct Strings {
+    public struct Strings {
         static let bottomMessageText = Localization.HomeScreen.startYourWorkDay.capitalized
         static let firstTimerLabelText = Localization.Common.worktime.uppercased()
         static let secondTimerLabelText = Localization.Common.overtime.uppercased()
