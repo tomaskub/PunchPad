@@ -7,7 +7,7 @@
 
 import ContainerService
 import DomainModels
-import NotificationService
+import NotificationServiceMocks
 import TimerServiceInterfaces
 import TimerServiceMocks
 import XCTest
@@ -21,6 +21,7 @@ final class HomeViewModelTests: XCTestCase {
     var sut: HomeViewModel!
     var testContainer: TestContainer!
     var mockTimerStore: MockTimerStore!
+    var mockNotificationService: NotificationServiceMock!
     
     var workTimerLimit: Int = 100
     var overtimeTimerLimit: Int = 100
@@ -31,12 +32,13 @@ final class HomeViewModelTests: XCTestCase {
         testContainer = TestContainer()
         testContainer.dataManager.deleteAll()
         mockTimerStore = MockTimerStore()
+        mockNotificationService = NotificationServiceMock()
         sut = HomeViewModel(dataManager: testContainer.dataManager,
                                   settingsStore: testContainer.settingsStore,
                                   payManager: PayManager(dataManager: testContainer.dataManager,
                                                          settingsStore: testContainer.settingsStore,
                                                          calendar: .current),
-                                  notificationService: NotificationService(center: .current()),
+                            notificationService: mockNotificationService,
                                   timerProvider: MockTimer.self,
                                   timerStore: mockTimerStore)
         
@@ -451,7 +453,7 @@ extension HomeViewModelTests {
                                   payManager: PayManager(dataManager: testContainer.dataManager,
                                                          settingsStore: testContainer.settingsStore,
                                                          calendar: .current),
-                                  notificationService: NotificationService(center: .current()),
+                                  notificationService: mockNotificationService,
                                   timerProvider: MockTimer.self)
         )
     }
@@ -465,7 +467,7 @@ extension HomeViewModelTests {
                     payManager: PayManager(dataManager: testContainer.dataManager,
                                            settingsStore: testContainer.settingsStore,
                                            calendar: .current),
-                    notificationService: NotificationService(center: .current()),
+                    notificationService: mockNotificationService,
                     timerProvider: MockTimer.self)
     }
     
@@ -475,7 +477,7 @@ extension HomeViewModelTests {
                     payManager: PayManager(dataManager: testContainer.dataManager,
                                            settingsStore: testContainer.settingsStore,
                                            calendar: .current),
-                    notificationService: NotificationService(center: .current()),
+                    notificationService: mockNotificationService,
                     timerProvider: MockTimer.self,
                     timerStore: mockTimerStore)
     }

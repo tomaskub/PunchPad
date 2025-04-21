@@ -27,7 +27,6 @@
       }
     },
     {
-      "enabled" : false,
       "target" : {
         "containerPath" : "container:Domains",
         "identifier" : "HomeTests",

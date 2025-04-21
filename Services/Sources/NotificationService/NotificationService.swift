@@ -8,16 +8,9 @@
 import DomainModels
 import Foundation
 import FoundationExtensions
+import NotificationServiceInterfaces
 import OSLog
 import UserNotifications
-
-public protocol NotificationServicing: AnyObject {
-    func requestAuthorizationForNotifications(failureHandler: @escaping (Bool, Error?) -> Void)
-    func deschedulePendingNotifications()
-    func checkForAuthorization() async -> Bool?
-    func checkForAuthorization(completionHandler: @escaping (Bool?) -> Void)
-    func scheduleNotification(for notification: AppNotification, in timeInterval: TimeInterval)
-}
 
 public final class NotificationService: NotificationServicing {
     private let center: UNUserNotificationCenter

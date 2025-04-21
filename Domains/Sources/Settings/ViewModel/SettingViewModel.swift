@@ -6,7 +6,7 @@
 //
 
 import Combine
-import NotificationService
+import NotificationServiceInterfaces
 import Persistance
 import SettingsService
 import SwiftUI

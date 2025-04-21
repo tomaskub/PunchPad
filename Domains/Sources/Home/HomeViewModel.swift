@@ -8,6 +8,7 @@
 import Combine
 import DomainModels
 import NotificationService
+import NotificationServiceInterfaces
 import PayService
 import Persistance
 import SettingsService
@@ -21,7 +22,7 @@ public class HomeViewModel: NSObject, ObservableObject {
     private var dataManager: any DataManaging
     private var settingsStore: SettingsStore
     private var payManager: PayManager
-    private var notificationService: NotificationService
+    private var notificationService: NotificationServicing
     private var timerManagerConfiguration: TimerManagerConfiguration
     private var timerManager: TimerManager
     private var timerStore: TimerStoring
@@ -57,7 +58,7 @@ public class HomeViewModel: NSObject, ObservableObject {
     public init(dataManager: any DataManaging,
          settingsStore: SettingsStore,
          payManager: PayManager,
-         notificationService: NotificationService,
+         notificationService: NotificationServicing,
          timerProvider: Timer.Type = Timer.self,
          timerStore: TimerStoring = TimerStore(defaults: .standard)) {
         self.dataManager = dataManager

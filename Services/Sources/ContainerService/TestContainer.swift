@@ -17,7 +17,7 @@ public final class TestContainer: ContainerProtocol {
     public private(set) var payManager: PayManager
     public private(set) var timerProvider: Timer.Type
     public private(set) var settingsStore: SettingsStore
-    public private(set) var notificationService: NotificationService
+    public private(set) lazy var notificationService: NotificationService = .init(center: .current())
     private let logger = Logger.containerService
     
     public init() {
@@ -29,6 +29,5 @@ public final class TestContainer: ContainerProtocol {
         self.payManager = PayManager(dataManager: dataManager,
                                      settingsStore: settingsStore,
                                      calendar: .current)
-        self.notificationService = NotificationService(center: .current())
     }
 }

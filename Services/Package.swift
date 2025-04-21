@@ -56,8 +56,16 @@ let package = Package(
             targets: ["SettingsServiceMocks"]
         ),
         .library(
+            name: "NotificationServiceInterfaces",
+            targets: ["NotificationServiceInterfaces"]
+        ),
+        .library(
             name: "NotificationService",
             targets: ["NotificationService"]
+        ),
+        .library(
+            name: "NotificationServiceMocks",
+            targets: ["NotificationServiceMocks"]
         ),
         .library(
             name: "ContainerService",
@@ -224,8 +232,18 @@ let package = Package(
             ]
         ),
         .target(
+            name: "NotificationServiceInterfaces",
+            dependencies: [
+                .product(
+                    name: "DomainModels",
+                    package: "Core"
+                )
+            ]
+        ),
+        .target(
             name: "NotificationService",
             dependencies: [
+                "NotificationServiceInterfaces",
                 .product(
                     name: "DomainModels",
                     package: "Core"
@@ -235,6 +253,10 @@ let package = Package(
                     package: "Core"
                 )
             ]
+        ),
+        .target(
+            name: "NotificationServiceMocks",
+            dependencies: ["NotificationServiceInterfaces"]
         )
     ]
 )

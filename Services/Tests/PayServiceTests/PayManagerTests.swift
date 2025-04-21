@@ -25,10 +25,11 @@ final class PayManagerTests: XCTestCase {
         mockDataManager = TestDataManager()
         mockSettingsStore = MockSettingsService()
         mockDataManager.deleteAll()
+        calendar = Calendar.current
         sut = .init(dataManager: mockDataManager, // needs a mock
                     settingsStore: mockSettingsStore!,
                     calendar: calendar)
-        periodService = ChartPeriodService(calendar: .current) // todo: replace with mock
+        periodService = ChartPeriodService(calendar: calendar) // todo: replace with mock
     }
     
     override func tearDown() {
