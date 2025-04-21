@@ -1,6 +1,6 @@
 import DomainModels
 
-protocol PayServicing: AnyObject {
+public protocol PayServicing: AnyObject {
     var grossDataForPeriod: GrossSalary { get set }
-    func updatePerios(with: Period)
+    func updatePeriod(with: Period)
 }

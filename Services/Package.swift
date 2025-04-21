@@ -41,7 +41,7 @@ let package = Package(
         ),
         .library(
             name: "PayServiceMocks",
-            targets: ["ChartPeriodServiceMocks"]
+            targets: ["PayServiceMocks"]
         ),
         .library(
             name: "SettingsServiceInterfaces",
@@ -194,6 +194,7 @@ let package = Package(
         .target(
             name: "PayServiceMocks",
             dependencies: [
+                .product(name: "DomainModels", package: "Core"),
                 .target(name: "PayServiceInterfaces")
             ]
         ),
