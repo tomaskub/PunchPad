@@ -5,6 +5,7 @@
 //  Created by Tomasz Kubiak on 02/09/2023.
 //
 
+import DomainModels
 import XCTest
 
 class OnboardingViewScreen {

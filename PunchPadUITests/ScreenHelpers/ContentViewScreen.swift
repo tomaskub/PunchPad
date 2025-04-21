@@ -5,6 +5,7 @@
 //  Created by Tomasz Kubiak on 22/11/2023.
 //
 
+import DomainModels
 import XCTest
 
 class ContentViewScreen {
