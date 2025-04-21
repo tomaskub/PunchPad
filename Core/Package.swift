@@ -45,7 +45,8 @@ let package = Package(
         .target(
             name: "Persistance",
             dependencies: [
-                .target(name: "DomainModels")
+                "DomainModels",
+                "FoundationExtensions"
             ]
         )
     ]
