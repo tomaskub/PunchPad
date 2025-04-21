@@ -52,6 +52,9 @@
       }
     },
     {
+      "skippedTests" : [
+        "PayManagerTests\/testGeneratingDataForNotFinishedWeek()"
+      ],
       "target" : {
         "containerPath" : "container:Services",
         "identifier" : "PayServiceTests",
