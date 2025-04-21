@@ -15,7 +15,7 @@
     {
       "target" : {
         "containerPath" : "container:PunchPad.xcodeproj",
-        "identifier" : "D6240A172D3ED75D00A53B82",
+        "identifier" : "45A27517461A19A6786CAD74",
         "name" : "PunchPadUITests"
       }
     }

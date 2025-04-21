@@ -5,18 +5,26 @@
 //  Created by Tomasz Kubiak on 3/27/23.
 //
 
-import SwiftUI
+import ContainerService
+import DomainModels
+import LaunchArgumentHandler
 import NavigationKit
+import Persistance
+import SettingsService
+import SwiftUI
 
 @main
 struct ClockInApp: App {
     private let appNavigator: Navigator = Navigator(Route.main)
     private let container: ContainerProtocol
-    @AppStorage(SettingsStore.SettingKey.savedColorScheme.rawValue) var preferredColorScheme: String?
+    @AppStorage(SettingKey.savedColorScheme.rawValue) var preferredColorScheme: String?
     
     init() {
         // Handle first
-        let handler = LaunchArgumentsHandler(userDefaults: .standard)
+        let handler = LaunchArgumentsHandler(
+            userDefaultsSetter: SettingsStore.self,
+            userDefaults: .standard
+        )
         handler.handleLaunch()
         
         let container = resolveContainerType()
@@ -34,16 +42,21 @@ struct ClockInApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView(navigator: appNavigator,
-                        container: container)
-            .preferredColorScheme(colorScheme)
+            NavigationView(
+                navigator: appNavigator,
+                container: container
+            )
+                .preferredColorScheme(colorScheme)
         }
     }
 }
 
 fileprivate func resolveContainerType() -> Container {
-    let handler = LaunchArgumentsHandler(userDefaults: .standard)
-    
+    let handler = LaunchArgumentsHandler(
+        userDefaultsSetter: SettingsStore.self,
+        userDefaults: .standard
+    )
+
     if handler.shouldSetInMemoryPersistentStore() {
         let dataManager = TestDataManager()
         return Container(dataManaging: dataManager)

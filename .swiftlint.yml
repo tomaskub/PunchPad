@@ -1,6 +1,7 @@
 disabled_rules:
 
 opt_in_rules:
+  - sorted_imports
 
 line_length: 120
 

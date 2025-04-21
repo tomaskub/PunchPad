@@ -18,6 +18,54 @@ ClockIn helps with tracking the work time and overtime you do at work. Whenever 
 
 
 
+# Project structure 
+Project is seperated into several layers, following modular architecture approach highlighted by Cyril Cermak in his [Modular architecture on iOS](https://github.com/CyrilCermak/modular_architecture_on_ios).
+Since the work does miss a chapter on swift project manager implementtion, i decided to use that here. It is not the cleanest and still in the polishing phase.
+
+## Structure
+```
+|-- Core
+    |-- DomainModels
+    |-- FoundationExtensions
+    |-- Persistance 
+    |-- UIComponents 
+    |-- XCTestExtensions
+|-- Services
+    |-- ChartPeriodService
+    |-- NotificationService
+    |-- PayService
+    |-- SettingsService
+    |-- TimerService
+|-- Domains 
+    |-- Home
+    |-- History
+    |-- Onboarding
+    |-- Settings
+    |-- Statistics
+|-- Composition Root
+    |-- Navigation
+    |-- Main target app
+```
+## Notes on structure 
+Below is list of notes on some decisions i made during the modularization effort. I attemp to provide rationale behind it, as well as possible alternatives.
+### Micro-splitting of services
+Each service should have three corresponding packages:
+  - interfaces with protocol definition of the service
+  - main with implementation
+  - mocks with support for testing
+This approach helps with tracing the dependencies between services - which can happen. In this approach the service implementation depends on service interfaces, rather than implementations. That solves the circular dependency problem, and promotes dependecy injection and inversion of control - all implementations are injected from composition root, or domains layer. As an alternative, an approach to place all of the interfaces in `Core` layer would work also - either in `DomainModels` or in seperate package like `DomainInterfaces`. It would provide less granuality, but reduce overhead when definiting packages.
+### Domains and Services vs Features
+
+This project opts for a **Core-Services-Domains-Root** structure over a simpler **Core-Feature-Root** approach.
+*   **Clearer Separation:** The `Domains` layer encapsulates distinct user-facing parts of the application (e.g., Home, History, Settings). This creates a better separation between:
+    *   **User-facing features (`Domains`):** Standalone parts of the UI and user flows.
+    *   **Internal capabilities (`Services`):** Reusable logic and integrations (e.g., PayService, TimerService).
+*   **Improved Testability:**
+    *   This separation allows UI testing to be scoped within specific `Domains`, focusing on particular user flows.
+    *   It facilitates partial testing on CI services. By building only the necessary `Domain` modules based on Pull Request diffs, we can potentially run a subset of UI tests, speeding up the CI process.
+
+In contrast, a simpler "Feature" based approach often mixes user-facing features and internal services at the same level, potentially leading to less clear boundaries and dependencies.
+
 # Technologies
 - SwiftUI
 - MVVM architecture 
@@ -27,6 +75,7 @@ ClockIn helps with tracking the work time and overtime you do at work. Whenever 
 - UI and unit tested with XCTest
 - Xcode Cloud for CI tests
 - SPM
+- XCodeGen
 
 # Highlights 
 - Dependencies are local swift packages imported into the main app project.
@@ -37,8 +86,26 @@ ClockIn helps with tracking the work time and overtime you do at work. Whenever 
 - TimerModel has injected TimerProvider with metatypes allows for easy testing in XCTest with mock timer.
 
 # Build 
-No external dependencies - clone and run.
-To configure schema look at the LaunchArgument enum and pass data in build scheme. 
+
+To build the project, follow these steps:
+
+1.  **Install Dependencies:**
+    Make sure you have [Homebrew](https://brew.sh/) installed. Then, install SwiftLint and XcodeGen:
+    ```bash
+    brew install swiftlint xcodegen
+    ```
+
+2.  **Generate Xcode Project:**
+    Navigate to the project's root directory in your terminal and run XcodeGen:
+    ```bash
+    xcodegen generate
+    ```
+    This will create the `PunchPad.xcodeproj` file.
+
+3.  **Open and Build:**
+    Open the generated `PunchPad.xcodeproj` file in Xcode. You can then build and run the project using the standard Xcode build process (select a simulator or device and press Cmd+R).
+
+**Note:** SwiftLint will run automatically as a build phase to check code style.
 
 # Feedback 
 Feel free to file an issue or submit a PR. Im always looking to improve my work. 

@@ -13,6 +13,31 @@
   },
   "testTargets" : [
     {
+      "target" : {
+        "containerPath" : "container:Domains",
+        "identifier" : "HistoryTests",
+        "name" : "HistoryTests"
+      }
+    },
+    {
+      "skippedTests" : [
+        "StatisticsViewModelTests\/test_entryInPeriod_updated_whenUpdatingChartTimeRangeToMonth()",
+        "StatisticsViewModelTests\/test_entryInPeriod_updates_whenLoadingNextPeriod()"
+      ],
+      "target" : {
+        "containerPath" : "container:Domains",
+        "identifier" : "StatisticsTests",
+        "name" : "StatisticsTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Domains",
+        "identifier" : "HomeTests",
+        "name" : "HomeTests"
+      }
+    },
+    {
       "parallelizable" : false,
       "skippedTests" : [
         "HomeViewModelModelTests\/test_resumeFromBackground_whenEnteredDuringSecondTimer_withTwoTimers_exceedingSecondTimer()",
@@ -28,6 +53,30 @@
         "containerPath" : "container:PunchPad.xcodeproj",
         "identifier" : "DD5249DF9FD5810F12418181",
         "name" : "PunchPadTests"
+      }
+    },
+    {
+      "skippedTests" : [
+        "PayManagerTests\/testGeneratingDataForNotFinishedWeek()"
+      ],
+      "target" : {
+        "containerPath" : "container:Services",
+        "identifier" : "PayServiceTests",
+        "name" : "PayServiceTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Services",
+        "identifier" : "ChartPeriodServiceTests",
+        "name" : "ChartPeriodServiceTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Services",
+        "identifier" : "TimerServiceTests",
+        "name" : "TimerServiceTests"
       }
     }
   ],

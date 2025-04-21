@@ -5,6 +5,7 @@
 //  Created by Tomasz Kubiak on 19/09/2023.
 //
 
+import DomainModels
 import XCTest
 
 final class SettingsViewUITests: XCTestCase {

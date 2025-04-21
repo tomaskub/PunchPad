@@ -8,6 +8,12 @@ options:
     iOS: "16.6"
 
 packages:
+  Core:
+    path: Core
+  Services: 
+    path: Services
+  Domains: 
+    path: Domains
   NavigationKit:
     path: Packages/NavigationKit
   TabViewKit:
@@ -30,6 +36,25 @@ targets:
       - package: NavigationKit
       - package: TabViewKit
       - package: ThemeKit
+      - { package: Core, product: UIComponents }
+      - { package: Core, product: DomainModels }
+      - { package: Core, product: FoundationExtensions }
+      - { package: Core, product: Persistance }
+      - { package: Services, product: TimerServiceInterfaces }
+      - { package: Services, product: TimerService }
+      - { package: Services, product: NotificationService }
+      - { package: Services, product: ChartPeriodServiceInterfaces }
+      - { package: Services, product: ChartPeriodService }
+      - { package: Services, product: ContainerService }
+      - { package: Services, product: PayService }
+      - { package: Services, product: SettingsServiceInterfaces }
+      - { package: Services, product: SettingsService }
+      - { package: Services, product: LaunchArgumentHandler }
+      - { package: Domains, product: Onboarding }
+      - { package: Domains, product: Settings }
+      - { package: Domains, product: Statistics }
+      - { package: Domains, product: History }
+      - { package: Domains, product: Home }
     info: 
       path: PunchPad/Info.plist
     buildToolPlugins:
@@ -72,6 +97,9 @@ targets:
       - path: PunchPadTests
     dependencies:
       - target: PunchPad
+      - package: Core
+        product: XCTestExtensions
+      - { package: Services, product: TimerServiceMocks }
     settings: 
       PRODUCT_BUNDLE_IDENTIFIER: tomasz.m.kubiak.PunchPad.Tests
       GENERATE_INFOPLIST_FILE: YES
@@ -86,10 +114,9 @@ targets:
     platform: iOS
     sources:
       - path: PunchPadUITests
-      - path: PunchPad/Utilities/ScreenIdentifier.swift
-      - path: PunchPad/Utilities/LaunchArgument.swift
     dependencies:
       - target: PunchPad
+      - { package: Core, product: DomainModels }
     settings: 
       PRODUCT_BUNDLE_IDENTIFIER: tomasz.m.kubiak.PunchPad.UITests
       GENERATE_INFOPLIST_FILE: YES
