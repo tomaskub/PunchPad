@@ -5,6 +5,7 @@
 //  Created by Tomasz Kubiak on 08/09/2023.
 //
 
+import DomainModels
 import XCTest
 
 final class HistoryViewUITests: XCTestCase {

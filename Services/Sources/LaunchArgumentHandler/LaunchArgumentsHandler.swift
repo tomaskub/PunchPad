@@ -5,17 +5,23 @@
 //  Created by Tomasz Kubiak on 30/01/2025.
 //
 
+import DomainModels
 import Foundation
+import SettingsServiceInterfaces
 
-struct LaunchArgumentsHandler {
+public struct LaunchArgumentsHandler<T: TestDefaultsSetting> {
     let userDefaults: UserDefaults
     
-    func handleLaunch() {
+    public init(userDefaultsSetter: T.Type, userDefaults: UserDefaults) {
+        self.userDefaults = userDefaults
+    }
+    
+    public func handleLaunch() {
         setTestUserDefaultsIfNeeded()
         startWithOnboardingIfNeeded()
     }
     
-    func shouldSetInMemoryPersistentStore() -> Bool {
+    public func shouldSetInMemoryPersistentStore() -> Bool {
         guard
             CommandLine.arguments.contains(LaunchArgument.inMemoryPresistenStore.rawValue)
         else { return false  }
@@ -27,7 +33,7 @@ struct LaunchArgumentsHandler {
             CommandLine.arguments.contains(LaunchArgument.setTestUserDefaults.rawValue)
         else { return }
         
-        SettingsStore.setTestUserDefaults()
+        T.setTestUserDefaults()
     }
     
     private func startWithOnboardingIfNeeded() {
@@ -35,10 +41,10 @@ struct LaunchArgumentsHandler {
             CommandLine.arguments.contains(LaunchArgument.withOnboarding.rawValue)
         else { return }
 
-        SettingsStore.clearUserDefaults()
+        T.clearUserDefaults()
         UserDefaults.standard.set(
             true,
-            forKey: SettingsStore.SettingKey.isRunFirstTime.rawValue
+            forKey: SettingKey.isRunFirstTime.rawValue
         )
     }
 }

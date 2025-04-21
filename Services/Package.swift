@@ -70,6 +70,10 @@ let package = Package(
         .library(
             name: "ContainerService",
             targets: ["ContainerService"]
+        ),
+        .library(
+            name: "LaunchArgumentHandler",
+            targets: ["LaunchArgumentHandler"]
         )
     ],
     dependencies: [
@@ -257,6 +261,16 @@ let package = Package(
         .target(
             name: "NotificationServiceMocks",
             dependencies: ["NotificationServiceInterfaces"]
+        ),
+        .target(
+            name: "LaunchArgumentHandler",
+            dependencies: [
+                "SettingsServiceInterfaces",
+                .product(
+                    name: "DomainModels",
+                    package: "Core"
+                ),
+            ]
         )
     ]
 )

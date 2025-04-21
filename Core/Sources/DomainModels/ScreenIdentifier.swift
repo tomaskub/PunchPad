@@ -7,11 +7,19 @@
 
 // swiftlint:disable nesting
 public enum ScreenIdentifier {
-    public enum TabBar: String {
-        case home
-        case statistics
-        case history
-    }
+    public enum NavigationElements {
+            public enum NavigationBarButtons: String {
+                case settingNavigationButton
+                case detailedHistory
+                case back
+            }
+            
+            public enum TabBarButtons: String {
+                case home
+                case statistics
+                case history
+            }
+        }
 
     public enum HomeView: String {
         case startButton
@@ -21,43 +29,26 @@ public enum ScreenIdentifier {
         case timerLabel
     }
     
-    public enum StatisticsView {
-        public enum Chart: String {
-            case workTimeChart
-            case startTimeChart
-            case finishTimeChart
-        }
+    public enum StatisticsView: String {
+        case workTimeChart
         
         public enum SegmentedControl: String {
-            case chartType
-        }
-        
-        public enum ChartTypeButton: String {
-            case workTime
-            case startTime
-            case finishTime
-        }
-        
-        public enum ChartLegend: String {
-            case workTimeChartLegend
-            case startTimeChartLegend
-            case finishTimeChartLegend
+            case allRange
+            case yearRange
+            case monthRange
+            case weekRange
         }
         
         public enum SalaryCalculationLabel: String {
+            case period
+            case grossPayPerHour
             case grossPay
             case grossPayPredicted
             case workingDaysNumber
         }
         
         public enum SectionHeaders: String {
-            case chart
             case salaryCalculation
-        }
-        
-        public enum NavigationBarButtons: String {
-            case detailedHistory
-            case back
         }
     }
     
@@ -137,7 +128,7 @@ public enum ScreenIdentifier {
         case filterButton
         case emptyPlaceholder
         
-        enum ConfirmDeleteDialogView: String {
+        public enum ConfirmDeleteDialogView: String {
             case okButton
             case cancelButton
             case dialogLabel
@@ -160,7 +151,7 @@ public enum ScreenIdentifier {
     
     public enum EditSheetView {
         public enum Label: String {
-            case timeWorkedValue
+            case worktimeValue
             case overtimeValue
             case breaktimeValue
         }

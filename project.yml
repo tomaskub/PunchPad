@@ -49,6 +49,7 @@ targets:
       - { package: Services, product: PayService }
       - { package: Services, product: SettingsServiceInterfaces }
       - { package: Services, product: SettingsService }
+      - { package: Services, product: LaunchArgumentHandler }
       - { package: Domains, product: Onboarding }
       - { package: Domains, product: Settings }
       - { package: Domains, product: Statistics }
@@ -113,10 +114,9 @@ targets:
     platform: iOS
     sources:
       - path: PunchPadUITests
-      - path: PunchPad/Utilities/ScreenIdentifier.swift
-      - path: PunchPad/Utilities/LaunchArgument.swift
     dependencies:
       - target: PunchPad
+      - { package: Core, product: DomainModels }
     settings: 
       PRODUCT_BUNDLE_IDENTIFIER: tomasz.m.kubiak.PunchPad.UITests
       GENERATE_INFOPLIST_FILE: YES

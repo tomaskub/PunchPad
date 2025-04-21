@@ -20,12 +20,12 @@ public final class Container: ContainerProtocol {
     public private(set) var notificationService: NotificationService
     private let logger = Logger.containerService
     
-    public init() {
+    public init(dataManaging: any DataManaging = DataManager()) {
         logger.debug("Initializing production container")
         self.timerProvider = Timer.self
         self.settingsStore = SettingsStore()
-        self.dataManager = DataManager()
-        self.payManager = PayManager(dataManager: dataManager,
+        self.dataManager = dataManaging
+        self.payManager = PayManager(dataManager: dataManaging,
                                      settingsStore: settingsStore,
                                      calendar: Calendar.current)
         self.notificationService = NotificationService(center: .current())

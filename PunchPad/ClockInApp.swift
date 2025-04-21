@@ -7,7 +7,10 @@
 
 import ContainerService
 import DomainModels
+import LaunchArgumentHandler
 import NavigationKit
+import Persistance
+import SettingsService
 import SwiftUI
 
 @main
@@ -18,7 +21,10 @@ struct ClockInApp: App {
     
     init() {
         // Handle first
-        let handler = LaunchArgumentsHandler(userDefaults: .standard)
+        let handler = LaunchArgumentsHandler(
+            userDefaultsSetter: SettingsStore.self,
+            userDefaults: .standard
+        )
         handler.handleLaunch()
         
         let container = resolveContainerType()
@@ -46,8 +52,11 @@ struct ClockInApp: App {
 }
 
 fileprivate func resolveContainerType() -> Container {
-    let handler = LaunchArgumentsHandler(userDefaults: .standard)
-    
+    let handler = LaunchArgumentsHandler(
+        userDefaultsSetter: SettingsStore.self,
+        userDefaults: .standard
+    )
+
     if handler.shouldSetInMemoryPersistentStore() {
         let dataManager = TestDataManager()
         return Container(dataManaging: dataManager)

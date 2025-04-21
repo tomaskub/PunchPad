@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension Binding where Value: AdditiveArithmetic {
+public extension Binding where Value: AdditiveArithmetic {
     var nilIfZero: Binding<Value?> {
         Binding<Value?> {
             self.wrappedValue == .zero ? nil : self.wrappedValue

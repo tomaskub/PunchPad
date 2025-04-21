@@ -13,7 +13,7 @@ import SettingsServiceInterfaces
 import FoundationExtensions
 import UIComponents
 
-public final class SettingsStore: ObservableObject, SettingsStoring {
+public final class SettingsStore: ObservableObject, SettingsStoring, TestDefaultsSetting {
     public var isRunFirstTimePublisher: Published<Bool>.Publisher { $isRunFirstTime }
     public var isLoggingOvertimePublisher: Published<Bool>.Publisher { $isLoggingOvertime }
     public var isCalculatingNetPayPublisher: Published<Bool>.Publisher { $isCalculatingNetPay }

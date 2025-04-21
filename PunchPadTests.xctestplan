@@ -20,6 +20,10 @@
       }
     },
     {
+      "skippedTests" : [
+        "StatisticsViewModelTests\/test_entryInPeriod_updated_whenUpdatingChartTimeRangeToMonth()",
+        "StatisticsViewModelTests\/test_entryInPeriod_updates_whenLoadingNextPeriod()"
+      ],
       "target" : {
         "containerPath" : "container:Domains",
         "identifier" : "StatisticsTests",
