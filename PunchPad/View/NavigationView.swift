@@ -13,7 +13,7 @@ import Settings
 import SwiftUI
 import TabViewKit
 
-struct ContentView: View {
+struct NavigationView: View {
     private let navigator: Navigator<Route>
     private let container: ContainerProtocol
     @State private var tabSelection: TabBarItem = .home
@@ -28,7 +28,7 @@ struct ContentView: View {
         NavHost(navigator: navigator) { route in
             switch route {
             case .main:
-                MainView(navigator: navigator,
+                TabView(navigator: navigator,
                          tabSelection: $tabSelection,
                          container: container
                 )
@@ -56,7 +56,7 @@ struct ContentView: View {
 #Preview("ContentView") {
     struct ContainerView: View {
         var body: some View {
-            ContentView(
+            NavigationView(
                 navigator: Navigator(Route.main),
                 container: PreviewContainer()
             )

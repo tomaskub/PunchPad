@@ -17,7 +17,7 @@ import TabViewKit
 import ThemeKit
 import UIComponents
 
-struct MainView: View {
+struct TabView: View {
     private let navigator: Navigator<Route>
     @StateObject private var homeViewModel: HomeViewModel
     @StateObject private var statViewModel: StatisticsViewModel
@@ -67,7 +67,7 @@ struct MainView: View {
 }
 
 // MARK: - Body
-extension MainView {
+extension TabView {
     var body: some View {
         CustomTabView(selection: $tabSelection,
                       tabBarColorConfiguration: tabBarColorConfiguration) {
@@ -96,7 +96,7 @@ extension MainView {
 }
 
 // MARK: - View Builders
-private extension MainView {
+private extension TabView {
     @ViewBuilder
     var leadingToolbar: some View {
         switch tabSelection {
@@ -175,7 +175,7 @@ private extension MainView {
         private let container = PreviewContainer()
         
         var body: some View {
-            MainView(navigator: Navigator(Route.main),
+            TabView(navigator: Navigator(Route.main),
                      tabSelection: .constant(.home),
                      container: container
             )
