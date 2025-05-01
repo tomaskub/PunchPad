@@ -1,6 +1,5 @@
 import Combine
 import SettingsServiceInterfaces
-import SwiftUI // TODO: Remove color scheme
 
 public final class MockSettingsService: ObservableObject, SettingsStoring {
     public var isRunFirstTimePublisher: Published<Bool>.Publisher { $isRunFirstTime }
@@ -18,7 +17,6 @@ public final class MockSettingsService: ObservableObject, SettingsStoring {
     @Published public var maximumOvertimeAllowedInSeconds: Int
     @Published public var workTimeInSeconds: Int
     @Published public var grossPayPerMonth: Int
-    @Published public var savedColorScheme: ColorScheme?
 
     public init() {
         self.isRunFirstTime = false
@@ -28,6 +26,5 @@ public final class MockSettingsService: ObservableObject, SettingsStoring {
         self.workTimeInSeconds = 28800
         self.maximumOvertimeAllowedInSeconds = 14400
         self.grossPayPerMonth = 10000
-        self.savedColorScheme = nil
     }
 }

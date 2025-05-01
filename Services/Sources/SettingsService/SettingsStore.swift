@@ -11,7 +11,6 @@ import OSLog
 import SwiftUI
 import SettingsServiceInterfaces
 import FoundationExtensions
-import UIComponents
 
 public final class SettingsStore: ObservableObject, SettingsStoring, TestDefaultsSetting {
     public var isRunFirstTimePublisher: Published<Bool>.Publisher { $isRunFirstTime }
@@ -29,7 +28,6 @@ public final class SettingsStore: ObservableObject, SettingsStoring, TestDefault
     @Published public var maximumOvertimeAllowedInSeconds: Int
     @Published public var workTimeInSeconds: Int
     @Published public var grossPayPerMonth: Int
-    @Published public var savedColorScheme: ColorScheme?
     
     private var subscriptions = Set<AnyCancellable>()
     private let defaults = UserDefaults.standard
@@ -50,9 +48,6 @@ public final class SettingsStore: ObservableObject, SettingsStoring, TestDefault
         self.workTimeInSeconds = defaults.integer(forKey: SettingKey.workTimeInSeconds.rawValue)
         self.grossPayPerMonth = defaults.integer(
             forKey: SettingKey.grossPayPerMonth.rawValue
-        )
-        self.savedColorScheme = ColorScheme.fromStringValue(
-            defaults.string(forKey: SettingKey.savedColorScheme.rawValue)
         )
         self.setUpSubscribersSavingToUserDefaults()
     }
@@ -79,14 +74,6 @@ public final class SettingsStore: ObservableObject, SettingsStoring, TestDefault
                         self?.updateSetting(setting: key, value: value)
                     }.store(in: &subscriptions)
         }
-
-        $savedColorScheme
-            .dropFirst()
-            .removeDuplicates()
-            .sink { [weak self] value  in
-                guard let self else { return }
-                self.updateSetting(setting: .savedColorScheme, value: value)
-            }.store(in: &subscriptions)
     }
     
     public func clearStore() {
@@ -105,7 +92,6 @@ public final class SettingsStore: ObservableObject, SettingsStoring, TestDefault
         maximumOvertimeAllowedInSeconds = defaults.integer(forKey: SettingKey.maximumOvertimeAllowedInSeconds.rawValue)
         workTimeInSeconds = defaults.integer(forKey: SettingKey.workTimeInSeconds.rawValue)
         grossPayPerMonth = defaults.integer(forKey: SettingKey.grossPayPerMonth.rawValue)
-        savedColorScheme = ColorScheme.fromStringValue(defaults.string(forKey: SettingKey.savedColorScheme.rawValue))
         setUpSubscribersSavingToUserDefaults()
     }
     
@@ -126,7 +112,6 @@ public final class SettingsStore: ObservableObject, SettingsStoring, TestDefault
         defaults.set(28800, forKey: SettingKey.workTimeInSeconds.rawValue)
         defaults.set(14400, forKey: SettingKey.maximumOvertimeAllowedInSeconds.rawValue)
         defaults.set(10000, forKey: SettingKey.grossPayPerMonth.rawValue)
-        defaults.set(nil as ColorScheme?, forKey: SettingKey.savedColorScheme.rawValue)
     }
     
     private func updateSetting<T>(setting: SettingKey, value: T) {
