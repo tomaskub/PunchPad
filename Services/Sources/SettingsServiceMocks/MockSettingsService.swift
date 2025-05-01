@@ -1,6 +1,5 @@
 import Combine
 import SettingsServiceInterfaces
-import SwiftUI // TODO: Remove color scheme
 
 public final class MockSettingsService: ObservableObject, SettingsStoring {
     public var isRunFirstTimePublisher: Published<Bool>.Publisher { $isRunFirstTime }
@@ -18,16 +17,42 @@ public final class MockSettingsService: ObservableObject, SettingsStoring {
     @Published public var maximumOvertimeAllowedInSeconds: Int
     @Published public var workTimeInSeconds: Int
     @Published public var grossPayPerMonth: Int
-    @Published public var savedColorScheme: ColorScheme?
 
-    public init() {
-        self.isRunFirstTime = false
-        self.isLoggingOvertime = true
-        self.isCalculatingNetPay = true
-        self.isSendingNotification = false
-        self.workTimeInSeconds = 28800
-        self.maximumOvertimeAllowedInSeconds = 14400
-        self.grossPayPerMonth = 10000
-        self.savedColorScheme = nil
+    /// Initialize with default testing values
+    public convenience init() {
+        self.init(isRunFirstTime: false,
+                  isLoggingOvertime: true,
+                  isCalculatingNetPay: true,
+                  isSendingNotification: false,
+                  maximumOvertimeAllowedInSeconds: 28800,
+                  workTimeInSeconds: 14400,
+                  grossPayPerMonth: 10000)
     }
+    
+    public init(isRunFirstTime: Bool,
+                isLoggingOvertime: Bool,
+                isCalculatingNetPay: Bool,
+                isSendingNotification: Bool,
+                maximumOvertimeAllowedInSeconds: Int,
+                workTimeInSeconds: Int,
+                grossPayPerMonth: Int) {
+        self.isRunFirstTime = isRunFirstTime
+        self.isLoggingOvertime = isLoggingOvertime
+        self.isCalculatingNetPay = isCalculatingNetPay
+        self.isSendingNotification = isSendingNotification
+        self.maximumOvertimeAllowedInSeconds = maximumOvertimeAllowedInSeconds
+        self.workTimeInSeconds = workTimeInSeconds
+        self.grossPayPerMonth = grossPayPerMonth
+    }
+    
+    public func clearStore() {
+        isRunFirstTime = false
+        isLoggingOvertime = false
+        isCalculatingNetPay = false
+        isSendingNotification = false
+        maximumOvertimeAllowedInSeconds = 0
+        workTimeInSeconds = 0
+        grossPayPerMonth = 0
+    }
+    
 }

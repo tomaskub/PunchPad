@@ -224,10 +224,7 @@ let package = Package(
                 .product(
                     name: "DomainModels",
                     package: "Core"
-                ),
-                .product(
-                    name: "UIComponents",
-                    package: "Core")
+                )
             ]
         ),
         .target(
