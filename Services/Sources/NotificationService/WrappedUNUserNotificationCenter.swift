@@ -1,3 +1,4 @@
+import DomainModels
 import NotificationServiceInterfaces
 import UserNotifications
 
@@ -16,15 +17,24 @@ public final class WrappedUNUserNotificationCenter: UserNotificationCenter {
         center.removeAllPendingNotificationRequests()
     }
     
-    public func notificationSettings() async -> UNNotificationSettings {
-        await center.notificationSettings()
+    public func notificationSettings() async -> UserNotificationSettings {
+        let settings = await center.notificationSettings()
+        return UserNotificationCenterAdapter.get(from: settings)
     }
     
-    public func getNotificationSettings(completionHandler: @escaping (UNNotificationSettings) -> Void) {
-        center.getNotificationSettings(completionHandler: completionHandler)
+    public func getNotificationSettings(completionHandler: @escaping (UserNotificationSettings) -> Void) {
+        center.getNotificationSettings { settings in
+            completionHandler(UserNotificationCenterAdapter.get(from: settings))
+        }
     }
     
     public func add(_ request: UNNotificationRequest, withCompletionHandler: (((any Error)?) -> Void)?) {
         center.add(request, withCompletionHandler: withCompletionHandler)
+    }
+}
+
+class UserNotificationCenterAdapter {
+    static func get(from settings: UNNotificationSettings) -> UserNotificationSettings {
+        .init(authorizationStatus: settings.authorizationStatus)
     }
 }

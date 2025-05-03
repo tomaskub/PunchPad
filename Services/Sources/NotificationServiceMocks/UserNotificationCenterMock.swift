@@ -1,3 +1,4 @@
+import DomainModels
 import NotificationServiceInterfaces
 import UserNotifications
 
@@ -24,12 +25,20 @@ public final class UserNotificationCenterMock: UserNotificationCenter {
         removeAllPendingNotificationRequestsCalled = true
     }
     
-    public func notificationSettings() async -> UNNotificationSettings {
-        fatalError("Mock of this method is not implemented")
+    var notificationSettingsCalled = false
+    var notificationSettingsReturn = UserNotificationSettings(authorizationStatus: .notDetermined)
+    
+    public func notificationSettings() async -> UserNotificationSettings {
+        notificationSettingsCalled = true
+        return notificationSettingsReturn
     }
     
-    public func getNotificationSettings(completionHandler: @escaping (UNNotificationSettings) -> Void) {
-        fatalError("Mock of this method is not implemented")
+    var getNotificationSettingsCalled = false
+    var getNotificationSettingsReturn = UserNotificationSettings(authorizationStatus: .notDetermined)
+    
+    public func getNotificationSettings(completionHandler: @escaping (UserNotificationSettings) -> Void) {
+        getNotificationSettingsCalled = true
+        completionHandler(getNotificationSettingsReturn)
     }
     
     var addCalled: Bool { addRequest == nil ? false : true }
