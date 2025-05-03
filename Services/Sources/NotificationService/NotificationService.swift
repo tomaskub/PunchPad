@@ -13,11 +13,11 @@ import OSLog
 import UserNotifications
 
 public final class NotificationService: NotificationServicing {
-    private let center: UNUserNotificationCenter
+    private let center: UserNotificationCenter
     private var pendingNotificationsIDs: Set<String> = []
     private let logger = Logger.notificationService // that is in foundationExtensions right?
     
-    public init(center: UNUserNotificationCenter) {
+    public init(center: UserNotificationCenter) {
         self.center = center
     }
     
