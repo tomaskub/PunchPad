@@ -41,42 +41,6 @@ public final class NotificationService: NotificationServicing {
         pendingNotificationsIDs.removeAll()
     }
     
-    public func checkForAuthorization() async -> Bool? {
-        logger.debug("checkForAuthorization called")
-        let settings = await center.notificationSettings()
-        logger.debug("Authorization status retrieved: \(settings.authorizationStatus.debugDescription)")
-        switch settings.authorizationStatus {
-        case .notDetermined:
-            return nil
-        case .denied:
-            return false
-        case .authorized, .provisional, .ephemeral:
-            return true
-        @unknown default:
-            return nil
-        }
-    }
-    
-    public func checkForAuthorization(completionHandler: @escaping (Bool?) -> Void) {
-        logger.debug("checkForAuthorization called")
-        center.getNotificationSettings { settings in
-            logger.debug("Authorization status retrieved: \(settings.authorizationStatus.debugDescription)")
-            let value: Bool? = {
-                switch settings.authorizationStatus {
-                case .notDetermined:
-                    return nil
-                case .denied:
-                    return false
-                case .authorized, .provisional, .ephemeral:
-                    return true
-                @unknown default:
-                    return nil
-                }
-            }()
-            completionHandler(value)
-        }
-    }
-    
     public func scheduleNotification(for notification: AppNotification, in timeInterval: TimeInterval) {
         logger.debug("scheduleNotification called")
         let id = UUID().uuidString
