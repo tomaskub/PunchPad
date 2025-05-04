@@ -3,12 +3,14 @@ import NotificationServiceInterfaces
 import UserNotifications
 
 public final class UserNotificationCenterMock: UserNotificationCenter {
-    var requestAuthorizationCalled = false
-    var requestAuthorizationOptions: UNAuthorizationOptions?
-    var requestAuthorizationCompletionHandler: ((Bool, (any Error)?) -> Void)?
+    public init() {}
+   
+    public var requestAuthorizationCalled = false
+    public var requestAuthorizationOptions: UNAuthorizationOptions?
+    public var requestAuthorizationCompletionHandler: ((Bool, (any Error)?) -> Void)?
     
-    var requestAuthorizationShouldFailError: Error?
-    var requestAuthorizationReturn = false
+    public var requestAuthorizationShouldFailError: Error?
+    public var requestAuthorizationReturn = false
     
     public func requestAuthorization(options: UNAuthorizationOptions,
                                      completionHandler: @escaping (Bool, (any Error)?) -> Void) {
@@ -19,7 +21,7 @@ public final class UserNotificationCenterMock: UserNotificationCenter {
         completionHandler(requestAuthorizationReturn, requestAuthorizationShouldFailError)
     }
     
-    var removeAllPendingNotificationRequestsCalled = false
+    public var removeAllPendingNotificationRequestsCalled = false
     
     public func removeAllPendingNotificationRequests() {
         removeAllPendingNotificationRequestsCalled = true
@@ -33,17 +35,17 @@ public final class UserNotificationCenterMock: UserNotificationCenter {
         return notificationSettingsReturn
     }
     
-    var getNotificationSettingsCalled = false
-    var getNotificationSettingsReturn = UserNotificationSettings(authorizationStatus: .notDetermined)
+    public var getNotificationSettingsCalled = false
+    public var getNotificationSettingsReturn = UserNotificationSettings(authorizationStatus: .notDetermined)
     
     public func getNotificationSettings(completionHandler: @escaping (UserNotificationSettings) -> Void) {
         getNotificationSettingsCalled = true
         completionHandler(getNotificationSettingsReturn)
     }
     
-    var addCalled: Bool { addRequest == nil ? false : true }
-    var addRequest: UNNotificationRequest?
-    var addShouldFailError: Error?
+    public var addCalled: Bool { addRequest == nil ? false : true }
+    public var addRequest: UNNotificationRequest?
+    public var addShouldFailError: Error?
     
     public func add(_ request: UNNotificationRequest, withCompletionHandler: (((any Error)?) -> Void)?) {
         addRequest = request
