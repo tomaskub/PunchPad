@@ -263,6 +263,13 @@ let package = Package(
             name: "NotificationServiceMocks",
             dependencies: ["NotificationServiceInterfaces"]
         ),
+        .testTarget(
+            name: "NotificationServiceTests",
+            dependencies: [
+                "NotificationService",
+                "NotificationServiceMocks"
+            ]
+        ),
         .target(
             name: "LaunchArgumentHandler",
             dependencies: [
