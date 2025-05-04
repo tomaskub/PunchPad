@@ -27,14 +27,6 @@ public final class UserNotificationCenterMock: UserNotificationCenter {
         removeAllPendingNotificationRequestsCalled = true
     }
     
-    var notificationSettingsCalled = false
-    var notificationSettingsReturn = UserNotificationSettings(authorizationStatus: .notDetermined)
-    
-    public func notificationSettings() async -> UserNotificationSettings {
-        notificationSettingsCalled = true
-        return notificationSettingsReturn
-    }
-    
     public var getNotificationSettingsCalled = false
     public var getNotificationSettingsReturn = UserNotificationSettings(authorizationStatus: .notDetermined)
     

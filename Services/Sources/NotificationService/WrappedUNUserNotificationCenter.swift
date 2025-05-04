@@ -17,11 +17,6 @@ public final class WrappedUNUserNotificationCenter: UserNotificationCenter {
         center.removeAllPendingNotificationRequests()
     }
     
-    public func notificationSettings() async -> UserNotificationSettings {
-        let settings = await center.notificationSettings()
-        return UserNotificationCenterAdapter.get(from: settings)
-    }
-    
     public func getNotificationSettings(completionHandler: @escaping (UserNotificationSettings) -> Void) {
         center.getNotificationSettings { settings in
             completionHandler(UserNotificationCenterAdapter.get(from: settings))
