@@ -44,3 +44,7 @@ public final class UserNotificationCenterMock: UserNotificationCenter {
         withCompletionHandler?(addShouldFailError)
     }
 }
+
+public enum MockError: Error {
+    case mock
+}
