@@ -98,12 +98,12 @@ extension AppNotification {
     }
 }
 
-// TODO: inverstigate @retroactive
-extension AppNotification: Localized {
+extension AppNotification: @retroactive Localized {
     public struct Strings {
-        static let titleWorktime = Localization.AppNotificationScreen.worktimeFinished
-        static let titleOvertime = Localization.AppNotificationScreen.overtimeFinished
-        static let bodyWorktime = Localization.AppNotificationScreen.congratulationsYouFinishedNormalHours
-        static let bodyOvertime = Localization.AppNotificationScreen.congratulationsYouFinishedOvertime
+        private typealias Screen = Localization.AppNotificationScreen
+        static let titleWorktime = Screen.worktimeFinished
+        static let titleOvertime = Screen.overtimeFinished
+        static let bodyWorktime = Screen.congratulationsYouFinishedNormalHours
+        static let bodyOvertime = Screen.congratulationsYouFinishedOvertime
     }
 }
