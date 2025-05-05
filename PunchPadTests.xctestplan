@@ -20,6 +20,34 @@
       }
     },
     {
+      "target" : {
+        "containerPath" : "container:Services",
+        "identifier" : "NotificationServiceTests",
+        "name" : "NotificationServiceTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Services",
+        "identifier" : "ChartPeriodServiceTests",
+        "name" : "ChartPeriodServiceTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Domains",
+        "identifier" : "HomeTests",
+        "name" : "HomeTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Services",
+        "identifier" : "TimerServiceTests",
+        "name" : "TimerServiceTests"
+      }
+    },
+    {
       "skippedTests" : [
         "StatisticsViewModelTests\/test_entryInPeriod_updated_whenUpdatingChartTimeRangeToMonth()",
         "StatisticsViewModelTests\/test_entryInPeriod_updates_whenLoadingNextPeriod()"
@@ -31,10 +59,13 @@
       }
     },
     {
+      "skippedTests" : [
+        "PayManagerTests\/testGeneratingDataForNotFinishedWeek()"
+      ],
       "target" : {
-        "containerPath" : "container:Domains",
-        "identifier" : "HomeTests",
-        "name" : "HomeTests"
+        "containerPath" : "container:Services",
+        "identifier" : "PayServiceTests",
+        "name" : "PayServiceTests"
       }
     },
     {
@@ -53,30 +84,6 @@
         "containerPath" : "container:PunchPad.xcodeproj",
         "identifier" : "DD5249DF9FD5810F12418181",
         "name" : "PunchPadTests"
-      }
-    },
-    {
-      "skippedTests" : [
-        "PayManagerTests\/testGeneratingDataForNotFinishedWeek()"
-      ],
-      "target" : {
-        "containerPath" : "container:Services",
-        "identifier" : "PayServiceTests",
-        "name" : "PayServiceTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:Services",
-        "identifier" : "ChartPeriodServiceTests",
-        "name" : "ChartPeriodServiceTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:Services",
-        "identifier" : "TimerServiceTests",
-        "name" : "TimerServiceTests"
       }
     }
   ],
