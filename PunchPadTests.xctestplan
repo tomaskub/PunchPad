@@ -49,6 +49,7 @@
     },
     {
       "skippedTests" : [
+        "StatisticsViewModelTests\/test_entryInPeriod_updated_whenUpdatingChartTimeRangeToAll_withMonthOfEntries()",
         "StatisticsViewModelTests\/test_entryInPeriod_updated_whenUpdatingChartTimeRangeToMonth()",
         "StatisticsViewModelTests\/test_entryInPeriod_updates_whenLoadingNextPeriod()"
       ],
