@@ -13,25 +13,24 @@ import OSLog
 import UserNotifications
 
 public final class NotificationService: NotificationServicing {
-    private let center: UNUserNotificationCenter
+    private let center: UserNotificationCenter
     private var pendingNotificationsIDs: Set<String> = []
-    private let logger = Logger.notificationService // that is in foundationExtensions right?
     
-    public init(center: UNUserNotificationCenter) {
+    public init(center: UserNotificationCenter) {
         self.center = center
     }
     
     public func requestAuthorizationForNotifications(failureHandler: @escaping (Bool, Error?) -> Void) {
         logger.debug("requestAuthorization called")
-        center.requestAuthorization(options: [.alert, .sound, .badge]) { [weak self] success, error in
+        center.requestAuthorization(options: [.alert, .sound, .badge]) { success, error in
             if !success {
-                self?.logger.debug("Failed to get authorization")
+                logger.debug("Failed to get authorization")
                 failureHandler(success, error)
             } else {
-                self?.logger.debug("Authorization successfull")
+                logger.debug("Authorization successfull")
             }
             if let error {
-                self?.logger.error("When requesting authorization: \(error.localizedDescription)")
+                logger.error("When requesting authorization: \(error.localizedDescription)")
             }
         }
     }
@@ -40,42 +39,6 @@ public final class NotificationService: NotificationServicing {
         logger.debug("deschedulePendingNotifications called")
         center.removeAllPendingNotificationRequests()
         pendingNotificationsIDs.removeAll()
-    }
-    
-    public func checkForAuthorization() async -> Bool? {
-        logger.debug("checkForAuthorization called")
-        let settings = await center.notificationSettings()
-        logger.debug("Authorization status retrieved: \(settings.authorizationStatus.debugDescription)")
-        switch settings.authorizationStatus {
-        case .notDetermined:
-            return nil
-        case .denied:
-            return false
-        case .authorized, .provisional, .ephemeral:
-            return true
-        @unknown default:
-            return nil
-        }
-    }
-    
-    public func checkForAuthorization(completionHandler: @escaping (Bool?) -> Void) {
-        logger.debug("checkForAuthorization called")
-        center.getNotificationSettings { [weak self] settings in
-            self?.logger.debug("Authorization status retrieved: \(settings.authorizationStatus.debugDescription)")
-            let value: Bool? = {
-                switch settings.authorizationStatus {
-                case .notDetermined:
-                    return nil
-                case .denied:
-                    return false
-                case .authorized, .provisional, .ephemeral:
-                    return true
-                @unknown default:
-                    return nil
-                }
-            }()
-            completionHandler(value)
-        }
     }
     
     public func scheduleNotification(for notification: AppNotification, in timeInterval: TimeInterval) {
@@ -100,7 +63,7 @@ public final class NotificationService: NotificationServicing {
         center.getNotificationSettings { settings in
             switch settings.authorizationStatus {
             case .authorized:
-                self.logger.debug("Recieved authorized status")
+                logger.debug("Recieved authorized status")
                 self.dispatch(notification: notificationRequest)
             default:
                 return
@@ -135,12 +98,12 @@ extension AppNotification {
     }
 }
 
-// TODO: inverstigate @retroactive
-extension AppNotification: Localized {
+extension AppNotification: @retroactive Localized {
     public struct Strings {
-        static let titleWorktime = Localization.AppNotificationScreen.worktimeFinished
-        static let titleOvertime = Localization.AppNotificationScreen.overtimeFinished
-        static let bodyWorktime = Localization.AppNotificationScreen.congratulationsYouFinishedNormalHours
-        static let bodyOvertime = Localization.AppNotificationScreen.congratulationsYouFinishedOvertime
+        private typealias Screen = Localization.AppNotificationScreen
+        static let titleWorktime = Screen.worktimeFinished
+        static let titleOvertime = Screen.overtimeFinished
+        static let bodyWorktime = Screen.congratulationsYouFinishedNormalHours
+        static let bodyOvertime = Screen.congratulationsYouFinishedOvertime
     }
 }

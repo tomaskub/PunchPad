@@ -28,6 +28,8 @@ public final class Container: ContainerProtocol {
         self.payManager = PayManager(dataManager: dataManaging,
                                      settingsStore: settingsStore,
                                      calendar: Calendar.current)
-        self.notificationService = NotificationService(center: .current())
+        self.notificationService = NotificationService(
+            center: WrappedUNUserNotificationCenter(center: .current())
+        )
     }
 }

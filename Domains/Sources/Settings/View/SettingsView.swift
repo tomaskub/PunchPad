@@ -313,7 +313,10 @@ extension SettingsView: Localized {
     struct ContainerView: View {
         private let dataManager = PreviewDataManager()
         private let settingsStore = SettingsStore()
-        private let notificationService = NotificationService(center: .current())
+        private let notificationService = NotificationService(
+            center: WrappedUNUserNotificationCenter(center: .current())
+        )
+       
         var body: some View {
             SettingsView(viewModel:
                             SettingsViewModel(dataManger: dataManager,
