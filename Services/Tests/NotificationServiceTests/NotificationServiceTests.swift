@@ -24,7 +24,7 @@ extension NotificationServiceTests {
         sut.deschedulePendingNotifications()
         
         // Then
-        XCTAssertTrue(mockUserNotificationCenter.requestAuthorizationCalled)
+        XCTAssertTrue(mockUserNotificationCenter.removeAllPendingNotificationRequestsCalled)
     }
     
     func test_requestAuthorizationForNotification_requestsAuth_withOptions() throws {

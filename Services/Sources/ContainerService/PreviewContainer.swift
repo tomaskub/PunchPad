@@ -29,6 +29,8 @@ public final class PreviewContainer: ContainerProtocol {
         self.payManager = PayManager(dataManager: dataManager,
                                      settingsStore: settingsStore,
                                      calendar: .current)
-        self.notificationService = NotificationService(center: .current())
+        self.notificationService = NotificationService(
+            center: WrappedUNUserNotificationCenter(center: .current())
+        )
     }
 }
