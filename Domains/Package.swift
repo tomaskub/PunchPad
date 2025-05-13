@@ -112,6 +112,7 @@ let package = Package(
                     .product(name: "TimerService", package: "Services"),
                     .product(name: "PayService", package: "Services"),
                     .product(name: "SettingsService", package: "Services"),
+                    .product(name: "UIComponents", package: "Core")
                 ]
                ),
         .testTarget(name: "HomeTests",

@@ -16,6 +16,8 @@ public protocol SettingsStoring: AnyObject, ObservableObject where ObjectWillCha
     var maximumOvertimeAllowedInSecondsPublisher: Published<Int>.Publisher { get }
     var workTimeInSecondsPublisher: Published<Int>.Publisher { get }
     var grossPayPerMonthPublisher: Published<Int>.Publisher { get }
+    
+    func clearStore()
 }
 
 public protocol TestDefaultsSetting {
